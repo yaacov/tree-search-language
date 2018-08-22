@@ -17,17 +17,6 @@ Usage of ./tls_parser:
     	output format [json/yaml/prettyjson] (default "json")
 ```
 
-``` bash
-$ ./tsl_to_sql -h
-Usage of ./tsl_to_sql:
-  -i string
-    	the tsl string to parse (e.g. "animal = 'kitty'")
-  -o string
-    	output format [mysql/pgsql] (default "mysql")
-  -t string
-    	the table name to use for SQL generation (default "<table-name>")
-
-```
 
 ``` bash
 $ ./tsl_parser -i "(name = 'joe' or name = 'jane') and city = 'rome'" -o yaml
@@ -47,6 +36,19 @@ right:
     left: name
     right: joe
 ```
+
+``` bash
+$ ./tsl_to_sql -h
+Usage of ./tsl_to_sql:
+  -i string
+    	the tsl string to parse (e.g. "animal = 'kitty'")
+  -o string
+    	output format [mysql/pgsql] (default "mysql")
+  -t string
+    	the table name to use for SQL generation (default "<table-name>")
+
+```
+
 ``` bash
  $ ./tsl_to_sql -i "name != 'eli''s' or city like '%rome%' and state not between 'italy' and 'france'" -o pgsql
 sql:  SELECT * FROM <table-name> WHERE (name <> $1 OR (city LIKE $2 AND state NOT BETWEEN $3 AND $4))
