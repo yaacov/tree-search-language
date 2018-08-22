@@ -49,7 +49,7 @@ right:
 ```
 ``` bash
  $ ./tsl_to_sql -i "name != 'eli''s' or city like '%rome%' and state not between 'italy' and 'france'" -o pgsql
-sql:  SELECT * FROM <table-name> WHERE (name <> $1 OR (city LIKE $2 AND state NOT BETWEEN $3 and $4))
+sql:  SELECT * FROM <table-name> WHERE (name <> $1 OR (city LIKE $2 AND state NOT BETWEEN $3 AND $4))
 args: [eli's %rome% italy france]
 
 ```
