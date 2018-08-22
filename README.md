@@ -35,22 +35,23 @@ func: $and
 left:
   func: $eq
   left: city
-  right: '''rome'''
+  right: 'rome'
 right:
   func: $or
   left:
     func: $eq
     left: name
-    right: '''jane'''
+    right: 'jane'
   right:
     func: $eq
     left: name
-    right: '''joe'''
+    right: 'joe'
 ```
 ``` bash
- $ ./tsl_to_sql -i "count != 2 or city like '%rome%' and state not between 'italy' and 'france'" -o pgsql
-sql:  SELECT * FROM <table-name> WHERE (count <> $1 OR (city LIKE $2 AND state NOT BETWEEN $3 and $4))
-args: [2 '%rome%' 'italy' 'france']
+ $ ./tsl_to_sql -i "name != 'eli''s' or city like '%rome%' and state not between 'italy' and 'france'" -o pgsql
+sql:  SELECT * FROM <table-name> WHERE (name <> $1 OR (city LIKE $2 AND state NOT BETWEEN $3 and $4))
+args: [eli's %rome% italy france]
+
 ```
 
 #### Language
