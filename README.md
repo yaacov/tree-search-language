@@ -108,7 +108,7 @@ n, _ = listener.GetTree()
 
 /*
   input := "a = 'hello'"
-  expected := `{"func":"$eq","right":"'hello'","left":"a"}`
+  expected := `{"func":"$eq","right":"hello","left":"a"}`
 */
 ```
 
