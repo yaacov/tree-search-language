@@ -14,10 +14,13 @@
 # limitations under the License.
 #
 
-all: fmt tls_parser
+all: fmt tsl_parser tsl_to_sql
 
-tls_parser: vendor
-	go build ./cmd/tls_parser
+tsl_parser: vendor
+	go build ./cmd/tsl_parser
+
+tsl_to_sql: vendor
+	go build ./cmd/tsl_to_sql
 
 .PHONY: lint
 lint:
@@ -51,7 +54,8 @@ fmt:
 
 .PHONY: test
 test:
-	go test ./cmd/tls_parser
+	go test ./cmd/tsl_parser
+	go test ./cmd/tsl_to_sql
 	go test ./pkg/tsl
 
 .PHONY: generate

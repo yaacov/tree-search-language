@@ -17,7 +17,38 @@ package tsl
 
 import (
 	"fmt"
+
+	sq "github.com/Masterminds/squirrel"
 )
+
+// ToSQL converts a TSL tree into SQL statment.
+func ToSQL(n Node, table string, usePgsql bool) (sql string, args []interface{}, err error) {
+	var s sq.SelectBuilder
+
+	if usePgsql {
+		// If we are using PostgreSQL style use $ instead of ?
+		// for placeholders.
+		psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
+		s = psql.Select("*").From(table)
+	} else {
+		s = sq.Select("*").From(table)
+	}
+
+	s = s.Where(walk(n))
+
+	return s.ToSql()
+}
+
+// GetTree return the parsed tree, if exist.
+func (l *Listener) GetTree() (n Node, err error) {
+	// Check stack size.
+	if len(l.Stack) < 1 {
+		err = fmt.Errorf("operator stack is empty")
+		return
+	}
+
+	return l.Stack[0], l.Err
+}
 
 // ternaryOp return lh if conditional is true, rh o/w.
 func ternaryOp(conditional bool, lh string, rh string) string {
@@ -60,13 +91,47 @@ func (l *Listener) pop() (n Node) {
 	return
 }
 
-// GetTree return the parsed tree, if exist.
-func (l *Listener) GetTree() (n Node, err error) {
-	// Check stack size.
-	if len(l.Stack) < 1 {
-		err = fmt.Errorf("operator stack is empty")
-		return
+func walk(n Node) sq.Sqlizer {
+	switch n.Func {
+	case andOp:
+		return sq.And{walk(n.Right.(Node)), walk(n.Left.(Node))}
+	case orOp:
+		return sq.Or{walk(n.Right.(Node)), walk(n.Left.(Node))}
+	case notOp:
+		return sq.Or{walk(n.Right.(Node)), walk(n.Left.(Node))}
+	case eqOp:
+		return sq.Eq{n.Left.(string): n.Right}
+	case notEqOp:
+		return sq.NotEq{n.Left.(string): n.Right}
+	case ltOp:
+		return sq.Lt{n.Left.(string): n.Right}
+	case lteOp:
+		return sq.LtOrEq{n.Left.(string): n.Right}
+	case gtOp:
+		return sq.Gt{n.Left.(string): n.Right}
+	case gteOp:
+		return sq.GtOrEq{n.Left.(string): n.Right}
+	case inOp:
+		return sq.Eq{n.Left.(string): n.Right}
+	case notInOp:
+		return sq.NotEq{n.Left.(string): n.Right}
+	case isNilOp:
+		return sq.Eq{n.Left.(string): nil}
+	case isNotNilOp:
+		return sq.NotEq{n.Left.(string): nil}
+	case likeOp:
+		t := fmt.Sprintf("%s LIKE ?", n.Left.(string))
+		return sq.Expr(t, n.Right)
+	case notLikeOp:
+		t := fmt.Sprintf("%s NOT LIKE ?", n.Left.(string))
+		return sq.Expr(t, n.Right)
+	case betweenOp:
+		t := fmt.Sprintf("%s BETWEEN ? and ?", n.Left.(string))
+		return sq.Expr(t, n.Right.([]string)[0], n.Right.([]string)[1])
+	case notBetweenOp:
+		t := fmt.Sprintf("%s NOT BETWEEN ? and ?", n.Left.(string))
+		return sq.Expr(t, n.Right.([]string)[0], n.Right.([]string)[1])
 	}
 
-	return l.Stack[0], l.Err
+	return sq.And{}
 }

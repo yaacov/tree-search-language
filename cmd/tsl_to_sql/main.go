@@ -17,14 +17,11 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
-	"github.com/hokaccha/go-prettyjson"
-	"gopkg.in/yaml.v2"
 
 	"github.com/yaacov/tsl/pkg/parser"
 	"github.com/yaacov/tsl/pkg/tsl"
@@ -39,11 +36,13 @@ func check(err error) {
 func main() {
 	var err error
 	var tree tsl.Node
-	var s []byte
+	var sql string
+	var args []interface{}
 
 	// Setup the input
 	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"animal = 'kitty'\")")
-	outputPtr := flag.String("o", "json", "output format [json/yaml/prettyjson]")
+	tablePtr := flag.String("t", "<table-name>", "the table name to use for SQL generation")
+	outputPtr := flag.String("o", "mysql", "output format [mysql/pgsql]")
 	flag.Parse()
 
 	// Setup the ErrorListener
@@ -80,16 +79,15 @@ func main() {
 	}
 
 	switch *outputPtr {
-	case "json":
-		s, err = json.Marshal(tree)
-	case "yaml":
-		s, err = yaml.Marshal(tree)
-	case "prettyjson":
-		s, err = prettyjson.Marshal(tree)
+	case "pgsql":
+		sql, args, err = tsl.ToSQL(tree, *tablePtr, true)
+	case "mysql":
+		sql, args, err = tsl.ToSQL(tree, *tablePtr, false)
 	default:
-		s, err = json.Marshal(tree)
+		sql, args, err = tsl.ToSQL(tree, *tablePtr, false)
 	}
 
 	check(err)
-	fmt.Println(string(s))
+	fmt.Printf("sql:  %s\n", sql)
+	fmt.Printf("args: %v\n", args)
 }
