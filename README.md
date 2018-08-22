@@ -62,7 +62,7 @@ TSL is generated using Antlr4 tool, the grammer file used for generation is [TSL
 
 ###### Keywords
 ```
-and or not is null like between in 
+and or not is null like between in
 ```
 ###### Operators
 ```
@@ -83,32 +83,20 @@ city in ('paris', 'rome', 'milan') or sate = 'spain'
 
 ``` go
 import (
-	"github.com/antlr/antlr4/runtime/Go/antlr"
-	"github.com/yaacov/tsl/pkg/parser"
 	"github.com/yaacov/tsl/pkg/tsl"
 )
 ```
 ``` go
-// Setup the input
-is := antlr.NewInputStream(input)
+  // Set a TSL input string
+  input = "name='joe' or name='jane'"
 
-// Create the Lexer
-lexer := parser.NewTSLLexer(is)
-stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
-
-// Create the Parser
-p := parser.NewTSLParser(stream)
-
-// Finally parse the expression (by walking the tree)
-var listener tsl.Listener
-antlr.ParseTreeWalkerDefault.Walk(&listener, p.Start())
-
-// Get the parsed tree
-n, _ = listener.GetTree()
-
-/*
-  input := "a = 'hello'"
-  expected := `{"func":"$eq","right":"hello","left":"a"}`
-*/
+  // Parse input string into a TSL tree
+  tree, err := tsl.ParseTSL(input)
+  ...
 ```
-
+```
+  // Convert TSL tree into SQL string
+  sql, args, err = tsl.ToSelectBuilder(tree, false).
+    From(*tablePtr).
+    ToSql()
+```

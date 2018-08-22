@@ -22,11 +22,9 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/hokaccha/go-prettyjson"
 	"gopkg.in/yaml.v2"
 
-	"github.com/yaacov/tsl/pkg/parser"
 	"github.com/yaacov/tsl/pkg/tsl"
 )
 
@@ -37,8 +35,6 @@ func check(err error) {
 }
 
 func main() {
-	var err error
-	var tree tsl.Node
 	var s []byte
 
 	// Setup the input
@@ -46,32 +42,8 @@ func main() {
 	outputPtr := flag.String("o", "json", "output format [json/yaml/prettyjson]")
 	flag.Parse()
 
-	// Setup the ErrorListener
-	errorListener := tsl.NewErrorListener()
-
-	// Setup the input
-	is := antlr.NewInputStream(*inputPtr)
-
-	// Create the Lexer
-	lexer := parser.NewTSLLexer(is)
-	lexer.RemoveErrorListeners()
-	lexer.AddErrorListener(errorListener)
-
-	stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
-
-	// Create the Parser
-	p := parser.NewTSLParser(stream)
-	p.RemoveErrorListeners()
-	p.AddErrorListener(errorListener)
-
-	// Finally parse the expression (by walking the tree)
-	var listener tsl.Listener
-	antlr.ParseTreeWalkerDefault.Walk(&listener, p.Start())
-
-	err = errorListener.Err
-	check(err)
-
-	tree, err = listener.GetTree()
+	// Parse input string into a TSL tree
+	tree, err := tsl.ParseTSL(*inputPtr)
 	check(err)
 
 	// If listener has erros, we can not print the tree

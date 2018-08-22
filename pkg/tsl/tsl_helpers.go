@@ -21,27 +21,65 @@ import (
 	"strings"
 
 	sq "github.com/Masterminds/squirrel"
+	"github.com/antlr/antlr4/runtime/Go/antlr"
+
+	"github.com/yaacov/tsl/pkg/parser"
 )
 
+// ParseTSL parses the input string into TSL tree.
+func ParseTSL(input string) (tree Node, err error) {
+	// Setup the ErrorListener
+	errorListener := NewErrorListener()
+
+	// Setup the input
+	is := antlr.NewInputStream(input)
+
+	// Create the Lexer
+	lexer := parser.NewTSLLexer(is)
+	lexer.RemoveErrorListeners()
+	lexer.AddErrorListener(errorListener)
+	stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
+
+	// Create the Parser
+	p := parser.NewTSLParser(stream)
+	p.RemoveErrorListeners()
+	p.AddErrorListener(errorListener)
+
+	// Parse the expression (by walking the tree)
+	var listener Listener
+	antlr.ParseTreeWalkerDefault.Walk(&listener, p.Start())
+
+	// Check for errors
+	err = errorListener.Err
+	if err != nil {
+		return
+	}
+
+	// Get the parsed tree
+	tree, err = listener.GetTree()
+
+	return
+}
+
 // ToSelectBuilder converts a TSL tree into a squirrel SelectBuilder.
-func ToSelectBuilder(n Node, usePgsql bool) (s sq.SelectBuilder) {
+func ToSelectBuilder(tree Node, usePgsql bool) (s sq.SelectBuilder) {
 	if usePgsql {
 		// If we are using PostgreSQL style use $ instead of ?
-		// for placeholders.
+		// for placeholders
 		psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 		s = psql.Select("*")
 	} else {
 		s = sq.Select("*")
 	}
 
-	s = s.Where(walk(n))
+	s = s.Where(walk(tree))
 
 	return
 }
 
 // GetTree return the parsed tree, if exist.
 func (l *Listener) GetTree() (n Node, err error) {
-	// Check stack size.
+	// Check stack size
 	if len(l.Stack) < 1 {
 		err = fmt.Errorf("operator stack is empty")
 		return
@@ -83,10 +121,10 @@ func literalValueToArg(v string) (arg interface{}) {
 
 // literalValuesToArgs collect literal values, and create args list.
 func literalValuesToArgs(c hasLiteralValues) (args []interface{}) {
-	// Get length of literal values list.
+	// Get length of literal values list
 	l := len(c.AllLiteralValue())
 
-	// Create the arg list.
+	// Create the arg list
 	args = make([]interface{}, l)
 	for i := 0; i < l; i++ {
 		args[i] = literalValueToArg(c.LiteralValue(i).GetText())
@@ -100,14 +138,14 @@ func (l *Listener) push(i Node) {
 }
 
 func (l *Listener) pop() (n Node) {
-	// Check that we have nodes in the stack.
+	// Check that we have nodes in the stack
 	size := len(l.Stack)
 	if size < 1 {
 		l.Err = fmt.Errorf("operator stack is empty")
 		return
 	}
 
-	// Pop the last value from the Stack.
+	// Pop the last value from the Stack
 	n, l.Stack = l.Stack[size-1], l.Stack[:size-1]
 
 	return
@@ -116,11 +154,11 @@ func (l *Listener) pop() (n Node) {
 func walk(n Node) sq.Sqlizer {
 	switch n.Func {
 	case andOp:
-		return sq.And{walk(n.Right.(Node)), walk(n.Left.(Node))}
+		return sq.And{walk(n.Left.(Node)), walk(n.Right.(Node))}
 	case orOp:
-		return sq.Or{walk(n.Right.(Node)), walk(n.Left.(Node))}
+		return sq.Or{walk(n.Left.(Node)), walk(n.Right.(Node))}
 	case notOp:
-		return sq.Or{walk(n.Right.(Node)), walk(n.Left.(Node))}
+		return sq.Or{walk(n.Left.(Node)), walk(n.Right.(Node))}
 	case eqOp:
 		return sq.Eq{n.Left.(string): n.Right}
 	case notEqOp:

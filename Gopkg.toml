@@ -36,3 +36,11 @@
 [[constraint]]
   branch = "master"
   name = "github.com/hokaccha/go-prettyjson"
+
+[[constraint]]
+  name = "github.com/Masterminds/squirrel"
+  version = "v1.0"
+
+[[constraint]]
+  name = "gopkg.in/yaml.v2"
+  version = "v2.2.1"

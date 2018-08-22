@@ -19,14 +19,14 @@ import (
 	"github.com/yaacov/tsl/pkg/parser"
 )
 
-// Node is a Tree search node
+// Node is a Tree search node.
 type Node struct {
 	Func  string      `json:"func"`
 	Left  interface{} `json:"left,omitempty"`
 	Right interface{} `json:"right,omitempty"`
 }
 
-// Listener is a Tree search listener
+// Listener is a Tree search listener.
 type Listener struct {
 	*parser.BaseTSLListener
 
@@ -34,7 +34,7 @@ type Listener struct {
 	Err   error
 }
 
-// hasLiteralValues is a type that contain literal values
+// hasLiteralValues is a type that contain literal values.
 type hasLiteralValues interface {
 	AllLiteralValue() []parser.ILiteralValueContext
 	LiteralValue(int) parser.ILiteralValueContext

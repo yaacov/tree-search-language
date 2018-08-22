@@ -12,6 +12,7 @@
 *.out
 
 /tsl_parser
+/tsl_to_sql
 
 /vendor/
 Gopkg.lock

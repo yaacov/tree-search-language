@@ -115,7 +115,7 @@ func (l *Listener) ExitNot(c *parser.NotContext) {
 
 // ExitAnd is called when production And is exited.
 func (l *Listener) ExitAnd(c *parser.AndContext) {
-	left, right := l.pop(), l.pop()
+	right, left := l.pop(), l.pop()
 	n := Node{
 		Func:  andOp,
 		Left:  left,
@@ -127,7 +127,7 @@ func (l *Listener) ExitAnd(c *parser.AndContext) {
 
 // ExitOr is called when production Or is exited.
 func (l *Listener) ExitOr(c *parser.OrContext) {
-	left, right := l.pop(), l.pop()
+	right, left := l.pop(), l.pop()
 	n := Node{
 		Func:  orOp,
 		Left:  left,

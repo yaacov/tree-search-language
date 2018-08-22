@@ -15,7 +15,7 @@
 
 package tsl
 
-// TLS operators
+// TLS operators.
 const (
 	ltOp         = "$lt"
 	lteOp        = "$lte"
