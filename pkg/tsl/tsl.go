@@ -24,7 +24,7 @@ func (l *Listener) ExitLiteralOps(c *parser.LiteralOpsContext) {
 	n := Node{
 		Func:  opDic[c.LiteralOp().GetText()],
 		Left:  c.ColumnName().GetText(),
-		Right: c.LiteralValue().GetText(),
+		Right: literalValueToArg(c.LiteralValue().GetText()),
 	}
 
 	l.push(n)
@@ -35,7 +35,7 @@ func (l *Listener) ExitStringOps(c *parser.StringOpsContext) {
 	n := Node{
 		Func:  opDic[c.StringOp().GetText()],
 		Left:  c.ColumnName().GetText(),
-		Right: c.StringValue().GetText(),
+		Right: literalValueToArg(c.StringValue().GetText()),
 	}
 
 	l.push(n)
@@ -47,7 +47,7 @@ func (l *Listener) ExitLike(c *parser.LikeContext) {
 	n := Node{
 		Func:  op,
 		Left:  c.ColumnName().GetText(),
-		Right: c.StringValue().GetText(),
+		Right: literalValueToArg(c.StringValue().GetText()),
 	}
 
 	l.push(n)
@@ -59,7 +59,7 @@ func (l *Listener) ExitIsLiteral(c *parser.IsLiteralContext) {
 	n := Node{
 		Func:  op,
 		Left:  c.ColumnName().GetText(),
-		Right: c.LiteralValue().GetText(),
+		Right: literalValueToArg(c.LiteralValue().GetText()),
 	}
 
 	l.push(n)

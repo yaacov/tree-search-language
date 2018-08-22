@@ -17,6 +17,8 @@ package tsl
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 
 	sq "github.com/Masterminds/squirrel"
 )
@@ -59,15 +61,37 @@ func ternaryOp(conditional bool, lh string, rh string) string {
 	return rh
 }
 
+// literalValueToArg clean literal value, and return an arg string or float.
+func literalValueToArg(v string) (arg interface{}) {
+	l := len(v)
+
+	// Check string length
+	if l < 1 {
+		return
+	}
+
+	// Check for ''
+	if v[0] == '\'' {
+		v = v[1 : l-1]
+		arg = strings.Replace(v, "''", "'", -1)
+		return
+	}
+
+	// It's a float
+	arg, _ = strconv.ParseFloat(v, 64)
+
+	return
+}
+
 // literalValuesToArgs collect literal values, and create args list.
-func literalValuesToArgs(c hasLiteralValues) (args []string) {
+func literalValuesToArgs(c hasLiteralValues) (args []interface{}) {
 	// Get length of literal values list.
 	l := len(c.AllLiteralValue())
 
 	// Create the arg list.
-	args = make([]string, l)
+	args = make([]interface{}, l)
 	for i := 0; i < l; i++ {
-		args[i] = c.LiteralValue(i).GetText()
+		args[i] = literalValueToArg(c.LiteralValue(i).GetText())
 	}
 
 	return
@@ -127,10 +151,10 @@ func walk(n Node) sq.Sqlizer {
 		return sq.Expr(t, n.Right)
 	case betweenOp:
 		t := fmt.Sprintf("%s BETWEEN ? and ?", n.Left.(string))
-		return sq.Expr(t, n.Right.([]string)[0], n.Right.([]string)[1])
+		return sq.Expr(t, n.Right.([]interface{})[0], n.Right.([]interface{})[1])
 	case notBetweenOp:
 		t := fmt.Sprintf("%s NOT BETWEEN ? and ?", n.Left.(string))
-		return sq.Expr(t, n.Right.([]string)[0], n.Right.([]string)[1])
+		return sq.Expr(t, n.Right.([]interface{})[0], n.Right.([]interface{})[1])
 	}
 
 	return sq.And{}
