@@ -22,8 +22,8 @@ import (
 // Node is a Tree search node
 type Node struct {
 	Func  string      `json:"func"`
-	Right interface{} `json:"right,omitempty"`
 	Left  interface{} `json:"left,omitempty"`
+	Right interface{} `json:"right,omitempty"`
 }
 
 // Listener is a Tree search listener
