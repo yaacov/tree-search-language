@@ -35,17 +35,17 @@ func: $and
 left:
   func: $eq
   left: city
-  right: 'rome'
+  right: rome
 right:
   func: $or
   left:
     func: $eq
     left: name
-    right: 'jane'
+    right: jane
   right:
     func: $eq
     left: name
-    right: 'joe'
+    right: joe
 ```
 ``` bash
  $ ./tsl_to_sql -i "name != 'eli''s' or city like '%rome%' and state not between 'italy' and 'france'" -o pgsql
