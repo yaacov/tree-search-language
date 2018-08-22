@@ -22,18 +22,18 @@ import (
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
-// ErrorListener is
+// ErrorListener an error listener for antlr parser.
 type ErrorListener struct {
 	*antlr.DefaultErrorListener
 	Err error
 }
 
-// NewErrorListener is
+// NewErrorListener create a new error listener.
 func NewErrorListener() *ErrorListener {
 	return new(ErrorListener)
 }
 
-// SyntaxError is
+// SyntaxError handle an error.
 func (d *ErrorListener) SyntaxError(
 	recognizer antlr.Recognizer,
 	offendingSymbol interface{},
