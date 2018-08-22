@@ -14,5 +14,4 @@
 /tls_parser
 
 /vendor/
-/pkg/parser
 Gopkg.lock
