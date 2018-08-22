@@ -21,7 +21,7 @@ import (
 	sq "github.com/Masterminds/squirrel"
 )
 
-// ToSQL converts a TSL tree into SQL statment.
+// ToSQL converts a TSL tree into SQL statement.
 func ToSQL(n Node, table string, usePgsql bool) (sql string, args []interface{}, err error) {
 	var s sq.SelectBuilder
 
