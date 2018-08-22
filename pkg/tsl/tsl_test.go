@@ -98,7 +98,7 @@ func TestListener(t *testing.T) {
 		{"func":"$eq","right":"'hello'","left":"a"}
 	`
 	expected = removeWhitespace(expected)
-	s, err := json.Marshal(n)
+	s, _ := json.Marshal(n)
 	if string(s) != expected {
 		t.Fatalf("expected %s instead it was %s", expected, string(s))
 		t.Fail()
@@ -128,7 +128,7 @@ func TestListenerOpOrder(t *testing.T) {
 		}
 	`
 	expected = removeWhitespace(expected)
-	s, err := json.Marshal(n)
+	s, _ := json.Marshal(n)
 	if string(s) != expected {
 		t.Fatalf("expected %s instead it was %s", expected, string(s))
 		t.Fail()
