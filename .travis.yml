@@ -3,5 +3,6 @@ language: go
 script:
   - go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
   - go get -u github.com/golang/dep/cmd/dep
+  - make lint
   - make vendor all
   - make test
