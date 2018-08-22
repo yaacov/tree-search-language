@@ -31,8 +31,8 @@ package tsl
 
 import (
 	"encoding/json"
-	"testing"
 	"strings"
+	"testing"
 	"unicode"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
@@ -41,12 +41,12 @@ import (
 )
 
 // Strip white spaces.
-func removeWhitespace (s string) string {
+func removeWhitespace(s string) string {
 	return strings.Map(func(r rune) rune {
-	  if unicode.IsSpace(r) {
-	    return -1
-	  }
-	  return r
+		if unicode.IsSpace(r) {
+			return -1
+		}
+		return r
 	}, s)
 }
 
