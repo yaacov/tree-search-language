@@ -10,3 +10,9 @@
 
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
+
+/tls_parser
+
+/vendor/
+/pkg/parser
+Gopkg.lock
