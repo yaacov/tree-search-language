@@ -33,14 +33,14 @@ city in ('paris', 'rome', 'milan') or sate = 'spain'
 
 #### Code snippets
 
-```
+``` go
 import (
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/yaacov/tsl/pkg/parser"
 	"github.com/yaacov/tsl/pkg/tsl"
 )
 ```
-```
+``` go
 // Setup the input
 is := antlr.NewInputStream(input)
 
