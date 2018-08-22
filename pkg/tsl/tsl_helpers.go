@@ -150,10 +150,10 @@ func walk(n Node) sq.Sqlizer {
 		t := fmt.Sprintf("%s NOT LIKE ?", n.Left.(string))
 		return sq.Expr(t, n.Right)
 	case betweenOp:
-		t := fmt.Sprintf("%s BETWEEN ? and ?", n.Left.(string))
+		t := fmt.Sprintf("%s BETWEEN ? AND ?", n.Left.(string))
 		return sq.Expr(t, n.Right.([]interface{})[0], n.Right.([]interface{})[1])
 	case notBetweenOp:
-		t := fmt.Sprintf("%s NOT BETWEEN ? and ?", n.Left.(string))
+		t := fmt.Sprintf("%s NOT BETWEEN ? AND ?", n.Left.(string))
 		return sq.Expr(t, n.Right.([]interface{})[0], n.Right.([]interface{})[1])
 	}
 

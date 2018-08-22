@@ -95,7 +95,7 @@ func TestListener(t *testing.T) {
 
 	// Test json output
 	expected := `
-		{"func":"$eq","left":"a","right":"'hello'"}
+		{"func":"$eq","left":"a","right":"hello"}
 	`
 	expected = removeWhitespace(expected)
 	s, _ := json.Marshal(n)
@@ -107,7 +107,7 @@ func TestListener(t *testing.T) {
 
 func TestListenerOpOrder(t *testing.T) {
 	// Test valid string
-	input := "a = 'hello' or b = 'world' and c = 'hello'"
+	input := "a = 12.3e1 or b = 'world' and c = 'hello'"
 
 	// Test TSL parser
 	n, err := parseTSL(input)
@@ -126,20 +126,20 @@ func TestListenerOpOrder(t *testing.T) {
 				{
 					"func":"$eq",
 					"left":"c",
-					"right":"'hello'"
+					"right":"hello"
 				},
 				"right":
 				{
 					"func":"$eq",
 					"left":"b",
-					"right":"'world'"
+					"right":"world"
 				}
 			},
 			"right":
 			{
 				"func":"$eq",
 				"left":"a",
-				"right":"'hello'"
+				"right":123
 			}
 		}
 	`
