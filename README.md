@@ -7,9 +7,9 @@ Tree Search Language (TSL) is a simple SQL like langauge
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 
-#### Cli tool
+#### Cli tools
 ``` bash
-$ ./tls_parser -h
+$ ./tsl_parser -h
 Usage of ./tls_parser:
   -i string
     	the tsl string to parse (e.g. "animal = 'kitty'")
@@ -18,7 +18,19 @@ Usage of ./tls_parser:
 ```
 
 ``` bash
-$ ./tls_parser -i "(name = 'joe' or name = 'jane') and city = 'rome'" -o yaml
+$ ./tsl_to_sql -i "name != 2 or city like '%rome%' and state not between 'italy' and 'france'" -o pgsql -h
+Usage of ./tsl_to_sql:
+  -i string
+    	the tsl string to parse (e.g. "animal = 'kitty'")
+  -o string
+    	output format [mysql/pgsql] (default "mysql")
+  -t string
+    	the table name to use for SQL generation (default "<table-name>")
+
+```
+
+``` bash
+$ ./tsl_parser -i "(name = 'joe' or name = 'jane') and city = 'rome'" -o yaml
 func: $and
 left:
   func: $eq
@@ -35,6 +47,12 @@ right:
     left: name
     right: '''joe'''
 ```
+``` bash
+ $ ./tsl_to_sql -i "name != 2 or city like '%rome%' and state not between 'italy' and 'france'" -o pgsql
+sql:  SELECT * FROM <table-name> WHERE (name <> $1 OR (city LIKE $2 AND state NOT BETWEEN $3 and $4))
+args: [2 '%rome%' 'italy' 'france']
+```
+
 #### Language
 
 TSL is generated using Antlr4 tool, the grammer file used for generation is [TSL.g4](/TSL.g4).
