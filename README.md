@@ -86,7 +86,9 @@ import (
 	"github.com/yaacov/tsl/pkg/tsl"
 )
 ```
+
 ``` go
+  ...
   // Set a TSL input string
   input = "name='joe' or name='jane'"
 
@@ -94,9 +96,12 @@ import (
   tree, err := tsl.ParseTSL(input)
   ...
 ```
-```
+
+``` go
+  ...
   // Convert TSL tree into SQL string
   sql, args, err = tsl.ToSelectBuilder(tree, false).
     From(*tablePtr).
     ToSql()
+  ...
 ```
