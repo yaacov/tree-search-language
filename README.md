@@ -18,7 +18,7 @@ Usage of ./tls_parser:
 ```
 
 ``` bash
-$ ./tsl_to_sql -i "name != 2 or city like '%rome%' and state not between 'italy' and 'france'" -o pgsql -h
+$ ./tsl_to_sql -h
 Usage of ./tsl_to_sql:
   -i string
     	the tsl string to parse (e.g. "animal = 'kitty'")
