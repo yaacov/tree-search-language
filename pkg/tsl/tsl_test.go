@@ -95,7 +95,7 @@ func TestListener(t *testing.T) {
 
 	// Test json output
 	expected := `
-		{"func":"$eq","right":"'hello'","left":"a"}
+		{"func":"$eq","left":"a","right":"'hello'"}
 	`
 	expected = removeWhitespace(expected)
 	s, _ := json.Marshal(n)
@@ -119,11 +119,27 @@ func TestListenerOpOrder(t *testing.T) {
 	expected := `
 		{
 			"func":"$or",
-			"right":{"func":"$eq","right":"'hello'","left":"a"},
-			"left":{
+			"left":
+			{
 				"func":"$and",
-				"right":{"func":"$eq","right":"'world'","left":"b"},
-				"left":{"func":"$eq","right":"'hello'","left":"c"}
+				"left":
+				{
+					"func":"$eq",
+					"left":"c",
+					"right":"'hello'"
+				},
+				"right":
+				{
+					"func":"$eq",
+					"left":"b",
+					"right":"'world'"
+				}
+			},
+			"right":
+			{
+				"func":"$eq",
+				"left":"a",
+				"right":"'hello'"
 			}
 		}
 	`
