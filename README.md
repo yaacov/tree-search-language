@@ -8,6 +8,37 @@ Go package for parsing Tree Search Language (TSL).
 [![GoDoc](https://godoc.org/github.com/yaacov/tsl/pkg/tsl?status.svg)](https://godoc.org/github.com/yaacov/tsl/pkg/tsl)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
+
+#### Cli tool
+``` bash
+$ ./tls_parser -h
+Usage of ./tls_parser:
+  -i string
+    	the tsl string to parse (e.g. "animal = 'kitty'")
+  -o string
+    	output format [json/yaml/prettyjson] (default "json")
+```
+
+``` bash
+$ ./tls_parser -i "(name = 'joe' or name = 'jane') and city = 'rome'" -o yaml
+func: $and
+right:
+  func: $or
+  right:
+    func: $eq
+    right: '''joe'''
+    left: name
+  left:
+    func: $eq
+    right: '''jane'''
+    left: name
+left:
+  func: $eq
+  right: '''rome'''
+  left: city
+
+
+```
 #### Language
 
 TSL is generated using Antlr4 tool, the grammer file used for generation is [TSL.g4](/TSL.g4).
