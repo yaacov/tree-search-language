@@ -80,11 +80,17 @@ func main() {
 
 	switch *outputPtr {
 	case "pgsql":
-		sql, args, err = tsl.ToSQL(tree, *tablePtr, true)
+		sql, args, err = tsl.ToSelectBuilder(tree, true).
+			From(*tablePtr).
+			ToSql()
 	case "mysql":
-		sql, args, err = tsl.ToSQL(tree, *tablePtr, false)
+		sql, args, err = tsl.ToSelectBuilder(tree, false).
+			From(*tablePtr).
+			ToSql()
 	default:
-		sql, args, err = tsl.ToSQL(tree, *tablePtr, false)
+		sql, args, err = tsl.ToSelectBuilder(tree, false).
+			From(*tablePtr).
+			ToSql()
 	}
 
 	check(err)

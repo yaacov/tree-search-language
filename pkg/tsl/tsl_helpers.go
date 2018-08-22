@@ -23,22 +23,20 @@ import (
 	sq "github.com/Masterminds/squirrel"
 )
 
-// ToSQL converts a TSL tree into SQL statement.
-func ToSQL(n Node, table string, usePgsql bool) (sql string, args []interface{}, err error) {
-	var s sq.SelectBuilder
-
+// ToSelectBuilder converts a TSL tree into a squirrel SelectBuilder.
+func ToSelectBuilder(n Node, usePgsql bool) (s sq.SelectBuilder) {
 	if usePgsql {
 		// If we are using PostgreSQL style use $ instead of ?
 		// for placeholders.
 		psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
-		s = psql.Select("*").From(table)
+		s = psql.Select("*")
 	} else {
-		s = sq.Select("*").From(table)
+		s = sq.Select("*")
 	}
 
 	s = s.Where(walk(n))
 
-	return s.ToSql()
+	return
 }
 
 // GetTree return the parsed tree, if exist.
