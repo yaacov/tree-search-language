@@ -20,22 +20,20 @@ Usage of ./tls_parser:
 ``` bash
 $ ./tls_parser -i "(name = 'joe' or name = 'jane') and city = 'rome'" -o yaml
 func: $and
-right:
-  func: $or
-  right:
-    func: $eq
-    right: '''joe'''
-    left: name
-  left:
-    func: $eq
-    right: '''jane'''
-    left: name
 left:
   func: $eq
-  right: '''rome'''
   left: city
-
-
+  right: '''rome'''
+right:
+  func: $or
+  left:
+    func: $eq
+    left: name
+    right: '''jane'''
+  right:
+    func: $eq
+    left: name
+    right: '''joe'''
 ```
 #### Language
 
