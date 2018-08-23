@@ -59,20 +59,9 @@ func ParseTSL(input string) (tree Node, err error) {
 	return
 }
 
-// ToSelectBuilder converts a TSL tree into a squirrel SelectBuilder.
-func ToSelectBuilder(tree Node, usePgsql bool) (s sq.SelectBuilder) {
-	if usePgsql {
-		// If we are using PostgreSQL style use $ instead of ?
-		// for placeholders
-		psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
-		s = psql.Select("*")
-	} else {
-		s = sq.Select("*")
-	}
-
-	s = s.Where(walk(tree))
-
-	return
+// AddToSelect adds a TSL tree into a squirrel SelectBuilder.
+func AddToSelect(s sq.SelectBuilder, tree Node) sq.SelectBuilder {
+	return s.Where(walk(tree))
 }
 
 // GetTree return the parsed tree, if exist.

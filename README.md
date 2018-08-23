@@ -83,7 +83,9 @@ city in ('paris', 'rome', 'milan') or sate = 'spain'
 
 ``` go
 import (
+  ...
 	"github.com/yaacov/tsl/pkg/tsl"
+  ...
 )
 ```
 
@@ -98,10 +100,18 @@ import (
 ```
 
 ``` go
+  import (
+    ...
+    sq "github.com/Masterminds/squirrel"
+    "github.com/yaacov/tsl/pkg/tsl"
+    ...
+  )
   ...
-  // Convert TSL tree into SQL string
-  sql, args, err = tsl.ToSelectBuilder(tree, false).
-    From(*tablePtr).
+  // Convert TSL tree into SQL string using squirrel sql builder.
+  s = sq.Select("*")
+
+  sql, args, err := tsl.AddToSelect(s, tree).
+    From("users").
     ToSql()
   ...
 ```

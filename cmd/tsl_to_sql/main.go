@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"os"
 
+	sq "github.com/Masterminds/squirrel"
 	"github.com/yaacov/tsl/pkg/tsl"
 )
 
@@ -31,8 +32,7 @@ func check(err error) {
 }
 
 func main() {
-	var sql string
-	var args []interface{}
+	var s sq.SelectBuilder
 
 	// Setup the input
 	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"animal = 'kitty'\")")
@@ -51,18 +51,19 @@ func main() {
 
 	switch *outputPtr {
 	case "pgsql":
-		sql, args, err = tsl.ToSelectBuilder(tree, true).
-			From(*tablePtr).
-			ToSql()
+		// If we are using PostgreSQL style use $ instead of ?
+		// for placeholders
+		psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
+		s = psql.Select("*")
 	case "mysql":
-		sql, args, err = tsl.ToSelectBuilder(tree, false).
-			From(*tablePtr).
-			ToSql()
+		s = sq.Select("*")
 	default:
-		sql, args, err = tsl.ToSelectBuilder(tree, false).
-			From(*tablePtr).
-			ToSql()
+		s = sq.Select("*")
 	}
+
+	sql, args, err := tsl.AddToSelect(s, tree).
+		From(*tablePtr).
+		ToSql()
 
 	check(err)
 	fmt.Printf("sql:  %s\n", sql)
