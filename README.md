@@ -7,6 +7,9 @@ Tree Search Language (TSL) is a simple SQL like langauge
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 
+TSL is generated with [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammer file is [TSL.g4](/TSL.g4),
+SQL generation is done using [squirrel](https://github.com/Masterminds/squirrel) SQL builder.
+
 #### Cli tools
 ``` bash
 $ ./tsl_parser -h
@@ -57,8 +60,6 @@ args: [eli's %rome% italy france]
 ```
 
 #### Language
-
-TSL is generated using Antlr4 tool, the grammer file used for generation is [TSL.g4](/TSL.g4).
 
 ###### Keywords
 ```
