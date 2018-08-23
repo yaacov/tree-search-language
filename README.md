@@ -2,9 +2,6 @@
 
 Tree Search Language (TSL) is a wonderful search langauge, implementing query based search engines was never that easy.
 
-TSL include example method `tsl.Walk` for the generation of SQL queries, use the `tsl.Walk` method as a template for 
-using the TSL tree to generate filter and search methods over any data source.
-
 [![Go Report Card](https://goreportcard.com/badge/github.com/yaacov/tsl)](https://goreportcard.com/report/github.com/yaacov/tsl)
 [![Build Status](https://travis-ci.org/yaacov/tsl.svg?branch=master)](https://travis-ci.org/yaacov/tsl)
 [![GoDoc](https://godoc.org/github.com/yaacov/tsl/pkg/tsl?status.svg)](https://godoc.org/github.com/yaacov/tsl/pkg/tsl)
@@ -13,6 +10,9 @@ using the TSL tree to generate filter and search methods over any data source.
 ![TSL](/img/search.png?raw=true "TSL Logo")
 
 [ awesome image by [gophers...](https://github.com/egonelbre/gophers) ]
+
+TSL include example method `tsl.Walk` for the generation of SQL queries, use the `tsl.Walk` method as a template for 
+using the TSL tree to generate filter and search methods over any data source.
 
 The TSL language grammar is similar to SQL syntax, for example:
 ```
