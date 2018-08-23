@@ -10,11 +10,13 @@ The TSL language grammr is similar to SQL where syntax, for example:
 ```
 name like '%joe%' and (city = 'paris' or city = 'milan')
 ```
-The `TSL` package include the `ParseTSL` method for parsing TSL into a search tree:
+###### ParseTSL
+The TSL package include the [ParseTSL](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
 ```
 tree, err := tsl.ParseTSL("name in ('joe', 'jane') and age not between 0 and 10")
 ```
-The `TSL` package include a helper `Walk` method that adds serch context to Squirrel `SelectBuilder`:
+###### Walk
+The TSL package include a helper [Walk](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#Walk) method that adds serch context to Squirrel [SelectBuilder](https://godoc.org/github.com/Masterminds/squirrel#SelectBuilder):
 ```
 sql, args, err := sq.Select("name, city, state").
     Where(tsl.Walk(tree)).
