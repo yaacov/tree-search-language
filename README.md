@@ -1,6 +1,6 @@
 # tsl
 
-Tree Search Language (TSL) is a wonderful search langauge, implementing query based search engains was never that easy.
+Tree Search Language (TSL) is a wonderful search langauge, implementing query based search engines was never that easy.
 
 TSL include example method `tsl.Walk` for the generation of SQL queries, use the `tsl.Walk` method as a template for 
 using the TSL tree to generate filter and search methods over any data source.
