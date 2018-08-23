@@ -11,7 +11,7 @@ Tree Search Language (TSL) is a wonderful search langauge.
 
 [ awesome image by [gophers...](https://github.com/egonelbre/gophers) ]
 
-The TSL language grammr is similar to SQL where syntax, for example:
+The TSL language grammer is similar to SQL where syntax, for example:
 ```
 name like '%joe%' and (city = 'paris' or city = 'milan')
 ```
