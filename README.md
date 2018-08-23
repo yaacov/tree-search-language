@@ -1,4 +1,4 @@
-# tsl
+# Tree Search Language (TSL)
 
 Tree Search Language (TSL) is a wonderful search langauge, implementing query based search engines was never that easy.
 
