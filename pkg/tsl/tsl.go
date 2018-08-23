@@ -76,6 +76,14 @@ func AddToSelect(s sq.SelectBuilder, tree Node) sq.SelectBuilder {
 }
 
 // Walk travel the TSL tree to create squirrel SQL select operators.
+//
+// Users can call the Walk method inside a squirrel Where to add the query.
+//
+// 	sql, args, _ := sq.Select("name, city, state").
+// 		Where(Walk(tree)).
+// 		From("users").
+// 		ToSql()
+//
 func Walk(n Node) sq.Sqlizer {
 	switch n.Func {
 	case andOp:
