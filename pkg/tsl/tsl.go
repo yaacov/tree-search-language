@@ -79,11 +79,11 @@ func AddToSelect(s sq.SelectBuilder, tree Node) sq.SelectBuilder {
 func Walk(n Node) sq.Sqlizer {
 	switch n.Func {
 	case andOp:
-		return sq.And{walk(n.Left.(Node)), walk(n.Right.(Node))}
+		return sq.And{Walk(n.Left.(Node)), Walk(n.Right.(Node))}
 	case orOp:
-		return sq.Or{walk(n.Left.(Node)), walk(n.Right.(Node))}
+		return sq.Or{Walk(n.Left.(Node)), Walk(n.Right.(Node))}
 	case notOp:
-		return sq.Or{walk(n.Left.(Node)), walk(n.Right.(Node))}
+		return sq.Or{Walk(n.Left.(Node)), Walk(n.Right.(Node))}
 	case eqOp:
 		return sq.Eq{n.Left.(string): n.Right}
 	case notEqOp:

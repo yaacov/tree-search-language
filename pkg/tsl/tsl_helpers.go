@@ -19,8 +19,6 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
-
-	sq "github.com/Masterminds/squirrel"
 )
 
 // ternaryOp return lh if conditional is true, rh o/w.
@@ -84,49 +82,4 @@ func (l *Listener) pop() (n Node) {
 	n, l.Stack = l.Stack[size-1], l.Stack[:size-1]
 
 	return
-}
-
-func walk(n Node) sq.Sqlizer {
-	switch n.Func {
-	case andOp:
-		return sq.And{walk(n.Left.(Node)), walk(n.Right.(Node))}
-	case orOp:
-		return sq.Or{walk(n.Left.(Node)), walk(n.Right.(Node))}
-	case notOp:
-		return sq.Or{walk(n.Left.(Node)), walk(n.Right.(Node))}
-	case eqOp:
-		return sq.Eq{n.Left.(string): n.Right}
-	case notEqOp:
-		return sq.NotEq{n.Left.(string): n.Right}
-	case ltOp:
-		return sq.Lt{n.Left.(string): n.Right}
-	case lteOp:
-		return sq.LtOrEq{n.Left.(string): n.Right}
-	case gtOp:
-		return sq.Gt{n.Left.(string): n.Right}
-	case gteOp:
-		return sq.GtOrEq{n.Left.(string): n.Right}
-	case inOp:
-		return sq.Eq{n.Left.(string): n.Right}
-	case notInOp:
-		return sq.NotEq{n.Left.(string): n.Right}
-	case isNilOp:
-		return sq.Eq{n.Left.(string): nil}
-	case isNotNilOp:
-		return sq.NotEq{n.Left.(string): nil}
-	case likeOp:
-		t := fmt.Sprintf("%s LIKE ?", n.Left.(string))
-		return sq.Expr(t, n.Right)
-	case notLikeOp:
-		t := fmt.Sprintf("%s NOT LIKE ?", n.Left.(string))
-		return sq.Expr(t, n.Right)
-	case betweenOp:
-		t := fmt.Sprintf("%s BETWEEN ? AND ?", n.Left.(string))
-		return sq.Expr(t, n.Right.([]interface{})[0], n.Right.([]interface{})[1])
-	case notBetweenOp:
-		t := fmt.Sprintf("%s NOT BETWEEN ? AND ?", n.Left.(string))
-		return sq.Expr(t, n.Right.([]interface{})[0], n.Right.([]interface{})[1])
-	}
-
-	return sq.And{}
 }
