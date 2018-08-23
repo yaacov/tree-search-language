@@ -28,6 +28,13 @@ TSL is generated with [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr
 SQL generation is done using [Squirrel](https://github.com/Masterminds/squirrel) SQL builder.
 
 #### Cli tools
+
+tls_parser and tsl_to_sql are example cli tools showcasing the TLS language and golang package.
+
+###### tls_parser
+
+Parse TLS into a search tree:
+
 ``` bash
 $ ./tsl_parser -h
 Usage of ./tls_parser:
@@ -56,6 +63,11 @@ right:
     left: name
     right: joe
 ```
+
+
+###### tsl_to_sql
+
+Parse TLS into SQL:
 
 ``` bash
 $ ./tsl_to_sql -h
