@@ -11,7 +11,7 @@ Tree Search Language (TSL) is a wonderful search langauge.
 
 [ awesome image by [gophers...](https://github.com/egonelbre/gophers) ]
 
-The TSL language grammer is similar to SQL syntax, for example:
+The TSL language grammar is similar to SQL syntax, for example:
 ```
 name like '%joe%' and (city = 'paris' or city = 'milan')
 ```
@@ -33,7 +33,7 @@ sql, args, err := sq.Select("name, city, state").
     ToSql()
 ```
 
-TSL is generated with [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammer file is [TSL.g4](/TSL.g4),
+TSL is generated with [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammar file is [TSL.g4](/TSL.g4),
 SQL generation is done using [Squirrel](https://github.com/Masterminds/squirrel) SQL builder.
 
 #### Cli tools
