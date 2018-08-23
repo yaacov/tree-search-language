@@ -38,8 +38,6 @@ SQL generation is done using [Squirrel](https://github.com/Masterminds/squirrel)
 
 ###### tls_parser
 
-Parse TLS into a search tree:
-
 ``` bash
 $ ./tsl_parser -h
 Usage of ./tls_parser:
@@ -70,8 +68,6 @@ right:
 ```
 
 ###### tsl_to_sql
-
-Parse TLS into SQL:
 
 ``` bash
 $ ./tsl_to_sql -h
