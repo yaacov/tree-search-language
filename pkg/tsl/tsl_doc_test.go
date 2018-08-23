@@ -24,22 +24,22 @@ import (
 
 // Example for the tsl package.
 func Example() {
-  // Set a TSL input string
-  input := "name = 'joe' and city != 'rome'"
+	// Set a TSL input string
+	input := "name = 'joe' and city != 'rome'"
 
-  // Parse input string into a TSL tree
-  tree, _ := ParseTSL(input)
+	// Parse input string into a TSL tree
+	tree, _ := ParseTSL(input)
 
-  // Convert TSL tree into SQL string using squirrel sql builder.
-  sql, args, _ := sq.Select("name, city, state").
-    Where(Walk(tree)).
-    From("users").
-    ToSql()
+	// Convert TSL tree into SQL string using squirrel sql builder.
+	sql, args, _ := sq.Select("name, city, state").
+		Where(Walk(tree)).
+		From("users").
+		ToSql()
 
-  fmt.Printf("SQL : %s\n", sql)
-  fmt.Printf("Args: %v\n", args)
+	fmt.Printf("SQL : %s\n", sql)
+	fmt.Printf("Args: %v\n", args)
 
-  // Output:
-  // SQL : SELECT name, city, state FROM users WHERE (name = ? AND city <> ?)
-  // Args: [joe rome]
+	// Output:
+	// SQL : SELECT name, city, state FROM users WHERE (name = ? AND city <> ?)
+	// Args: [joe rome]
 }
