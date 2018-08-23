@@ -41,7 +41,7 @@ SQL generation is done using [Squirrel](https://github.com/Masterminds/squirrel)
 
 #### Cli tools
 
-**tls_parser** and **tsl_to_sql** are example cli tools showcasing the TLS language and golang package.
+**tls_parser** and **tsl_to_sql** are example cli tools showcasing the TSL language and TSL golang package.
 
 ###### tls_parser
 
