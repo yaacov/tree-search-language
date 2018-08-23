@@ -7,6 +7,8 @@ Tree Search Language (TSL) is a simple SQL like langauge.
 [![GoDoc](https://godoc.org/github.com/yaacov/tsl/pkg/tsl?status.svg)](https://godoc.org/github.com/yaacov/tsl/pkg/tsl)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
+![TSL](/img/search.png?raw=true "TSL Logo")
+
 The TSL language grammr is similar to SQL where syntax, for example:
 ```
 name like '%joe%' and (city = 'paris' or city = 'milan')
