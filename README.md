@@ -1,6 +1,6 @@
 # tsl
 
-Tree Search Language (TSL) is a simple SQL like langauge.
+Tree Search Language (TSL) is a wonderful search langauge.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/yaacov/tsl)](https://goreportcard.com/report/github.com/yaacov/tsl)
 [![Build Status](https://travis-ci.org/yaacov/tsl.svg?branch=master)](https://travis-ci.org/yaacov/tsl)
@@ -8,6 +8,8 @@ Tree Search Language (TSL) is a simple SQL like langauge.
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ![TSL](/img/search.png?raw=true "TSL Logo")
+
+[ awesome image by [gophers...](https://github.com/egonelbre/gophers) ]
 
 The TSL language grammr is similar to SQL where syntax, for example:
 ```
