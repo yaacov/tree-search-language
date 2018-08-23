@@ -108,9 +108,8 @@ import (
   )
   ...
   // Convert TSL tree into SQL string using squirrel sql builder.
-  s = sq.Select("*")
-
-  sql, args, err := tsl.AddToSelect(s, tree).
+  sql, args, err := sq.Select("name, city, state").
+    Where(tsl.Walk(tree)).
     From("users").
     ToSql()
   ...

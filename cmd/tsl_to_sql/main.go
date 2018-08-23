@@ -61,7 +61,8 @@ func main() {
 		s = sq.Select("*")
 	}
 
-	sql, args, err := tsl.AddToSelect(s, tree).
+	sql, args, err := s.
+		Where(tsl.Walk(tree)).
 		From(*tablePtr).
 		ToSql()
 
