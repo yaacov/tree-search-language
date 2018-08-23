@@ -1,4 +1,5 @@
 # tsl
+
 Tree Search Language (TSL) is a simple SQL like langauge.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/yaacov/tsl)](https://goreportcard.com/report/github.com/yaacov/tsl)
@@ -10,12 +11,16 @@ The TSL language grammr is similar to SQL where syntax, for example:
 ```
 name like '%joe%' and (city = 'paris' or city = 'milan')
 ```
+
 ###### ParseTSL
+
 The TSL package include the [ParseTSL](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
 ```
 tree, err := tsl.ParseTSL("name in ('joe', 'jane') and age not between 0 and 10")
 ```
+
 ###### Walk
+
 The TSL package include a helper [Walk](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#Walk) method that adds serch context to Squirrel [SelectBuilder](https://godoc.org/github.com/Masterminds/squirrel#SelectBuilder):
 ```
 sql, args, err := sq.Select("name, city, state").
@@ -29,7 +34,7 @@ SQL generation is done using [Squirrel](https://github.com/Masterminds/squirrel)
 
 #### Cli tools
 
-tls_parser and tsl_to_sql are example cli tools showcasing the TLS language and golang package.
+**tls_parser** and **tsl_to_sql** are example cli tools showcasing the TLS language and golang package.
 
 ###### tls_parser
 
@@ -63,7 +68,6 @@ right:
     left: name
     right: joe
 ```
-
 
 ###### tsl_to_sql
 
