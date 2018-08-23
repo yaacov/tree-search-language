@@ -59,11 +59,6 @@ func ParseTSL(input string) (tree Node, err error) {
 	return
 }
 
-// AddToSelect adds a TSL tree into a squirrel SelectBuilder.
-func AddToSelect(s sq.SelectBuilder, tree Node) sq.SelectBuilder {
-	return s.Where(walk(tree))
-}
-
 // GetTree return the parsed tree, if exist.
 func (l *Listener) GetTree() (n Node, err error) {
 	// Check stack size
@@ -73,4 +68,55 @@ func (l *Listener) GetTree() (n Node, err error) {
 	}
 
 	return l.Stack[0], l.Err
+}
+
+// AddToSelect adds a TSL tree into a squirrel SelectBuilder.
+func AddToSelect(s sq.SelectBuilder, tree Node) sq.SelectBuilder {
+	return s.Where(Walk(tree))
+}
+
+// Walk travel the TSL tree to create squirrel SQL select operators.
+func Walk(n Node) sq.Sqlizer {
+	switch n.Func {
+	case andOp:
+		return sq.And{walk(n.Left.(Node)), walk(n.Right.(Node))}
+	case orOp:
+		return sq.Or{walk(n.Left.(Node)), walk(n.Right.(Node))}
+	case notOp:
+		return sq.Or{walk(n.Left.(Node)), walk(n.Right.(Node))}
+	case eqOp:
+		return sq.Eq{n.Left.(string): n.Right}
+	case notEqOp:
+		return sq.NotEq{n.Left.(string): n.Right}
+	case ltOp:
+		return sq.Lt{n.Left.(string): n.Right}
+	case lteOp:
+		return sq.LtOrEq{n.Left.(string): n.Right}
+	case gtOp:
+		return sq.Gt{n.Left.(string): n.Right}
+	case gteOp:
+		return sq.GtOrEq{n.Left.(string): n.Right}
+	case inOp:
+		return sq.Eq{n.Left.(string): n.Right}
+	case notInOp:
+		return sq.NotEq{n.Left.(string): n.Right}
+	case isNilOp:
+		return sq.Eq{n.Left.(string): nil}
+	case isNotNilOp:
+		return sq.NotEq{n.Left.(string): nil}
+	case likeOp:
+		t := fmt.Sprintf("%s LIKE ?", n.Left.(string))
+		return sq.Expr(t, n.Right)
+	case notLikeOp:
+		t := fmt.Sprintf("%s NOT LIKE ?", n.Left.(string))
+		return sq.Expr(t, n.Right)
+	case betweenOp:
+		t := fmt.Sprintf("%s BETWEEN ? AND ?", n.Left.(string))
+		return sq.Expr(t, n.Right.([]interface{})[0], n.Right.([]interface{})[1])
+	case notBetweenOp:
+		t := fmt.Sprintf("%s NOT BETWEEN ? AND ?", n.Left.(string))
+		return sq.Expr(t, n.Right.([]interface{})[0], n.Right.([]interface{})[1])
+	}
+
+	return sq.And{}
 }
