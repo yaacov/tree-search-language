@@ -1,11 +1,26 @@
 # tsl
-Tree Search Language (TSL) is a simple SQL like langauge
+Tree Search Language (TSL) is a simple SQL like langauge.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/yaacov/tsl)](https://goreportcard.com/report/github.com/yaacov/tsl)
 [![Build Status](https://travis-ci.org/yaacov/tsl.svg?branch=master)](https://travis-ci.org/yaacov/tsl)
 [![GoDoc](https://godoc.org/github.com/yaacov/tsl/pkg/tsl?status.svg)](https://godoc.org/github.com/yaacov/tsl/pkg/tsl)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
+The TSL language grammr is similar to SQL where syntax, for example:
+```
+name like '%joe%' and (city = 'paris' or city = 'milan')
+```
+The `TSL` package include the `ParseTSL` method for parsing TSL into a search tree:
+```
+tree, err := tsl.ParseTSL("name in ('joe', 'jane') and age not between 0 and 10")
+```
+The `TSL` package include a helper `Walk` method that adds serch context to Squirrel `SelectBuilder`:
+```
+sql, args, err := sq.Select("name, city, state").
+    Where(tsl.Walk(tree)).
+    From("users").
+    ToSql()
+```
 
 TSL is generated with [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammer file is [TSL.g4](/TSL.g4),
 SQL generation is done using [Squirrel](https://github.com/Masterminds/squirrel) SQL builder.
