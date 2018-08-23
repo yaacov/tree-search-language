@@ -115,6 +115,8 @@ city in ('paris', 'rome', 'milan') or sate = 'spain'
 
 #### Code snippets
 
+###### import
+
 ``` go
 import (
   ...
@@ -122,6 +124,8 @@ import (
   ...
 )
 ```
+
+###### ParseTSL
 
 ``` go
   ...
@@ -132,6 +136,8 @@ import (
   tree, err := tsl.ParseTSL(input)
   ...
 ```
+
+###### Walk
 
 ``` go
   import (
