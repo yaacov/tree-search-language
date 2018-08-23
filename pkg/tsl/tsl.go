@@ -16,123 +16,72 @@
 package tsl
 
 import (
+	"fmt"
+
+	sq "github.com/Masterminds/squirrel"
+	"github.com/antlr/antlr4/runtime/Go/antlr"
+
 	"github.com/yaacov/tsl/pkg/parser"
 )
 
-// ExitLiteralOps is called when production LiteralOps is exited.
-func (l *Listener) ExitLiteralOps(c *parser.LiteralOpsContext) {
-	n := Node{
-		Func:  opDic[c.LiteralOp().GetText()],
-		Left:  c.ColumnName().GetText(),
-		Right: literalValueToArg(c.LiteralValue().GetText()),
+// ParseTSL parses the input string into TSL tree.
+func ParseTSL(input string) (tree Node, err error) {
+	// Setup the ErrorListener
+	errorListener := NewErrorListener()
+
+	// Setup the input
+	is := antlr.NewInputStream(input)
+
+	// Create the Lexer
+	lexer := parser.NewTSLLexer(is)
+	lexer.RemoveErrorListeners()
+	lexer.AddErrorListener(errorListener)
+	stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
+
+	// Create the Parser
+	p := parser.NewTSLParser(stream)
+	p.RemoveErrorListeners()
+	p.AddErrorListener(errorListener)
+
+	// Parse the expression (by walking the tree)
+	var listener Listener
+	antlr.ParseTreeWalkerDefault.Walk(&listener, p.Start())
+
+	// Check for errors
+	err = errorListener.Err
+	if err != nil {
+		return
 	}
 
-	l.push(n)
+	// Get the parsed tree
+	tree, err = listener.GetTree()
+
+	return
 }
 
-// ExitStringOps is called when production StringOps is exited.
-func (l *Listener) ExitStringOps(c *parser.StringOpsContext) {
-	n := Node{
-		Func:  opDic[c.StringOp().GetText()],
-		Left:  c.ColumnName().GetText(),
-		Right: literalValueToArg(c.StringValue().GetText()),
+// ToSelectBuilder converts a TSL tree into a squirrel SelectBuilder.
+func ToSelectBuilder(tree Node, usePgsql bool) (s sq.SelectBuilder) {
+	if usePgsql {
+		// If we are using PostgreSQL style use $ instead of ?
+		// for placeholders
+		psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
+		s = psql.Select("*")
+	} else {
+		s = sq.Select("*")
 	}
 
-	l.push(n)
+	s = s.Where(walk(tree))
+
+	return
 }
 
-// ExitLike is called when production Like is exited.
-func (l *Listener) ExitLike(c *parser.LikeContext) {
-	op := ternaryOp(c.KeyNot() == nil, likeOp, notLikeOp)
-	n := Node{
-		Func:  op,
-		Left:  c.ColumnName().GetText(),
-		Right: literalValueToArg(c.StringValue().GetText()),
+// GetTree return the parsed tree, if exist.
+func (l *Listener) GetTree() (n Node, err error) {
+	// Check stack size
+	if len(l.Stack) < 1 {
+		err = fmt.Errorf("operator stack is empty")
+		return
 	}
 
-	l.push(n)
-}
-
-// ExitIsLiteral is called when production IsLiteral is exited.
-func (l *Listener) ExitIsLiteral(c *parser.IsLiteralContext) {
-	op := ternaryOp(c.KeyNot() == nil, eqOp, notEqOp)
-	n := Node{
-		Func:  op,
-		Left:  c.ColumnName().GetText(),
-		Right: literalValueToArg(c.LiteralValue().GetText()),
-	}
-
-	l.push(n)
-}
-
-// ExitIsNull is called when production IsNull is exited.
-func (l *Listener) ExitIsNull(c *parser.IsNullContext) {
-	op := ternaryOp(c.KeyNot() == nil, isNilOp, isNotNilOp)
-	n := Node{
-		Func: op,
-		Left: c.ColumnName().GetText(),
-	}
-
-	l.push(n)
-}
-
-// ExitIn is called when production In is exited.
-func (l *Listener) ExitIn(c *parser.InContext) {
-	op := ternaryOp(c.KeyNot() == nil, inOp, notInOp)
-	args := literalValuesToArgs(c)
-	n := Node{
-		Func:  op,
-		Left:  c.ColumnName().GetText(),
-		Right: args,
-	}
-
-	l.push(n)
-}
-
-// ExitBetween is called when production Between is exited.
-func (l *Listener) ExitBetween(c *parser.BetweenContext) {
-	op := ternaryOp(c.KeyNot() == nil, betweenOp, notBetweenOp)
-	args := literalValuesToArgs(c)
-	n := Node{
-		Func:  op,
-		Left:  c.ColumnName().GetText(),
-		Right: args,
-	}
-
-	l.push(n)
-}
-
-// ExitNot is called when production Not is exited.
-func (l *Listener) ExitNot(c *parser.NotContext) {
-	left := l.pop()
-	n := Node{
-		Func: notOp,
-		Left: left,
-	}
-
-	l.push(n)
-}
-
-// ExitAnd is called when production And is exited.
-func (l *Listener) ExitAnd(c *parser.AndContext) {
-	right, left := l.pop(), l.pop()
-	n := Node{
-		Func:  andOp,
-		Left:  left,
-		Right: right,
-	}
-
-	l.push(n)
-}
-
-// ExitOr is called when production Or is exited.
-func (l *Listener) ExitOr(c *parser.OrContext) {
-	right, left := l.pop(), l.pop()
-	n := Node{
-		Func:  orOp,
-		Left:  left,
-		Right: right,
-	}
-
-	l.push(n)
+	return l.Stack[0], l.Err
 }
