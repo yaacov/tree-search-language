@@ -8,7 +8,7 @@ Tree Search Language (TSL) is a simple SQL like langauge
 
 
 TSL is generated with [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammer file is [TSL.g4](/TSL.g4),
-SQL generation is done using [squirrel](https://github.com/Masterminds/squirrel) SQL builder.
+SQL generation is done using [Squirrel](https://github.com/Masterminds/squirrel) SQL builder.
 
 #### Cli tools
 ``` bash
