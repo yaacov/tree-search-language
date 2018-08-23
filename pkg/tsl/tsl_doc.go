@@ -13,8 +13,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package tsl describe and parse the Tree Search Language (TSL).
+// Package tsl describe and parse the Tree Search Language (TSL),
 //
-// Tree Search Language (TSL) is a wonderful search langauge, With
+// TSL is a wonderful search langauge, With
 // similar grammer to SQL's where part.
+//
+// Examples:
+//  "name = 'joe' or name = 'jane'"
+//  "city in ('paris', 'rome', 'milan') and state != 'spane'"
 package tsl
