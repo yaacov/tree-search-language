@@ -18,7 +18,7 @@
 // TSL is a wonderful search langauge, With
 // similar grammer to SQL's where part.
 //
-// Examples:
+// TSL grammer examples:
 //  "name = 'joe' or name = 'jane'"
 //  "city in ('paris', 'rome', 'milan') and state != 'spane'"
 package tsl
