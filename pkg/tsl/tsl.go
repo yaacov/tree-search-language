@@ -91,7 +91,7 @@ func Walk(n Node) sq.Sqlizer {
 	case orOp:
 		return sq.Or{Walk(n.Left.(Node)), Walk(n.Right.(Node))}
 	case notOp:
-		return sq.Or{Walk(n.Left.(Node)), Walk(n.Right.(Node))}
+		return notExpr{Walk(n.Left.(Node))}
 	case eqOp:
 		return sq.Eq{n.Left.(string): n.Right}
 	case notEqOp:

@@ -19,6 +19,8 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	sq "github.com/Masterminds/squirrel"
 )
 
 // ternaryOp return lh if conditional is true, rh o/w.
@@ -80,6 +82,24 @@ func (l *Listener) pop() (n Node) {
 
 	// Pop the last value from the Stack
 	n, l.Stack = l.Stack[size-1], l.Stack[:size-1]
+
+	return
+}
+
+type notExpr []sq.Sqlizer
+
+//nolint
+func (n notExpr) ToSql() (sql string, args []interface{}, err error) {
+	if len(n) != 1 {
+		return "", nil, fmt.Errorf("operator not does not have one argument")
+	}
+
+	partSQL, partArgs, err := n[0].ToSql()
+	if err != nil {
+		return "", nil, err
+	}
+	args = append(args, partArgs...)
+	sql = fmt.Sprintf("NOT (%s)", partSQL)
 
 	return
 }
