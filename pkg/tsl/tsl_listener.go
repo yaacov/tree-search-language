@@ -43,7 +43,7 @@ func (l *Listener) ExitStringOps(c *parser.StringOpsContext) {
 
 // ExitLike is called when production Like is exited.
 func (l *Listener) ExitLike(c *parser.LikeContext) {
-	op := ternaryOp(c.KeyNot() == nil, likeOp, notLikeOp)
+	op := ternaryOp(c.KeyNot() == nil, LikeOp, NotLikeOp)
 	n := Node{
 		Func:  op,
 		Left:  c.ColumnName().GetText(),
@@ -55,7 +55,7 @@ func (l *Listener) ExitLike(c *parser.LikeContext) {
 
 // ExitIsLiteral is called when production IsLiteral is exited.
 func (l *Listener) ExitIsLiteral(c *parser.IsLiteralContext) {
-	op := ternaryOp(c.KeyNot() == nil, eqOp, notEqOp)
+	op := ternaryOp(c.KeyNot() == nil, EqOp, NotEqOp)
 	n := Node{
 		Func:  op,
 		Left:  c.ColumnName().GetText(),
@@ -67,7 +67,7 @@ func (l *Listener) ExitIsLiteral(c *parser.IsLiteralContext) {
 
 // ExitIsNull is called when production IsNull is exited.
 func (l *Listener) ExitIsNull(c *parser.IsNullContext) {
-	op := ternaryOp(c.KeyNot() == nil, isNilOp, isNotNilOp)
+	op := ternaryOp(c.KeyNot() == nil, IsNilOp, IsNotNilOp)
 	n := Node{
 		Func: op,
 		Left: c.ColumnName().GetText(),
@@ -78,7 +78,7 @@ func (l *Listener) ExitIsNull(c *parser.IsNullContext) {
 
 // ExitIn is called when production In is exited.
 func (l *Listener) ExitIn(c *parser.InContext) {
-	op := ternaryOp(c.KeyNot() == nil, inOp, notInOp)
+	op := ternaryOp(c.KeyNot() == nil, InOp, NotInOp)
 	args := literalValuesToArgs(c)
 	n := Node{
 		Func:  op,
@@ -91,7 +91,7 @@ func (l *Listener) ExitIn(c *parser.InContext) {
 
 // ExitBetween is called when production Between is exited.
 func (l *Listener) ExitBetween(c *parser.BetweenContext) {
-	op := ternaryOp(c.KeyNot() == nil, betweenOp, notBetweenOp)
+	op := ternaryOp(c.KeyNot() == nil, BetweenOp, NotBetweenOp)
 	args := literalValuesToArgs(c)
 	n := Node{
 		Func:  op,
@@ -106,7 +106,7 @@ func (l *Listener) ExitBetween(c *parser.BetweenContext) {
 func (l *Listener) ExitNot(c *parser.NotContext) {
 	left := l.pop()
 	n := Node{
-		Func: notOp,
+		Func: NotOp,
 		Left: left,
 	}
 
@@ -117,7 +117,7 @@ func (l *Listener) ExitNot(c *parser.NotContext) {
 func (l *Listener) ExitAnd(c *parser.AndContext) {
 	right, left := l.pop(), l.pop()
 	n := Node{
-		Func:  andOp,
+		Func:  AndOp,
 		Left:  left,
 		Right: right,
 	}
@@ -129,7 +129,7 @@ func (l *Listener) ExitAnd(c *parser.AndContext) {
 func (l *Listener) ExitOr(c *parser.OrContext) {
 	right, left := l.pop(), l.pop()
 	n := Node{
-		Func:  orOp,
+		Func:  OrOp,
 		Left:  left,
 		Right: right,
 	}

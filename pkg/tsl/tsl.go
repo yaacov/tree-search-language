@@ -86,42 +86,42 @@ func AddToSelect(s sq.SelectBuilder, tree Node) sq.SelectBuilder {
 //
 func Walk(n Node) sq.Sqlizer {
 	switch n.Func {
-	case andOp:
+	case AndOp:
 		return sq.And{Walk(n.Left.(Node)), Walk(n.Right.(Node))}
-	case orOp:
+	case OrOp:
 		return sq.Or{Walk(n.Left.(Node)), Walk(n.Right.(Node))}
-	case notOp:
+	case NotOp:
 		return notExpr{Walk(n.Left.(Node))}
-	case eqOp:
+	case EqOp:
 		return sq.Eq{n.Left.(string): n.Right}
-	case notEqOp:
+	case NotEqOp:
 		return sq.NotEq{n.Left.(string): n.Right}
-	case ltOp:
+	case LtOp:
 		return sq.Lt{n.Left.(string): n.Right}
-	case lteOp:
+	case LteOp:
 		return sq.LtOrEq{n.Left.(string): n.Right}
-	case gtOp:
+	case GtOp:
 		return sq.Gt{n.Left.(string): n.Right}
-	case gteOp:
+	case GteOp:
 		return sq.GtOrEq{n.Left.(string): n.Right}
-	case inOp:
+	case InOp:
 		return sq.Eq{n.Left.(string): n.Right}
-	case notInOp:
+	case NotInOp:
 		return sq.NotEq{n.Left.(string): n.Right}
-	case isNilOp:
+	case IsNilOp:
 		return sq.Eq{n.Left.(string): nil}
-	case isNotNilOp:
+	case IsNotNilOp:
 		return sq.NotEq{n.Left.(string): nil}
-	case likeOp:
+	case LikeOp:
 		t := fmt.Sprintf("%s LIKE ?", n.Left.(string))
 		return sq.Expr(t, n.Right)
-	case notLikeOp:
+	case NotLikeOp:
 		t := fmt.Sprintf("%s NOT LIKE ?", n.Left.(string))
 		return sq.Expr(t, n.Right)
-	case betweenOp:
+	case BetweenOp:
 		t := fmt.Sprintf("%s BETWEEN ? AND ?", n.Left.(string))
 		return sq.Expr(t, n.Right.([]interface{})[0], n.Right.([]interface{})[1])
-	case notBetweenOp:
+	case NotBetweenOp:
 		t := fmt.Sprintf("%s NOT BETWEEN ? AND ?", n.Left.(string))
 		return sq.Expr(t, n.Right.([]interface{})[0], n.Right.([]interface{})[1])
 	}

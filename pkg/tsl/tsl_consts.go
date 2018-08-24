@@ -17,36 +17,36 @@ package tsl
 
 // TLS operators.
 const (
-	ltOp         = "$lt"
-	lteOp        = "$lte"
-	gtOp         = "$gt"
-	gteOp        = "$gte"
-	eqOp         = "$eq"
-	notEqOp      = "$ne"
-	regexOp      = "$regex"
-	notRegexOp   = "$nregex"
-	likeOp       = "$like"
-	notLikeOp    = "$nlike"
-	inOp         = "$in"
-	notInOp      = "$nin"
-	betweenOp    = "$between"
-	notBetweenOp = "$nbetween"
-	notOp        = "$not"
-	andOp        = "$and"
-	orOp         = "$or"
-	isNilOp      = "$nil"
-	isNotNilOp   = "$nnil"
+	LtOp         = "$lt"
+	LteOp        = "$lte"
+	GtOp         = "$gt"
+	GteOp        = "$gte"
+	EqOp         = "$eq"
+	NotEqOp      = "$ne"
+	RegexOp      = "$regex"
+	NotRegexOp   = "$nregex"
+	LikeOp       = "$like"
+	NotLikeOp    = "$nlike"
+	InOp         = "$in"
+	NotInOp      = "$nin"
+	BetweenOp    = "$between"
+	NotBetweenOp = "$nbetween"
+	NotOp        = "$not"
+	AndOp        = "$and"
+	OrOp         = "$or"
+	IsNilOp      = "$nil"
+	IsNotNilOp   = "$nnil"
 )
 
 // opDic maps SQL'ish operators to TLS operators.
 var opDic = map[string]string{
-	"<":  ltOp,
-	"<=": lteOp,
-	">":  gtOp,
-	">=": gteOp,
-	"=":  eqOp,
-	"!=": notEqOp,
-	"<>": notEqOp,
-	"~=": regexOp,
-	"~!": notRegexOp,
+	"<":  LtOp,
+	"<=": LteOp,
+	">":  GtOp,
+	">=": GteOp,
+	"=":  EqOp,
+	"!=": NotEqOp,
+	"<>": NotEqOp,
+	"~=": RegexOp,
+	"~!": NotRegexOp,
 }

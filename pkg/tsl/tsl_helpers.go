@@ -86,6 +86,8 @@ func (l *Listener) pop() (n Node) {
 	return
 }
 
+// Currently squirrel does not have a NOT operator expression,
+// this expresson hanldels SQL not.
 type notExpr []sq.Sqlizer
 
 //nolint
@@ -98,6 +100,7 @@ func (n notExpr) ToSql() (sql string, args []interface{}, err error) {
 	if err != nil {
 		return "", nil, err
 	}
+
 	args = append(args, partArgs...)
 	sql = fmt.Sprintf("NOT (%s)", partSQL)
 
