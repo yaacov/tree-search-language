@@ -40,7 +40,7 @@ SQL generation is done using [Squirrel](https://github.com/Masterminds/squirrel)
 
 #### Cli tools
 
-**tls_parser**, **tls_mongo** and **tsl_to_sql** are example cli tools showcasing the TSL language and TSL golang package.
+[tls_parser](/cmd/tsl_parser), [tls_mongo](/cmd/tsl_mongo) and [tsl_to_sql](/cmd/tsl_to_sql) are example cli tools showcasing the TSL language and TSL golang package.
 
 ##### tls_parser
 
