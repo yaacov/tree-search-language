@@ -34,8 +34,8 @@ const (
 	NotOp        = "$not"
 	AndOp        = "$and"
 	OrOp         = "$or"
-	IsNilOp      = "$nil"
-	IsNotNilOp   = "$nnil"
+	IsNilOp      = "$nexists"
+	IsNotNilOp   = "$exists"
 )
 
 // opDic maps SQL'ish operators to TLS operators.
