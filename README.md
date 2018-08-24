@@ -75,7 +75,7 @@ right:
 
 ##### tsl_mongo
 
-tsl_mongo include an example [mongoWalk](cmd/tsl_mongo/walk.go) method, for building a mongo bson filter.
+tsl_mongo include an example [bsonWalk](cmd/tsl_mongo/walk.go) method, for building a mongo bson filter.
 
 ``` bash
 $ ./tsl_mongo -i "title is not null"
