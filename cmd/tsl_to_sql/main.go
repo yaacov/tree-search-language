@@ -62,7 +62,7 @@ func main() {
 	}
 
 	sql, args, err := s.
-		Where(tsl.Walk(tree)).
+		Where(tsl.SquirrelWalk(tree)).
 		From(*tablePtr).
 		ToSql()
 

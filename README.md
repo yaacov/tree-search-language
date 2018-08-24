@@ -12,9 +12,6 @@ where part. implementing query based search engines was never that easy.
 
 [ awesome image by [gophers...](https://github.com/egonelbre/gophers) ]
 
-TSL include example method `tsl.Walk` for the generation of SQL queries, use the `tsl.Walk` method as a template for
-using the TSL tree to generate filter and search methods over any data source.
-
 The TSL language grammar is similar to SQL syntax, for example:
 ```
 name like '%joe%' and (city = 'paris' or city = 'milan')
@@ -27,12 +24,13 @@ The TSL package include the [ParseTSL](https://godoc.org/github.com/yaacov/tsl/p
 tree, err := tsl.ParseTSL("name in ('joe', 'jane') and age not between 0 and 10")
 ```
 
-###### Walk
+###### SquirrelWalk
 
-The TSL package include a helper [Walk](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#Walk) method that adds serch context to Squirrel [SelectBuilder](https://godoc.org/github.com/Masterminds/squirrel#SelectBuilder):
+The TSL package include a helper [SquirrelWalk](/pkg/tsl/tsl.go) method that adds serch context to Squirrel [SelectBuilder](https://godoc.org/github.com/Masterminds/squirrel#SelectBuilder):
+
 ```
 sql, args, err := sq.Select("name, city, state").
-    Where(tsl.Walk(tree)).
+    Where(tsl.SquirrelWalk(tree)).
     From("users").
     ToSql()
 ```
@@ -141,7 +139,7 @@ import (
   ...
 ```
 
-###### Walk
+###### SquirrelWalk
 
 ``` go
   import (
@@ -153,7 +151,7 @@ import (
   ...
   // Convert TSL tree into SQL string using squirrel sql builder.
   sql, args, err := sq.Select("name, city, state").
-    Where(tsl.Walk(tree)).
+    Where(tsl.SquirrelWalk(tree)).
     From("users").
     ToSql()
   ...

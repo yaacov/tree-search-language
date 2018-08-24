@@ -72,26 +72,26 @@ func (l *Listener) GetTree() (n Node, err error) {
 
 // AddToSelect adds a TSL tree into a squirrel SelectBuilder.
 func AddToSelect(s sq.SelectBuilder, tree Node) sq.SelectBuilder {
-	return s.Where(Walk(tree))
+	return s.Where(SquirrelWalk(tree))
 }
 
-// Walk travel the TSL tree to create squirrel SQL select operators.
+// SquirrelWalk travel the TSL tree to create squirrel SQL select operators.
 //
-// Users can call the Walk method inside a squirrel Where to add the query.
+// Users can call the SquirrelWalk method inside a squirrel Where to add the query.
 //
 // 	sql, args, _ := sq.Select("name, city, state").
-// 		Where(Walk(tree)).
+// 		Where(SquirrelWalk(tree)).
 // 		From("users").
 // 		ToSql()
 //
-func Walk(n Node) sq.Sqlizer {
+func SquirrelWalk(n Node) sq.Sqlizer {
 	switch n.Func {
 	case AndOp:
-		return sq.And{Walk(n.Left.(Node)), Walk(n.Right.(Node))}
+		return sq.And{SquirrelWalk(n.Left.(Node)), SquirrelWalk(n.Right.(Node))}
 	case OrOp:
-		return sq.Or{Walk(n.Left.(Node)), Walk(n.Right.(Node))}
+		return sq.Or{SquirrelWalk(n.Left.(Node)), SquirrelWalk(n.Right.(Node))}
 	case NotOp:
-		return notExpr{Walk(n.Left.(Node))}
+		return notExpr{SquirrelWalk(n.Left.(Node))}
 	case EqOp:
 		return sq.Eq{n.Left.(string): n.Right}
 	case NotEqOp:

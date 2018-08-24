@@ -32,7 +32,7 @@ func Example() {
 
 	// Convert TSL tree into SQL string using squirrel sql builder.
 	sql, args, _ := sq.Select("name, city, state").
-		Where(Walk(tree)).
+		Where(SquirrelWalk(tree)).
 		From("users").
 		ToSql()
 

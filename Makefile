@@ -14,13 +14,16 @@
 # limitations under the License.
 #
 
-all: fmt tsl_parser tsl_to_sql
+all: fmt tsl_parser tsl_to_sql tsl_mongo
 
 tsl_parser: vendor
 	go build ./cmd/tsl_parser
 
 tsl_to_sql: vendor
 	go build ./cmd/tsl_to_sql
+
+tsl_mongo: vendor
+	go build ./cmd/tsl_mongo
 
 .PHONY: lint
 lint:

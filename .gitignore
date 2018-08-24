@@ -13,6 +13,7 @@
 
 /tsl_parser
 /tsl_to_sql
+/tsl_mongo
 
 /vendor/
 Gopkg.lock
