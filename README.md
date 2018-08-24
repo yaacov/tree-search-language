@@ -17,14 +17,14 @@ The TSL language grammar is similar to SQL syntax, for example:
 name like '%joe%' and (city = 'paris' or city = 'milan')
 ```
 
-###### ParseTSL
+##### ParseTSL
 
 The TSL package include the [ParseTSL](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
 ```
 tree, err := tsl.ParseTSL("name in ('joe', 'jane') and age not between 0 and 10")
 ```
 
-###### SquirrelWalk
+##### SquirrelWalk
 
 The TSL package include a helper [SquirrelWalk](/pkg/tsl/tsl.go) method that adds serch context to Squirrel [SelectBuilder](https://godoc.org/github.com/Masterminds/squirrel#SelectBuilder):
 
@@ -42,7 +42,7 @@ SQL generation is done using [Squirrel](https://github.com/Masterminds/squirrel)
 
 **tls_parser**, **tls_mongo** and **tsl_to_sql** are example cli tools showcasing the TSL language and TSL golang package.
 
-###### tls_parser
+##### tls_parser
 
 ``` bash
 $ ./tsl_parser -h
@@ -73,7 +73,7 @@ right:
     right: joe
 ```
 
-###### tsl_mongo
+##### tsl_mongo
 
 tsl_mongo include an example [mongoWalk](cmd/tsl_mongo/walk.go) method, for building a mongo bson filter.
 
@@ -89,7 +89,7 @@ $ ./tsl_mongo -i "title ~= 'Other' and spec.raiting > 4"
 {"_id":{"$oid":"5b8083c9e0d411d1f2fbcfa4"},"title":"Some Other Book","author":"Jane","spec":{"pages":{"$numberLong":"50"},"raiting":{"$numberLong":"5"}}}
 ```
 
-###### tsl_to_sql
+##### tsl_to_sql
 
 ``` bash
 $ ./tsl_to_sql -h
@@ -112,15 +112,15 @@ args: [eli's %rome% italy france]
 
 #### Language
 
-###### Keywords
+##### Keywords
 ```
 and or not is null like between in
 ```
-###### Operators
+##### Operators
 ```
 = <= >= != ~= ~! <>
 ```
-###### Examples
+##### Examples
 ```
 name = 'Joe'
 ```
@@ -133,7 +133,7 @@ city in ('paris', 'rome', 'milan') or sate = 'spain'
 
 #### Code snippets
 
-###### import
+##### import
 
 ``` go
 import (
@@ -143,7 +143,7 @@ import (
 )
 ```
 
-###### ParseTSL
+##### ParseTSL
 
 ``` go
   ...
@@ -155,7 +155,7 @@ import (
   ...
 ```
 
-###### SquirrelWalk
+##### SquirrelWalk
 
 ``` go
   import (
