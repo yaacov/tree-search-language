@@ -40,7 +40,7 @@ SQL generation is done using [Squirrel](https://github.com/Masterminds/squirrel)
 
 #### Cli tools
 
-**tls_parser** and **tsl_to_sql** are example cli tools showcasing the TSL language and TSL golang package.
+**tls_parser**, **tls_mongo** and **tsl_to_sql** are example cli tools showcasing the TSL language and TSL golang package.
 
 ###### tls_parser
 
@@ -71,6 +71,22 @@ right:
     func: $eq
     left: name
     right: joe
+```
+
+###### tsl_mongo
+
+tsl_mongo include an example [mongoWalk](cmd/tsl_mongo/walk.go) method, for building a mongo bson filter.
+
+``` bash
+$ ./tsl_mongo -i "title is not null"
+{"_id":{"$oid":"5b8083aadda18596ef42a941"},"title":"Book","author":"Joe","spec":{"pages":{"$numberLong":"100"},"raiting":{"$numberLong":"4"}}}
+{"_id":{"$oid":"5b8083aadda18596ef42a942"},"title":"Other Book","author":"Jane","spec":{"pages":{"$numberLong":"200"},"raiting":{"$numberLong":"3"}}}
+{"_id":{"$oid":"5b8083aadda18596ef42a943"},"title":"Some Other Book","author":"Jane","spec":{"pages":{"$numberLong":"50"},"raiting":{"$numberLong":"5"}}}
+{"_id":{"$oid":"5b8083aadda18596ef42a944"},"title":"Some Other Book","author":"Jane","spec":{"pages":{"$numberLong":"50"}}}
+```
+``` bash
+$ ./tsl_mongo -i "title ~= 'Other' and spec.raiting > 4"
+{"_id":{"$oid":"5b8083c9e0d411d1f2fbcfa4"},"title":"Some Other Book","author":"Jane","spec":{"pages":{"$numberLong":"50"},"raiting":{"$numberLong":"5"}}}
 ```
 
 ###### tsl_to_sql
