@@ -23,7 +23,13 @@
 //
 // The package provide the ParseTSL method to convert TSL string into TSL tree.
 //
-// TSL tree can be use to create search engines on data sources, for
-// example bsonWalk method converts TSL tree into bson for MongoDB based search:
+// TSL tree can be used to generate SQL filters, and create SQL queries. the
+// SquirrelWalk method use Squirrel pkg to create the SQL string.
+//
+// TSL tree can also be use to create search engines on other data sources, for
+// example bsonWalk method converts TSL tree into bson for MongoDB based search.
+//
+// https://github.com/yaacov/tsl/blob/master/pkg/tsl/tsl.go
 // https://github.com/yaacov/tsl/blob/master/cmd/tsl_mongo/walk.go
+//
 package tsl
