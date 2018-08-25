@@ -50,9 +50,9 @@ sql, args, err := sq.Select("name, city, state").
     ToSql()
 ```
 
-The SQL created will look like this (`args` will hold the argument list):
+After SQL generation the `sql` var will be:
 ``` sql
-SELECT name, city, state FROM users WHERE name IN (?, ?) AGE age NOT BETWEEN ? AND ?
+SELECT name, city, state FROM users WHERE name IN (?, ?) AND age NOT BETWEEN ? AND ?
 ```
 
 TSL is generated with [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammar file is [TSL.g4](/TSL.g4),
