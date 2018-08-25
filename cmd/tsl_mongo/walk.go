@@ -45,16 +45,19 @@ func bsonWalk(n tsl.Node) *bson.Element {
 			bson.VC.DocumentFromElements(bsonWalk(n.Right.(tsl.Node))),
 		)
 	case tsl.EqOp, tsl.NotEqOp, tsl.LtOp, tsl.LteOp, tsl.GtOp, tsl.GteOp:
-		switch n.Right.(type) {
-		case float64:
-			return bson.EC.SubDocumentFromElements(n.Left.(string), bson.EC.Double(n.Func, n.Right.(float64)))
-		case string:
-			return bson.EC.SubDocumentFromElements(n.Left.(string), bson.EC.String(n.Func, n.Right.(string)))
-		}
+		return bson.EC.SubDocumentFromElements(n.Left.(string), bson.EC.Interface(n.Func, n.Right))
 	case tsl.InOp:
 		return bson.EC.SubDocumentFromElements(n.Left.(string),
 			bson.EC.ArrayFromElements("$in",
 				bsonFromArray(n.Right)...,
+			),
+		)
+	case tsl.NotInOp:
+		return bson.EC.SubDocumentFromElements(n.Left.(string),
+			bson.EC.SubDocumentFromElements("$not",
+				bson.EC.ArrayFromElements("$in",
+					bsonFromArray(n.Right)...,
+				),
 			),
 		)
 	case tsl.IsNilOp:
@@ -63,9 +66,33 @@ func bsonWalk(n tsl.Node) *bson.Element {
 		return bson.EC.SubDocumentFromElements(n.Left.(string), bson.EC.Boolean("$exists", true))
 	case tsl.RegexOp:
 		return bson.EC.Regex(n.Left.(string), n.Right.(string), "")
+	case tsl.NotRegexOp:
+		return bson.EC.SubDocumentFromElements(n.Left.(string),
+			bson.EC.Regex("$not", n.Right.(string), ""),
+		)
+	case tsl.BetweenOp:
+		right := bsonFromArray(n.Right)
+		return bson.EC.ArrayFromElements("$and",
+			bson.VC.DocumentFromElements(
+				bson.EC.SubDocumentFromElements(n.Left.(string), bson.EC.Interface("$gte", right[0])),
+			),
+			bson.VC.DocumentFromElements(
+				bson.EC.SubDocumentFromElements(n.Left.(string), bson.EC.Interface("$lte", right[1])),
+			),
+		)
+	case tsl.NotBetweenOp:
+		right := bsonFromArray(n.Right)
+		return bson.EC.ArrayFromElements("$or",
+			bson.VC.DocumentFromElements(
+				bson.EC.SubDocumentFromElements(n.Left.(string), bson.EC.Interface("$lt", right[0])),
+			),
+			bson.VC.DocumentFromElements(
+				bson.EC.SubDocumentFromElements(n.Left.(string), bson.EC.Interface("$gt", right[1])),
+			),
+		)
 	default:
 		// We do not suppoert any other function code
-		log.Fatal(fmt.Errorf("%s is not supported (supported: = ~= != > >= < <=, and, or, in, is null, is not null)", n.Func))
+		log.Fatal(fmt.Errorf("%s is not supported", n.Func))
 	}
 
 	return bson.EC.String("", "")
