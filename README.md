@@ -55,6 +55,8 @@ After SQL generation the `sql` var will be:
 SELECT name, city, state FROM users WHERE name IN (?, ?) AND age NOT BETWEEN ? AND ?
 ```
 
+### Antlr4 grammar
+
 TSL is generated with [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammar file is [TSL.g4](/TSL.g4),
 SQL generation is done using [Squirrel](https://github.com/Masterminds/squirrel) SQL builder.
 
