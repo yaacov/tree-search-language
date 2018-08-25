@@ -75,10 +75,10 @@ func (l *Listener) GetTree() (n Node, err error) {
 // Users can call the SquirrelWalk method inside a squirrel Where to add the query.
 //
 //  filter, _ := SquirrelWalk(tree)
-// 	sql, args, _ := sq.Select("name, city, state").
-// 		From("users").
-// 		Where(filter).
-// 		ToSql()
+//  sql, args, _ := sq.Select("name, city, state").
+//    From("users").
+//    Where(filter).
+//    ToSql()
 //
 func SquirrelWalk(n Node) (s sq.Sqlizer, err error) {
 	var l, r sq.Sqlizer
