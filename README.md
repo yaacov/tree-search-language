@@ -82,6 +82,10 @@ tsl_mongo include an example [bsonWalk](cmd/tsl_mongo/walk.go) method, for build
 ``` bash
 $ ./tsl_mongo -h
 Usage of ./tsl_mongo:
+  -c string
+    	collection name to query on (default "books")
+  -d string
+    	db name to connect to (default "tsl")
   -i string
     	the tsl string to parse (e.g. "author = 'Jane'") (default "title is not null")
   -p	prepare a book collection for queries

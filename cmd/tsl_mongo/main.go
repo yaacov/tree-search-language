@@ -27,9 +27,6 @@ import (
 	"github.com/yaacov/tsl/pkg/tsl"
 )
 
-const dbName = "tsl"
-const collectionName = "books"
-
 var books = []interface{}{
 	book{Title: "Book", Author: "Joe", Spec: bookSpecs{Pages: 100, Raiting: 4}},
 	book{Title: "Other Book", Author: "Jane", Spec: bookSpecs{Pages: 200, Raiting: 3}},
@@ -72,6 +69,8 @@ func main() {
 	// Setup the input
 	inputPtr := flag.String("i", "title is not null", "the tsl string to parse (e.g. \"author = 'Jane'\")")
 	preparePtr := flag.Bool("p", false, "prepare a book collection for queries")
+	dbNamePtr := flag.String("d", "tsl", "db name to connect to")
+	collectionNamePtr := flag.String("c", "books", "collection name to query on")
 	urlPtr := flag.String("u", "mongodb://localhost:27017", "url for mongo server")
 	flag.Parse()
 
@@ -91,7 +90,7 @@ func main() {
 	}
 
 	// Set up a collection
-	collection = client.Database(dbName).Collection(collectionName)
+	collection = client.Database(*dbNamePtr).Collection(*collectionNamePtr)
 
 	// Create a clean books collection
 	if *preparePtr {
