@@ -61,8 +61,16 @@ func main() {
 		s = sq.Select("*")
 	}
 
+	filter, err := tsl.SquirrelWalk(tree)
+	check(err)
+
+	// If SquirrelWalk has erros, we can not print the tree
+	if err != nil {
+		os.Exit(1)
+	}
+
 	sql, args, err := s.
-		Where(tsl.SquirrelWalk(tree)).
+		Where(filter).
 		From(*tablePtr).
 		ToSql()
 

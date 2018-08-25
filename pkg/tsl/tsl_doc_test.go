@@ -30,10 +30,13 @@ func Example() {
 	// Parse input string into a TSL tree
 	tree, _ := ParseTSL(input)
 
-	// Convert TSL tree into SQL string using squirrel sql builder.
+	// Set filter
+	filter, _ := SquirrelWalk(tree)
+
+	// Convert TSL tree into SQL string using squirrel sql builder
 	sql, args, _ := sq.Select("name, city, state").
-		Where(SquirrelWalk(tree)).
 		From("users").
+		Where(filter).
 		ToSql()
 
 	fmt.Printf("SQL : %s\n", sql)

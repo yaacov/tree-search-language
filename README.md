@@ -29,9 +29,11 @@ tree, err := tsl.ParseTSL("name in ('joe', 'jane') and age not between 0 and 10"
 The TSL package include a helper [SquirrelWalk](/pkg/tsl/tsl.go) method that adds serch context to Squirrel [SelectBuilder](https://godoc.org/github.com/Masterminds/squirrel#SelectBuilder):
 
 ```
+filter, err := tsl.SquirrelWalk(tree)
+
 sql, args, err := sq.Select("name, city, state").
-    Where(tsl.SquirrelWalk(tree)).
     From("users").
+    Where(filter).
     ToSql()
 ```
 
@@ -165,10 +167,13 @@ import (
     ...
   )
   ...
-  // Convert TSL tree into SQL string using squirrel sql builder.
+  // Set filter
+  filter, err := tsl.SquirrelWalk(tree)
+
+  // Convert TSL tree into SQL string using squirrel sql builder
   sql, args, err := sq.Select("name, city, state").
-    Where(tsl.SquirrelWalk(tree)).
     From("users").
+    Where(filter).
     ToSql()
   ...
 ```
