@@ -80,7 +80,18 @@ right:
 tsl_mongo include an example [bsonWalk](cmd/tsl_mongo/walk.go) method, for building a mongo bson filter.
 
 ``` bash
-$ ./tsl_mongo -i "title is not null"
+$ ./tsl_mongo -h
+Usage of ./tsl_mongo:
+  -i string
+    	the tsl string to parse (e.g. "author = 'Jane'") (default "title is not null")
+  -p	prepare a book collection for queries
+  ...
+  -u string
+    	url for mongo server (default "mongodb://localhost:27017")
+```
+
+``` bash
+$ ./tsl_mongo -p -i "title is not null"
 {"_id":{"$oid":"5b8083aadda18596ef42a941"},"title":"Book","author":"Joe","spec":{"pages":{"$numberLong":"100"},"raiting":{"$numberLong":"4"}}}
 {"_id":{"$oid":"5b8083aadda18596ef42a942"},"title":"Other Book","author":"Jane","spec":{"pages":{"$numberLong":"200"},"raiting":{"$numberLong":"3"}}}
 {"_id":{"$oid":"5b8083aadda18596ef42a943"},"title":"Some Other Book","author":"Jane","spec":{"pages":{"$numberLong":"50"},"raiting":{"$numberLong":"5"}}}

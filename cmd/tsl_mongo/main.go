@@ -33,8 +33,9 @@ const collectionName = "books"
 var books = []interface{}{
 	book{Title: "Book", Author: "Joe", Spec: bookSpecs{Pages: 100, Raiting: 4}},
 	book{Title: "Other Book", Author: "Jane", Spec: bookSpecs{Pages: 200, Raiting: 3}},
-	book{Title: "Some Other Book", Author: "Jane", Spec: bookSpecs{Pages: 50, Raiting: 5}},
+	book{Title: "Some Book", Author: "Jane", Spec: bookSpecs{Pages: 50, Raiting: 5}},
 	book{Title: "Some Other Book", Author: "Jane", Spec: bookSpecs{Pages: 50}},
+	book{Title: "Good Book", Author: "Joe", Spec: bookSpecs{Pages: 150, Raiting: 4}},
 }
 
 func connect(ctx context.Context, url string) (client *mongo.Client, err error) {
@@ -47,16 +48,14 @@ func connect(ctx context.Context, url string) (client *mongo.Client, err error) 
 	return
 }
 
-func prepareCollection(ctx context.Context, c *mongo.Client) (collection *mongo.Collection, err error) {
+func prepareCollection(ctx context.Context, collection *mongo.Collection) (err error) {
 	// Drop the collection
-	collection = c.Database(dbName).Collection(collectionName)
 	err = collection.Drop(ctx)
 	if err != nil {
 		return
 	}
 
 	// Insert new books into the collection
-	collection = c.Database(dbName).Collection(collectionName)
 	_, err = collection.InsertMany(ctx, books)
 
 	return
@@ -72,6 +71,7 @@ func main() {
 
 	// Setup the input
 	inputPtr := flag.String("i", "title is not null", "the tsl string to parse (e.g. \"author = 'Jane'\")")
+	preparePtr := flag.Bool("p", false, "prepare a book collection for queries")
 	urlPtr := flag.String("u", "mongodb://localhost:27017", "url for mongo server")
 	flag.Parse()
 
@@ -90,10 +90,15 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// Set up a collection
+	collection = client.Database(dbName).Collection(collectionName)
+
 	// Create a clean books collection
-	collection, err = prepareCollection(ctx, client)
-	if err != nil {
-		log.Fatal(err)
+	if *preparePtr {
+		err = prepareCollection(ctx, collection)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	// Prepare filter
