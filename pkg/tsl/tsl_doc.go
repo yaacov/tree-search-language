@@ -20,4 +20,10 @@
 // TSL grammar examples:
 //  "name = 'joe' or name = 'jane'"
 //  "city in ('paris', 'rome', 'milan') and state != 'spane'"
+//
+// The package provide the ParseTSL method to convert TSL string into TSL tree.
+//
+// TSL tree can be use to create search engines on data sources, for
+// example bsonWalk method converts TSL tree into bson for MongoDB based search:
+// https://github.com/yaacov/tsl/blob/master/cmd/tsl_mongo/walk.go
 package tsl
