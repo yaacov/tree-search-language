@@ -20,21 +20,39 @@ name like '%joe%' and (city = 'paris' or city = 'milan')
 ### ParseTSL
 
 The TSL package include the [ParseTSL](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
-```
+``` go
 tree, err := tsl.ParseTSL("name in ('joe', 'jane') and age not between 0 and 10")
+```
+
+After parsing the TSL tree will look like this:
+``` bash
+$and
+|
++----------------------------+
+|                            |
+$in                          $nbetween
+|                            |
++---------+                  +--------+
+|         |                  |        |
+"name"  ["joe", "jane"]      "age"    [0, 10]
 ```
 
 ### SquirrelWalk
 
 The TSL package include a helper [SquirrelWalk](/pkg/tsl/tsl.go) method that adds serch context to Squirrel [SelectBuilder](https://godoc.org/github.com/Masterminds/squirrel#SelectBuilder):
 
-```
+``` go
 filter, err := tsl.SquirrelWalk(tree)
 
 sql, args, err := sq.Select("name, city, state").
     From("users").
     Where(filter).
     ToSql()
+```
+
+The SQL created will look like this (`args` will hold the argument list):
+``` sql
+SELECT name, city, state FROM users WHERE name IN (?, ?) AGE age NOT BETWEEN ? AND ?
 ```
 
 TSL is generated with [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammar file is [TSL.g4](/TSL.g4),
