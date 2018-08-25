@@ -13,15 +13,18 @@ where part. implementing query based search engines was never that easy.
 [ awesome image by [gophers...](https://github.com/egonelbre/gophers) ]
 
 The TSL language grammar is similar to SQL syntax, for example:
-```
+``` sql
 name like '%joe%' and (city = 'paris' or city = 'milan')
+```
+``` sql
+name in ('joe', 'jane') and grade not between 0 and 50
 ```
 
 ### ParseTSL
 
 The TSL package include the [ParseTSL](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
 ``` go
-tree, err := tsl.ParseTSL("name in ('joe', 'jane') and age not between 0 and 10")
+tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
 ```
 
 After parsing the TSL tree will look like this:
@@ -34,7 +37,7 @@ $in                          $nbetween
 |                            |
 +---------+                  +--------+
 |         |                  |        |
-"name"  ["joe", "jane"]      "age"    [0, 10]
+"name"  ["joe", "jane"]      "grade"    [0, 50]
 ```
 
 ### SquirrelWalk
@@ -52,7 +55,7 @@ sql, args, err := sq.Select("name, city, state").
 
 After SQL generation the `sql` var will be:
 ``` sql
-SELECT name, city, state FROM users WHERE name IN (?, ?) AND age NOT BETWEEN ? AND ?
+SELECT name, city, state FROM users WHERE name IN (?, ?) AND grade NOT BETWEEN ? AND ?
 ```
 
 ### Antlr4 grammar
