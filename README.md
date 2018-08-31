@@ -42,7 +42,7 @@ $in                          $nbetween
 
 ### SquirrelWalk
 
-The TSL package include a helper [SquirrelWalk](/pkg/tsl/tsl.go) method that adds serch context to Squirrel [SelectBuilder](https://godoc.org/github.com/Masterminds/squirrel#SelectBuilder):
+The TSL package include a helper [SquirrelWalk](/pkg/tsl/tsl_squirrel_walk.go) method that adds serch context to Squirrel [SelectBuilder](https://godoc.org/github.com/Masterminds/squirrel#SelectBuilder):
 
 ``` go
 filter, err := tsl.SquirrelWalk(tree)
@@ -100,7 +100,7 @@ right:
 
 ### tsl_mongo
 
-tsl_mongo include an example [bsonWalk](cmd/tsl_mongo/walk.go) method, for building a mongo bson filter.
+tsl_mongo include an example using [BSONWalk](/pkg/tsl/tsl_bson_walk.g) method, for building a mongo bson filter.
 
 ``` bash
 $ ./tsl_mongo -h
