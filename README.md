@@ -77,11 +77,6 @@ filter, err = tsl.BSONWalk(tree)
 cur, err := collection.Find(ctx, bson.NewDocument(filter))
 ```
 
-### Antlr4 grammar
-
-TSL is generated with [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammar file is [TSL.g4](/TSL.g4),
-SQL generation is done using [Squirrel](https://github.com/Masterminds/squirrel) SQL builder.
-
 ## Cli tools
 
 [tls_parser](/cmd/tsl_parser), [tls_mongo](/cmd/tsl_mongo) and [tsl_to_sql](/cmd/tsl_to_sql) are example cli tools showcasing the TSL language and TSL golang package.
@@ -170,6 +165,10 @@ args: [eli's %rome% italy france]
 ```
 
 ## Grammar
+
+### Antlr4 grammar
+
+TSL is generated using [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammar file is [TSL.g4](/TSL.g4).
 
 ### Keywords
 ```
