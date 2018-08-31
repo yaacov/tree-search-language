@@ -136,15 +136,42 @@ Usage of ./tsl_mongo:
 ```
 
 ``` bash
-$ ./tsl_mongo -p -i "title is not null"
-{"_id":{"$oid":"5b8083aadda18596ef42a941"},"title":"Book","author":"Joe","spec":{"pages":{"$numberLong":"100"},"raiting":{"$numberLong":"4"}}}
-{"_id":{"$oid":"5b8083aadda18596ef42a942"},"title":"Other Book","author":"Jane","spec":{"pages":{"$numberLong":"200"},"raiting":{"$numberLong":"3"}}}
-{"_id":{"$oid":"5b8083aadda18596ef42a943"},"title":"Some Other Book","author":"Jane","spec":{"pages":{"$numberLong":"50"},"raiting":{"$numberLong":"5"}}}
-{"_id":{"$oid":"5b8083aadda18596ef42a944"},"title":"Some Other Book","author":"Jane","spec":{"pages":{"$numberLong":"50"}}}
+$ ./tsl_mongo -p -i "title is not null" | jq
+{
+  "_id": {
+    "$oid": "5b8999c0f678c456481f7baf"
+  },
+  "title": "Book",
+  "author": "Joe",
+  "spec": {
+    "pages": {
+      "$numberLong": "100"
+...
+    },
+    "raiting": {
+      "$numberLong": "4"
+    }
+  }
+}
+
 ```
 ``` bash
-$ ./tsl_mongo -i "title ~= 'Other' and spec.raiting > 4"
-{"_id":{"$oid":"5b8083c9e0d411d1f2fbcfa4"},"title":"Some Other Book","author":"Jane","spec":{"pages":{"$numberLong":"50"},"raiting":{"$numberLong":"5"}}}
+$ ./tsl_mongo -p -i "title ~= 'Other' and spec.raiting > 1" | jq
+{
+  "_id": {
+    "$oid": "5b899a6c3707c8ba0b00b656"
+  },
+  "title": "Other Book",
+  "author": "Jane",
+  "spec": {
+    "pages": {
+      "$numberLong": "200"
+    },
+    "raiting": {
+      "$numberLong": "3"
+    }
+  }
+}
 ```
 
 ### tsl_to_sql
@@ -162,7 +189,8 @@ Usage of ./tsl_to_sql:
 ```
 
 ``` bash
-$ ./tsl_to_sql -i "name != 'eli''s' or city like '%rome%' and state not between 'italy' and 'france'" -t users -o pgsql
+$ SQL="name != 'eli''s' or city like '%rome%' and state not between 'italy' and 'france'"
+$ ./tsl_to_sql -i "$SQL" -t users -o pgsql
 sql:  SELECT * FROM users WHERE (name <> $1 OR (city LIKE $2 AND state NOT BETWEEN $3 AND $4))
 args: [eli's %rome% italy france]
 
