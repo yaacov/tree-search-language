@@ -102,19 +102,19 @@ Usage of ./tls_parser:
 $ ./tsl_parser -i "(name = 'joe' or name = 'jane') and city = 'rome'" -o yaml
 func: $and
 left:
-  func: $eq
-  left: city
-  right: rome
-right:
   func: $or
   left:
     func: $eq
     left: name
-    right: jane
+    right: joe
   right:
     func: $eq
     left: name
-    right: joe
+    right: jane
+right:
+  func: $eq
+  left: city
+  right: rome
 ```
 
 ### tsl_mongo
