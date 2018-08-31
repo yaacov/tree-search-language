@@ -195,11 +195,7 @@ city in ('paris', 'rome', 'milan') or sate = 'spain'
 ### import
 
 ``` go
-import (
-  ...
-	"github.com/yaacov/tsl/pkg/tsl"
-  ...
-)
+import "github.com/yaacov/tsl/pkg/tsl"
 ```
 
 ### ParseTSL
