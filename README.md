@@ -45,8 +45,10 @@ $in                          $nbetween
 The TSL package include a helper [SquirrelWalk](/pkg/tsl/tsl_squirrel_walk.go) method that adds search to [squirrel](https://github.com/Masterminds/squirrel)'s SelectBuilder object:
 
 ``` go
+// Prepare a bson filter.
 filter, err := tsl.SquirrelWalk(tree)
 
+// Create an SQL query.
 sql, args, err := sq.Select("name, city, state").
     From("users").
     Where(filter).
@@ -63,10 +65,10 @@ SELECT name, city, state FROM users WHERE name IN (?, ?) AND grade NOT BETWEEN ?
 The TSL package include a helper [BSONWalk](/pkg/tsl/tsl_bson_walk.go) method that adds search bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
 
 ``` go
-// Prepare a bson filter
+// Prepare a bson filter.
 filter, err = tsl.BSONWalk(tree)
 
-// Run query
+// Run query.
 cur, err := collection.Find(ctx, bson.NewDocument(filter))
 ```
 
@@ -199,10 +201,10 @@ import (
 
 ``` go
   ...
-  // Set a TSL input string
+  // Set a TSL input string.
   input = "name='joe' or name='jane'"
 
-  // Parse input string into a TSL tree
+  // Parse input string into a TSL tree.
   tree, err := tsl.ParseTSL(input)
   ...
 ```
@@ -217,10 +219,10 @@ import (
     ...
   )
   ...
-  // Set filter
+  // Set filter.
   filter, err := tsl.SquirrelWalk(tree)
 
-  // Convert TSL tree into SQL string using squirrel sql builder
+  // Convert TSL tree into SQL string using squirrel select builder.
   sql, args, err := sq.Select("name, city, state").
     From("users").
     Where(filter).
