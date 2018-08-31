@@ -49,15 +49,20 @@ The TSL package include a helper [SquirrelWalk](/pkg/tsl/tsl_squirrel_walk.go) m
 filter, err := tsl.SquirrelWalk(tree)
 
 // Create an SQL query.
-sql, args, err := sq.Select("name, city, state").
+sql, args, err := sq.Select("name", "city", "state").
     From("users").
     Where(filter).
     ToSql()
 ```
 
-After SQL generation the `sql` var will be:
+After SQL generation the `sql` and `args` vars will be:
 ``` sql
-SELECT name, city, state FROM users WHERE name IN (?, ?) AND grade NOT BETWEEN ? AND ?
+SELECT name, city, state FROM <table-name> WHERE (name IN (?,?) AND grade NOT BETWEEN ? AND ?)
+```
+
+``` json
+["joe", "jane", 0, 50]
+
 ```
 
 ### BSONWalk
