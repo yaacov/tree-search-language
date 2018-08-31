@@ -26,7 +26,7 @@ import (
 func bsonFromArray(a interface{}) (values []*bson.Value, err error) {
 	for _, v := range a.([]interface{}) {
 		if w, ok := v.(string); ok {
-			// Check fot a string value
+			// Check for a string value
 			values = append(values, bson.VC.String(w))
 		} else if w, ok := v.(float64); ok {
 			// Check for a float value
