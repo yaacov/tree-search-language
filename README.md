@@ -58,6 +58,18 @@ After SQL generation the `sql` var will be:
 SELECT name, city, state FROM users WHERE name IN (?, ?) AND grade NOT BETWEEN ? AND ?
 ```
 
+### BSONWalk
+
+The TSL package include a helper [BSONWalk](/pkg/tsl/tsl_bson_walk.go) method that adds serch bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
+
+``` go
+// Prepare a bson filter
+filter, err = tsl.BSONWalk(tree)
+
+// Run query
+cur, err := collection.Find(ctx, bson.NewDocument(filter))
+```
+
 ### Antlr4 grammar
 
 TSL is generated with [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammar file is [TSL.g4](/TSL.g4),
@@ -100,7 +112,7 @@ right:
 
 ### tsl_mongo
 
-tsl_mongo include an example using [BSONWalk](/pkg/tsl/tsl_bson_walk.g) method, for building a mongo bson filter.
+tsl_mongo include an example using [BSONWalk](/pkg/tsl/tsl_bson_walk.go) method, for building a mongo bson filter.
 
 ``` bash
 $ ./tsl_mongo -h
