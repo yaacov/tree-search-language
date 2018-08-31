@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package main
+// Package main.
 package main
 
 import (
@@ -37,16 +37,16 @@ func check(err error) {
 func main() {
 	var s []byte
 
-	// Setup the input
+	// Setup the input.
 	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"animal = 'kitty'\")")
 	outputPtr := flag.String("o", "json", "output format [json/yaml/prettyjson]")
 	flag.Parse()
 
-	// Parse input string into a TSL tree
+	// Parse input string into a TSL tree.
 	tree, err := tsl.ParseTSL(*inputPtr)
 	check(err)
 
-	// If listener has erros, we can not print the tree
+	// If listener has erros, we can not print the tree.
 	if err != nil {
 		os.Exit(1)
 	}

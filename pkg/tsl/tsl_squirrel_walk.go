@@ -97,12 +97,16 @@ func SquirrelWalk(n Node) (s sq.Sqlizer, err error) {
 	case GteOp:
 		s = sq.GtOrEq{n.Left.(string): n.Right}
 	case InOp:
+		// Multiple eq will be translated into IN (?, ? ...).
 		s = sq.Eq{n.Left.(string): n.Right}
 	case NotInOp:
+		// Multiple not eq will be translated into NOT IN (?, ? ...).
 		s = sq.NotEq{n.Left.(string): n.Right}
 	case IsNilOp:
+		// eq nil will be translated into IS NULL.
 		s = sq.Eq{n.Left.(string): nil}
 	case IsNotNilOp:
+		// not eq nil will be translated into IS NOT NULL.
 		s = sq.NotEq{n.Left.(string): nil}
 	case LikeOp:
 		t := fmt.Sprintf("%s LIKE ?", n.Left.(string))
@@ -117,6 +121,7 @@ func SquirrelWalk(n Node) (s sq.Sqlizer, err error) {
 		t := fmt.Sprintf("%s NOT BETWEEN ? AND ?", n.Left.(string))
 		s = sq.Expr(t, n.Right.([]interface{})[0], n.Right.([]interface{})[1])
 	default:
+		// If here than the operator is not supported.
 		err = fmt.Errorf("un supported operand: %s", n.Func)
 	}
 

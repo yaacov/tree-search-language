@@ -26,20 +26,20 @@ import (
 func bsonFromArray(a interface{}) (values []*bson.Value, err error) {
 	for _, v := range a.([]interface{}) {
 		if w, ok := v.(string); ok {
-			// Check for a string value
+			// Check for a string value.
 			values = append(values, bson.VC.String(w))
 		} else if w, ok := v.(float64); ok {
-			// Check for a float value
+			// Check for a float value.
 			values = append(values, bson.VC.Double(w))
 		} else {
-			// Not a string or a float
-			// We do not support values other then strings or floats
+			// Not a string or a float,
+			// We do not support values other then strings or floats.
 			err = fmt.Errorf("un supported value type of var: %v", v)
 			return
 		}
 	}
 
-	// If here this is a valid array
+	// If here this is a valid array.
 	return
 }
 
@@ -59,6 +59,10 @@ func BSONWalk(n Node) (b *bson.Element, err error) {
 	var values []*bson.Value
 	var l, r *bson.Element
 
+	// Note: tsl function constants should be the same as mongo bson
+	// functions (e.g. tsl.AndOp is "$and" in tsl and in mongo bson),
+	// this is the reason we can use n.Func as a function name in the mongo
+	// bson Element construction.
 	switch n.Func {
 	case AndOp, OrOp:
 		l, err = BSONWalk(n.Left.(Node))
@@ -106,6 +110,9 @@ func BSONWalk(n Node) (b *bson.Element, err error) {
 			bson.EC.Regex("$not", n.Right.(string), ""),
 		)
 	case BetweenOp:
+		// Mongo does not have a between function, translating sql's between into
+		// two none eq operators.
+		// Note: sql's between operator is inclusive: begin and end values are included.
 		values, err = bsonFromArray(n.Right)
 		if err != nil {
 			return
@@ -119,6 +126,8 @@ func BSONWalk(n Node) (b *bson.Element, err error) {
 			),
 		)
 	case NotBetweenOp:
+		// Mongo does not have a between function, translating sql's not between into
+		// two none eq operators.
 		values, err = bsonFromArray(n.Right)
 		if err != nil {
 			return
@@ -132,6 +141,7 @@ func BSONWalk(n Node) (b *bson.Element, err error) {
 			),
 		)
 	default:
+		// If here than the operator is not supported.
 		err = fmt.Errorf("un supported operand: %s", n.Func)
 	}
 

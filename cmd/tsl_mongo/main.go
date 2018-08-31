@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package main
+// Package main.
 package main
 
 import (
@@ -46,13 +46,13 @@ func connect(ctx context.Context, url string) (client *mongo.Client, err error) 
 }
 
 func prepareCollection(ctx context.Context, collection *mongo.Collection) (err error) {
-	// Drop the collection
+	// Drop the collection.
 	err = collection.Drop(ctx)
 	if err != nil {
 		return
 	}
 
-	// Insert new books into the collection
+	// Insert new books into the collection.
 	_, err = collection.InsertMany(ctx, books)
 
 	return
@@ -66,7 +66,7 @@ func main() {
 	var s string
 	var b []byte
 
-	// Setup the input
+	// Setup the input.
 	inputPtr := flag.String("i", "title is not null", "the tsl string to parse (e.g. \"author = 'Jane'\")")
 	preparePtr := flag.Bool("p", false, "prepare a book collection for queries")
 	dbNamePtr := flag.String("d", "tsl", "db name to connect to")
@@ -74,25 +74,25 @@ func main() {
 	urlPtr := flag.String("u", "mongodb://localhost:27017", "url for mongo server")
 	flag.Parse()
 
-	// Set context
+	// Set context.
 	ctx := context.Background()
 
-	// Parse input string into a TSL tree
+	// Parse input string into a TSL tree.
 	tree, err := tsl.ParseTSL(*inputPtr)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Try to connect to mongo server
+	// Try to connect to mongo server.
 	client, err = connect(ctx, *urlPtr)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Set up a collection
+	// Set up a collection.
 	collection = client.Database(*dbNamePtr).Collection(*collectionNamePtr)
 
-	// Create a clean books collection
+	// Create a clean books collection.
 	if *preparePtr {
 		err = prepareCollection(ctx, collection)
 		if err != nil {
@@ -100,20 +100,20 @@ func main() {
 		}
 	}
 
-	// Prepare a bson filter
+	// Prepare a bson filter.
 	filter, err = tsl.BSONWalk(tree)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Run query
+	// Run query.
 	cur, err := collection.Find(ctx, bson.NewDocument(filter))
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer cur.Close(ctx)
 
-	// Loop on query elements
+	// Loop on query elements.
 	for cur.Next(ctx) {
 		elem := bson.NewDocument()
 		err := cur.Decode(elem)
@@ -121,7 +121,7 @@ func main() {
 			log.Fatal(err)
 		}
 
-		// Print out books as json
+		// Print out books as json.
 		b, _ = elem.MarshalBSON()
 		s, _ = bson.ToExtJSON(true, b)
 		fmt.Printf("%v\n", s)

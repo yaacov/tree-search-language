@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package main
+// Package main.
 package main
 
 import (
@@ -34,17 +34,17 @@ func check(err error) {
 func main() {
 	var s sq.SelectBuilder
 
-	// Setup the input
+	// Setup the input.
 	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"animal = 'kitty'\")")
 	tablePtr := flag.String("t", "<table-name>", "the table name to use for SQL generation")
 	outputPtr := flag.String("o", "mysql", "output format [mysql/pgsql]")
 	flag.Parse()
 
-	// Parse input string into a TSL tree
+	// Parse input string into a TSL tree.
 	tree, err := tsl.ParseTSL(*inputPtr)
 	check(err)
 
-	// If parser has erros, we can not print the tree
+	// If parser has erros, we can not print the tree.
 	if err != nil {
 		os.Exit(1)
 	}
@@ -52,7 +52,7 @@ func main() {
 	switch *outputPtr {
 	case "pgsql":
 		// If we are using PostgreSQL style use $ instead of ?
-		// for placeholders
+		// for placeholders.
 		psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
 		s = psql.Select("*")
 	case "mysql":
@@ -64,7 +64,7 @@ func main() {
 	filter, err := tsl.SquirrelWalk(tree)
 	check(err)
 
-	// If SquirrelWalk has erros, we can not print the tree
+	// If SquirrelWalk has erros, we can not print the tree.
 	if err != nil {
 		os.Exit(1)
 	}

@@ -25,34 +25,34 @@ import (
 
 // ParseTSL parses the input string into TSL tree.
 func ParseTSL(input string) (tree Node, err error) {
-	// Setup the ErrorListener
+	// Setup the ErrorListener.
 	errorListener := NewErrorListener()
 
-	// Setup the input
+	// Setup the input.
 	is := antlr.NewInputStream(input)
 
-	// Create the Lexer
+	// Create the Lexer.
 	lexer := parser.NewTSLLexer(is)
 	lexer.RemoveErrorListeners()
 	lexer.AddErrorListener(errorListener)
 	stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
 
-	// Create the Parser
+	// Create the Parser.
 	p := parser.NewTSLParser(stream)
 	p.RemoveErrorListeners()
 	p.AddErrorListener(errorListener)
 
-	// Parse the expression (by walking the tree)
+	// Parse the expression (by walking the tree).
 	var listener Listener
 	antlr.ParseTreeWalkerDefault.Walk(&listener, p.Start())
 
-	// Check for errors
+	// Check for errors.
 	err = errorListener.Err
 	if err != nil {
 		return
 	}
 
-	// Get the parsed tree
+	// Get the parsed tree.
 	tree, err = listener.GetTree()
 
 	return
@@ -60,7 +60,7 @@ func ParseTSL(input string) (tree Node, err error) {
 
 // GetTree return the parsed tree, if exist.
 func (l *Listener) GetTree() (n Node, err error) {
-	// Check stack size
+	// Check stack size.
 	if len(l.Stack) < 1 {
 		err = fmt.Errorf("operator stack is empty")
 		return

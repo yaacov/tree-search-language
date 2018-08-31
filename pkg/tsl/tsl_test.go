@@ -38,10 +38,10 @@ func removeWhitespace(s string) string {
 
 // parseTSL parse the TSL.
 func parseTSL(input string) (n Node, err error) {
-	// Setup the TSL ErrorListener
+	// Setup the TSL ErrorListener.
 	errorListener := NewErrorListener()
 
-	// Setup the input
+	// Setup the input.
 	is := antlr.NewInputStream(input)
 
 	// Create the Lexer
@@ -50,12 +50,12 @@ func parseTSL(input string) (n Node, err error) {
 	lexer.AddErrorListener(errorListener)
 	stream := antlr.NewCommonTokenStream(lexer, antlr.TokenDefaultChannel)
 
-	// Create the Parser
+	// Create the Parser.
 	p := parser.NewTSLParser(stream)
 	p.RemoveErrorListeners()
 	p.AddErrorListener(errorListener)
 
-	// Finally parse the expression (by walking the tree)
+	// Finally parse the expression (by walking the tree).
 	var listener Listener
 	antlr.ParseTreeWalkerDefault.Walk(&listener, p.Start())
 
@@ -70,7 +70,7 @@ func parseTSL(input string) (n Node, err error) {
 }
 
 func TestListener(t *testing.T) {
-	// Test valid string
+	// Test valid string.
 	input := "a = 'hello'"
 
 	// Test TSL parser
@@ -79,7 +79,7 @@ func TestListener(t *testing.T) {
 		t.Fail()
 	}
 
-	// Test json output
+	// Test json output.
 	expected := `
 		{"func":"$eq","left":"a","right":"hello"}
 	`
@@ -92,16 +92,16 @@ func TestListener(t *testing.T) {
 }
 
 func TestListenerOpOrder(t *testing.T) {
-	// Test valid string
+	// Test valid string.
 	input := "a = 12.3e1 or b = 'world' and c = 'hello'"
 
-	// Test TSL parser
+	// Test TSL parser.
 	n, err := parseTSL(input)
 	if err != nil {
 		t.Fail()
 	}
 
-	// Test json output
+	// Test json output.
 	expected := `
 		{"func":"$or","left":{"func":"$eq","left":"a","right":123},
 		"right":{"func":"$and","left":{"func":"$eq","left":"b","right":"world"},
