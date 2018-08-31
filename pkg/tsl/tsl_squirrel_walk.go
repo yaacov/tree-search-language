@@ -52,6 +52,8 @@ func (n notExpr) ToSql() (sql string, args []interface{}, err error) {
 //    Where(filter).
 //    ToSql()
 //
+// Squirrel: https://github.com/Masterminds/squirrel
+//
 func SquirrelWalk(n Node) (s sq.Sqlizer, err error) {
 	var l, r sq.Sqlizer
 

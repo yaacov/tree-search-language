@@ -53,6 +53,8 @@ func bsonFromArray(a interface{}) (values []*bson.Value, err error) {
 //  // Run query
 //  cur, _ := collection.Find(ctx, bson.NewDocument(filter))
 //
+// mongo-go-driver: https://github.com/mongodb/mongo-go-driver
+//
 func BSONWalk(n Node) (b *bson.Element, err error) {
 	var values []*bson.Value
 	var l, r *bson.Element
