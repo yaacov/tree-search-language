@@ -62,7 +62,7 @@ func main() {
 	var err error
 	var client *mongo.Client
 	var collection *mongo.Collection
-	var filter interface{}
+	var filter *bson.Element
 	var s string
 	var b []byte
 
@@ -100,11 +100,14 @@ func main() {
 		}
 	}
 
-	// Prepare filter
-	filter = bson.NewDocument(bsonWalk(tree))
+	// Prepare a bson filter
+	filter, err = tsl.BSONWalk(tree)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	// Run query
-	cur, err := collection.Find(ctx, filter)
+	cur, err := collection.Find(ctx, bson.NewDocument(filter))
 	if err != nil {
 		log.Fatal(err)
 	}
