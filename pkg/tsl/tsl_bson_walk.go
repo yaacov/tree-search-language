@@ -33,7 +33,7 @@ func bsonFromArray(a interface{}) (values []*bson.Value, err error) {
 			values = append(values, bson.VC.Double(w))
 		} else {
 			// Not a string or a float
-			// We do not suppoer values other then strings or floats
+			// We do not support values other then strings or floats
 			err = fmt.Errorf("un supported value type of var: %v", v)
 			return
 		}
