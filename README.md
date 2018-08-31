@@ -57,7 +57,7 @@ sql, args, err := sq.Select("name", "city", "state").
 
 After SQL generation the `sql` and `args` vars will be:
 ``` sql
-SELECT name, city, state FROM <table-name> WHERE (name IN (?,?) AND grade NOT BETWEEN ? AND ?)
+SELECT name, city, state FROM users WHERE (name IN (?,?) AND grade NOT BETWEEN ? AND ?)
 ```
 
 ``` json
