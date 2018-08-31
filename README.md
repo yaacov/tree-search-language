@@ -45,7 +45,7 @@ $in                          $nbetween
 The TSL package include a helper [SquirrelWalk](/pkg/tsl/tsl_squirrel_walk.go) method that adds search to [squirrel](https://github.com/Masterminds/squirrel)'s SelectBuilder object:
 
 ``` go
-// Prepare a bson filter.
+// Prepare squirrel filter.
 filter, err := tsl.SquirrelWalk(tree)
 
 // Create an SQL query.
