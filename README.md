@@ -20,6 +20,10 @@ name like '%joe%' and (city = 'paris' or city = 'milan')
 name in ('joe', 'jane') and grade not between 0 and 50
 ```
 
+### Examples
+
+For code examples see the cli tools in the [/cmd](/cmd) direcotry.
+
 ### ParseTSL
 
 The TSL package include the [ParseTSL](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
