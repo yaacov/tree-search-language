@@ -42,7 +42,7 @@ $in                          $nbetween
 
 ### SquirrelWalk
 
-The TSL package include a helper [SquirrelWalk](/pkg/tsl/tsl_squirrel_walk.go) method that adds serch context to Squirrel [SelectBuilder](https://godoc.org/github.com/Masterminds/squirrel#SelectBuilder):
+The TSL package include a helper [SquirrelWalk](/pkg/tsl/tsl_squirrel_walk.go) method that adds search to [squirrel](https://github.com/Masterminds/squirrel)'s SelectBuilder object:
 
 ``` go
 filter, err := tsl.SquirrelWalk(tree)
@@ -60,7 +60,7 @@ SELECT name, city, state FROM users WHERE name IN (?, ?) AND grade NOT BETWEEN ?
 
 ### BSONWalk
 
-The TSL package include a helper [BSONWalk](/pkg/tsl/tsl_bson_walk.go) method that adds serch bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
+The TSL package include a helper [BSONWalk](/pkg/tsl/tsl_bson_walk.go) method that adds search bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
 
 ``` go
 // Prepare a bson filter
