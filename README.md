@@ -238,32 +238,48 @@ import "github.com/yaacov/tsl/pkg/tsl"
 ##### ParseTSL
 
 ``` go
-  ...
-  // Set a TSL input string.
-  input = "name='joe' or name='jane'"
+    ...
+    // Set a TSL input string.
+    input = "name='joe' or name='jane'"
 
-  // Parse input string into a TSL tree.
-  tree, err := tsl.ParseTSL(input)
-  ...
+    // Parse input string into a TSL tree.
+    tree, err := tsl.ParseTSL(input)
+    ...
 ```
 
 ##### SquirrelWalk
 
 ``` go
-  import (
+    import (
+        ...
+        sq "github.com/Masterminds/squirrel"
+        "github.com/yaacov/tsl/pkg/tsl"
+        ...
+    )
     ...
-    sq "github.com/Masterminds/squirrel"
-    "github.com/yaacov/tsl/pkg/tsl"
-    ...
-  )
-  ...
-  // Set filter.
-  filter, err := tsl.SquirrelWalk(tree)
+    // Set filter.
+    filter, err := tsl.SquirrelWalk(tree)
 
-  // Convert TSL tree into SQL string using squirrel select builder.
-  sql, args, err := sq.Select("name, city, state").
-    From("users").
-    Where(filter).
-    ToSql()
-  ...
+    // Convert TSL tree into SQL string using squirrel select builder.
+    sql, args, err := sq.Select("name, city, state").
+        From("users").
+        Where(filter).
+        ToSql()
+    ...
+```
+
+##### BSONWalk
+
+``` go
+    ...
+    // Prepare a bson filter.
+    filter, err = tsl.BSONWalk(tree)
+    
+    // Run query.
+    cur, err := collection.Find(ctx, bson.NewDocument(filter))
+    defer cur.Close(ctx)
+
+    // Loop on query elements.
+    for cur.Next(ctx) {
+        ...
 ```
