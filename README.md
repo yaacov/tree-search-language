@@ -20,11 +20,11 @@ name like '%joe%' and (city = 'paris' or city = 'milan')
 name in ('joe', 'jane') and grade not between 0 and 50
 ```
 
-### Examples
+##### Examples
 
 For code examples see the cli tools in the [/cmd](/cmd) direcotry.
 
-### ParseTSL
+##### ParseTSL
 
 The TSL package include the [ParseTSL](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
 ``` go
@@ -44,7 +44,7 @@ $in                          $nbetween
 "name"  ["joe", "jane"]      "grade"    [0, 50]
 ```
 
-### SquirrelWalk
+##### SquirrelWalk
 
 The TSL package include a helper [SquirrelWalk](/pkg/tsl/tsl_squirrel_walk.go) method that adds search to [squirrel](https://github.com/Masterminds/squirrel)'s SelectBuilder object:
 
@@ -69,7 +69,7 @@ SELECT name, city, state FROM users WHERE (name IN (?,?) AND grade NOT BETWEEN ?
 
 ```
 
-### BSONWalk
+##### BSONWalk
 
 The TSL package include a helper [BSONWalk](/pkg/tsl/tsl_bson_walk.go) method that adds search bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
 
@@ -85,7 +85,7 @@ cur, err := collection.Find(ctx, bson.NewDocument(filter))
 
 [tls_parser](/cmd/tsl_parser), [tls_mongo](/cmd/tsl_mongo) and [tsl_to_sql](/cmd/tsl_to_sql) are example cli tools showcasing the TSL language and TSL golang package.
 
-### tls_parser
+##### tls_parser
 
 ``` bash
 $ ./tsl_parser -h
@@ -99,6 +99,8 @@ Usage of ./tls_parser:
 
 ``` bash
 $ ./tsl_parser -i "(name = 'joe' or name = 'jane') and city = 'rome'" -o yaml
+```
+``` yaml
 func: $and
 left:
   func: $or
@@ -116,7 +118,7 @@ right:
   right: rome
 ```
 
-### tsl_mongo
+##### tsl_mongo
 
 tsl_mongo include an example using [BSONWalk](/pkg/tsl/tsl_bson_walk.go) method, for building a mongo bson filter.
 
@@ -137,6 +139,8 @@ Usage of ./tsl_mongo:
 
 ``` bash
 $ ./tsl_mongo -p -i "title is not null" | jq
+```
+``` json
 {
   "_id": {
     "$oid": "5b8999c0f678c456481f7baf"
@@ -146,7 +150,6 @@ $ ./tsl_mongo -p -i "title is not null" | jq
   "spec": {
     "pages": {
       "$numberLong": "100"
-...
     },
     "raiting": {
       "$numberLong": "4"
@@ -157,6 +160,8 @@ $ ./tsl_mongo -p -i "title is not null" | jq
 ```
 ``` bash
 $ ./tsl_mongo -p -i "title ~= 'Other' and spec.raiting > 1" | jq
+```
+``` json
 {
   "_id": {
     "$oid": "5b899a6c3707c8ba0b00b656"
@@ -174,7 +179,7 @@ $ ./tsl_mongo -p -i "title ~= 'Other' and spec.raiting > 1" | jq
 }
 ```
 
-### tsl_to_sql
+##### tsl_to_sql
 
 ``` bash
 $ ./tsl_to_sql -h
@@ -191,6 +196,8 @@ Usage of ./tsl_to_sql:
 ``` bash
 $ SQL="name != 'eli''s' or city like '%rome%' and state not between 'italy' and 'france'"
 $ ./tsl_to_sql -i "$SQL" -t users -o pgsql
+```
+``` sql
 sql:  SELECT * FROM users WHERE (name <> $1 OR (city LIKE $2 AND state NOT BETWEEN $3 AND $4))
 args: [eli's %rome% italy france]
 
@@ -198,19 +205,19 @@ args: [eli's %rome% italy france]
 
 ## Grammar
 
-### Antlr4 grammar
+##### Antlr4 grammar
 
 TSL is generated using [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammar file is [TSL.g4](/TSL.g4).
 
-### Keywords
+##### Keywords
 ```
 and or not is null like between in
 ```
-### Operators
+##### Operators
 ```
 = <= >= != ~= ~! <>
 ```
-### Examples
+##### Examples
 ```
 name = 'Joe'
 ```
@@ -223,13 +230,12 @@ city in ('paris', 'rome', 'milan') or sate = 'spain'
 
 ## Code snippets
 
-### import
 
 ``` go
 import "github.com/yaacov/tsl/pkg/tsl"
 ```
 
-### ParseTSL
+##### ParseTSL
 
 ``` go
   ...
@@ -241,7 +247,7 @@ import "github.com/yaacov/tsl/pkg/tsl"
   ...
 ```
 
-### SquirrelWalk
+##### SquirrelWalk
 
 ``` go
   import (
