@@ -20,16 +20,32 @@
 // TSL grammar examples:
 //  "name = 'joe' or name = 'jane'"
 //  "city in ('paris', 'rome', 'milan') and state != 'spane'"
+//  "pages between 100 and 200 and author.name ~= 'Hilbert'"
 //
 // The package provide the ParseTSL method to convert TSL string into TSL tree.
 //
-// TSL tree can be used to generate SQL filters, and create SQL queries. the
-// SquirrelWalk [1] method use Squirrel pkg to create the SQL string.
+// TSL tree can be used to generate SQL and MongoDB query filters. SquirrelWalk
+// and BSONWalk methods can be used to create such filters.
 //
-// TSL tree can also be use to create search engines on other data sources, for
-// example bsonWalk [2] method converts TSL tree into bson for MongoDB based search.
+// SquirrelWalk:  https://github.com/yaacov/tsl/pkg/tsl/tsl_squirrel_walk.go
 //
-// [1] https://github.com/yaacov/tsl/blob/master/pkg/tsl/tsl.go
-// [2] https://github.com/yaacov/tsl/blob/master/cmd/tsl_mongo/walk.go
+// BSONWalk: https://github.com/yaacov/tsl/pkg/tsl/tsl_bson_walk.go
 //
+// SQL Example:
+//   filter, err := tsl.SquirrelWalk(tree)
+//
+//   sql, args, err := sq.Select("name, city, state").
+//        From("users").
+//        Where(filter).
+//        ToSql()
+//
+// Mongo Example:
+//   // Prepare a bson filter
+//   filter, err = tsl.BSONWalk(tree)
+//
+//   // Run query
+//   cur, err := collection.Find(ctx, bson.NewDocument(filter))
+//
+// Squirrel: https://github.com/Masterminds/squirrel
+// MongoDB Go driver: https://github.com/mongodb/mongo-go-driver
 package tsl
