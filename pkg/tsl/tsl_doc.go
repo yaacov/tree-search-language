@@ -24,6 +24,13 @@
 //
 // The package provide the ParseTSL method to convert TSL string into TSL tree.
 //
+// Usage:
+//   // Parse input string into a TSL tree.
+//   tree, err := tsl.ParseTSL("user.name like 'Joe'")
+//   if err != nil {
+//       log.Fatal(err)
+//   }
+//
 // TSL tree can be used to generate SQL and MongoDB query filters. SquirrelWalk
 // and BSONWalk methods can be used to create such filters.
 //
