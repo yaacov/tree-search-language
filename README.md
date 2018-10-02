@@ -83,7 +83,7 @@ cur, err := collection.Find(ctx, bson.NewDocument(filter))
 
 ## Cli tools
 
-[tls_parser](/cmd/tsl_parser), [tls_mongo](/cmd/tsl_mongo) and [tsl_to_sql](/cmd/tsl_to_sql) are example cli tools showcasing the TSL language and TSL golang package.
+[tls_parser](/cmd/tsl_parser), [tls_mongo](/cmd/tsl_mongo) and [tsl_sqlite](/cmd/tsl_sqlite) are example cli tools showcasing the TSL language and TSL golang package.
 
 ##### tls_parser
 
@@ -98,24 +98,11 @@ Usage of ./tls_parser:
 
 
 ``` bash
-$ ./tsl_parser -i "(name = 'joe' or name = 'jane') and city = 'rome'" -o yaml
+$ ./tsl_parser -i "(name = 'joe' or name = 'jane') and city = 'rome'" -o sql
 ```
-``` yaml
-func: $and
-left:
-  func: $or
-  left:
-    func: $eq
-    left: name
-    right: joe
-  right:
-    func: $eq
-    left: name
-    right: jane
-right:
-  func: $eq
-  left: city
-  right: rome
+```
+sql:  SELECT * FROM table_name WHERE ((name = ? OR name = ?) AND city = ?)
+args: [joe jane rome]
 ```
 
 ##### tsl_mongo
@@ -179,27 +166,27 @@ $ ./tsl_mongo -p -i "title ~= 'Other' and spec.Rating > 1" | jq
 }
 ```
 
-##### tsl_to_sql
+##### tsl_sqlite
 
 ``` bash
-$ ./tsl_to_sql -h
-Usage of ./tsl_to_sql:
+./tsl_sqlite -h
+Usage of ./tsl_sqlite:
+  -f string
+    	the sqlite database file name (default "./sqlite.db")
   -i string
-    	the tsl string to parse (e.g. "animal = 'kitty'")
-  -o string
-    	output format [mysql/pgsql] (default "mysql")
-  -t string
-    	the table name to use for SQL generation (default "<table-name>")
-
+    	the tsl string to parse (e.g. "Title = 'Book'")
+  -p	prepare a book collection for queries
 ```
 
 ``` bash
-$ SQL="name != 'eli''s' or city like '%rome%' and state not between 'italy' and 'france'"
-$ ./tsl_to_sql -i "$SQL" -t users -o pgsql
+$ SQL="Title like '%Book%' and Pages > 100"
+$ ./tsl_sqlite -i "$SQL" -p
 ```
-``` sql
-sql:  SELECT * FROM users WHERE (name <> $1 OR (city LIKE $2 AND state NOT BETWEEN $3 AND $4))
-args: [eli's %rome% italy france]
+```
+Createing table.
+Insert demo books.
+{2 Other Book Jane 200 3}
+{5 Good Book Joe 150 4}
 
 ```
 
