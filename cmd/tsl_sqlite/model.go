@@ -54,7 +54,7 @@ delete from books;
 func connect(ctx context.Context, url string) (tx *sql.Tx, err error) {
 	var db *sql.DB
 
-	db, err = sql.Open("sqlite3", "./foo.db")
+	db, err = sql.Open("sqlite3", url)
 	check(err)
 
 	tx, err = db.BeginTx(ctx, nil)
