@@ -72,6 +72,7 @@ func main() {
 	filter, err := tsl.SquirrelWalk(tree)
 	check(err)
 
+	// Query SQL table.
 	rows, err = sq.
 		Select("*").
 		Where(filter).

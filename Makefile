@@ -58,7 +58,8 @@ fmt:
 .PHONY: test
 test:
 	go test ./cmd/tsl_parser
-	go test ./cmd/tsl_to_sql
+	go test ./cmd/tsl_sqlite
+	go test ./cmd/tsl_mongo
 	go test ./pkg/tsl
 
 .PHONY: generate
