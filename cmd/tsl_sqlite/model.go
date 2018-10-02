@@ -40,6 +40,17 @@ var books = []interface{}{
 	book{Title: "Good Book", Author: "Joe", Pages: 150, Rating: 4},
 }
 
+const sqlStmt = `
+create table if not exists books (
+	id integer not null primary key,
+	title text,
+	author text,
+	pages integer,
+	rating integer
+);
+delete from books;
+`
+
 func connect(ctx context.Context, url string) (tx *sql.Tx, err error) {
 	var db *sql.DB
 
@@ -52,18 +63,6 @@ func connect(ctx context.Context, url string) (tx *sql.Tx, err error) {
 }
 
 func prepareCollection(ctx context.Context, tx *sql.Tx) (err error) {
-
-	sqlStmt := `
-	create table if not exists books (
-		id integer not null primary key,
-		title text,
-		author text,
-		pages integer,
-		rating integer
-	);
-	delete from books;
-	`
-
 	// Create table.
 	fmt.Println("Createing table.")
 	_, err = tx.ExecContext(ctx, sqlStmt)
