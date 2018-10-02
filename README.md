@@ -46,7 +46,7 @@ $in                          $nbetween
 
 ##### SquirrelWalk
 
-The TSL package include a helper [SquirrelWalk](/pkg/tsl/tsl_squirrel_walk.go) method that adds search to [squirrel](https://github.com/Masterminds/squirrel)'s SelectBuilder object:
+The TSL package include a helper [SquirrelWalk](/pkg/tsl/squirrel_walk.go) method that adds search to [squirrel](https://github.com/Masterminds/squirrel)'s SelectBuilder object:
 
 ``` go
 // Prepare squirrel filter.
@@ -71,7 +71,7 @@ SELECT name, city, state FROM users WHERE (name IN (?,?) AND grade NOT BETWEEN ?
 
 ##### BSONWalk
 
-The TSL package include a helper [BSONWalk](/pkg/tsl/tsl_bson_walk.go) method that adds search bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
+The TSL package include a helper [BSONWalk](/pkg/tsl/bson_walk.go) method that adds search bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
 
 ``` go
 // Prepare a bson filter.
@@ -107,7 +107,7 @@ args: [joe jane rome]
 
 ##### tsl_mongo
 
-tsl_mongo include an example using [BSONWalk](/pkg/tsl/tsl_bson_walk.go) method, for building a mongo bson filter.
+tsl_mongo include an example using [BSONWalk](/pkg/tsl/bson_walk.go) method, for building a mongo bson filter.
 
 ``` bash
 $ ./tsl_mongo -h

@@ -16,8 +16,38 @@
 package tsl
 
 import (
+	"fmt"
+	"strconv"
+	"strings"
+
 	"github.com/yaacov/tsl/pkg/parser"
 )
+
+// Node is a Tree search node.
+type Node struct {
+	Func  string      `json:"func"`
+	Left  interface{} `json:"left,omitempty"`
+	Right interface{} `json:"right,omitempty"`
+}
+
+// Listener is a Tree search listener.
+type Listener struct {
+	*parser.BaseTSLListener
+
+	Stack []Node
+	Err   error
+}
+
+// GetTree return the parsed tree, if exist.
+func (l *Listener) GetTree() (n Node, err error) {
+	// Check stack size.
+	if len(l.Stack) < 1 {
+		err = fmt.Errorf("operator stack is empty")
+		return
+	}
+
+	return l.Stack[0], l.Err
+}
 
 // ExitLiteralOps is called when production LiteralOps is exited.
 func (l *Listener) ExitLiteralOps(c *parser.LiteralOpsContext) {
@@ -135,4 +165,75 @@ func (l *Listener) ExitOr(c *parser.OrContext) {
 	}
 
 	l.push(n)
+}
+
+// hasLiteralValues is a type that contain literal values.
+type hasLiteralValues interface {
+	AllLiteralValue() []parser.ILiteralValueContext
+	LiteralValue(int) parser.ILiteralValueContext
+}
+
+// ternaryOp return lh if conditional is true, rh o/w.
+func ternaryOp(conditional bool, lh string, rh string) string {
+	if conditional {
+		return lh
+	}
+
+	return rh
+}
+
+// literalValueToArg clean literal value, and return an arg string or float.
+func literalValueToArg(v string) (arg interface{}) {
+	l := len(v)
+
+	// Check string length.
+	if l < 1 {
+		return
+	}
+
+	// Check for ''.
+	if v[0] == '\'' {
+		v = v[1 : l-1]
+		arg = strings.Replace(v, "''", "'", -1)
+		return
+	}
+
+	// It's a float.
+	arg, _ = strconv.ParseFloat(v, 64)
+
+	return
+}
+
+// literalValuesToArgs collect literal values, and create args list.
+func literalValuesToArgs(c hasLiteralValues) (args []interface{}) {
+	// Get length of literal values list.
+	l := len(c.AllLiteralValue())
+
+	// Create the arg list.
+	args = make([]interface{}, l)
+	for i := 0; i < l; i++ {
+		args[i] = literalValueToArg(c.LiteralValue(i).GetText())
+	}
+
+	return
+}
+
+// push is a helper function for pushing new node to the listener Stack.
+func (l *Listener) push(i Node) {
+	l.Stack = append(l.Stack, i)
+}
+
+// pop is a helper function for poping a node from the listener Stack.
+func (l *Listener) pop() (n Node) {
+	// Check that we have nodes in the stack.
+	size := len(l.Stack)
+	if size < 1 {
+		l.Err = fmt.Errorf("operator stack is empty")
+		return
+	}
+
+	// Pop the last value from the Stack.
+	n, l.Stack = l.Stack[size-1], l.Stack[:size-1]
+
+	return
 }

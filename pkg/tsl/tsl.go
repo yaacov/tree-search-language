@@ -16,8 +16,6 @@
 package tsl
 
 import (
-	"fmt"
-
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 
 	"github.com/yaacov/tsl/pkg/parser"
@@ -56,15 +54,4 @@ func ParseTSL(input string) (tree Node, err error) {
 	tree, err = listener.GetTree()
 
 	return
-}
-
-// GetTree return the parsed tree, if exist.
-func (l *Listener) GetTree() (n Node, err error) {
-	// Check stack size.
-	if len(l.Stack) < 1 {
-		err = fmt.Errorf("operator stack is empty")
-		return
-	}
-
-	return l.Stack[0], l.Err
 }

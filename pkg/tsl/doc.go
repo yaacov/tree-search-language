@@ -34,9 +34,9 @@
 // TSL tree can be used to generate SQL and MongoDB query filters. SquirrelWalk
 // and BSONWalk methods can be used to create such filters.
 //
-// Squirrel walk code:  https://github.com/yaacov/tsl/blob/master/pkg/tsl/tsl_squirrel_walk.go
+// Squirrel walk code:  https://github.com/yaacov/tsl/blob/master/pkg/tsl/squirrel_walk.go
 //
-// SQL generation example:  https://github.com/yaacov/tsl/blob/master/cmd/tsl_to_sql/main.go
+// SQL generation example:  https://github.com/yaacov/tsl/blob/master/cmd/to_sql/main.go
 //
 // Usage:
 //   filter, err := tsl.SquirrelWalk(tree)
@@ -46,9 +46,9 @@
 //        Where(filter).
 //        ToSql()
 //
-// BSON walk code: https://github.com/yaacov/tsl/blob/master/pkg/tsl/tsl_bson_walk.go
+// BSON walk code: https://github.com/yaacov/tsl/blob/master/pkg/tsl/bson_walk.go
 //
-// BSON generation example:  https://github.com/yaacov/tsl/blob/master/cmd/tsl_mongo/main.go
+// BSON generation example:  https://github.com/yaacov/tsl/blob/master/cmd/mongo/main.go
 //
 // Usage:
 //   // Prepare a bson filter
