@@ -27,37 +27,6 @@ import (
 	"github.com/yaacov/tsl/pkg/tsl"
 )
 
-var books = []interface{}{
-	book{Title: "Book", Author: "Joe", Spec: bookSpecs{Pages: 100, Raiting: 4}},
-	book{Title: "Other Book", Author: "Jane", Spec: bookSpecs{Pages: 200, Raiting: 3}},
-	book{Title: "Some Book", Author: "Jane", Spec: bookSpecs{Pages: 50, Raiting: 5}},
-	book{Title: "Some Other Book", Author: "Jane", Spec: bookSpecs{Pages: 50}},
-	book{Title: "Good Book", Author: "Joe", Spec: bookSpecs{Pages: 150, Raiting: 4}},
-}
-
-func connect(ctx context.Context, url string) (client *mongo.Client, err error) {
-	client, err = mongo.NewClient(url)
-	if err != nil {
-		return
-	}
-	err = client.Connect(ctx)
-
-	return
-}
-
-func prepareCollection(ctx context.Context, collection *mongo.Collection) (err error) {
-	// Drop the collection.
-	err = collection.Drop(ctx)
-	if err != nil {
-		return
-	}
-
-	// Insert new books into the collection.
-	_, err = collection.InsertMany(ctx, books)
-
-	return
-}
-
 func main() {
 	var err error
 	var client *mongo.Client

@@ -22,6 +22,7 @@ import (
 	"fmt"
 	"os"
 
+	sq "github.com/Masterminds/squirrel"
 	"github.com/hokaccha/go-prettyjson"
 	"gopkg.in/yaml.v2"
 
@@ -38,15 +39,21 @@ func main() {
 	var s []byte
 
 	// Setup the input.
-	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"animal = 'kitty'\")")
-	outputPtr := flag.String("o", "json", "output format [json/yaml/prettyjson]")
+	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"Title = 'kitty'\")")
+	outputPtr := flag.String("o", "json", "output format [json/yaml/prettyjson/sql]")
 	flag.Parse()
+
+	// Sanity check.
+	if *inputPtr == "" {
+		err := fmt.Errorf("missing required flag -i (the tsl string to parse)")
+		check(err)
+	}
 
 	// Parse input string into a TSL tree.
 	tree, err := tsl.ParseTSL(*inputPtr)
 	check(err)
 
-	// If listener has erros, we can not print the tree.
+	// If listener has errors, we can not print the tree.
 	if err != nil {
 		os.Exit(1)
 	}
@@ -58,8 +65,25 @@ func main() {
 		s, err = yaml.Marshal(tree)
 	case "prettyjson":
 		s, err = prettyjson.Marshal(tree)
-	default:
-		s, err = json.Marshal(tree)
+	case "sql":
+		var sql string
+		var args []interface{}
+		var filter sq.Sqlizer
+
+		// Use Squirrel to walk the tree, and create SQL filter.
+		filter, err = tsl.SquirrelWalk(tree)
+
+		// Add SQL template to bytes slice.
+		if err == nil {
+			sql, args, err = sq.
+				Select("*").
+				Where(filter).
+				From("table_name").
+				ToSql()
+
+			s = append(s, fmt.Sprintf("sql:  %s\n", sql)...)
+			s = append(s, fmt.Sprintf("args: %v", args)...)
+		}
 	}
 
 	check(err)

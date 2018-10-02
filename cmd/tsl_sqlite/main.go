@@ -17,64 +17,84 @@
 package main
 
 import (
+	"context"
+	"database/sql"
 	"flag"
 	"fmt"
-	"os"
+	"log"
 
 	sq "github.com/Masterminds/squirrel"
+
 	"github.com/yaacov/tsl/pkg/tsl"
 )
 
 func check(err error) {
 	if err != nil {
-		fmt.Printf("Err: %v\n", err)
+		log.Fatal(err)
 	}
 }
 
 func main() {
-	var s sq.SelectBuilder
+	var rows *sql.Rows
 
 	// Setup the input.
-	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"animal = 'kitty'\")")
-	tablePtr := flag.String("t", "<table-name>", "the table name to use for SQL generation")
-	outputPtr := flag.String("o", "mysql", "output format [mysql/pgsql]")
+	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"Title = 'Book'\")")
+	preparePtr := flag.Bool("p", false, "prepare a book collection for queries")
+	filePtr := flag.String("f", "./sqlite.db", "the sqlite database file name")
 	flag.Parse()
+
+	// Sanity check.
+	if *inputPtr == "" {
+		err := fmt.Errorf("missing required flag -i (the tsl string to parse)")
+		check(err)
+	}
+
+	// Set context.
+	ctx := context.Background()
 
 	// Parse input string into a TSL tree.
 	tree, err := tsl.ParseTSL(*inputPtr)
 	check(err)
 
-	// If parser has erros, we can not print the tree.
-	if err != nil {
-		os.Exit(1)
+	// Try to connect to mongo server.
+	tx, err := connect(ctx, *filePtr)
+	check(err)
+
+	defer tx.Commit()
+
+	// Create a clean books collection.
+	if *preparePtr {
+		err = prepareCollection(ctx, tx)
+		check(err)
 	}
 
-	switch *outputPtr {
-	case "pgsql":
-		// If we are using PostgreSQL style use $ instead of ?
-		// for placeholders.
-		psql := sq.StatementBuilder.PlaceholderFormat(sq.Dollar)
-		s = psql.Select("*")
-	case "mysql":
-		s = sq.Select("*")
-	default:
-		s = sq.Select("*")
-	}
-
+	// Prepare SQL filter.
 	filter, err := tsl.SquirrelWalk(tree)
 	check(err)
 
-	// If SquirrelWalk has erros, we can not print the tree.
-	if err != nil {
-		os.Exit(1)
+	rows, err = sq.
+		Select("*").
+		Where(filter).
+		From("books").
+		RunWith(tx).
+		QueryContext(ctx)
+	check(err)
+
+	for rows.Next() {
+		b := book{}
+		err = rows.Scan(
+			&b.ID,
+			&b.Title,
+			&b.Author,
+			&b.Pages,
+			&b.Rating,
+		)
+		check(err)
+
+		fmt.Printf("%v\n", b)
 	}
 
-	sql, args, err := s.
-		Where(filter).
-		From(*tablePtr).
-		ToSql()
-
+	// Check for errors and exit.
+	err = rows.Err()
 	check(err)
-	fmt.Printf("sql:  %s\n", sql)
-	fmt.Printf("args: %v\n", args)
 }

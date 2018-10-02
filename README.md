@@ -93,7 +93,7 @@ Usage of ./tls_parser:
   -i string
     	the tsl string to parse (e.g. "animal = 'kitty'")
   -o string
-    	output format [json/yaml/prettyjson] (default "json")
+    	output format [json/yaml/prettyjson/sql] (default "json")
 ```
 
 
@@ -151,7 +151,7 @@ $ ./tsl_mongo -p -i "title is not null" | jq
     "pages": {
       "$numberLong": "100"
     },
-    "raiting": {
+    "Rating": {
       "$numberLong": "4"
     }
   }
@@ -159,7 +159,7 @@ $ ./tsl_mongo -p -i "title is not null" | jq
 
 ```
 ``` bash
-$ ./tsl_mongo -p -i "title ~= 'Other' and spec.raiting > 1" | jq
+$ ./tsl_mongo -p -i "title ~= 'Other' and spec.Rating > 1" | jq
 ```
 ``` json
 {
@@ -172,7 +172,7 @@ $ ./tsl_mongo -p -i "title ~= 'Other' and spec.raiting > 1" | jq
     "pages": {
       "$numberLong": "200"
     },
-    "raiting": {
+    "Rating": {
       "$numberLong": "3"
     }
   }

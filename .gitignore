@@ -12,7 +12,7 @@
 *.out
 
 /tsl_parser
-/tsl_to_sql
+/tsl_sqlite
 /tsl_mongo
 
 /data/
