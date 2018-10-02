@@ -46,7 +46,7 @@ func connect(ctx context.Context, url string) (tx *sql.Tx, err error) {
 	db, err = sql.Open("sqlite3", "./foo.db")
 	check(err)
 
-	tx, err = db.Begin()
+	tx, err = db.BeginTx(ctx, nil)
 
 	return
 }
@@ -71,7 +71,7 @@ func prepareCollection(ctx context.Context, tx *sql.Tx) (err error) {
 
 	// Insert new books into the table.
 	fmt.Println("Insert demo books.")
-	stmt, err := tx.Prepare("insert into books(title, author, pages, rating) values(?, ?, ?, ?)")
+	stmt, err := tx.PrepareContext(ctx, "insert into books(title, author, pages, rating) values(?, ?, ?, ?)")
 	check(err)
 
 	defer stmt.Close()
