@@ -101,7 +101,7 @@ func unaryStep(n Node) (s sq.Sqlizer, err error) {
 		s = sq.Eq{sql: n.Right}
 	case NotInOp:
 		// Multiple not eq will be translated into NOT IN (?, ? ...).
-		s = sq.NotEq{n.Left.(string): n.Right}
+		s = sq.NotEq{sql: n.Right}
 	case IsNilOp:
 		// eq nil will be translated into IS NULL.
 		s = sq.Eq{sql: nil}

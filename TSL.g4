@@ -24,7 +24,7 @@ literalOp
   ;
 
 numericOp
-  : ( '+' | '-' | '*' | '/' | '%' )
+  : ( '*' | '/' | '%' | '+' | '-' )
   ;
 
 stringOp
@@ -43,11 +43,17 @@ columnName
   : ( ( databaseName '.' )? tableName '.' )? IDENTIFIER
   ;
 
+numericExp
+  : signedNumber
+  | numericExp numericOp numericExp
+  | '(' numericExp ')'
+  ;
+
 columnOp
-  : columnName                      # Column
-  | columnOp numericOp columnOp     # ColumnNameOp
-  | columnOp numericOp signedNumber # ColumnNameNumericOp
-  | '(' columnOp ')'                # ColumnNamePar
+  : columnName                    # Column
+  | columnOp numericOp columnOp   # ColumnNameOp
+  | columnOp numericOp numericExp # ColumnNameNumericOp
+  | '(' columnOp ')'              # ColumnNamePar
   ;
 
 signedNumber

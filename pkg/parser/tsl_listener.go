@@ -62,6 +62,9 @@ type TSLListener interface {
 	// EnterColumnName is called when entering the columnName production.
 	EnterColumnName(c *ColumnNameContext)
 
+	// EnterNumericExp is called when entering the numericExp production.
+	EnterNumericExp(c *NumericExpContext)
+
 	// EnterColumn is called when entering the Column production.
 	EnterColumn(c *ColumnContext)
 
@@ -139,6 +142,9 @@ type TSLListener interface {
 
 	// ExitColumnName is called when exiting the columnName production.
 	ExitColumnName(c *ColumnNameContext)
+
+	// ExitNumericExp is called when exiting the numericExp production.
+	ExitNumericExp(c *NumericExpContext)
 
 	// ExitColumn is called when exiting the Column production.
 	ExitColumn(c *ColumnContext)

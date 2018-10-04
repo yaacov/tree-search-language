@@ -86,7 +86,7 @@ func (l *Listener) ExitColumnNameNumericOp(c *parser.ColumnNameNumericOpContext)
 	n := Node{
 		Func:  opDic[c.NumericOp().GetText()],
 		Left:  left,
-		Right: c.SignedNumber().GetText(),
+		Right: c.NumericExp().GetText(),
 	}
 
 	l.push(n)

@@ -66,7 +66,7 @@ func mathExpToSQL(n []sq.Sqlizer, mathOp string) (sql string, args []interface{}
 	}
 
 	args = append(args, partArgs...)
-	sql = fmt.Sprintf("%s %s %s", left, mathOp, right)
+	sql = fmt.Sprintf("(%s %s %s)", left, mathOp, right)
 
 	return
 }

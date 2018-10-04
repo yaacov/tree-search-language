@@ -129,6 +129,12 @@ func (s *BaseTSLListener) EnterColumnName(ctx *ColumnNameContext) {}
 // ExitColumnName is called when production columnName is exited.
 func (s *BaseTSLListener) ExitColumnName(ctx *ColumnNameContext) {}
 
+// EnterNumericExp is called when production numericExp is entered.
+func (s *BaseTSLListener) EnterNumericExp(ctx *NumericExpContext) {}
+
+// ExitNumericExp is called when production numericExp is exited.
+func (s *BaseTSLListener) ExitNumericExp(ctx *NumericExpContext) {}
+
 // EnterColumn is called when production Column is entered.
 func (s *BaseTSLListener) EnterColumn(ctx *ColumnContext) {}
 
