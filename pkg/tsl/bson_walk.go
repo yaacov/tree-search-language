@@ -23,10 +23,12 @@ import (
 
 // Returns the identifier setring from an IdentOp operator node.
 func identString(n interface{}) string {
+	// This is just a string, not and IdentOp.
 	if str, ok := n.(Node).Left.(string); ok {
 		return str
 	}
 
+	// This is an IdentOp.
 	return n.(Node).Left.(Node).Left.(string)
 }
 
