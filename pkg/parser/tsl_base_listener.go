@@ -99,6 +99,12 @@ func (s *BaseTSLListener) EnterLiteralOp(ctx *LiteralOpContext) {}
 // ExitLiteralOp is called when production literalOp is exited.
 func (s *BaseTSLListener) ExitLiteralOp(ctx *LiteralOpContext) {}
 
+// EnterNumericOp is called when production numericOp is entered.
+func (s *BaseTSLListener) EnterNumericOp(ctx *NumericOpContext) {}
+
+// ExitNumericOp is called when production numericOp is exited.
+func (s *BaseTSLListener) ExitNumericOp(ctx *NumericOpContext) {}
+
 // EnterStringOp is called when production stringOp is entered.
 func (s *BaseTSLListener) EnterStringOp(ctx *StringOpContext) {}
 
@@ -122,6 +128,24 @@ func (s *BaseTSLListener) EnterColumnName(ctx *ColumnNameContext) {}
 
 // ExitColumnName is called when production columnName is exited.
 func (s *BaseTSLListener) ExitColumnName(ctx *ColumnNameContext) {}
+
+// EnterColumn is called when production Column is entered.
+func (s *BaseTSLListener) EnterColumn(ctx *ColumnContext) {}
+
+// ExitColumn is called when production Column is exited.
+func (s *BaseTSLListener) ExitColumn(ctx *ColumnContext) {}
+
+// EnterColumnNameOp is called when production ColumnNameOp is entered.
+func (s *BaseTSLListener) EnterColumnNameOp(ctx *ColumnNameOpContext) {}
+
+// ExitColumnNameOp is called when production ColumnNameOp is exited.
+func (s *BaseTSLListener) ExitColumnNameOp(ctx *ColumnNameOpContext) {}
+
+// EnterColumnNamePar is called when production ColumnNamePar is entered.
+func (s *BaseTSLListener) EnterColumnNamePar(ctx *ColumnNameParContext) {}
+
+// ExitColumnNamePar is called when production ColumnNamePar is exited.
+func (s *BaseTSLListener) ExitColumnNamePar(ctx *ColumnNameParContext) {}
 
 // EnterSignedNumber is called when production signedNumber is entered.
 func (s *BaseTSLListener) EnterSignedNumber(ctx *SignedNumberContext) {}

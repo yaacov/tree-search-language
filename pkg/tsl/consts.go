@@ -17,6 +17,7 @@ package tsl
 
 // TLS operators.
 const (
+	IdentOp      = "$ident" // Empty operator for itentifiers
 	LtOp         = "$lt"
 	LteOp        = "$lte"
 	GtOp         = "$gt"
@@ -36,6 +37,11 @@ const (
 	OrOp         = "$or"
 	IsNilOp      = "$nexists"
 	IsNotNilOp   = "$exists"
+	AddOp        = "$add"
+	SubtractOp   = "$subtractO"
+	MultiplyOp   = "$multiply"
+	DivideOp     = "$divide"
+	ModuloOp     = "$modulo"
 )
 
 // opDic maps SQL'ish operators to TLS operators.
@@ -49,4 +55,9 @@ var opDic = map[string]string{
 	"<>": NotEqOp,
 	"~=": RegexOp,
 	"~!": NotRegexOp,
+	"+":  AddOp,
+	"-":  SubtractOp,
+	"*":  MultiplyOp,
+	"/":  DivideOp,
+	"%":  ModuloOp,
 }

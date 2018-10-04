@@ -1,6 +1,6 @@
 # Tree Search Language (TSL)
 
-Tree Search Language (TSL) is a wonderful search langauge, With similar grammar to SQL's
+Tree Search Language (TSL) is a wonderful search language, With similar grammar to SQL's
 where part. implementing query based search engines was never that easy.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/yaacov/tsl)](https://goreportcard.com/report/github.com/yaacov/tsl)
@@ -105,6 +105,34 @@ sql:  SELECT * FROM table_name WHERE ((name = ? OR name = ?) AND city = ?)
 args: [joe jane rome]
 ```
 
+``` bash
+./tsl_parser -i "(name = 'joe' or name = 'jane') and city = 'rome'" -o prettyjson
+```
+
+``` json
+{
+  "func": "$and",
+  "left": {
+    "func": "$or",
+    "left": {
+      "func": "$eq",
+      "left": "name",
+      "right": "joe"
+    },
+    "right": {
+      "func": "$eq",
+      "left": "name",
+      "right": "jane"
+    }
+  },
+  "right": {
+    "func": "$eq",
+    "left": "city",
+    "right": "rome"
+  }
+}
+```
+
 ##### tsl_mongo
 
 tsl_mongo include an example using [BSONWalk](/pkg/tsl/bson_walk.go) method, for building a mongo bson filter.
@@ -183,7 +211,7 @@ $ SQL="Title like '%Book%' and Pages > 100"
 $ ./tsl_sqlite -i "$SQL" -p
 ```
 ```
-Createing table.
+Creating table.
 Insert demo books.
 {2 Other Book Jane 200 3}
 {5 Good Book Joe 150 4}
@@ -202,7 +230,7 @@ and or not is null like between in
 ```
 ##### Operators
 ```
-= <= >= != ~= ~! <>
+= <= >= != ~= ~! <> + - * / %
 ```
 ##### Examples
 ```
@@ -224,6 +252,9 @@ import "github.com/yaacov/tsl/pkg/tsl"
 
 ##### ParseTSL
 
+ParseTSL takes a string input and generate a search tree object, the function
+returns the root Node of the tree.
+
 ``` go
 ...
 // Set a TSL input string.
@@ -235,6 +266,10 @@ tree, err := tsl.ParseTSL(input)
 ```
 
 ##### SquirrelWalk
+
+SquirrelWalk and BSONWalk are example methods the demonstrate traversing ( walk ) the search tree.
+
+SquirrelWalk takes the base Node ( tree ) of the search tree, and return a Squirrel SQL filter object.
 
 ``` go
 import (
@@ -256,6 +291,8 @@ sql, args, err := sq.Select("name, city, state").
 ```
 
 ##### BSONWalk
+
+BSONWalk takes the base Node ( tree ) of the search tree, and return a MongoDB BSON object.
 
 ``` go
 ...

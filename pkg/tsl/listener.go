@@ -23,13 +23,6 @@ import (
 	"github.com/yaacov/tsl/pkg/parser"
 )
 
-// Node is a Tree search node.
-type Node struct {
-	Func  string      `json:"func"`
-	Left  interface{} `json:"left,omitempty"`
-	Right interface{} `json:"right,omitempty"`
-}
-
 // Listener is a Tree search listener.
 type Listener struct {
 	*parser.BaseTSLListener
@@ -41,20 +34,46 @@ type Listener struct {
 // GetTree return the parsed tree, if exist.
 func (l *Listener) GetTree() (n Node, err error) {
 	// Check stack size.
-	if len(l.Stack) < 1 {
-		err = fmt.Errorf("operator stack is empty")
+	if len(l.Stack) != 1 {
+		err = fmt.Errorf("unexpected operator stack")
 		return
 	}
 
-	return l.Stack[0], l.Err
+	n = l.Stack[0]
+	return
 }
 
 // ExitLiteralOps is called when production LiteralOps is exited.
 func (l *Listener) ExitLiteralOps(c *parser.LiteralOpsContext) {
+	left := l.pop()
+
 	n := Node{
 		Func:  opDic[c.LiteralOp().GetText()],
-		Left:  c.ColumnName().GetText(),
+		Left:  left,
 		Right: literalValueToArg(c.LiteralValue().GetText()),
+	}
+
+	l.push(n)
+}
+
+// ExitColumn is called when entering the Column production.
+func (l *Listener) ExitColumn(c *parser.ColumnContext) {
+	n := Node{
+		Func: IdentOp,
+		Left: c.ColumnName().GetText(),
+	}
+
+	l.push(n)
+}
+
+// ExitColumnNameOp is called when entering the ColumnNameOp production.
+func (l *Listener) ExitColumnNameOp(c *parser.ColumnNameOpContext) {
+	right, left := l.pop(), l.pop()
+
+	n := Node{
+		Func:  opDic[c.NumericOp().GetText()],
+		Left:  left,
+		Right: right,
 	}
 
 	l.push(n)
@@ -62,9 +81,11 @@ func (l *Listener) ExitLiteralOps(c *parser.LiteralOpsContext) {
 
 // ExitStringOps is called when production StringOps is exited.
 func (l *Listener) ExitStringOps(c *parser.StringOpsContext) {
+	left := l.pop()
+
 	n := Node{
 		Func:  opDic[c.StringOp().GetText()],
-		Left:  c.ColumnName().GetText(),
+		Left:  left,
 		Right: literalValueToArg(c.StringValue().GetText()),
 	}
 
@@ -73,10 +94,12 @@ func (l *Listener) ExitStringOps(c *parser.StringOpsContext) {
 
 // ExitLike is called when production Like is exited.
 func (l *Listener) ExitLike(c *parser.LikeContext) {
+	left := l.pop()
 	op := ternaryOp(c.KeyNot() == nil, LikeOp, NotLikeOp)
+
 	n := Node{
 		Func:  op,
-		Left:  c.ColumnName().GetText(),
+		Left:  left,
 		Right: literalValueToArg(c.StringValue().GetText()),
 	}
 
@@ -85,10 +108,12 @@ func (l *Listener) ExitLike(c *parser.LikeContext) {
 
 // ExitIsLiteral is called when production IsLiteral is exited.
 func (l *Listener) ExitIsLiteral(c *parser.IsLiteralContext) {
+	left := l.pop()
 	op := ternaryOp(c.KeyNot() == nil, EqOp, NotEqOp)
+
 	n := Node{
 		Func:  op,
-		Left:  c.ColumnName().GetText(),
+		Left:  left,
 		Right: literalValueToArg(c.LiteralValue().GetText()),
 	}
 
@@ -97,10 +122,12 @@ func (l *Listener) ExitIsLiteral(c *parser.IsLiteralContext) {
 
 // ExitIsNull is called when production IsNull is exited.
 func (l *Listener) ExitIsNull(c *parser.IsNullContext) {
+	left := l.pop()
 	op := ternaryOp(c.KeyNot() == nil, IsNilOp, IsNotNilOp)
+
 	n := Node{
 		Func: op,
-		Left: c.ColumnName().GetText(),
+		Left: left,
 	}
 
 	l.push(n)
@@ -108,11 +135,13 @@ func (l *Listener) ExitIsNull(c *parser.IsNullContext) {
 
 // ExitIn is called when production In is exited.
 func (l *Listener) ExitIn(c *parser.InContext) {
+	left := l.pop()
 	op := ternaryOp(c.KeyNot() == nil, InOp, NotInOp)
 	args := literalValuesToArgs(c)
+
 	n := Node{
 		Func:  op,
-		Left:  c.ColumnName().GetText(),
+		Left:  left,
 		Right: args,
 	}
 
@@ -121,11 +150,13 @@ func (l *Listener) ExitIn(c *parser.InContext) {
 
 // ExitBetween is called when production Between is exited.
 func (l *Listener) ExitBetween(c *parser.BetweenContext) {
+	left := l.pop()
 	op := ternaryOp(c.KeyNot() == nil, BetweenOp, NotBetweenOp)
 	args := literalValuesToArgs(c)
+
 	n := Node{
 		Func:  op,
-		Left:  c.ColumnName().GetText(),
+		Left:  left,
 		Right: args,
 	}
 
@@ -135,6 +166,7 @@ func (l *Listener) ExitBetween(c *parser.BetweenContext) {
 // ExitNot is called when production Not is exited.
 func (l *Listener) ExitNot(c *parser.NotContext) {
 	left := l.pop()
+
 	n := Node{
 		Func: NotOp,
 		Left: left,

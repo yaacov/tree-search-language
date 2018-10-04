@@ -21,6 +21,15 @@ import (
 	"github.com/mongodb/mongo-go-driver/bson"
 )
 
+// Returns the identifier setring from an IdentOp operator node.
+func identString(n interface{}) string {
+	if str, ok := n.(Node).Left.(string); ok {
+		return str
+	}
+
+	return n.(Node).Left.(Node).Left.(string)
+}
+
 // bsonFromArray helper method creates a slice of bson values from an interface,
 // supported values can be strings or floats.
 func bsonFromArray(a interface{}) (values []*bson.Value, err error) {
@@ -78,7 +87,7 @@ func BSONWalk(n Node) (b *bson.Element, err error) {
 			bson.VC.DocumentFromElements(r),
 		)
 	case EqOp, NotEqOp, LtOp, LteOp, GtOp, GteOp:
-		b = bson.EC.SubDocumentFromElements(n.Left.(string),
+		b = bson.EC.SubDocumentFromElements(identString(n.Left),
 			bson.EC.Interface(n.Func, n.Right),
 		)
 	case InOp:
@@ -86,7 +95,7 @@ func BSONWalk(n Node) (b *bson.Element, err error) {
 		if err != nil {
 			return
 		}
-		b = bson.EC.SubDocumentFromElements(n.Left.(string),
+		b = bson.EC.SubDocumentFromElements(identString(n.Left),
 			bson.EC.ArrayFromElements("$in", values...),
 		)
 	case NotInOp:
@@ -94,19 +103,19 @@ func BSONWalk(n Node) (b *bson.Element, err error) {
 		if err != nil {
 			return
 		}
-		b = bson.EC.SubDocumentFromElements(n.Left.(string),
+		b = bson.EC.SubDocumentFromElements(identString(n.Left),
 			bson.EC.SubDocumentFromElements("$not",
 				bson.EC.ArrayFromElements("$in", values...),
 			),
 		)
 	case IsNilOp:
-		b = bson.EC.SubDocumentFromElements(n.Left.(string), bson.EC.Boolean("$exists", false))
+		b = bson.EC.SubDocumentFromElements(identString(n.Left), bson.EC.Boolean("$exists", false))
 	case IsNotNilOp:
-		b = bson.EC.SubDocumentFromElements(n.Left.(string), bson.EC.Boolean("$exists", true))
+		b = bson.EC.SubDocumentFromElements(identString(n.Left), bson.EC.Boolean("$exists", true))
 	case RegexOp:
-		b = bson.EC.Regex(n.Left.(string), n.Right.(string), "")
+		b = bson.EC.Regex(identString(n.Left), n.Right.(string), "")
 	case NotRegexOp:
-		b = bson.EC.SubDocumentFromElements(n.Left.(string),
+		b = bson.EC.SubDocumentFromElements(identString(n.Left),
 			bson.EC.Regex("$not", n.Right.(string), ""),
 		)
 	case BetweenOp:
@@ -119,10 +128,10 @@ func BSONWalk(n Node) (b *bson.Element, err error) {
 		}
 		b = bson.EC.ArrayFromElements("$and",
 			bson.VC.DocumentFromElements(
-				bson.EC.SubDocumentFromElements(n.Left.(string), bson.EC.Interface("$gte", values[0])),
+				bson.EC.SubDocumentFromElements(identString(n.Left), bson.EC.Interface("$gte", values[0])),
 			),
 			bson.VC.DocumentFromElements(
-				bson.EC.SubDocumentFromElements(n.Left.(string), bson.EC.Interface("$lte", values[1])),
+				bson.EC.SubDocumentFromElements(identString(n.Left), bson.EC.Interface("$lte", values[1])),
 			),
 		)
 	case NotBetweenOp:
@@ -134,10 +143,10 @@ func BSONWalk(n Node) (b *bson.Element, err error) {
 		}
 		b = bson.EC.ArrayFromElements("$or",
 			bson.VC.DocumentFromElements(
-				bson.EC.SubDocumentFromElements(n.Left.(string), bson.EC.Interface("$lt", values[0])),
+				bson.EC.SubDocumentFromElements(identString(n.Left), bson.EC.Interface("$lt", values[0])),
 			),
 			bson.VC.DocumentFromElements(
-				bson.EC.SubDocumentFromElements(n.Left.(string), bson.EC.Interface("$gt", values[1])),
+				bson.EC.SubDocumentFromElements(identString(n.Left), bson.EC.Interface("$gt", values[1])),
 			),
 		)
 	default:
