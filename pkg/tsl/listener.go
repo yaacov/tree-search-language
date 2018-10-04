@@ -79,6 +79,19 @@ func (l *Listener) ExitColumnNameOp(c *parser.ColumnNameOpContext) {
 	l.push(n)
 }
 
+// ExitColumnNameOp is called when entering the ColumnNameNumericOp production.
+func (l *Listener) ExitColumnNameNumericOp(c *parser.ColumnNameNumericOpContext) {
+	left := l.pop()
+
+	n := Node{
+		Func:  opDic[c.NumericOp().GetText()],
+		Left:  left,
+		Right: c.SignedNumber().GetText(),
+	}
+
+	l.push(n)
+}
+
 // ExitStringOps is called when production StringOps is exited.
 func (l *Listener) ExitStringOps(c *parser.StringOpsContext) {
 	left := l.pop()

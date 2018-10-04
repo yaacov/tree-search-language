@@ -68,6 +68,9 @@ type TSLListener interface {
 	// EnterColumnNameOp is called when entering the ColumnNameOp production.
 	EnterColumnNameOp(c *ColumnNameOpContext)
 
+	// EnterColumnNameNumericOp is called when entering the ColumnNameNumericOp production.
+	EnterColumnNameNumericOp(c *ColumnNameNumericOpContext)
+
 	// EnterColumnNamePar is called when entering the ColumnNamePar production.
 	EnterColumnNamePar(c *ColumnNameParContext)
 
@@ -142,6 +145,9 @@ type TSLListener interface {
 
 	// ExitColumnNameOp is called when exiting the ColumnNameOp production.
 	ExitColumnNameOp(c *ColumnNameOpContext)
+
+	// ExitColumnNameNumericOp is called when exiting the ColumnNameNumericOp production.
+	ExitColumnNameNumericOp(c *ColumnNameNumericOpContext)
 
 	// ExitColumnNamePar is called when exiting the ColumnNamePar production.
 	ExitColumnNamePar(c *ColumnNameParContext)

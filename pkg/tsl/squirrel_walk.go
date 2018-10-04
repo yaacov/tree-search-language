@@ -21,6 +21,101 @@ import (
 	sq "github.com/Masterminds/squirrel"
 )
 
+// binaryStep handle a binary operator step for SquirrelWalk.
+func binaryStep(n Node) (s sq.Sqlizer, err error) {
+	var l, r sq.Sqlizer
+
+	// Left hand side must be a Node.
+	l, err = SquirrelWalk(n.Left.(Node))
+	if err != nil {
+		return
+	}
+
+	// Check if right hand side is Node or string.
+	if str, ok := n.Right.(string); ok {
+		// Right hand side is a string.
+		r = sq.Expr(str)
+	} else {
+		// Right hand side is a Node.
+		r, err = SquirrelWalk(n.Right.(Node))
+		if err != nil {
+			return
+		}
+	}
+
+	switch n.Func {
+	case AndOp:
+		s = sq.And{l, r}
+	case OrOp:
+		s = sq.Or{l, r}
+	case AddOp:
+		s = addExpr{l, r}
+	case SubtractOp:
+		s = subExpr{l, r}
+	case MultiplyOp:
+		s = mulExpr{l, r}
+	case DivideOp:
+		s = divExpr{l, r}
+	case ModuloOp:
+		s = modExpr{l, r}
+	default:
+		// If here than the operator is not supported.
+		err = fmt.Errorf("un supported operand: %s", n.Func)
+	}
+
+	return
+}
+
+// unaryStep handle a unary operator step for SquirrelWalk.
+func unaryStep(n Node) (s sq.Sqlizer, err error) {
+	var l sq.Sqlizer
+	var sql string
+
+	l, err = SquirrelWalk(n.Left.(Node))
+	if err != nil {
+		return
+	}
+
+	sql, _, err = l.ToSql()
+	if err != nil {
+		return
+	}
+
+	switch n.Func {
+	case NotOp:
+		s = notExpr{l}
+	case EqOp:
+		s = sq.Eq{sql: n.Right}
+	case NotEqOp:
+		s = sq.NotEq{sql: n.Right}
+	case LtOp:
+		s = sq.Lt{sql: n.Right}
+	case LteOp:
+		s = sq.LtOrEq{sql: n.Right}
+	case GtOp:
+		s = sq.Gt{sql: n.Right}
+	case GteOp:
+		s = sq.GtOrEq{sql: n.Right}
+	case InOp:
+		// Multiple eq will be translated into IN (?, ? ...).
+		s = sq.Eq{sql: n.Right}
+	case NotInOp:
+		// Multiple not eq will be translated into NOT IN (?, ? ...).
+		s = sq.NotEq{n.Left.(string): n.Right}
+	case IsNilOp:
+		// eq nil will be translated into IS NULL.
+		s = sq.Eq{sql: nil}
+	case IsNotNilOp:
+		// not eq nil will be translated into IS NOT NULL.
+		s = sq.NotEq{sql: nil}
+	default:
+		// If here than the operator is not supported.
+		err = fmt.Errorf("un supported operand: %s", n.Func)
+	}
+
+	return
+}
+
 // SquirrelWalk travel the TSL tree to create squirrel SQL select operators.
 //
 // Users can call the SquirrelWalk method inside a squirrel Where to add the query.
@@ -33,120 +128,14 @@ import (
 //
 // Squirrel: https://github.com/Masterminds/squirrel
 //
-// Disable linting because this function swith is too large:
-// nolint
 func SquirrelWalk(n Node) (s sq.Sqlizer, err error) {
-	var l, r sq.Sqlizer
-	var sql string
-
 	switch n.Func {
 	case IdentOp:
 		s = sq.Expr(n.Left.(string))
-	case AndOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-		r, err = SquirrelWalk(n.Right.(Node))
-		if err != nil {
-			return
-		}
-		s = sq.And{l, r}
-	case OrOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-		r, err = SquirrelWalk(n.Right.(Node))
-		if err != nil {
-			return
-		}
-		s = sq.Or{l, r}
-	case NotOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-		s = notExpr{l}
-	case AddOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-		r, err = SquirrelWalk(n.Right.(Node))
-		if err != nil {
-			return
-		}
-		s = addExpr{l, r}
-	case EqOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-		sql, _, err = l.ToSql()
-		s = sq.Eq{sql: n.Right}
-	case NotEqOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-		sql, _, err = l.ToSql()
-		s = sq.NotEq{sql: n.Right}
-	case LtOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-		sql, _, err = l.ToSql()
-		s = sq.Lt{sql: n.Right}
-	case LteOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-		sql, _, err = l.ToSql()
-		s = sq.LtOrEq{sql: n.Right}
-	case GtOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-		sql, _, err = l.ToSql()
-		s = sq.Gt{sql: n.Right}
-	case GteOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-		sql, _, err = l.ToSql()
-		s = sq.GtOrEq{sql: n.Right}
-	case InOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-		sql, _, err = l.ToSql()
-		// Multiple eq will be translated into IN (?, ? ...).
-		s = sq.Eq{sql: n.Right}
-	case NotInOp:
-		// Multiple not eq will be translated into NOT IN (?, ? ...).
-		s = sq.NotEq{n.Left.(string): n.Right}
-	case IsNilOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-		sql, _, err = l.ToSql()
-		// eq nil will be translated into IS NULL.
-		s = sq.Eq{sql: nil}
-	case IsNotNilOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-		sql, _, err = l.ToSql()
-		// not eq nil will be translated into IS NOT NULL.
-		s = sq.NotEq{sql: nil}
+	case AndOp, OrOp, AddOp, SubtractOp, MultiplyOp, DivideOp, ModuloOp:
+		return binaryStep(n)
+	case NotOp, EqOp, NotEqOp, LtOp, LteOp, GtOp, GteOp, InOp, NotInOp, IsNilOp, IsNotNilOp:
+		return unaryStep(n)
 	case LikeOp:
 		t := fmt.Sprintf("%s LIKE ?", n.Left.(string))
 		s = sq.Expr(t, n.Right)

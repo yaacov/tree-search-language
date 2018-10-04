@@ -16,7 +16,7 @@ var _ = reflect.Copy
 var _ = strconv.Itoa
 
 var parserATN = []uint16{
-	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 32, 162,
+	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 32, 166,
 	4, 2, 9, 2, 4, 3, 9, 3, 4, 4, 9, 4, 4, 5, 9, 5, 4, 6, 9, 6, 4, 7, 9, 7,
 	4, 8, 9, 8, 4, 9, 9, 9, 4, 10, 9, 10, 4, 11, 9, 11, 4, 12, 9, 12, 4, 13,
 	9, 13, 4, 14, 9, 14, 3, 2, 3, 2, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
@@ -30,62 +30,64 @@ var parserATN = []uint16{
 	4, 110, 10, 4, 3, 5, 3, 5, 3, 6, 3, 6, 3, 7, 3, 7, 3, 8, 3, 8, 3, 9, 3,
 	9, 3, 9, 5, 9, 123, 10, 9, 3, 9, 3, 9, 3, 9, 5, 9, 128, 10, 9, 3, 9, 3,
 	9, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 5, 10, 138, 10, 10, 3, 10,
-	3, 10, 3, 10, 3, 10, 7, 10, 144, 10, 10, 12, 10, 14, 10, 147, 11, 10, 3,
-	11, 5, 11, 150, 10, 11, 3, 11, 3, 11, 3, 12, 3, 12, 3, 13, 3, 13, 5, 13,
-	158, 10, 13, 3, 14, 3, 14, 3, 14, 2, 4, 4, 18, 15, 2, 4, 6, 8, 10, 12,
-	14, 16, 18, 20, 22, 24, 26, 2, 7, 3, 2, 6, 9, 3, 2, 10, 12, 3, 2, 13, 17,
-	3, 2, 18, 19, 3, 2, 13, 14, 2, 172, 2, 28, 3, 2, 2, 2, 4, 94, 3, 2, 2,
-	2, 6, 109, 3, 2, 2, 2, 8, 111, 3, 2, 2, 2, 10, 113, 3, 2, 2, 2, 12, 115,
-	3, 2, 2, 2, 14, 117, 3, 2, 2, 2, 16, 127, 3, 2, 2, 2, 18, 137, 3, 2, 2,
-	2, 20, 149, 3, 2, 2, 2, 22, 153, 3, 2, 2, 2, 24, 157, 3, 2, 2, 2, 26, 159,
-	3, 2, 2, 2, 28, 29, 5, 4, 3, 2, 29, 30, 7, 2, 2, 3, 30, 3, 3, 2, 2, 2,
-	31, 32, 8, 3, 1, 2, 32, 33, 5, 18, 10, 2, 33, 34, 5, 6, 4, 2, 34, 35, 5,
-	24, 13, 2, 35, 95, 3, 2, 2, 2, 36, 37, 5, 18, 10, 2, 37, 38, 5, 10, 6,
-	2, 38, 39, 5, 22, 12, 2, 39, 95, 3, 2, 2, 2, 40, 42, 5, 18, 10, 2, 41,
-	43, 5, 26, 14, 2, 42, 41, 3, 2, 2, 2, 42, 43, 3, 2, 2, 2, 43, 44, 3, 2,
-	2, 2, 44, 45, 7, 21, 2, 2, 45, 46, 5, 22, 12, 2, 46, 95, 3, 2, 2, 2, 47,
-	48, 5, 18, 10, 2, 48, 50, 7, 26, 2, 2, 49, 51, 5, 26, 14, 2, 50, 49, 3,
-	2, 2, 2, 50, 51, 3, 2, 2, 2, 51, 52, 3, 2, 2, 2, 52, 53, 7, 27, 2, 2, 53,
-	95, 3, 2, 2, 2, 54, 55, 5, 18, 10, 2, 55, 57, 7, 26, 2, 2, 56, 58, 5, 26,
-	14, 2, 57, 56, 3, 2, 2, 2, 57, 58, 3, 2, 2, 2, 58, 59, 3, 2, 2, 2, 59,
-	60, 5, 24, 13, 2, 60, 95, 3, 2, 2, 2, 61, 63, 5, 18, 10, 2, 62, 64, 5,
-	26, 14, 2, 63, 62, 3, 2, 2, 2, 63, 64, 3, 2, 2, 2, 64, 65, 3, 2, 2, 2,
-	65, 66, 7, 24, 2, 2, 66, 67, 5, 24, 13, 2, 67, 68, 7, 22, 2, 2, 68, 69,
-	5, 24, 13, 2, 69, 95, 3, 2, 2, 2, 70, 72, 5, 18, 10, 2, 71, 73, 5, 26,
-	14, 2, 72, 71, 3, 2, 2, 2, 72, 73, 3, 2, 2, 2, 73, 74, 3, 2, 2, 2, 74,
-	75, 7, 25, 2, 2, 75, 84, 7, 3, 2, 2, 76, 81, 5, 24, 13, 2, 77, 78, 7, 4,
-	2, 2, 78, 80, 5, 24, 13, 2, 79, 77, 3, 2, 2, 2, 80, 83, 3, 2, 2, 2, 81,
-	79, 3, 2, 2, 2, 81, 82, 3, 2, 2, 2, 82, 85, 3, 2, 2, 2, 83, 81, 3, 2, 2,
-	2, 84, 76, 3, 2, 2, 2, 84, 85, 3, 2, 2, 2, 85, 86, 3, 2, 2, 2, 86, 87,
-	7, 5, 2, 2, 87, 95, 3, 2, 2, 2, 88, 89, 7, 28, 2, 2, 89, 95, 5, 4, 3, 6,
-	90, 91, 7, 3, 2, 2, 91, 92, 5, 4, 3, 2, 92, 93, 7, 5, 2, 2, 93, 95, 3,
-	2, 2, 2, 94, 31, 3, 2, 2, 2, 94, 36, 3, 2, 2, 2, 94, 40, 3, 2, 2, 2, 94,
-	47, 3, 2, 2, 2, 94, 54, 3, 2, 2, 2, 94, 61, 3, 2, 2, 2, 94, 70, 3, 2, 2,
-	2, 94, 88, 3, 2, 2, 2, 94, 90, 3, 2, 2, 2, 95, 104, 3, 2, 2, 2, 96, 97,
-	12, 5, 2, 2, 97, 98, 7, 22, 2, 2, 98, 103, 5, 4, 3, 6, 99, 100, 12, 4,
-	2, 2, 100, 101, 7, 23, 2, 2, 101, 103, 5, 4, 3, 5, 102, 96, 3, 2, 2, 2,
-	102, 99, 3, 2, 2, 2, 103, 106, 3, 2, 2, 2, 104, 102, 3, 2, 2, 2, 104, 105,
-	3, 2, 2, 2, 105, 5, 3, 2, 2, 2, 106, 104, 3, 2, 2, 2, 107, 110, 9, 2, 2,
-	2, 108, 110, 9, 3, 2, 2, 109, 107, 3, 2, 2, 2, 109, 108, 3, 2, 2, 2, 110,
-	7, 3, 2, 2, 2, 111, 112, 9, 4, 2, 2, 112, 9, 3, 2, 2, 2, 113, 114, 9, 5,
-	2, 2, 114, 11, 3, 2, 2, 2, 115, 116, 7, 29, 2, 2, 116, 13, 3, 2, 2, 2,
-	117, 118, 7, 29, 2, 2, 118, 15, 3, 2, 2, 2, 119, 120, 5, 12, 7, 2, 120,
-	121, 7, 20, 2, 2, 121, 123, 3, 2, 2, 2, 122, 119, 3, 2, 2, 2, 122, 123,
-	3, 2, 2, 2, 123, 124, 3, 2, 2, 2, 124, 125, 5, 14, 8, 2, 125, 126, 7, 20,
-	2, 2, 126, 128, 3, 2, 2, 2, 127, 122, 3, 2, 2, 2, 127, 128, 3, 2, 2, 2,
-	128, 129, 3, 2, 2, 2, 129, 130, 7, 29, 2, 2, 130, 17, 3, 2, 2, 2, 131,
-	132, 8, 10, 1, 2, 132, 138, 5, 16, 9, 2, 133, 134, 7, 3, 2, 2, 134, 135,
-	5, 18, 10, 2, 135, 136, 7, 5, 2, 2, 136, 138, 3, 2, 2, 2, 137, 131, 3,
-	2, 2, 2, 137, 133, 3, 2, 2, 2, 138, 145, 3, 2, 2, 2, 139, 140, 12, 4, 2,
-	2, 140, 141, 5, 8, 5, 2, 141, 142, 5, 18, 10, 5, 142, 144, 3, 2, 2, 2,
-	143, 139, 3, 2, 2, 2, 144, 147, 3, 2, 2, 2, 145, 143, 3, 2, 2, 2, 145,
-	146, 3, 2, 2, 2, 146, 19, 3, 2, 2, 2, 147, 145, 3, 2, 2, 2, 148, 150, 9,
-	6, 2, 2, 149, 148, 3, 2, 2, 2, 149, 150, 3, 2, 2, 2, 150, 151, 3, 2, 2,
-	2, 151, 152, 7, 30, 2, 2, 152, 21, 3, 2, 2, 2, 153, 154, 7, 31, 2, 2, 154,
-	23, 3, 2, 2, 2, 155, 158, 5, 20, 11, 2, 156, 158, 5, 22, 12, 2, 157, 155,
-	3, 2, 2, 2, 157, 156, 3, 2, 2, 2, 158, 25, 3, 2, 2, 2, 159, 160, 7, 28,
-	2, 2, 160, 27, 3, 2, 2, 2, 19, 42, 50, 57, 63, 72, 81, 84, 94, 102, 104,
-	109, 122, 127, 137, 145, 149, 157,
+	3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 7, 10, 148, 10, 10, 12,
+	10, 14, 10, 151, 11, 10, 3, 11, 5, 11, 154, 10, 11, 3, 11, 3, 11, 3, 12,
+	3, 12, 3, 13, 3, 13, 5, 13, 162, 10, 13, 3, 14, 3, 14, 3, 14, 2, 4, 4,
+	18, 15, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26, 2, 7, 3, 2, 6,
+	9, 3, 2, 10, 12, 3, 2, 13, 17, 3, 2, 18, 19, 3, 2, 13, 14, 2, 177, 2, 28,
+	3, 2, 2, 2, 4, 94, 3, 2, 2, 2, 6, 109, 3, 2, 2, 2, 8, 111, 3, 2, 2, 2,
+	10, 113, 3, 2, 2, 2, 12, 115, 3, 2, 2, 2, 14, 117, 3, 2, 2, 2, 16, 127,
+	3, 2, 2, 2, 18, 137, 3, 2, 2, 2, 20, 153, 3, 2, 2, 2, 22, 157, 3, 2, 2,
+	2, 24, 161, 3, 2, 2, 2, 26, 163, 3, 2, 2, 2, 28, 29, 5, 4, 3, 2, 29, 30,
+	7, 2, 2, 3, 30, 3, 3, 2, 2, 2, 31, 32, 8, 3, 1, 2, 32, 33, 5, 18, 10, 2,
+	33, 34, 5, 6, 4, 2, 34, 35, 5, 24, 13, 2, 35, 95, 3, 2, 2, 2, 36, 37, 5,
+	18, 10, 2, 37, 38, 5, 10, 6, 2, 38, 39, 5, 22, 12, 2, 39, 95, 3, 2, 2,
+	2, 40, 42, 5, 18, 10, 2, 41, 43, 5, 26, 14, 2, 42, 41, 3, 2, 2, 2, 42,
+	43, 3, 2, 2, 2, 43, 44, 3, 2, 2, 2, 44, 45, 7, 21, 2, 2, 45, 46, 5, 22,
+	12, 2, 46, 95, 3, 2, 2, 2, 47, 48, 5, 18, 10, 2, 48, 50, 7, 26, 2, 2, 49,
+	51, 5, 26, 14, 2, 50, 49, 3, 2, 2, 2, 50, 51, 3, 2, 2, 2, 51, 52, 3, 2,
+	2, 2, 52, 53, 7, 27, 2, 2, 53, 95, 3, 2, 2, 2, 54, 55, 5, 18, 10, 2, 55,
+	57, 7, 26, 2, 2, 56, 58, 5, 26, 14, 2, 57, 56, 3, 2, 2, 2, 57, 58, 3, 2,
+	2, 2, 58, 59, 3, 2, 2, 2, 59, 60, 5, 24, 13, 2, 60, 95, 3, 2, 2, 2, 61,
+	63, 5, 18, 10, 2, 62, 64, 5, 26, 14, 2, 63, 62, 3, 2, 2, 2, 63, 64, 3,
+	2, 2, 2, 64, 65, 3, 2, 2, 2, 65, 66, 7, 24, 2, 2, 66, 67, 5, 24, 13, 2,
+	67, 68, 7, 22, 2, 2, 68, 69, 5, 24, 13, 2, 69, 95, 3, 2, 2, 2, 70, 72,
+	5, 18, 10, 2, 71, 73, 5, 26, 14, 2, 72, 71, 3, 2, 2, 2, 72, 73, 3, 2, 2,
+	2, 73, 74, 3, 2, 2, 2, 74, 75, 7, 25, 2, 2, 75, 84, 7, 3, 2, 2, 76, 81,
+	5, 24, 13, 2, 77, 78, 7, 4, 2, 2, 78, 80, 5, 24, 13, 2, 79, 77, 3, 2, 2,
+	2, 80, 83, 3, 2, 2, 2, 81, 79, 3, 2, 2, 2, 81, 82, 3, 2, 2, 2, 82, 85,
+	3, 2, 2, 2, 83, 81, 3, 2, 2, 2, 84, 76, 3, 2, 2, 2, 84, 85, 3, 2, 2, 2,
+	85, 86, 3, 2, 2, 2, 86, 87, 7, 5, 2, 2, 87, 95, 3, 2, 2, 2, 88, 89, 7,
+	28, 2, 2, 89, 95, 5, 4, 3, 6, 90, 91, 7, 3, 2, 2, 91, 92, 5, 4, 3, 2, 92,
+	93, 7, 5, 2, 2, 93, 95, 3, 2, 2, 2, 94, 31, 3, 2, 2, 2, 94, 36, 3, 2, 2,
+	2, 94, 40, 3, 2, 2, 2, 94, 47, 3, 2, 2, 2, 94, 54, 3, 2, 2, 2, 94, 61,
+	3, 2, 2, 2, 94, 70, 3, 2, 2, 2, 94, 88, 3, 2, 2, 2, 94, 90, 3, 2, 2, 2,
+	95, 104, 3, 2, 2, 2, 96, 97, 12, 5, 2, 2, 97, 98, 7, 22, 2, 2, 98, 103,
+	5, 4, 3, 6, 99, 100, 12, 4, 2, 2, 100, 101, 7, 23, 2, 2, 101, 103, 5, 4,
+	3, 5, 102, 96, 3, 2, 2, 2, 102, 99, 3, 2, 2, 2, 103, 106, 3, 2, 2, 2, 104,
+	102, 3, 2, 2, 2, 104, 105, 3, 2, 2, 2, 105, 5, 3, 2, 2, 2, 106, 104, 3,
+	2, 2, 2, 107, 110, 9, 2, 2, 2, 108, 110, 9, 3, 2, 2, 109, 107, 3, 2, 2,
+	2, 109, 108, 3, 2, 2, 2, 110, 7, 3, 2, 2, 2, 111, 112, 9, 4, 2, 2, 112,
+	9, 3, 2, 2, 2, 113, 114, 9, 5, 2, 2, 114, 11, 3, 2, 2, 2, 115, 116, 7,
+	29, 2, 2, 116, 13, 3, 2, 2, 2, 117, 118, 7, 29, 2, 2, 118, 15, 3, 2, 2,
+	2, 119, 120, 5, 12, 7, 2, 120, 121, 7, 20, 2, 2, 121, 123, 3, 2, 2, 2,
+	122, 119, 3, 2, 2, 2, 122, 123, 3, 2, 2, 2, 123, 124, 3, 2, 2, 2, 124,
+	125, 5, 14, 8, 2, 125, 126, 7, 20, 2, 2, 126, 128, 3, 2, 2, 2, 127, 122,
+	3, 2, 2, 2, 127, 128, 3, 2, 2, 2, 128, 129, 3, 2, 2, 2, 129, 130, 7, 29,
+	2, 2, 130, 17, 3, 2, 2, 2, 131, 132, 8, 10, 1, 2, 132, 138, 5, 16, 9, 2,
+	133, 134, 7, 3, 2, 2, 134, 135, 5, 18, 10, 2, 135, 136, 7, 5, 2, 2, 136,
+	138, 3, 2, 2, 2, 137, 131, 3, 2, 2, 2, 137, 133, 3, 2, 2, 2, 138, 149,
+	3, 2, 2, 2, 139, 140, 12, 5, 2, 2, 140, 141, 5, 8, 5, 2, 141, 142, 5, 18,
+	10, 6, 142, 148, 3, 2, 2, 2, 143, 144, 12, 4, 2, 2, 144, 145, 5, 8, 5,
+	2, 145, 146, 5, 20, 11, 2, 146, 148, 3, 2, 2, 2, 147, 139, 3, 2, 2, 2,
+	147, 143, 3, 2, 2, 2, 148, 151, 3, 2, 2, 2, 149, 147, 3, 2, 2, 2, 149,
+	150, 3, 2, 2, 2, 150, 19, 3, 2, 2, 2, 151, 149, 3, 2, 2, 2, 152, 154, 9,
+	6, 2, 2, 153, 152, 3, 2, 2, 2, 153, 154, 3, 2, 2, 2, 154, 155, 3, 2, 2,
+	2, 155, 156, 7, 30, 2, 2, 156, 21, 3, 2, 2, 2, 157, 158, 7, 31, 2, 2, 158,
+	23, 3, 2, 2, 2, 159, 162, 5, 20, 11, 2, 160, 162, 5, 22, 12, 2, 161, 159,
+	3, 2, 2, 2, 161, 160, 3, 2, 2, 2, 162, 25, 3, 2, 2, 2, 163, 164, 7, 28,
+	2, 2, 164, 27, 3, 2, 2, 2, 20, 42, 50, 57, 63, 72, 81, 84, 94, 102, 104,
+	109, 122, 127, 137, 147, 149, 153, 161,
 }
 var deserializer = antlr.NewATNDeserializer(nil)
 var deserializedATN = deserializer.DeserializeFromUInt16(parserATN)
@@ -2122,6 +2124,66 @@ func (s *ColumnNameOpContext) ExitRule(listener antlr.ParseTreeListener) {
 	}
 }
 
+type ColumnNameNumericOpContext struct {
+	*ColumnOpContext
+}
+
+func NewColumnNameNumericOpContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ColumnNameNumericOpContext {
+	var p = new(ColumnNameNumericOpContext)
+
+	p.ColumnOpContext = NewEmptyColumnOpContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*ColumnOpContext))
+
+	return p
+}
+
+func (s *ColumnNameNumericOpContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *ColumnNameNumericOpContext) ColumnOp() IColumnOpContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IColumnOpContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IColumnOpContext)
+}
+
+func (s *ColumnNameNumericOpContext) NumericOp() INumericOpContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*INumericOpContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(INumericOpContext)
+}
+
+func (s *ColumnNameNumericOpContext) SignedNumber() ISignedNumberContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*ISignedNumberContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ISignedNumberContext)
+}
+
+func (s *ColumnNameNumericOpContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(TSLListener); ok {
+		listenerT.EnterColumnNameNumericOp(s)
+	}
+}
+
+func (s *ColumnNameNumericOpContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(TSLListener); ok {
+		listenerT.ExitColumnNameNumericOp(s)
+	}
+}
+
 type ColumnNameParContext struct {
 	*ColumnOpContext
 }
@@ -2229,9 +2291,9 @@ func (p *TSLParser) columnOp(_p int) (localctx IColumnOpContext) {
 		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(143)
+	p.SetState(147)
 	p.GetErrorHandler().Sync(p)
-	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 14, p.GetParserRuleContext())
+	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 15, p.GetParserRuleContext())
 
 	for _alt != 2 && _alt != antlr.ATNInvalidAltNumber {
 		if _alt == 1 {
@@ -2239,26 +2301,49 @@ func (p *TSLParser) columnOp(_p int) (localctx IColumnOpContext) {
 				p.TriggerExitRuleEvent()
 			}
 			_prevctx = localctx
-			localctx = NewColumnNameOpContext(p, NewColumnOpContext(p, _parentctx, _parentState))
-			p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_columnOp)
-			p.SetState(137)
+			p.SetState(145)
+			p.GetErrorHandler().Sync(p)
+			switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 14, p.GetParserRuleContext()) {
+			case 1:
+				localctx = NewColumnNameOpContext(p, NewColumnOpContext(p, _parentctx, _parentState))
+				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_columnOp)
+				p.SetState(137)
 
-			if !(p.Precpred(p.GetParserRuleContext(), 2)) {
-				panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
-			}
-			{
-				p.SetState(138)
-				p.NumericOp()
-			}
-			{
-				p.SetState(139)
-				p.columnOp(3)
+				if !(p.Precpred(p.GetParserRuleContext(), 3)) {
+					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 3)", ""))
+				}
+				{
+					p.SetState(138)
+					p.NumericOp()
+				}
+				{
+					p.SetState(139)
+					p.columnOp(4)
+				}
+
+			case 2:
+				localctx = NewColumnNameNumericOpContext(p, NewColumnOpContext(p, _parentctx, _parentState))
+				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_columnOp)
+				p.SetState(141)
+
+				if !(p.Precpred(p.GetParserRuleContext(), 2)) {
+					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
+				}
+				{
+					p.SetState(142)
+					p.NumericOp()
+				}
+				{
+					p.SetState(143)
+					p.SignedNumber()
+				}
+
 			}
 
 		}
-		p.SetState(145)
+		p.SetState(149)
 		p.GetErrorHandler().Sync(p)
-		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 14, p.GetParserRuleContext())
+		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 15, p.GetParserRuleContext())
 	}
 
 	return localctx
@@ -2348,13 +2433,13 @@ func (p *TSLParser) SignedNumber() (localctx ISignedNumberContext) {
 	}()
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(147)
+	p.SetState(151)
 	p.GetErrorHandler().Sync(p)
 	_la = p.GetTokenStream().LA(1)
 
 	if _la == TSLParserT__10 || _la == TSLParserT__11 {
 		{
-			p.SetState(146)
+			p.SetState(150)
 			_la = p.GetTokenStream().LA(1)
 
 			if !(_la == TSLParserT__10 || _la == TSLParserT__11) {
@@ -2367,7 +2452,7 @@ func (p *TSLParser) SignedNumber() (localctx ISignedNumberContext) {
 
 	}
 	{
-		p.SetState(149)
+		p.SetState(153)
 		p.Match(TSLParserNUMERIC_LITERAL)
 	}
 
@@ -2458,7 +2543,7 @@ func (p *TSLParser) StringValue() (localctx IStringValueContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(151)
+		p.SetState(155)
 		p.Match(TSLParserSTRING_LITERAL)
 	}
 
@@ -2563,21 +2648,21 @@ func (p *TSLParser) LiteralValue() (localctx ILiteralValueContext) {
 		}
 	}()
 
-	p.SetState(155)
+	p.SetState(159)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case TSLParserT__10, TSLParserT__11, TSLParserNUMERIC_LITERAL:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(153)
+			p.SetState(157)
 			p.SignedNumber()
 		}
 
 	case TSLParserSTRING_LITERAL:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(154)
+			p.SetState(158)
 			p.StringValue()
 		}
 
@@ -2672,7 +2757,7 @@ func (p *TSLParser) KeyNot() (localctx IKeyNotContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(157)
+		p.SetState(161)
 		p.Match(TSLParserK_NOT)
 	}
 
@@ -2716,6 +2801,9 @@ func (p *TSLParser) Expr_Sempred(localctx antlr.RuleContext, predIndex int) bool
 func (p *TSLParser) ColumnOp_Sempred(localctx antlr.RuleContext, predIndex int) bool {
 	switch predIndex {
 	case 2:
+		return p.Precpred(p.GetParserRuleContext(), 3)
+
+	case 3:
 		return p.Precpred(p.GetParserRuleContext(), 2)
 
 	default:

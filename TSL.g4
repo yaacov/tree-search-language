@@ -44,9 +44,10 @@ columnName
   ;
 
 columnOp
-  : columnName                  # Column
-  | columnOp numericOp columnOp # ColumnNameOp
-  | '(' columnOp ')'            # ColumnNamePar
+  : columnName                      # Column
+  | columnOp numericOp columnOp     # ColumnNameOp
+  | columnOp numericOp signedNumber # ColumnNameNumericOp
+  | '(' columnOp ')'                # ColumnNamePar
   ;
 
 signedNumber

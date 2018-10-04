@@ -21,8 +21,9 @@ import (
 	sq "github.com/Masterminds/squirrel"
 )
 
-// Currently squirrel does not have a NOT operator expression,
-// this expresson handles SQL not.
+// Currently squirrel does not have a some needed operator expression.
+
+// notExpr handles SQL not.
 type notExpr []sq.Sqlizer
 
 //nolint
@@ -42,12 +43,8 @@ func (n notExpr) ToSql() (sql string, args []interface{}, err error) {
 	return
 }
 
-// Currently squirrel does not have a ADD operator expression,
-// this expresson hanlhandlesdels SQL add.
-type addExpr []sq.Sqlizer
-
-//nolint
-func (n addExpr) ToSql() (sql string, args []interface{}, err error) {
+// mathExpToSQL take a math expresion and return it's string, args and error.
+func mathExpToSQL(n []sq.Sqlizer, mathOp string) (sql string, args []interface{}, err error) {
 	var left string
 	var right string
 	var partArgs []interface{}
@@ -69,7 +66,47 @@ func (n addExpr) ToSql() (sql string, args []interface{}, err error) {
 	}
 
 	args = append(args, partArgs...)
-	sql = fmt.Sprintf("%s + %s", left, right)
+	sql = fmt.Sprintf("%s %s %s", left, mathOp, right)
 
 	return
+}
+
+// addExpr hanlhandlesdels SQL add.
+type addExpr []sq.Sqlizer
+
+//nolint
+func (n addExpr) ToSql() (sql string, args []interface{}, err error) {
+	return mathExpToSQL(n, "+")
+}
+
+// subExpr hanlhandlesdels SQL subtract.
+type subExpr []sq.Sqlizer
+
+//nolint
+func (n subExpr) ToSql() (sql string, args []interface{}, err error) {
+	return mathExpToSQL(n, "-")
+}
+
+// mulExpr hanlhandlesdels SQL multiply.
+type mulExpr []sq.Sqlizer
+
+//nolint
+func (n mulExpr) ToSql() (sql string, args []interface{}, err error) {
+	return mathExpToSQL(n, "*")
+}
+
+// divExpr hanlhandlesdels SQL divide.
+type divExpr []sq.Sqlizer
+
+//nolint
+func (n divExpr) ToSql() (sql string, args []interface{}, err error) {
+	return mathExpToSQL(n, "/")
+}
+
+// modExpr hanlhandlesdels SQL modulo.
+type modExpr []sq.Sqlizer
+
+//nolint
+func (n modExpr) ToSql() (sql string, args []interface{}, err error) {
+	return mathExpToSQL(n, "%")
 }

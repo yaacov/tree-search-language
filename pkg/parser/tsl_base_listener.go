@@ -141,6 +141,12 @@ func (s *BaseTSLListener) EnterColumnNameOp(ctx *ColumnNameOpContext) {}
 // ExitColumnNameOp is called when production ColumnNameOp is exited.
 func (s *BaseTSLListener) ExitColumnNameOp(ctx *ColumnNameOpContext) {}
 
+// EnterColumnNameNumericOp is called when production ColumnNameNumericOp is entered.
+func (s *BaseTSLListener) EnterColumnNameNumericOp(ctx *ColumnNameNumericOpContext) {}
+
+// ExitColumnNameNumericOp is called when production ColumnNameNumericOp is exited.
+func (s *BaseTSLListener) ExitColumnNameNumericOp(ctx *ColumnNameNumericOpContext) {}
+
 // EnterColumnNamePar is called when production ColumnNamePar is entered.
 func (s *BaseTSLListener) EnterColumnNamePar(ctx *ColumnNameParContext) {}
 
