@@ -116,18 +116,27 @@ args: [joe jane rome]
     "func": "$or",
     "left": {
       "func": "$eq",
-      "left": "name",
+      "left": {
+        "func": "$ident",
+        "left": "name"
+      },
       "right": "joe"
     },
     "right": {
       "func": "$eq",
-      "left": "name",
+      "left": {
+        "func": "$ident",
+        "left": "name"
+      },
       "right": "jane"
     }
   },
   "right": {
     "func": "$eq",
-    "left": "city",
+    "left": {
+      "func": "$ident",
+      "left": "city"
+    },
     "right": "rome"
   }
 }
@@ -174,7 +183,7 @@ $ ./tsl_mongo -p -i "title is not null" | jq
 
 ```
 ``` bash
-$ ./tsl_mongo -p -i "title ~= 'Other' and spec.Rating > 1" | jq
+$ ./tsl_mongo -i "title ~= 'Other' and spec.rating > 1" | jq
 ```
 ``` json
 {
