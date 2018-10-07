@@ -44,133 +44,48 @@ func (l *Listener) GetTree() (n Node, err error) {
 
 // ExitColumnIdentifier is called when exiting the ColumnIdentifier production.
 func (l *Listener) ExitColumnIdentifier(c *parser.ColumnIdentifierContext) {
-	n := Node{
-		Func: IdentOp,
-		Left: c.ColumnName().GetText(),
-	}
-
-	l.push(n)
+	l.exitLiteral(IdentOp, c.ColumnName().GetText())
 }
 
 // ExitNumberLiteral is called when exiting the NumberLiteral production.
 func (l *Listener) ExitNumberLiteral(c *parser.NumberLiteralContext) {
-	n := Node{
-		Func: NumberOp,
-		Left: c.SignedNumber().GetText(),
-	}
-
-	l.push(n)
+	l.exitLiteral(NumberOp, c.SignedNumber().GetText())
 }
 
 // ExitStringLiteral is called when exiting the StringLiteral production.
 func (l *Listener) ExitStringLiteral(c *parser.StringLiteralContext) {
-	n := Node{
-		Func: StringOp,
-		Left: stringValueToArg(c.StringValue().GetText()),
-	}
-
-	l.push(n)
+	v := stringValueToArg(c.StringValue().GetText())
+	l.exitLiteral(StringOp, v)
 }
 
-// ExitMulOps is called when production MulOps is exited.
+// ExitMulOps is called when production multiply op is exited.
 func (l *Listener) ExitMulOps(c *parser.MulOpsContext) {
-	right, left := l.pop(), l.pop()
-
-	// Check right op is not a string.
-	if right.Func == StringOp {
-		l.Err = fmt.Errorf("unexpected a string literal in math function")
-		return
-	}
-
-	n := Node{
-		Func:  MultiplyOp,
-		Left:  left,
-		Right: right,
-	}
-
-	l.push(n)
+	l.exitMathOps(MultiplyOp)
 }
 
-// ExitLiteralOps is called when production LiteralOps is exited.
+// ExitDivOps is called when production div op is exited.
 func (l *Listener) ExitDivOps(c *parser.DivOpsContext) {
-	right, left := l.pop(), l.pop()
-
-	// Check right op is not a string.
-	if right.Func == StringOp {
-		l.Err = fmt.Errorf("unexpected a string literal in math function")
-		return
-	}
-
-	n := Node{
-		Func:  DivideOp,
-		Left:  left,
-		Right: right,
-	}
-
-	l.push(n)
+	l.exitMathOps(DivideOp)
 }
 
-// ExitLiteralOps is called when production LiteralOps is exited.
+// ExitModOps is called when production modulo op is exited.
 func (l *Listener) ExitModOps(c *parser.ModOpsContext) {
-	right, left := l.pop(), l.pop()
-
-	// Check right op is not a string.
-	if right.Func == StringOp {
-		l.Err = fmt.Errorf("unexpected a string literal in math function")
-		return
-	}
-
-	n := Node{
-		Func:  ModuloOp,
-		Left:  left,
-		Right: right,
-	}
-
-	l.push(n)
+	l.exitMathOps(ModuloOp)
 }
 
-// ExitLiteralOps is called when production LiteralOps is exited.
+// ExitAddOps is called when production add op is exited.
 func (l *Listener) ExitAddOps(c *parser.AddOpsContext) {
-	right, left := l.pop(), l.pop()
-
-	// Check right op is not a string.
-	if right.Func == StringOp {
-		l.Err = fmt.Errorf("unexpected a string literal in math function")
-		return
-	}
-
-	n := Node{
-		Func:  AddOp,
-		Left:  left,
-		Right: right,
-	}
-
-	l.push(n)
+	l.exitMathOps(AddOp)
 }
 
-// ExitLiteralOps is called when production LiteralOps is exited.
+// ExitSubOps is called when production subtract op is exited.
 func (l *Listener) ExitSubOps(c *parser.SubOpsContext) {
-	right, left := l.pop(), l.pop()
-
-	// Check right op is not a string.
-	if right.Func == StringOp {
-		l.Err = fmt.Errorf("unexpected a string literal in math function")
-		return
-	}
-
-	n := Node{
-		Func:  SubtractOp,
-		Left:  left,
-		Right: right,
-	}
-
-	l.push(n)
+	l.exitMathOps(SubtractOp)
 }
 
 // ExitLiteralOps is called when production LiteralOps is exited.
 func (l *Listener) ExitLiteralOps(c *parser.LiteralOpsContext) {
 	right, left := l.pop(), l.pop()
-
 	n := Node{
 		Func:  opDic[c.LiteralOp().GetText()],
 		Left:  left,
@@ -279,7 +194,6 @@ func (l *Listener) ExitBetween(c *parser.BetweenContext) {
 // ExitNot is called when production Not is exited.
 func (l *Listener) ExitNot(c *parser.NotContext) {
 	left := l.pop()
-
 	n := Node{
 		Func: NotOp,
 		Left: left,
@@ -312,6 +226,31 @@ func (l *Listener) ExitOr(c *parser.OrContext) {
 	l.push(n)
 }
 
+// exitMathOps is called when production math operator is exited.
+func (l *Listener) exitMathOps(op string) {
+	right, left := l.pop(), l.pop()
+
+	// Check right op is not a string.
+	if right.Func == StringOp {
+		l.Err = fmt.Errorf("unexpected a string literal in math function")
+		return
+	}
+
+	n := Node{
+		Func:  op,
+		Left:  left,
+		Right: right,
+	}
+
+	l.push(n)
+}
+
+// ExitColumnIdentifier is called when exiting a literal production.
+func (l *Listener) exitLiteral(f string, v string) {
+	n := Node{Func: f, Left: v}
+	l.push(n)
+}
+
 // ternaryOp return lh if conditional is true, rh o/w.
 func ternaryOp(conditional bool, lh string, rh string) string {
 	if conditional {
@@ -322,16 +261,15 @@ func ternaryOp(conditional bool, lh string, rh string) string {
 }
 
 // stringValueToArg clean string value, and return an arg string.
-func stringValueToArg(v string) (arg interface{}) {
+func stringValueToArg(v string) string {
 	l := len(v)
 
 	// Check string length.
 	if l < 1 {
-		return
+		return ""
 	}
 
-	arg = strings.Replace(v[1:l-1], "''", "'", -1)
-	return
+	return strings.Replace(v[1:l-1], "''", "'", -1)
 }
 
 // popLiterals collect literal values, and create args list.
