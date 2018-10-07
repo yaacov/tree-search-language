@@ -27,11 +27,17 @@ type Listener struct {
 	*parser.BaseTSLListener
 
 	Stack []Node
-	Err   error
+	Errs  []error
 }
 
 // GetTree return the parsed tree, if exist.
 func (l *Listener) GetTree() (n Node, err error) {
+	// Check for errors.
+	if len(l.Errs) > 0 {
+		err = l.Errs[0]
+		return
+	}
+
 	// Check stack size.
 	if len(l.Stack) != 1 {
 		err = fmt.Errorf("unexpected operator stack")
@@ -106,7 +112,7 @@ func (l *Listener) ExitStringOps(c *parser.StringOpsContext) {
 
 	// Check right op is a string.
 	if right.Func != StringOp {
-		l.Err = fmt.Errorf("expected a string literal, found %v", right.Func)
+		l.Errs = append(l.Errs, fmt.Errorf("expected a string literal, found %v", right.Func))
 		return
 	}
 
@@ -126,7 +132,7 @@ func (l *Listener) ExitLike(c *parser.LikeContext) {
 
 	// Check right op is a string.
 	if right.Func != StringOp {
-		l.Err = fmt.Errorf("expected a string literal, found %v", right.Func)
+		l.Errs = append(l.Errs, fmt.Errorf("expected a string literal, found %v", right.Func))
 		return
 	}
 
@@ -237,7 +243,7 @@ func (l *Listener) exitMathOps(op string) {
 
 	// Check right op is not a string.
 	if right.Func == StringOp {
-		l.Err = fmt.Errorf("unexpected a string literal in math function")
+		l.Errs = append(l.Errs, fmt.Errorf("unexpected a string literal in math function"))
 		return
 	}
 
@@ -290,7 +296,7 @@ func (l *Listener) pop() (n Node) {
 	// Check that we have nodes in the stack.
 	size := len(l.Stack)
 	if size < 1 {
-		l.Err = fmt.Errorf("operator stack is empty")
+		l.Errs = append(l.Errs, fmt.Errorf("operator stack is empty"))
 		return
 	}
 

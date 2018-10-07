@@ -25,6 +25,11 @@ func nodesToStrings(in interface{}) (s []string) {
 	var nn []Node
 	var ok bool
 
+	// Check for nil
+	if in == nil {
+		return
+	}
+
 	// Assume input is []Node or Node.
 	nn, ok = in.([]Node)
 	if !ok {
@@ -122,6 +127,18 @@ func unaryStep(n Node) (s sq.Sqlizer, err error) {
 	case IsNotNilOp:
 		// not eq nil will be translated into IS NOT NULL.
 		s = sq.NotEq{sql: nil}
+	case LikeOp:
+		t := fmt.Sprintf("%s LIKE ?", sql)
+		s = sq.Expr(t, right[0])
+	case NotLikeOp:
+		t := fmt.Sprintf("%s NOT LIKE ?", sql)
+		s = sq.Expr(t, right[0])
+	case BetweenOp:
+		t := fmt.Sprintf("%s BETWEEN ? AND ?", sql)
+		s = sq.Expr(t, right[0], right[1])
+	case NotBetweenOp:
+		t := fmt.Sprintf("%s NOT BETWEEN ? AND ?", sql)
+		s = sq.Expr(t, right[0], right[1])
 	default:
 		// If here than the operator is not supported.
 		err = fmt.Errorf("un supported operand: %s", n.Func)
@@ -143,9 +160,6 @@ func unaryStep(n Node) (s sq.Sqlizer, err error) {
 // Squirrel: https://github.com/Masterminds/squirrel
 //
 func SquirrelWalk(n Node) (s sq.Sqlizer, err error) {
-	var l sq.Sqlizer
-	var sql string
-
 	switch n.Func {
 	case IdentOp:
 		s = sq.Expr(n.Left.(string))
@@ -157,58 +171,8 @@ func SquirrelWalk(n Node) (s sq.Sqlizer, err error) {
 		return binaryStep(n)
 	case NotOp, EqOp, NotEqOp, LtOp, LteOp, GtOp, GteOp, InOp, NotInOp, IsNilOp, IsNotNilOp:
 		return unaryStep(n)
-	case LikeOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-
-		sql, _, err = l.ToSql()
-		if err != nil {
-			return
-		}
-
-		t := fmt.Sprintf("%s LIKE ?", sql)
-		s = sq.Expr(t, n.Right)
-	case NotLikeOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-
-		sql, _, err = l.ToSql()
-		if err != nil {
-			return
-		}
-
-		t := fmt.Sprintf("%s NOT LIKE ?", sql)
-		s = sq.Expr(t, n.Right.(Node).Left.(string))
-	case BetweenOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-
-		sql, _, err = l.ToSql()
-		if err != nil {
-			return
-		}
-
-		t := fmt.Sprintf("%s BETWEEN ? AND ?", sql)
-		s = sq.Expr(t, n.Right.([]Node)[0].Left.(string), n.Right.([]Node)[1].Left.(string))
-	case NotBetweenOp:
-		l, err = SquirrelWalk(n.Left.(Node))
-		if err != nil {
-			return
-		}
-
-		sql, _, err = l.ToSql()
-		if err != nil {
-			return
-		}
-
-		t := fmt.Sprintf("%s NOT BETWEEN ? AND ?", sql)
-		s = sq.Expr(t, n.Right.([]Node)[0].Left.(string), n.Right.([]Node)[1].Left.(string))
+	case LikeOp, NotLikeOp, BetweenOp, NotBetweenOp:
+		return unaryStep(n)
 	default:
 		// If here than the operator is not supported.
 		err = fmt.Errorf("un supported operand: %s", n.Func)
