@@ -17,7 +17,6 @@ package tsl
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 
 	"github.com/yaacov/tsl/pkg/parser"
@@ -43,21 +42,8 @@ func (l *Listener) GetTree() (n Node, err error) {
 	return
 }
 
-// ExitLiteralOps is called when production LiteralOps is exited.
-func (l *Listener) ExitLiteralOps(c *parser.LiteralOpsContext) {
-	left := l.pop()
-
-	n := Node{
-		Func:  opDic[c.LiteralOp().GetText()],
-		Left:  left,
-		Right: literalValueToArg(c.LiteralValue().GetText()),
-	}
-
-	l.push(n)
-}
-
-// ExitColumn is called when entering the Column production.
-func (l *Listener) ExitColumn(c *parser.ColumnContext) {
+// ExitColumnIdentifier is called when exiting the ColumnIdentifier production.
+func (l *Listener) ExitColumnIdentifier(c *parser.ColumnIdentifierContext) {
 	n := Node{
 		Func: IdentOp,
 		Left: c.ColumnName().GetText(),
@@ -66,12 +52,38 @@ func (l *Listener) ExitColumn(c *parser.ColumnContext) {
 	l.push(n)
 }
 
-// ExitColumnNameOp is called when entering the ColumnNameOp production.
-func (l *Listener) ExitColumnNameOp(c *parser.ColumnNameOpContext) {
+// ExitNumberLiteral is called when exiting the NumberLiteral production.
+func (l *Listener) ExitNumberLiteral(c *parser.NumberLiteralContext) {
+	n := Node{
+		Func: NumberOp,
+		Left: c.SignedNumber().GetText(),
+	}
+
+	l.push(n)
+}
+
+// ExitStringLiteral is called when exiting the StringLiteral production.
+func (l *Listener) ExitStringLiteral(c *parser.StringLiteralContext) {
+	n := Node{
+		Func: StringOp,
+		Left: stringValueToArg(c.StringValue().GetText()),
+	}
+
+	l.push(n)
+}
+
+// ExitMulOps is called when production MulOps is exited.
+func (l *Listener) ExitMulOps(c *parser.MulOpsContext) {
 	right, left := l.pop(), l.pop()
 
+	// Check right op is not a string.
+	if right.Func == StringOp {
+		l.Err = fmt.Errorf("unexpected a string literal in math function")
+		return
+	}
+
 	n := Node{
-		Func:  opDic[c.NumericOp().GetText()],
+		Func:  MultiplyOp,
 		Left:  left,
 		Right: right,
 	}
@@ -79,14 +91,90 @@ func (l *Listener) ExitColumnNameOp(c *parser.ColumnNameOpContext) {
 	l.push(n)
 }
 
-// ExitColumnNameOp is called when entering the ColumnNameNumericOp production.
-func (l *Listener) ExitColumnNameNumericOp(c *parser.ColumnNameNumericOpContext) {
-	left := l.pop()
+// ExitLiteralOps is called when production LiteralOps is exited.
+func (l *Listener) ExitDivOps(c *parser.DivOpsContext) {
+	right, left := l.pop(), l.pop()
+
+	// Check right op is not a string.
+	if right.Func == StringOp {
+		l.Err = fmt.Errorf("unexpected a string literal in math function")
+		return
+	}
 
 	n := Node{
-		Func:  opDic[c.NumericOp().GetText()],
+		Func:  DivideOp,
 		Left:  left,
-		Right: c.NumericExp().GetText(),
+		Right: right,
+	}
+
+	l.push(n)
+}
+
+// ExitLiteralOps is called when production LiteralOps is exited.
+func (l *Listener) ExitModOps(c *parser.ModOpsContext) {
+	right, left := l.pop(), l.pop()
+
+	// Check right op is not a string.
+	if right.Func == StringOp {
+		l.Err = fmt.Errorf("unexpected a string literal in math function")
+		return
+	}
+
+	n := Node{
+		Func:  ModuloOp,
+		Left:  left,
+		Right: right,
+	}
+
+	l.push(n)
+}
+
+// ExitLiteralOps is called when production LiteralOps is exited.
+func (l *Listener) ExitAddOps(c *parser.AddOpsContext) {
+	right, left := l.pop(), l.pop()
+
+	// Check right op is not a string.
+	if right.Func == StringOp {
+		l.Err = fmt.Errorf("unexpected a string literal in math function")
+		return
+	}
+
+	n := Node{
+		Func:  AddOp,
+		Left:  left,
+		Right: right,
+	}
+
+	l.push(n)
+}
+
+// ExitLiteralOps is called when production LiteralOps is exited.
+func (l *Listener) ExitSubOps(c *parser.SubOpsContext) {
+	right, left := l.pop(), l.pop()
+
+	// Check right op is not a string.
+	if right.Func == StringOp {
+		l.Err = fmt.Errorf("unexpected a string literal in math function")
+		return
+	}
+
+	n := Node{
+		Func:  SubtractOp,
+		Left:  left,
+		Right: right,
+	}
+
+	l.push(n)
+}
+
+// ExitLiteralOps is called when production LiteralOps is exited.
+func (l *Listener) ExitLiteralOps(c *parser.LiteralOpsContext) {
+	right, left := l.pop(), l.pop()
+
+	n := Node{
+		Func:  opDic[c.LiteralOp().GetText()],
+		Left:  left,
+		Right: right,
 	}
 
 	l.push(n)
@@ -94,12 +182,18 @@ func (l *Listener) ExitColumnNameNumericOp(c *parser.ColumnNameNumericOpContext)
 
 // ExitStringOps is called when production StringOps is exited.
 func (l *Listener) ExitStringOps(c *parser.StringOpsContext) {
-	left := l.pop()
+	right, left := l.pop(), l.pop()
+
+	// Check right op is a string.
+	if right.Func != StringOp {
+		l.Err = fmt.Errorf("expected a string literal, found %v", right.Func)
+		return
+	}
 
 	n := Node{
 		Func:  opDic[c.StringOp().GetText()],
 		Left:  left,
-		Right: literalValueToArg(c.StringValue().GetText()),
+		Right: right,
 	}
 
 	l.push(n)
@@ -107,13 +201,19 @@ func (l *Listener) ExitStringOps(c *parser.StringOpsContext) {
 
 // ExitLike is called when production Like is exited.
 func (l *Listener) ExitLike(c *parser.LikeContext) {
-	left := l.pop()
+	right, left := l.pop(), l.pop()
 	op := ternaryOp(c.KeyNot() == nil, LikeOp, NotLikeOp)
+
+	// Check right op is a string.
+	if right.Func != StringOp {
+		l.Err = fmt.Errorf("expected a string literal, found %v", right.Func)
+		return
+	}
 
 	n := Node{
 		Func:  op,
 		Left:  left,
-		Right: literalValueToArg(c.StringValue().GetText()),
+		Right: right,
 	}
 
 	l.push(n)
@@ -121,13 +221,13 @@ func (l *Listener) ExitLike(c *parser.LikeContext) {
 
 // ExitIsLiteral is called when production IsLiteral is exited.
 func (l *Listener) ExitIsLiteral(c *parser.IsLiteralContext) {
-	left := l.pop()
+	right, left := l.pop(), l.pop()
 	op := ternaryOp(c.KeyNot() == nil, EqOp, NotEqOp)
 
 	n := Node{
 		Func:  op,
 		Left:  left,
-		Right: literalValueToArg(c.LiteralValue().GetText()),
+		Right: right,
 	}
 
 	l.push(n)
@@ -148,14 +248,14 @@ func (l *Listener) ExitIsNull(c *parser.IsNullContext) {
 
 // ExitIn is called when production In is exited.
 func (l *Listener) ExitIn(c *parser.InContext) {
+	right := l.popLiterals([]Node{})
 	left := l.pop()
 	op := ternaryOp(c.KeyNot() == nil, InOp, NotInOp)
-	args := literalValuesToArgs(c)
 
 	n := Node{
 		Func:  op,
 		Left:  left,
-		Right: args,
+		Right: right,
 	}
 
 	l.push(n)
@@ -163,14 +263,14 @@ func (l *Listener) ExitIn(c *parser.InContext) {
 
 // ExitBetween is called when production Between is exited.
 func (l *Listener) ExitBetween(c *parser.BetweenContext) {
+	right := []Node{l.pop(), l.pop()}
 	left := l.pop()
 	op := ternaryOp(c.KeyNot() == nil, BetweenOp, NotBetweenOp)
-	args := literalValuesToArgs(c)
 
 	n := Node{
 		Func:  op,
 		Left:  left,
-		Right: args,
+		Right: []Node{right[1], right[0]},
 	}
 
 	l.push(n)
@@ -212,12 +312,6 @@ func (l *Listener) ExitOr(c *parser.OrContext) {
 	l.push(n)
 }
 
-// hasLiteralValues is a type that contain literal values.
-type hasLiteralValues interface {
-	AllLiteralValue() []parser.ILiteralValueContext
-	LiteralValue(int) parser.ILiteralValueContext
-}
-
 // ternaryOp return lh if conditional is true, rh o/w.
 func ternaryOp(conditional bool, lh string, rh string) string {
 	if conditional {
@@ -227,8 +321,8 @@ func ternaryOp(conditional bool, lh string, rh string) string {
 	return rh
 }
 
-// literalValueToArg clean literal value, and return an arg string or float.
-func literalValueToArg(v string) (arg interface{}) {
+// stringValueToArg clean string value, and return an arg string.
+func stringValueToArg(v string) (arg interface{}) {
 	l := len(v)
 
 	// Check string length.
@@ -236,31 +330,23 @@ func literalValueToArg(v string) (arg interface{}) {
 		return
 	}
 
-	// Check for ''.
-	if v[0] == '\'' {
-		v = v[1 : l-1]
-		arg = strings.Replace(v, "''", "'", -1)
-		return
-	}
-
-	// It's a float.
-	arg, _ = strconv.ParseFloat(v, 64)
-
+	arg = strings.Replace(v[1:l-1], "''", "'", -1)
 	return
 }
 
-// literalValuesToArgs collect literal values, and create args list.
-func literalValuesToArgs(c hasLiteralValues) (args []interface{}) {
-	// Get length of literal values list.
-	l := len(c.AllLiteralValue())
+// popLiterals collect literal values, and create args list.
+func (l *Listener) popLiterals(in []Node) (out []Node) {
+	// Get a literal from stack.
+	p := l.pop()
 
-	// Create the arg list.
-	args = make([]interface{}, l)
-	for i := 0; i < l; i++ {
-		args[i] = literalValueToArg(c.LiteralValue(i).GetText())
+	// Run recurtion on literals.
+	if p.Func == StringOp || p.Func == NumberOp {
+		return l.popLiterals(append(in, p))
 	}
 
-	return
+	// If p is not a literal, add it back to stack and exit.
+	l.push(p)
+	return in
 }
 
 // push is a helper function for pushing new node to the listener Stack.

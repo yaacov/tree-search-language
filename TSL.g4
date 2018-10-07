@@ -5,26 +5,22 @@ grammar TSL;
 start : expr EOF;
 
 expr
-  : columnOp literalOp literalValue                                           # LiteralOps
-  | columnOp stringOp stringValue                                             # StringOps
-  | columnOp keyNot? K_LIKE stringValue                                       # Like
-  | columnOp K_IS keyNot? K_NULL                                              # IsNull
-  | columnOp K_IS keyNot? literalValue                                        # IsLiteral
-  | columnOp keyNot? K_BETWEEN literalValue K_AND literalValue                # Between
-  | columnOp keyNot? K_IN ( '(' ( literalValue ( ',' literalValue )* )? ')' ) # In
-  | K_NOT expr                                                                # Not
-  | expr K_AND expr                                                           # And
-  | expr K_OR expr                                                            # Or
-  | '(' expr ')'                                                              # Par
+  : mathExp literalOp literalValue                                           # LiteralOps
+  | mathExp stringOp literalValue                                            # StringOps
+  | mathExp keyNot? K_LIKE literalValue                                      # Like
+  | mathExp K_IS keyNot? K_NULL                                              # IsNull
+  | mathExp K_IS keyNot? literalValue                                        # IsLiteral
+  | mathExp keyNot? K_BETWEEN literalValue K_AND literalValue                # Between
+  | mathExp keyNot? K_IN ( '(' ( literalValue ( ',' literalValue )* )? ')' ) # In
+  | K_NOT expr                                                               # Not
+  | expr K_AND expr                                                          # And
+  | expr K_OR expr                                                           # Or
+  | '(' expr ')'                                                             # Par
   ;
 
 literalOp
   : ( '<' | '<=' | '>' | '>=' )
   | ( '=' | '!=' | '<>' )
-  ;
-
-numericOp
-  : ( '*' | '/' | '%' | '+' | '-' )
   ;
 
 stringOp
@@ -43,17 +39,19 @@ columnName
   : ( ( databaseName '.' )? tableName '.' )? IDENTIFIER
   ;
 
-numericExp
-  : signedNumber
-  | numericExp numericOp numericExp
-  | '(' numericExp ')'
+literalValue
+  : signedNumber # NumberLiteral
+  | stringValue  # StringLiteral
   ;
 
-columnOp
-  : columnName                    # Column
-  | columnOp numericOp columnOp   # ColumnNameOp
-  | columnOp numericOp numericExp # ColumnNameNumericOp
-  | '(' columnOp ')'              # ColumnNamePar
+mathExp
+  : columnName                             # ColumnIdentifier
+  | mathExp '*' ( literalValue | mathExp ) # MulOps
+  | mathExp '/' ( literalValue | mathExp ) # DivOps
+  | mathExp '%' ( literalValue | mathExp ) # ModOps
+  | mathExp '+' ( literalValue | mathExp ) # AddOps
+  | mathExp '-' ( literalValue | mathExp ) # SubOps
+  | '(' mathExp ')'                        # MathPar
   ;
 
 signedNumber
@@ -62,11 +60,6 @@ signedNumber
 
 stringValue
   : STRING_LITERAL
-  ;
-
-literalValue
-  : signedNumber
-  | stringValue
   ;
 
 keyNot

@@ -17,7 +17,9 @@ package tsl
 
 // TLS operators.
 const (
-	IdentOp      = "$ident" // Empty operator for itentifiers
+	IdentOp      = "$ident"  // Empty operator for itentifiers
+	StringOp     = "$string" // Empty operator for strings
+	NumberOp     = "$number" // Empty operator for numbers
 	LtOp         = "$lt"
 	LteOp        = "$lte"
 	GtOp         = "$gt"
@@ -38,7 +40,7 @@ const (
 	IsNilOp      = "$nexists"
 	IsNotNilOp   = "$exists"
 	AddOp        = "$add"
-	SubtractOp   = "$subtractO"
+	SubtractOp   = "$subtract"
 	MultiplyOp   = "$multiply"
 	DivideOp     = "$divide"
 	ModuloOp     = "$modulo"

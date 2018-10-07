@@ -47,9 +47,6 @@ type TSLListener interface {
 	// EnterLiteralOp is called when entering the literalOp production.
 	EnterLiteralOp(c *LiteralOpContext)
 
-	// EnterNumericOp is called when entering the numericOp production.
-	EnterNumericOp(c *NumericOpContext)
-
 	// EnterStringOp is called when entering the stringOp production.
 	EnterStringOp(c *StringOpContext)
 
@@ -62,29 +59,38 @@ type TSLListener interface {
 	// EnterColumnName is called when entering the columnName production.
 	EnterColumnName(c *ColumnNameContext)
 
-	// EnterNumericExp is called when entering the numericExp production.
-	EnterNumericExp(c *NumericExpContext)
+	// EnterNumberLiteral is called when entering the NumberLiteral production.
+	EnterNumberLiteral(c *NumberLiteralContext)
 
-	// EnterColumn is called when entering the Column production.
-	EnterColumn(c *ColumnContext)
+	// EnterStringLiteral is called when entering the StringLiteral production.
+	EnterStringLiteral(c *StringLiteralContext)
 
-	// EnterColumnNameOp is called when entering the ColumnNameOp production.
-	EnterColumnNameOp(c *ColumnNameOpContext)
+	// EnterMathPar is called when entering the MathPar production.
+	EnterMathPar(c *MathParContext)
 
-	// EnterColumnNameNumericOp is called when entering the ColumnNameNumericOp production.
-	EnterColumnNameNumericOp(c *ColumnNameNumericOpContext)
+	// EnterModOps is called when entering the ModOps production.
+	EnterModOps(c *ModOpsContext)
 
-	// EnterColumnNamePar is called when entering the ColumnNamePar production.
-	EnterColumnNamePar(c *ColumnNameParContext)
+	// EnterSubOps is called when entering the SubOps production.
+	EnterSubOps(c *SubOpsContext)
+
+	// EnterMulOps is called when entering the MulOps production.
+	EnterMulOps(c *MulOpsContext)
+
+	// EnterDivOps is called when entering the DivOps production.
+	EnterDivOps(c *DivOpsContext)
+
+	// EnterColumnIdentifier is called when entering the ColumnIdentifier production.
+	EnterColumnIdentifier(c *ColumnIdentifierContext)
+
+	// EnterAddOps is called when entering the AddOps production.
+	EnterAddOps(c *AddOpsContext)
 
 	// EnterSignedNumber is called when entering the signedNumber production.
 	EnterSignedNumber(c *SignedNumberContext)
 
 	// EnterStringValue is called when entering the stringValue production.
 	EnterStringValue(c *StringValueContext)
-
-	// EnterLiteralValue is called when entering the literalValue production.
-	EnterLiteralValue(c *LiteralValueContext)
 
 	// EnterKeyNot is called when entering the keyNot production.
 	EnterKeyNot(c *KeyNotContext)
@@ -128,9 +134,6 @@ type TSLListener interface {
 	// ExitLiteralOp is called when exiting the literalOp production.
 	ExitLiteralOp(c *LiteralOpContext)
 
-	// ExitNumericOp is called when exiting the numericOp production.
-	ExitNumericOp(c *NumericOpContext)
-
 	// ExitStringOp is called when exiting the stringOp production.
 	ExitStringOp(c *StringOpContext)
 
@@ -143,29 +146,38 @@ type TSLListener interface {
 	// ExitColumnName is called when exiting the columnName production.
 	ExitColumnName(c *ColumnNameContext)
 
-	// ExitNumericExp is called when exiting the numericExp production.
-	ExitNumericExp(c *NumericExpContext)
+	// ExitNumberLiteral is called when exiting the NumberLiteral production.
+	ExitNumberLiteral(c *NumberLiteralContext)
 
-	// ExitColumn is called when exiting the Column production.
-	ExitColumn(c *ColumnContext)
+	// ExitStringLiteral is called when exiting the StringLiteral production.
+	ExitStringLiteral(c *StringLiteralContext)
 
-	// ExitColumnNameOp is called when exiting the ColumnNameOp production.
-	ExitColumnNameOp(c *ColumnNameOpContext)
+	// ExitMathPar is called when exiting the MathPar production.
+	ExitMathPar(c *MathParContext)
 
-	// ExitColumnNameNumericOp is called when exiting the ColumnNameNumericOp production.
-	ExitColumnNameNumericOp(c *ColumnNameNumericOpContext)
+	// ExitModOps is called when exiting the ModOps production.
+	ExitModOps(c *ModOpsContext)
 
-	// ExitColumnNamePar is called when exiting the ColumnNamePar production.
-	ExitColumnNamePar(c *ColumnNameParContext)
+	// ExitSubOps is called when exiting the SubOps production.
+	ExitSubOps(c *SubOpsContext)
+
+	// ExitMulOps is called when exiting the MulOps production.
+	ExitMulOps(c *MulOpsContext)
+
+	// ExitDivOps is called when exiting the DivOps production.
+	ExitDivOps(c *DivOpsContext)
+
+	// ExitColumnIdentifier is called when exiting the ColumnIdentifier production.
+	ExitColumnIdentifier(c *ColumnIdentifierContext)
+
+	// ExitAddOps is called when exiting the AddOps production.
+	ExitAddOps(c *AddOpsContext)
 
 	// ExitSignedNumber is called when exiting the signedNumber production.
 	ExitSignedNumber(c *SignedNumberContext)
 
 	// ExitStringValue is called when exiting the stringValue production.
 	ExitStringValue(c *StringValueContext)
-
-	// ExitLiteralValue is called when exiting the literalValue production.
-	ExitLiteralValue(c *LiteralValueContext)
 
 	// ExitKeyNot is called when exiting the keyNot production.
 	ExitKeyNot(c *KeyNotContext)

@@ -21,26 +21,38 @@ import (
 	sq "github.com/Masterminds/squirrel"
 )
 
+func nodesToStrings(in interface{}) (s []string) {
+	var nn []Node
+	var ok bool
+
+	// Assume input is []Node or Node.
+	nn, ok = in.([]Node)
+	if !ok {
+		nn = []Node{in.(Node)}
+	}
+
+	// Assume all Nodes are Leafs.
+	for _, n := range nn {
+		s = append(s, n.Left.(string))
+	}
+
+	return
+}
+
 // binaryStep handle a binary operator step for SquirrelWalk.
 func binaryStep(n Node) (s sq.Sqlizer, err error) {
 	var l, r sq.Sqlizer
 
-	// Left hand side must be a Node.
+	// Get left hand side node.
 	l, err = SquirrelWalk(n.Left.(Node))
 	if err != nil {
 		return
 	}
 
-	// Check if right hand side is Node or string.
-	if str, ok := n.Right.(string); ok {
-		// Right hand side is a string.
-		r = sq.Expr(str)
-	} else {
-		// Right hand side is a Node.
-		r, err = SquirrelWalk(n.Right.(Node))
-		if err != nil {
-			return
-		}
+	// Get right hand side node.
+	r, err = SquirrelWalk(n.Right.(Node))
+	if err != nil {
+		return
 	}
 
 	switch n.Func {
@@ -81,27 +93,29 @@ func unaryStep(n Node) (s sq.Sqlizer, err error) {
 		return
 	}
 
+	right := nodesToStrings(n.Right)
+
 	switch n.Func {
 	case NotOp:
 		s = notExpr{l}
 	case EqOp:
-		s = sq.Eq{sql: n.Right}
+		s = sq.Eq{sql: right[0]}
 	case NotEqOp:
-		s = sq.NotEq{sql: n.Right}
+		s = sq.NotEq{sql: right[0]}
 	case LtOp:
-		s = sq.Lt{sql: n.Right}
+		s = sq.Lt{sql: right[0]}
 	case LteOp:
-		s = sq.LtOrEq{sql: n.Right}
+		s = sq.LtOrEq{sql: right[0]}
 	case GtOp:
-		s = sq.Gt{sql: n.Right}
+		s = sq.Gt{sql: right[0]}
 	case GteOp:
-		s = sq.GtOrEq{sql: n.Right}
+		s = sq.GtOrEq{sql: right[0]}
 	case InOp:
 		// Multiple eq will be translated into IN (?, ? ...).
-		s = sq.Eq{sql: n.Right}
+		s = sq.Eq{sql: right}
 	case NotInOp:
 		// Multiple not eq will be translated into NOT IN (?, ? ...).
-		s = sq.NotEq{sql: n.Right}
+		s = sq.NotEq{sql: right}
 	case IsNilOp:
 		// eq nil will be translated into IS NULL.
 		s = sq.Eq{sql: nil}
@@ -129,25 +143,72 @@ func unaryStep(n Node) (s sq.Sqlizer, err error) {
 // Squirrel: https://github.com/Masterminds/squirrel
 //
 func SquirrelWalk(n Node) (s sq.Sqlizer, err error) {
+	var l sq.Sqlizer
+	var sql string
+
 	switch n.Func {
 	case IdentOp:
+		s = sq.Expr(n.Left.(string))
+	case NumberOp:
+		s = sq.Expr(n.Left.(string))
+	case StringOp:
 		s = sq.Expr(n.Left.(string))
 	case AndOp, OrOp, AddOp, SubtractOp, MultiplyOp, DivideOp, ModuloOp:
 		return binaryStep(n)
 	case NotOp, EqOp, NotEqOp, LtOp, LteOp, GtOp, GteOp, InOp, NotInOp, IsNilOp, IsNotNilOp:
 		return unaryStep(n)
 	case LikeOp:
-		t := fmt.Sprintf("%s LIKE ?", n.Left.(string))
+		l, err = SquirrelWalk(n.Left.(Node))
+		if err != nil {
+			return
+		}
+
+		sql, _, err = l.ToSql()
+		if err != nil {
+			return
+		}
+
+		t := fmt.Sprintf("%s LIKE ?", sql)
 		s = sq.Expr(t, n.Right)
 	case NotLikeOp:
-		t := fmt.Sprintf("%s NOT LIKE ?", n.Left.(string))
-		s = sq.Expr(t, n.Right)
+		l, err = SquirrelWalk(n.Left.(Node))
+		if err != nil {
+			return
+		}
+
+		sql, _, err = l.ToSql()
+		if err != nil {
+			return
+		}
+
+		t := fmt.Sprintf("%s NOT LIKE ?", sql)
+		s = sq.Expr(t, n.Right.(Node).Left.(string))
 	case BetweenOp:
-		t := fmt.Sprintf("%s BETWEEN ? AND ?", n.Left.(string))
-		s = sq.Expr(t, n.Right.([]interface{})[0], n.Right.([]interface{})[1])
+		l, err = SquirrelWalk(n.Left.(Node))
+		if err != nil {
+			return
+		}
+
+		sql, _, err = l.ToSql()
+		if err != nil {
+			return
+		}
+
+		t := fmt.Sprintf("%s BETWEEN ? AND ?", sql)
+		s = sq.Expr(t, n.Right.([]Node)[0].Left.(string), n.Right.([]Node)[1].Left.(string))
 	case NotBetweenOp:
-		t := fmt.Sprintf("%s NOT BETWEEN ? AND ?", n.Left.(string))
-		s = sq.Expr(t, n.Right.([]interface{})[0], n.Right.([]interface{})[1])
+		l, err = SquirrelWalk(n.Left.(Node))
+		if err != nil {
+			return
+		}
+
+		sql, _, err = l.ToSql()
+		if err != nil {
+			return
+		}
+
+		t := fmt.Sprintf("%s NOT BETWEEN ? AND ?", sql)
+		s = sq.Expr(t, n.Right.([]Node)[0].Left.(string), n.Right.([]Node)[1].Left.(string))
 	default:
 		// If here than the operator is not supported.
 		err = fmt.Errorf("un supported operand: %s", n.Func)

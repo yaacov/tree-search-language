@@ -16,94 +16,95 @@ var _ = reflect.Copy
 var _ = strconv.Itoa
 
 var parserATN = []uint16{
-	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 32, 185,
+	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 32, 184,
 	4, 2, 9, 2, 4, 3, 9, 3, 4, 4, 9, 4, 4, 5, 9, 5, 4, 6, 9, 6, 4, 7, 9, 7,
 	4, 8, 9, 8, 4, 9, 9, 9, 4, 10, 9, 10, 4, 11, 9, 11, 4, 12, 9, 12, 4, 13,
-	9, 13, 4, 14, 9, 14, 4, 15, 9, 15, 3, 2, 3, 2, 3, 2, 3, 3, 3, 3, 3, 3,
-	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 3, 45, 10, 3, 3, 3,
-	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 3, 53, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 5, 3, 60, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 3, 66, 10, 3, 3, 3, 3,
-	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 3, 75, 10, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 3, 7, 3, 82, 10, 3, 12, 3, 14, 3, 85, 11, 3, 5, 3, 87, 10, 3, 3,
-	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 3, 97, 10, 3, 3, 3, 3,
-	3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 3, 105, 10, 3, 12, 3, 14, 3, 108, 11, 3,
-	3, 4, 3, 4, 5, 4, 112, 10, 4, 3, 5, 3, 5, 3, 6, 3, 6, 3, 7, 3, 7, 3, 8,
-	3, 8, 3, 9, 3, 9, 3, 9, 5, 9, 125, 10, 9, 3, 9, 3, 9, 3, 9, 5, 9, 130,
-	10, 9, 3, 9, 3, 9, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 5, 10, 140,
-	10, 10, 3, 10, 3, 10, 3, 10, 3, 10, 7, 10, 146, 10, 10, 12, 10, 14, 10,
-	149, 11, 10, 3, 11, 3, 11, 3, 11, 3, 11, 3, 11, 3, 11, 5, 11, 157, 10,
-	11, 3, 11, 3, 11, 3, 11, 3, 11, 3, 11, 3, 11, 3, 11, 3, 11, 7, 11, 167,
-	10, 11, 12, 11, 14, 11, 170, 11, 11, 3, 12, 5, 12, 173, 10, 12, 3, 12,
-	3, 12, 3, 13, 3, 13, 3, 14, 3, 14, 5, 14, 181, 10, 14, 3, 15, 3, 15, 3,
-	15, 2, 5, 4, 18, 20, 16, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26,
-	28, 2, 7, 3, 2, 6, 9, 3, 2, 10, 12, 3, 2, 13, 17, 3, 2, 18, 19, 3, 2, 16,
-	17, 2, 197, 2, 30, 3, 2, 2, 2, 4, 96, 3, 2, 2, 2, 6, 111, 3, 2, 2, 2, 8,
-	113, 3, 2, 2, 2, 10, 115, 3, 2, 2, 2, 12, 117, 3, 2, 2, 2, 14, 119, 3,
-	2, 2, 2, 16, 129, 3, 2, 2, 2, 18, 139, 3, 2, 2, 2, 20, 156, 3, 2, 2, 2,
-	22, 172, 3, 2, 2, 2, 24, 176, 3, 2, 2, 2, 26, 180, 3, 2, 2, 2, 28, 182,
-	3, 2, 2, 2, 30, 31, 5, 4, 3, 2, 31, 32, 7, 2, 2, 3, 32, 3, 3, 2, 2, 2,
-	33, 34, 8, 3, 1, 2, 34, 35, 5, 20, 11, 2, 35, 36, 5, 6, 4, 2, 36, 37, 5,
-	26, 14, 2, 37, 97, 3, 2, 2, 2, 38, 39, 5, 20, 11, 2, 39, 40, 5, 10, 6,
-	2, 40, 41, 5, 24, 13, 2, 41, 97, 3, 2, 2, 2, 42, 44, 5, 20, 11, 2, 43,
-	45, 5, 28, 15, 2, 44, 43, 3, 2, 2, 2, 44, 45, 3, 2, 2, 2, 45, 46, 3, 2,
-	2, 2, 46, 47, 7, 21, 2, 2, 47, 48, 5, 24, 13, 2, 48, 97, 3, 2, 2, 2, 49,
-	50, 5, 20, 11, 2, 50, 52, 7, 26, 2, 2, 51, 53, 5, 28, 15, 2, 52, 51, 3,
-	2, 2, 2, 52, 53, 3, 2, 2, 2, 53, 54, 3, 2, 2, 2, 54, 55, 7, 27, 2, 2, 55,
-	97, 3, 2, 2, 2, 56, 57, 5, 20, 11, 2, 57, 59, 7, 26, 2, 2, 58, 60, 5, 28,
-	15, 2, 59, 58, 3, 2, 2, 2, 59, 60, 3, 2, 2, 2, 60, 61, 3, 2, 2, 2, 61,
-	62, 5, 26, 14, 2, 62, 97, 3, 2, 2, 2, 63, 65, 5, 20, 11, 2, 64, 66, 5,
-	28, 15, 2, 65, 64, 3, 2, 2, 2, 65, 66, 3, 2, 2, 2, 66, 67, 3, 2, 2, 2,
-	67, 68, 7, 24, 2, 2, 68, 69, 5, 26, 14, 2, 69, 70, 7, 22, 2, 2, 70, 71,
-	5, 26, 14, 2, 71, 97, 3, 2, 2, 2, 72, 74, 5, 20, 11, 2, 73, 75, 5, 28,
-	15, 2, 74, 73, 3, 2, 2, 2, 74, 75, 3, 2, 2, 2, 75, 76, 3, 2, 2, 2, 76,
-	77, 7, 25, 2, 2, 77, 86, 7, 3, 2, 2, 78, 83, 5, 26, 14, 2, 79, 80, 7, 4,
-	2, 2, 80, 82, 5, 26, 14, 2, 81, 79, 3, 2, 2, 2, 82, 85, 3, 2, 2, 2, 83,
-	81, 3, 2, 2, 2, 83, 84, 3, 2, 2, 2, 84, 87, 3, 2, 2, 2, 85, 83, 3, 2, 2,
-	2, 86, 78, 3, 2, 2, 2, 86, 87, 3, 2, 2, 2, 87, 88, 3, 2, 2, 2, 88, 89,
-	7, 5, 2, 2, 89, 97, 3, 2, 2, 2, 90, 91, 7, 28, 2, 2, 91, 97, 5, 4, 3, 6,
-	92, 93, 7, 3, 2, 2, 93, 94, 5, 4, 3, 2, 94, 95, 7, 5, 2, 2, 95, 97, 3,
-	2, 2, 2, 96, 33, 3, 2, 2, 2, 96, 38, 3, 2, 2, 2, 96, 42, 3, 2, 2, 2, 96,
-	49, 3, 2, 2, 2, 96, 56, 3, 2, 2, 2, 96, 63, 3, 2, 2, 2, 96, 72, 3, 2, 2,
-	2, 96, 90, 3, 2, 2, 2, 96, 92, 3, 2, 2, 2, 97, 106, 3, 2, 2, 2, 98, 99,
-	12, 5, 2, 2, 99, 100, 7, 22, 2, 2, 100, 105, 5, 4, 3, 6, 101, 102, 12,
-	4, 2, 2, 102, 103, 7, 23, 2, 2, 103, 105, 5, 4, 3, 5, 104, 98, 3, 2, 2,
-	2, 104, 101, 3, 2, 2, 2, 105, 108, 3, 2, 2, 2, 106, 104, 3, 2, 2, 2, 106,
-	107, 3, 2, 2, 2, 107, 5, 3, 2, 2, 2, 108, 106, 3, 2, 2, 2, 109, 112, 9,
-	2, 2, 2, 110, 112, 9, 3, 2, 2, 111, 109, 3, 2, 2, 2, 111, 110, 3, 2, 2,
-	2, 112, 7, 3, 2, 2, 2, 113, 114, 9, 4, 2, 2, 114, 9, 3, 2, 2, 2, 115, 116,
-	9, 5, 2, 2, 116, 11, 3, 2, 2, 2, 117, 118, 7, 29, 2, 2, 118, 13, 3, 2,
-	2, 2, 119, 120, 7, 29, 2, 2, 120, 15, 3, 2, 2, 2, 121, 122, 5, 12, 7, 2,
-	122, 123, 7, 20, 2, 2, 123, 125, 3, 2, 2, 2, 124, 121, 3, 2, 2, 2, 124,
-	125, 3, 2, 2, 2, 125, 126, 3, 2, 2, 2, 126, 127, 5, 14, 8, 2, 127, 128,
-	7, 20, 2, 2, 128, 130, 3, 2, 2, 2, 129, 124, 3, 2, 2, 2, 129, 130, 3, 2,
-	2, 2, 130, 131, 3, 2, 2, 2, 131, 132, 7, 29, 2, 2, 132, 17, 3, 2, 2, 2,
-	133, 134, 8, 10, 1, 2, 134, 140, 5, 22, 12, 2, 135, 136, 7, 3, 2, 2, 136,
-	137, 5, 18, 10, 2, 137, 138, 7, 5, 2, 2, 138, 140, 3, 2, 2, 2, 139, 133,
-	3, 2, 2, 2, 139, 135, 3, 2, 2, 2, 140, 147, 3, 2, 2, 2, 141, 142, 12, 4,
-	2, 2, 142, 143, 5, 8, 5, 2, 143, 144, 5, 18, 10, 5, 144, 146, 3, 2, 2,
-	2, 145, 141, 3, 2, 2, 2, 146, 149, 3, 2, 2, 2, 147, 145, 3, 2, 2, 2, 147,
-	148, 3, 2, 2, 2, 148, 19, 3, 2, 2, 2, 149, 147, 3, 2, 2, 2, 150, 151, 8,
-	11, 1, 2, 151, 157, 5, 16, 9, 2, 152, 153, 7, 3, 2, 2, 153, 154, 5, 20,
-	11, 2, 154, 155, 7, 5, 2, 2, 155, 157, 3, 2, 2, 2, 156, 150, 3, 2, 2, 2,
-	156, 152, 3, 2, 2, 2, 157, 168, 3, 2, 2, 2, 158, 159, 12, 5, 2, 2, 159,
-	160, 5, 8, 5, 2, 160, 161, 5, 20, 11, 6, 161, 167, 3, 2, 2, 2, 162, 163,
-	12, 4, 2, 2, 163, 164, 5, 8, 5, 2, 164, 165, 5, 18, 10, 2, 165, 167, 3,
-	2, 2, 2, 166, 158, 3, 2, 2, 2, 166, 162, 3, 2, 2, 2, 167, 170, 3, 2, 2,
-	2, 168, 166, 3, 2, 2, 2, 168, 169, 3, 2, 2, 2, 169, 21, 3, 2, 2, 2, 170,
-	168, 3, 2, 2, 2, 171, 173, 9, 6, 2, 2, 172, 171, 3, 2, 2, 2, 172, 173,
-	3, 2, 2, 2, 173, 174, 3, 2, 2, 2, 174, 175, 7, 30, 2, 2, 175, 23, 3, 2,
-	2, 2, 176, 177, 7, 31, 2, 2, 177, 25, 3, 2, 2, 2, 178, 181, 5, 22, 12,
-	2, 179, 181, 5, 24, 13, 2, 180, 178, 3, 2, 2, 2, 180, 179, 3, 2, 2, 2,
-	181, 27, 3, 2, 2, 2, 182, 183, 7, 28, 2, 2, 183, 29, 3, 2, 2, 2, 22, 44,
-	52, 59, 65, 74, 83, 86, 96, 104, 106, 111, 124, 129, 139, 147, 156, 166,
-	168, 172, 180,
+	9, 13, 3, 2, 3, 2, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+	3, 3, 3, 3, 3, 3, 5, 3, 41, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+	5, 3, 49, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 3, 56, 10, 3, 3, 3, 3,
+	3, 3, 3, 3, 3, 5, 3, 62, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+	3, 5, 3, 71, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 3, 78, 10, 3, 12,
+	3, 14, 3, 81, 11, 3, 5, 3, 83, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+	3, 3, 3, 3, 3, 5, 3, 93, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7,
+	3, 101, 10, 3, 12, 3, 14, 3, 104, 11, 3, 3, 4, 3, 4, 5, 4, 108, 10, 4,
+	3, 5, 3, 5, 3, 6, 3, 6, 3, 7, 3, 7, 3, 8, 3, 8, 3, 8, 5, 8, 119, 10, 8,
+	3, 8, 3, 8, 3, 8, 5, 8, 124, 10, 8, 3, 8, 3, 8, 3, 9, 3, 9, 5, 9, 130,
+	10, 9, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 5, 10, 138, 10, 10, 3,
+	10, 3, 10, 3, 10, 3, 10, 5, 10, 144, 10, 10, 3, 10, 3, 10, 3, 10, 3, 10,
+	5, 10, 150, 10, 10, 3, 10, 3, 10, 3, 10, 3, 10, 5, 10, 156, 10, 10, 3,
+	10, 3, 10, 3, 10, 3, 10, 5, 10, 162, 10, 10, 3, 10, 3, 10, 3, 10, 3, 10,
+	5, 10, 168, 10, 10, 7, 10, 170, 10, 10, 12, 10, 14, 10, 173, 11, 10, 3,
+	11, 5, 11, 176, 10, 11, 3, 11, 3, 11, 3, 12, 3, 12, 3, 13, 3, 13, 3, 13,
+	2, 4, 4, 18, 14, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 2, 6, 3, 2,
+	6, 9, 3, 2, 10, 12, 3, 2, 13, 14, 3, 2, 19, 20, 2, 204, 2, 26, 3, 2, 2,
+	2, 4, 92, 3, 2, 2, 2, 6, 107, 3, 2, 2, 2, 8, 109, 3, 2, 2, 2, 10, 111,
+	3, 2, 2, 2, 12, 113, 3, 2, 2, 2, 14, 123, 3, 2, 2, 2, 16, 129, 3, 2, 2,
+	2, 18, 137, 3, 2, 2, 2, 20, 175, 3, 2, 2, 2, 22, 179, 3, 2, 2, 2, 24, 181,
+	3, 2, 2, 2, 26, 27, 5, 4, 3, 2, 27, 28, 7, 2, 2, 3, 28, 3, 3, 2, 2, 2,
+	29, 30, 8, 3, 1, 2, 30, 31, 5, 18, 10, 2, 31, 32, 5, 6, 4, 2, 32, 33, 5,
+	16, 9, 2, 33, 93, 3, 2, 2, 2, 34, 35, 5, 18, 10, 2, 35, 36, 5, 8, 5, 2,
+	36, 37, 5, 16, 9, 2, 37, 93, 3, 2, 2, 2, 38, 40, 5, 18, 10, 2, 39, 41,
+	5, 24, 13, 2, 40, 39, 3, 2, 2, 2, 40, 41, 3, 2, 2, 2, 41, 42, 3, 2, 2,
+	2, 42, 43, 7, 21, 2, 2, 43, 44, 5, 16, 9, 2, 44, 93, 3, 2, 2, 2, 45, 46,
+	5, 18, 10, 2, 46, 48, 7, 26, 2, 2, 47, 49, 5, 24, 13, 2, 48, 47, 3, 2,
+	2, 2, 48, 49, 3, 2, 2, 2, 49, 50, 3, 2, 2, 2, 50, 51, 7, 27, 2, 2, 51,
+	93, 3, 2, 2, 2, 52, 53, 5, 18, 10, 2, 53, 55, 7, 26, 2, 2, 54, 56, 5, 24,
+	13, 2, 55, 54, 3, 2, 2, 2, 55, 56, 3, 2, 2, 2, 56, 57, 3, 2, 2, 2, 57,
+	58, 5, 16, 9, 2, 58, 93, 3, 2, 2, 2, 59, 61, 5, 18, 10, 2, 60, 62, 5, 24,
+	13, 2, 61, 60, 3, 2, 2, 2, 61, 62, 3, 2, 2, 2, 62, 63, 3, 2, 2, 2, 63,
+	64, 7, 24, 2, 2, 64, 65, 5, 16, 9, 2, 65, 66, 7, 22, 2, 2, 66, 67, 5, 16,
+	9, 2, 67, 93, 3, 2, 2, 2, 68, 70, 5, 18, 10, 2, 69, 71, 5, 24, 13, 2, 70,
+	69, 3, 2, 2, 2, 70, 71, 3, 2, 2, 2, 71, 72, 3, 2, 2, 2, 72, 73, 7, 25,
+	2, 2, 73, 82, 7, 3, 2, 2, 74, 79, 5, 16, 9, 2, 75, 76, 7, 4, 2, 2, 76,
+	78, 5, 16, 9, 2, 77, 75, 3, 2, 2, 2, 78, 81, 3, 2, 2, 2, 79, 77, 3, 2,
+	2, 2, 79, 80, 3, 2, 2, 2, 80, 83, 3, 2, 2, 2, 81, 79, 3, 2, 2, 2, 82, 74,
+	3, 2, 2, 2, 82, 83, 3, 2, 2, 2, 83, 84, 3, 2, 2, 2, 84, 85, 7, 5, 2, 2,
+	85, 93, 3, 2, 2, 2, 86, 87, 7, 28, 2, 2, 87, 93, 5, 4, 3, 6, 88, 89, 7,
+	3, 2, 2, 89, 90, 5, 4, 3, 2, 90, 91, 7, 5, 2, 2, 91, 93, 3, 2, 2, 2, 92,
+	29, 3, 2, 2, 2, 92, 34, 3, 2, 2, 2, 92, 38, 3, 2, 2, 2, 92, 45, 3, 2, 2,
+	2, 92, 52, 3, 2, 2, 2, 92, 59, 3, 2, 2, 2, 92, 68, 3, 2, 2, 2, 92, 86,
+	3, 2, 2, 2, 92, 88, 3, 2, 2, 2, 93, 102, 3, 2, 2, 2, 94, 95, 12, 5, 2,
+	2, 95, 96, 7, 22, 2, 2, 96, 101, 5, 4, 3, 6, 97, 98, 12, 4, 2, 2, 98, 99,
+	7, 23, 2, 2, 99, 101, 5, 4, 3, 5, 100, 94, 3, 2, 2, 2, 100, 97, 3, 2, 2,
+	2, 101, 104, 3, 2, 2, 2, 102, 100, 3, 2, 2, 2, 102, 103, 3, 2, 2, 2, 103,
+	5, 3, 2, 2, 2, 104, 102, 3, 2, 2, 2, 105, 108, 9, 2, 2, 2, 106, 108, 9,
+	3, 2, 2, 107, 105, 3, 2, 2, 2, 107, 106, 3, 2, 2, 2, 108, 7, 3, 2, 2, 2,
+	109, 110, 9, 4, 2, 2, 110, 9, 3, 2, 2, 2, 111, 112, 7, 29, 2, 2, 112, 11,
+	3, 2, 2, 2, 113, 114, 7, 29, 2, 2, 114, 13, 3, 2, 2, 2, 115, 116, 5, 10,
+	6, 2, 116, 117, 7, 15, 2, 2, 117, 119, 3, 2, 2, 2, 118, 115, 3, 2, 2, 2,
+	118, 119, 3, 2, 2, 2, 119, 120, 3, 2, 2, 2, 120, 121, 5, 12, 7, 2, 121,
+	122, 7, 15, 2, 2, 122, 124, 3, 2, 2, 2, 123, 118, 3, 2, 2, 2, 123, 124,
+	3, 2, 2, 2, 124, 125, 3, 2, 2, 2, 125, 126, 7, 29, 2, 2, 126, 15, 3, 2,
+	2, 2, 127, 130, 5, 20, 11, 2, 128, 130, 5, 22, 12, 2, 129, 127, 3, 2, 2,
+	2, 129, 128, 3, 2, 2, 2, 130, 17, 3, 2, 2, 2, 131, 132, 8, 10, 1, 2, 132,
+	138, 5, 14, 8, 2, 133, 134, 7, 3, 2, 2, 134, 135, 5, 18, 10, 2, 135, 136,
+	7, 5, 2, 2, 136, 138, 3, 2, 2, 2, 137, 131, 3, 2, 2, 2, 137, 133, 3, 2,
+	2, 2, 138, 171, 3, 2, 2, 2, 139, 140, 12, 8, 2, 2, 140, 143, 7, 16, 2,
+	2, 141, 144, 5, 16, 9, 2, 142, 144, 5, 18, 10, 2, 143, 141, 3, 2, 2, 2,
+	143, 142, 3, 2, 2, 2, 144, 170, 3, 2, 2, 2, 145, 146, 12, 7, 2, 2, 146,
+	149, 7, 17, 2, 2, 147, 150, 5, 16, 9, 2, 148, 150, 5, 18, 10, 2, 149, 147,
+	3, 2, 2, 2, 149, 148, 3, 2, 2, 2, 150, 170, 3, 2, 2, 2, 151, 152, 12, 6,
+	2, 2, 152, 155, 7, 18, 2, 2, 153, 156, 5, 16, 9, 2, 154, 156, 5, 18, 10,
+	2, 155, 153, 3, 2, 2, 2, 155, 154, 3, 2, 2, 2, 156, 170, 3, 2, 2, 2, 157,
+	158, 12, 5, 2, 2, 158, 161, 7, 19, 2, 2, 159, 162, 5, 16, 9, 2, 160, 162,
+	5, 18, 10, 2, 161, 159, 3, 2, 2, 2, 161, 160, 3, 2, 2, 2, 162, 170, 3,
+	2, 2, 2, 163, 164, 12, 4, 2, 2, 164, 167, 7, 20, 2, 2, 165, 168, 5, 16,
+	9, 2, 166, 168, 5, 18, 10, 2, 167, 165, 3, 2, 2, 2, 167, 166, 3, 2, 2,
+	2, 168, 170, 3, 2, 2, 2, 169, 139, 3, 2, 2, 2, 169, 145, 3, 2, 2, 2, 169,
+	151, 3, 2, 2, 2, 169, 157, 3, 2, 2, 2, 169, 163, 3, 2, 2, 2, 170, 173,
+	3, 2, 2, 2, 171, 169, 3, 2, 2, 2, 171, 172, 3, 2, 2, 2, 172, 19, 3, 2,
+	2, 2, 173, 171, 3, 2, 2, 2, 174, 176, 9, 5, 2, 2, 175, 174, 3, 2, 2, 2,
+	175, 176, 3, 2, 2, 2, 176, 177, 3, 2, 2, 2, 177, 178, 7, 30, 2, 2, 178,
+	21, 3, 2, 2, 2, 179, 180, 7, 31, 2, 2, 180, 23, 3, 2, 2, 2, 181, 182, 7,
+	28, 2, 2, 182, 25, 3, 2, 2, 2, 25, 40, 48, 55, 61, 70, 79, 82, 92, 100,
+	102, 107, 118, 123, 129, 137, 143, 149, 155, 161, 167, 169, 171, 175,
 }
 var deserializer = antlr.NewATNDeserializer(nil)
 var deserializedATN = deserializer.DeserializeFromUInt16(parserATN)
 
 var literalNames = []string{
 	"", "'('", "','", "')'", "'<'", "'<='", "'>'", "'>='", "'='", "'!='", "'<>'",
-	"'*'", "'/'", "'%'", "'+'", "'-'", "'~='", "'~!'", "'.'",
+	"'~='", "'~!'", "'.'", "'*'", "'/'", "'%'", "'+'", "'-'",
 }
 var symbolicNames = []string{
 	"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
@@ -112,9 +113,9 @@ var symbolicNames = []string{
 }
 
 var ruleNames = []string{
-	"start", "expr", "literalOp", "numericOp", "stringOp", "databaseName",
-	"tableName", "columnName", "numericExp", "columnOp", "signedNumber", "stringValue",
-	"literalValue", "keyNot",
+	"start", "expr", "literalOp", "stringOp", "databaseName", "tableName",
+	"columnName", "literalValue", "mathExp", "signedNumber", "stringValue",
+	"keyNot",
 }
 var decisionToDFA = make([]*antlr.DFA, len(deserializedATN.DecisionToState))
 
@@ -182,17 +183,15 @@ const (
 	TSLParserRULE_start        = 0
 	TSLParserRULE_expr         = 1
 	TSLParserRULE_literalOp    = 2
-	TSLParserRULE_numericOp    = 3
-	TSLParserRULE_stringOp     = 4
-	TSLParserRULE_databaseName = 5
-	TSLParserRULE_tableName    = 6
-	TSLParserRULE_columnName   = 7
-	TSLParserRULE_numericExp   = 8
-	TSLParserRULE_columnOp     = 9
-	TSLParserRULE_signedNumber = 10
-	TSLParserRULE_stringValue  = 11
-	TSLParserRULE_literalValue = 12
-	TSLParserRULE_keyNot       = 13
+	TSLParserRULE_stringOp     = 3
+	TSLParserRULE_databaseName = 4
+	TSLParserRULE_tableName    = 5
+	TSLParserRULE_columnName   = 6
+	TSLParserRULE_literalValue = 7
+	TSLParserRULE_mathExp      = 8
+	TSLParserRULE_signedNumber = 9
+	TSLParserRULE_stringValue  = 10
+	TSLParserRULE_keyNot       = 11
 )
 
 // IStartContext is an interface to support dynamic dispatch.
@@ -289,11 +288,11 @@ func (p *TSLParser) Start() (localctx IStartContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(28)
+		p.SetState(24)
 		p.expr(0)
 	}
 	{
-		p.SetState(29)
+		p.SetState(25)
 		p.Match(TSLParserEOF)
 	}
 
@@ -452,28 +451,28 @@ func (s *LikeContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *LikeContext) ColumnOp() IColumnOpContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IColumnOpContext)(nil)).Elem(), 0)
+func (s *LikeContext) MathExp() IMathExpContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IMathExpContext)(nil)).Elem(), 0)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(IColumnOpContext)
+	return t.(IMathExpContext)
 }
 
 func (s *LikeContext) K_LIKE() antlr.TerminalNode {
 	return s.GetToken(TSLParserK_LIKE, 0)
 }
 
-func (s *LikeContext) StringValue() IStringValueContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IStringValueContext)(nil)).Elem(), 0)
+func (s *LikeContext) LiteralValue() ILiteralValueContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*ILiteralValueContext)(nil)).Elem(), 0)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(IStringValueContext)
+	return t.(ILiteralValueContext)
 }
 
 func (s *LikeContext) KeyNot() IKeyNotContext {
@@ -573,14 +572,14 @@ func (s *InContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *InContext) ColumnOp() IColumnOpContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IColumnOpContext)(nil)).Elem(), 0)
+func (s *InContext) MathExp() IMathExpContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IMathExpContext)(nil)).Elem(), 0)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(IColumnOpContext)
+	return t.(IMathExpContext)
 }
 
 func (s *InContext) K_IN() antlr.TerminalNode {
@@ -650,14 +649,14 @@ func (s *IsLiteralContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *IsLiteralContext) ColumnOp() IColumnOpContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IColumnOpContext)(nil)).Elem(), 0)
+func (s *IsLiteralContext) MathExp() IMathExpContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IMathExpContext)(nil)).Elem(), 0)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(IColumnOpContext)
+	return t.(IMathExpContext)
 }
 
 func (s *IsLiteralContext) K_IS() antlr.TerminalNode {
@@ -771,14 +770,14 @@ func (s *BetweenContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *BetweenContext) ColumnOp() IColumnOpContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IColumnOpContext)(nil)).Elem(), 0)
+func (s *BetweenContext) MathExp() IMathExpContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IMathExpContext)(nil)).Elem(), 0)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(IColumnOpContext)
+	return t.(IMathExpContext)
 }
 
 func (s *BetweenContext) K_BETWEEN() antlr.TerminalNode {
@@ -852,14 +851,14 @@ func (s *StringOpsContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *StringOpsContext) ColumnOp() IColumnOpContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IColumnOpContext)(nil)).Elem(), 0)
+func (s *StringOpsContext) MathExp() IMathExpContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IMathExpContext)(nil)).Elem(), 0)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(IColumnOpContext)
+	return t.(IMathExpContext)
 }
 
 func (s *StringOpsContext) StringOp() IStringOpContext {
@@ -872,14 +871,14 @@ func (s *StringOpsContext) StringOp() IStringOpContext {
 	return t.(IStringOpContext)
 }
 
-func (s *StringOpsContext) StringValue() IStringValueContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IStringValueContext)(nil)).Elem(), 0)
+func (s *StringOpsContext) LiteralValue() ILiteralValueContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*ILiteralValueContext)(nil)).Elem(), 0)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(IStringValueContext)
+	return t.(ILiteralValueContext)
 }
 
 func (s *StringOpsContext) EnterRule(listener antlr.ParseTreeListener) {
@@ -912,14 +911,14 @@ func (s *IsNullContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *IsNullContext) ColumnOp() IColumnOpContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IColumnOpContext)(nil)).Elem(), 0)
+func (s *IsNullContext) MathExp() IMathExpContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IMathExpContext)(nil)).Elem(), 0)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(IColumnOpContext)
+	return t.(IMathExpContext)
 }
 
 func (s *IsNullContext) K_IS() antlr.TerminalNode {
@@ -970,14 +969,14 @@ func (s *LiteralOpsContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *LiteralOpsContext) ColumnOp() IColumnOpContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IColumnOpContext)(nil)).Elem(), 0)
+func (s *LiteralOpsContext) MathExp() IMathExpContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IMathExpContext)(nil)).Elem(), 0)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(IColumnOpContext)
+	return t.(IMathExpContext)
 }
 
 func (s *LiteralOpsContext) LiteralOp() ILiteralOpContext {
@@ -1045,7 +1044,7 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 	var _alt int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(94)
+	p.SetState(90)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 7, p.GetParserRuleContext()) {
 	case 1:
@@ -1054,15 +1053,15 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		_prevctx = localctx
 
 		{
-			p.SetState(32)
-			p.columnOp(0)
+			p.SetState(28)
+			p.mathExp(0)
 		}
 		{
-			p.SetState(33)
+			p.SetState(29)
 			p.LiteralOp()
 		}
 		{
-			p.SetState(34)
+			p.SetState(30)
 			p.LiteralValue()
 		}
 
@@ -1071,16 +1070,16 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(36)
-			p.columnOp(0)
+			p.SetState(32)
+			p.mathExp(0)
 		}
 		{
-			p.SetState(37)
+			p.SetState(33)
 			p.StringOp()
 		}
 		{
-			p.SetState(38)
-			p.StringValue()
+			p.SetState(34)
+			p.LiteralValue()
 		}
 
 	case 3:
@@ -1088,27 +1087,27 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(40)
-			p.columnOp(0)
+			p.SetState(36)
+			p.mathExp(0)
 		}
-		p.SetState(42)
+		p.SetState(38)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		if _la == TSLParserK_NOT {
 			{
-				p.SetState(41)
+				p.SetState(37)
 				p.KeyNot()
 			}
 
 		}
 		{
-			p.SetState(44)
+			p.SetState(40)
 			p.Match(TSLParserK_LIKE)
 		}
 		{
-			p.SetState(45)
-			p.StringValue()
+			p.SetState(41)
+			p.LiteralValue()
 		}
 
 	case 4:
@@ -1116,26 +1115,26 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(47)
-			p.columnOp(0)
+			p.SetState(43)
+			p.mathExp(0)
 		}
 		{
-			p.SetState(48)
+			p.SetState(44)
 			p.Match(TSLParserK_IS)
 		}
-		p.SetState(50)
+		p.SetState(46)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		if _la == TSLParserK_NOT {
 			{
-				p.SetState(49)
+				p.SetState(45)
 				p.KeyNot()
 			}
 
 		}
 		{
-			p.SetState(52)
+			p.SetState(48)
 			p.Match(TSLParserK_NULL)
 		}
 
@@ -1144,26 +1143,26 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(54)
-			p.columnOp(0)
+			p.SetState(50)
+			p.mathExp(0)
 		}
 		{
-			p.SetState(55)
+			p.SetState(51)
 			p.Match(TSLParserK_IS)
 		}
-		p.SetState(57)
+		p.SetState(53)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		if _la == TSLParserK_NOT {
 			{
-				p.SetState(56)
+				p.SetState(52)
 				p.KeyNot()
 			}
 
 		}
 		{
-			p.SetState(59)
+			p.SetState(55)
 			p.LiteralValue()
 		}
 
@@ -1172,34 +1171,34 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(61)
-			p.columnOp(0)
+			p.SetState(57)
+			p.mathExp(0)
 		}
-		p.SetState(63)
+		p.SetState(59)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		if _la == TSLParserK_NOT {
 			{
-				p.SetState(62)
+				p.SetState(58)
 				p.KeyNot()
 			}
 
 		}
 		{
-			p.SetState(65)
+			p.SetState(61)
 			p.Match(TSLParserK_BETWEEN)
 		}
 		{
-			p.SetState(66)
+			p.SetState(62)
 			p.LiteralValue()
 		}
 		{
-			p.SetState(67)
+			p.SetState(63)
 			p.Match(TSLParserK_AND)
 		}
 		{
-			p.SetState(68)
+			p.SetState(64)
 			p.LiteralValue()
 		}
 
@@ -1208,60 +1207,60 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(70)
-			p.columnOp(0)
+			p.SetState(66)
+			p.mathExp(0)
 		}
-		p.SetState(72)
+		p.SetState(68)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		if _la == TSLParserK_NOT {
 			{
-				p.SetState(71)
+				p.SetState(67)
 				p.KeyNot()
 			}
 
 		}
 		{
-			p.SetState(74)
+			p.SetState(70)
 			p.Match(TSLParserK_IN)
 		}
 
 		{
-			p.SetState(75)
+			p.SetState(71)
 			p.Match(TSLParserT__0)
 		}
-		p.SetState(84)
+		p.SetState(80)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
-		if ((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<TSLParserT__13)|(1<<TSLParserT__14)|(1<<TSLParserNUMERIC_LITERAL)|(1<<TSLParserSTRING_LITERAL))) != 0 {
+		if ((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<TSLParserT__16)|(1<<TSLParserT__17)|(1<<TSLParserNUMERIC_LITERAL)|(1<<TSLParserSTRING_LITERAL))) != 0 {
 			{
-				p.SetState(76)
+				p.SetState(72)
 				p.LiteralValue()
 			}
-			p.SetState(81)
+			p.SetState(77)
 			p.GetErrorHandler().Sync(p)
 			_la = p.GetTokenStream().LA(1)
 
 			for _la == TSLParserT__1 {
 				{
-					p.SetState(77)
+					p.SetState(73)
 					p.Match(TSLParserT__1)
 				}
 				{
-					p.SetState(78)
+					p.SetState(74)
 					p.LiteralValue()
 				}
 
-				p.SetState(83)
+				p.SetState(79)
 				p.GetErrorHandler().Sync(p)
 				_la = p.GetTokenStream().LA(1)
 			}
 
 		}
 		{
-			p.SetState(86)
+			p.SetState(82)
 			p.Match(TSLParserT__2)
 		}
 
@@ -1270,11 +1269,11 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(88)
+			p.SetState(84)
 			p.Match(TSLParserK_NOT)
 		}
 		{
-			p.SetState(89)
+			p.SetState(85)
 			p.expr(4)
 		}
 
@@ -1283,21 +1282,21 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(90)
+			p.SetState(86)
 			p.Match(TSLParserT__0)
 		}
 		{
-			p.SetState(91)
+			p.SetState(87)
 			p.expr(0)
 		}
 		{
-			p.SetState(92)
+			p.SetState(88)
 			p.Match(TSLParserT__2)
 		}
 
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(104)
+	p.SetState(100)
 	p.GetErrorHandler().Sync(p)
 	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 9, p.GetParserRuleContext())
 
@@ -1307,47 +1306,47 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 				p.TriggerExitRuleEvent()
 			}
 			_prevctx = localctx
-			p.SetState(102)
+			p.SetState(98)
 			p.GetErrorHandler().Sync(p)
 			switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 8, p.GetParserRuleContext()) {
 			case 1:
 				localctx = NewAndContext(p, NewExprContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_expr)
-				p.SetState(96)
+				p.SetState(92)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 3)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 3)", ""))
 				}
 				{
-					p.SetState(97)
+					p.SetState(93)
 					p.Match(TSLParserK_AND)
 				}
 				{
-					p.SetState(98)
+					p.SetState(94)
 					p.expr(4)
 				}
 
 			case 2:
 				localctx = NewOrContext(p, NewExprContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_expr)
-				p.SetState(99)
+				p.SetState(95)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 2)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
 				}
 				{
-					p.SetState(100)
+					p.SetState(96)
 					p.Match(TSLParserK_OR)
 				}
 				{
-					p.SetState(101)
+					p.SetState(97)
 					p.expr(3)
 				}
 
 			}
 
 		}
-		p.SetState(106)
+		p.SetState(102)
 		p.GetErrorHandler().Sync(p)
 		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 9, p.GetParserRuleContext())
 	}
@@ -1433,14 +1432,14 @@ func (p *TSLParser) LiteralOp() (localctx ILiteralOpContext) {
 		}
 	}()
 
-	p.SetState(109)
+	p.SetState(105)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case TSLParserT__3, TSLParserT__4, TSLParserT__5, TSLParserT__6:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(107)
+			p.SetState(103)
 			_la = p.GetTokenStream().LA(1)
 
 			if !(((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<TSLParserT__3)|(1<<TSLParserT__4)|(1<<TSLParserT__5)|(1<<TSLParserT__6))) != 0) {
@@ -1454,7 +1453,7 @@ func (p *TSLParser) LiteralOp() (localctx ILiteralOpContext) {
 	case TSLParserT__7, TSLParserT__8, TSLParserT__9:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(108)
+			p.SetState(104)
 			_la = p.GetTokenStream().LA(1)
 
 			if !(((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<TSLParserT__7)|(1<<TSLParserT__8)|(1<<TSLParserT__9))) != 0) {
@@ -1467,100 +1466,6 @@ func (p *TSLParser) LiteralOp() (localctx ILiteralOpContext) {
 
 	default:
 		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
-	}
-
-	return localctx
-}
-
-// INumericOpContext is an interface to support dynamic dispatch.
-type INumericOpContext interface {
-	antlr.ParserRuleContext
-
-	// GetParser returns the parser.
-	GetParser() antlr.Parser
-
-	// IsNumericOpContext differentiates from other interfaces.
-	IsNumericOpContext()
-}
-
-type NumericOpContext struct {
-	*antlr.BaseParserRuleContext
-	parser antlr.Parser
-}
-
-func NewEmptyNumericOpContext() *NumericOpContext {
-	var p = new(NumericOpContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
-	p.RuleIndex = TSLParserRULE_numericOp
-	return p
-}
-
-func (*NumericOpContext) IsNumericOpContext() {}
-
-func NewNumericOpContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *NumericOpContext {
-	var p = new(NumericOpContext)
-
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
-
-	p.parser = parser
-	p.RuleIndex = TSLParserRULE_numericOp
-
-	return p
-}
-
-func (s *NumericOpContext) GetParser() antlr.Parser { return s.parser }
-func (s *NumericOpContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *NumericOpContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
-	return antlr.TreesStringTree(s, ruleNames, recog)
-}
-
-func (s *NumericOpContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(TSLListener); ok {
-		listenerT.EnterNumericOp(s)
-	}
-}
-
-func (s *NumericOpContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(TSLListener); ok {
-		listenerT.ExitNumericOp(s)
-	}
-}
-
-func (p *TSLParser) NumericOp() (localctx INumericOpContext) {
-	localctx = NewNumericOpContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 6, TSLParserRULE_numericOp)
-	var _la int
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
-	p.EnterOuterAlt(localctx, 1)
-	{
-		p.SetState(111)
-		_la = p.GetTokenStream().LA(1)
-
-		if !(((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<TSLParserT__10)|(1<<TSLParserT__11)|(1<<TSLParserT__12)|(1<<TSLParserT__13)|(1<<TSLParserT__14))) != 0) {
-			p.GetErrorHandler().RecoverInline(p)
-		} else {
-			p.GetErrorHandler().ReportMatch(p)
-			p.Consume()
-		}
 	}
 
 	return localctx
@@ -1625,7 +1530,7 @@ func (s *StringOpContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *TSLParser) StringOp() (localctx IStringOpContext) {
 	localctx = NewStringOpContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 8, TSLParserRULE_stringOp)
+	p.EnterRule(localctx, 6, TSLParserRULE_stringOp)
 	var _la int
 
 	defer func() {
@@ -1646,10 +1551,10 @@ func (p *TSLParser) StringOp() (localctx IStringOpContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(113)
+		p.SetState(107)
 		_la = p.GetTokenStream().LA(1)
 
-		if !(_la == TSLParserT__15 || _la == TSLParserT__16) {
+		if !(_la == TSLParserT__10 || _la == TSLParserT__11) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)
@@ -1724,7 +1629,7 @@ func (s *DatabaseNameContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *TSLParser) DatabaseName() (localctx IDatabaseNameContext) {
 	localctx = NewDatabaseNameContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 10, TSLParserRULE_databaseName)
+	p.EnterRule(localctx, 8, TSLParserRULE_databaseName)
 
 	defer func() {
 		p.ExitRule()
@@ -1744,7 +1649,7 @@ func (p *TSLParser) DatabaseName() (localctx IDatabaseNameContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(115)
+		p.SetState(109)
 		p.Match(TSLParserIDENTIFIER)
 	}
 
@@ -1815,7 +1720,7 @@ func (s *TableNameContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *TSLParser) TableName() (localctx ITableNameContext) {
 	localctx = NewTableNameContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 12, TSLParserRULE_tableName)
+	p.EnterRule(localctx, 10, TSLParserRULE_tableName)
 
 	defer func() {
 		p.ExitRule()
@@ -1835,7 +1740,7 @@ func (p *TSLParser) TableName() (localctx ITableNameContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(117)
+		p.SetState(111)
 		p.Match(TSLParserIDENTIFIER)
 	}
 
@@ -1926,7 +1831,7 @@ func (s *ColumnNameContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *TSLParser) ColumnName() (localctx IColumnNameContext) {
 	localctx = NewColumnNameContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 14, TSLParserRULE_columnName)
+	p.EnterRule(localctx, 12, TSLParserRULE_columnName)
 
 	defer func() {
 		p.ExitRule()
@@ -1945,81 +1850,151 @@ func (p *TSLParser) ColumnName() (localctx IColumnNameContext) {
 	}()
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(127)
+	p.SetState(121)
 	p.GetErrorHandler().Sync(p)
 
 	if p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 12, p.GetParserRuleContext()) == 1 {
-		p.SetState(122)
+		p.SetState(116)
 		p.GetErrorHandler().Sync(p)
 
 		if p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 11, p.GetParserRuleContext()) == 1 {
 			{
-				p.SetState(119)
+				p.SetState(113)
 				p.DatabaseName()
 			}
 			{
-				p.SetState(120)
-				p.Match(TSLParserT__17)
+				p.SetState(114)
+				p.Match(TSLParserT__12)
 			}
 
 		}
 		{
-			p.SetState(124)
+			p.SetState(118)
 			p.TableName()
 		}
 		{
-			p.SetState(125)
-			p.Match(TSLParserT__17)
+			p.SetState(119)
+			p.Match(TSLParserT__12)
 		}
 
 	}
 	{
-		p.SetState(129)
+		p.SetState(123)
 		p.Match(TSLParserIDENTIFIER)
 	}
 
 	return localctx
 }
 
-// INumericExpContext is an interface to support dynamic dispatch.
-type INumericExpContext interface {
+// ILiteralValueContext is an interface to support dynamic dispatch.
+type ILiteralValueContext interface {
 	antlr.ParserRuleContext
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
-	// IsNumericExpContext differentiates from other interfaces.
-	IsNumericExpContext()
+	// IsLiteralValueContext differentiates from other interfaces.
+	IsLiteralValueContext()
 }
 
-type NumericExpContext struct {
+type LiteralValueContext struct {
 	*antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
-func NewEmptyNumericExpContext() *NumericExpContext {
-	var p = new(NumericExpContext)
+func NewEmptyLiteralValueContext() *LiteralValueContext {
+	var p = new(LiteralValueContext)
 	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
-	p.RuleIndex = TSLParserRULE_numericExp
+	p.RuleIndex = TSLParserRULE_literalValue
 	return p
 }
 
-func (*NumericExpContext) IsNumericExpContext() {}
+func (*LiteralValueContext) IsLiteralValueContext() {}
 
-func NewNumericExpContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *NumericExpContext {
-	var p = new(NumericExpContext)
+func NewLiteralValueContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *LiteralValueContext {
+	var p = new(LiteralValueContext)
 
 	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
 
 	p.parser = parser
-	p.RuleIndex = TSLParserRULE_numericExp
+	p.RuleIndex = TSLParserRULE_literalValue
 
 	return p
 }
 
-func (s *NumericExpContext) GetParser() antlr.Parser { return s.parser }
+func (s *LiteralValueContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *NumericExpContext) SignedNumber() ISignedNumberContext {
+func (s *LiteralValueContext) CopyFrom(ctx *LiteralValueContext) {
+	s.BaseParserRuleContext.CopyFrom(ctx.BaseParserRuleContext)
+}
+
+func (s *LiteralValueContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *LiteralValueContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+type StringLiteralContext struct {
+	*LiteralValueContext
+}
+
+func NewStringLiteralContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *StringLiteralContext {
+	var p = new(StringLiteralContext)
+
+	p.LiteralValueContext = NewEmptyLiteralValueContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*LiteralValueContext))
+
+	return p
+}
+
+func (s *StringLiteralContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *StringLiteralContext) StringValue() IStringValueContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IStringValueContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IStringValueContext)
+}
+
+func (s *StringLiteralContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(TSLListener); ok {
+		listenerT.EnterStringLiteral(s)
+	}
+}
+
+func (s *StringLiteralContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(TSLListener); ok {
+		listenerT.ExitStringLiteral(s)
+	}
+}
+
+type NumberLiteralContext struct {
+	*LiteralValueContext
+}
+
+func NewNumberLiteralContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *NumberLiteralContext {
+	var p = new(NumberLiteralContext)
+
+	p.LiteralValueContext = NewEmptyLiteralValueContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*LiteralValueContext))
+
+	return p
+}
+
+func (s *NumberLiteralContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *NumberLiteralContext) SignedNumber() ISignedNumberContext {
 	var t = s.GetTypedRuleContext(reflect.TypeOf((*ISignedNumberContext)(nil)).Elem(), 0)
 
 	if t == nil {
@@ -2029,74 +2004,24 @@ func (s *NumericExpContext) SignedNumber() ISignedNumberContext {
 	return t.(ISignedNumberContext)
 }
 
-func (s *NumericExpContext) AllNumericExp() []INumericExpContext {
-	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*INumericExpContext)(nil)).Elem())
-	var tst = make([]INumericExpContext, len(ts))
-
-	for i, t := range ts {
-		if t != nil {
-			tst[i] = t.(INumericExpContext)
-		}
-	}
-
-	return tst
-}
-
-func (s *NumericExpContext) NumericExp(i int) INumericExpContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*INumericExpContext)(nil)).Elem(), i)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(INumericExpContext)
-}
-
-func (s *NumericExpContext) NumericOp() INumericOpContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*INumericOpContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(INumericOpContext)
-}
-
-func (s *NumericExpContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *NumericExpContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
-	return antlr.TreesStringTree(s, ruleNames, recog)
-}
-
-func (s *NumericExpContext) EnterRule(listener antlr.ParseTreeListener) {
+func (s *NumberLiteralContext) EnterRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(TSLListener); ok {
-		listenerT.EnterNumericExp(s)
+		listenerT.EnterNumberLiteral(s)
 	}
 }
 
-func (s *NumericExpContext) ExitRule(listener antlr.ParseTreeListener) {
+func (s *NumberLiteralContext) ExitRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(TSLListener); ok {
-		listenerT.ExitNumericExp(s)
+		listenerT.ExitNumberLiteral(s)
 	}
 }
 
-func (p *TSLParser) NumericExp() (localctx INumericExpContext) {
-	return p.numericExp(0)
-}
-
-func (p *TSLParser) numericExp(_p int) (localctx INumericExpContext) {
-	var _parentctx antlr.ParserRuleContext = p.GetParserRuleContext()
-	_parentState := p.GetState()
-	localctx = NewNumericExpContext(p, p.GetParserRuleContext(), _parentState)
-	var _prevctx INumericExpContext = localctx
-	var _ antlr.ParserRuleContext = _prevctx // TODO: To prevent unused variable warning.
-	_startState := 16
-	p.EnterRecursionRule(localctx, 16, TSLParserRULE_numericExp, _p)
+func (p *TSLParser) LiteralValue() (localctx ILiteralValueContext) {
+	localctx = NewLiteralValueContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 14, TSLParserRULE_literalValue)
 
 	defer func() {
-		p.UnrollRecursionContexts(_parentctx)
+		p.ExitRule()
 	}()
 
 	defer func() {
@@ -2111,141 +2036,394 @@ func (p *TSLParser) numericExp(_p int) (localctx INumericExpContext) {
 		}
 	}()
 
-	var _alt int
-
-	p.EnterOuterAlt(localctx, 1)
-	p.SetState(137)
+	p.SetState(127)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
-	case TSLParserT__13, TSLParserT__14, TSLParserNUMERIC_LITERAL:
+	case TSLParserT__16, TSLParserT__17, TSLParserNUMERIC_LITERAL:
+		localctx = NewNumberLiteralContext(p, localctx)
+		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(132)
+			p.SetState(125)
 			p.SignedNumber()
 		}
 
-	case TSLParserT__0:
+	case TSLParserSTRING_LITERAL:
+		localctx = NewStringLiteralContext(p, localctx)
+		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(133)
-			p.Match(TSLParserT__0)
-		}
-		{
-			p.SetState(134)
-			p.numericExp(0)
-		}
-		{
-			p.SetState(135)
-			p.Match(TSLParserT__2)
+			p.SetState(126)
+			p.StringValue()
 		}
 
 	default:
 		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 	}
-	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(145)
-	p.GetErrorHandler().Sync(p)
-	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 14, p.GetParserRuleContext())
-
-	for _alt != 2 && _alt != antlr.ATNInvalidAltNumber {
-		if _alt == 1 {
-			if p.GetParseListeners() != nil {
-				p.TriggerExitRuleEvent()
-			}
-			_prevctx = localctx
-			localctx = NewNumericExpContext(p, _parentctx, _parentState)
-			p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_numericExp)
-			p.SetState(139)
-
-			if !(p.Precpred(p.GetParserRuleContext(), 2)) {
-				panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
-			}
-			{
-				p.SetState(140)
-				p.NumericOp()
-			}
-			{
-				p.SetState(141)
-				p.numericExp(3)
-			}
-
-		}
-		p.SetState(147)
-		p.GetErrorHandler().Sync(p)
-		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 14, p.GetParserRuleContext())
-	}
 
 	return localctx
 }
 
-// IColumnOpContext is an interface to support dynamic dispatch.
-type IColumnOpContext interface {
+// IMathExpContext is an interface to support dynamic dispatch.
+type IMathExpContext interface {
 	antlr.ParserRuleContext
 
 	// GetParser returns the parser.
 	GetParser() antlr.Parser
 
-	// IsColumnOpContext differentiates from other interfaces.
-	IsColumnOpContext()
+	// IsMathExpContext differentiates from other interfaces.
+	IsMathExpContext()
 }
 
-type ColumnOpContext struct {
+type MathExpContext struct {
 	*antlr.BaseParserRuleContext
 	parser antlr.Parser
 }
 
-func NewEmptyColumnOpContext() *ColumnOpContext {
-	var p = new(ColumnOpContext)
+func NewEmptyMathExpContext() *MathExpContext {
+	var p = new(MathExpContext)
 	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
-	p.RuleIndex = TSLParserRULE_columnOp
+	p.RuleIndex = TSLParserRULE_mathExp
 	return p
 }
 
-func (*ColumnOpContext) IsColumnOpContext() {}
+func (*MathExpContext) IsMathExpContext() {}
 
-func NewColumnOpContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *ColumnOpContext {
-	var p = new(ColumnOpContext)
+func NewMathExpContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *MathExpContext {
+	var p = new(MathExpContext)
 
 	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
 
 	p.parser = parser
-	p.RuleIndex = TSLParserRULE_columnOp
+	p.RuleIndex = TSLParserRULE_mathExp
 
 	return p
 }
 
-func (s *ColumnOpContext) GetParser() antlr.Parser { return s.parser }
+func (s *MathExpContext) GetParser() antlr.Parser { return s.parser }
 
-func (s *ColumnOpContext) CopyFrom(ctx *ColumnOpContext) {
+func (s *MathExpContext) CopyFrom(ctx *MathExpContext) {
 	s.BaseParserRuleContext.CopyFrom(ctx.BaseParserRuleContext)
 }
 
-func (s *ColumnOpContext) GetRuleContext() antlr.RuleContext {
+func (s *MathExpContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *ColumnOpContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+func (s *MathExpContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
 	return antlr.TreesStringTree(s, ruleNames, recog)
 }
 
-type ColumnContext struct {
-	*ColumnOpContext
+type MathParContext struct {
+	*MathExpContext
 }
 
-func NewColumnContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ColumnContext {
-	var p = new(ColumnContext)
+func NewMathParContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *MathParContext {
+	var p = new(MathParContext)
 
-	p.ColumnOpContext = NewEmptyColumnOpContext()
+	p.MathExpContext = NewEmptyMathExpContext()
 	p.parser = parser
-	p.CopyFrom(ctx.(*ColumnOpContext))
+	p.CopyFrom(ctx.(*MathExpContext))
 
 	return p
 }
 
-func (s *ColumnContext) GetRuleContext() antlr.RuleContext {
+func (s *MathParContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *ColumnContext) ColumnName() IColumnNameContext {
+func (s *MathParContext) MathExp() IMathExpContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IMathExpContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IMathExpContext)
+}
+
+func (s *MathParContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(TSLListener); ok {
+		listenerT.EnterMathPar(s)
+	}
+}
+
+func (s *MathParContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(TSLListener); ok {
+		listenerT.ExitMathPar(s)
+	}
+}
+
+type ModOpsContext struct {
+	*MathExpContext
+}
+
+func NewModOpsContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ModOpsContext {
+	var p = new(ModOpsContext)
+
+	p.MathExpContext = NewEmptyMathExpContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*MathExpContext))
+
+	return p
+}
+
+func (s *ModOpsContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *ModOpsContext) AllMathExp() []IMathExpContext {
+	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IMathExpContext)(nil)).Elem())
+	var tst = make([]IMathExpContext, len(ts))
+
+	for i, t := range ts {
+		if t != nil {
+			tst[i] = t.(IMathExpContext)
+		}
+	}
+
+	return tst
+}
+
+func (s *ModOpsContext) MathExp(i int) IMathExpContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IMathExpContext)(nil)).Elem(), i)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IMathExpContext)
+}
+
+func (s *ModOpsContext) LiteralValue() ILiteralValueContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*ILiteralValueContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ILiteralValueContext)
+}
+
+func (s *ModOpsContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(TSLListener); ok {
+		listenerT.EnterModOps(s)
+	}
+}
+
+func (s *ModOpsContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(TSLListener); ok {
+		listenerT.ExitModOps(s)
+	}
+}
+
+type SubOpsContext struct {
+	*MathExpContext
+}
+
+func NewSubOpsContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *SubOpsContext {
+	var p = new(SubOpsContext)
+
+	p.MathExpContext = NewEmptyMathExpContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*MathExpContext))
+
+	return p
+}
+
+func (s *SubOpsContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *SubOpsContext) AllMathExp() []IMathExpContext {
+	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IMathExpContext)(nil)).Elem())
+	var tst = make([]IMathExpContext, len(ts))
+
+	for i, t := range ts {
+		if t != nil {
+			tst[i] = t.(IMathExpContext)
+		}
+	}
+
+	return tst
+}
+
+func (s *SubOpsContext) MathExp(i int) IMathExpContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IMathExpContext)(nil)).Elem(), i)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IMathExpContext)
+}
+
+func (s *SubOpsContext) LiteralValue() ILiteralValueContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*ILiteralValueContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ILiteralValueContext)
+}
+
+func (s *SubOpsContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(TSLListener); ok {
+		listenerT.EnterSubOps(s)
+	}
+}
+
+func (s *SubOpsContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(TSLListener); ok {
+		listenerT.ExitSubOps(s)
+	}
+}
+
+type MulOpsContext struct {
+	*MathExpContext
+}
+
+func NewMulOpsContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *MulOpsContext {
+	var p = new(MulOpsContext)
+
+	p.MathExpContext = NewEmptyMathExpContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*MathExpContext))
+
+	return p
+}
+
+func (s *MulOpsContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *MulOpsContext) AllMathExp() []IMathExpContext {
+	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IMathExpContext)(nil)).Elem())
+	var tst = make([]IMathExpContext, len(ts))
+
+	for i, t := range ts {
+		if t != nil {
+			tst[i] = t.(IMathExpContext)
+		}
+	}
+
+	return tst
+}
+
+func (s *MulOpsContext) MathExp(i int) IMathExpContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IMathExpContext)(nil)).Elem(), i)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IMathExpContext)
+}
+
+func (s *MulOpsContext) LiteralValue() ILiteralValueContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*ILiteralValueContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ILiteralValueContext)
+}
+
+func (s *MulOpsContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(TSLListener); ok {
+		listenerT.EnterMulOps(s)
+	}
+}
+
+func (s *MulOpsContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(TSLListener); ok {
+		listenerT.ExitMulOps(s)
+	}
+}
+
+type DivOpsContext struct {
+	*MathExpContext
+}
+
+func NewDivOpsContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *DivOpsContext {
+	var p = new(DivOpsContext)
+
+	p.MathExpContext = NewEmptyMathExpContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*MathExpContext))
+
+	return p
+}
+
+func (s *DivOpsContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *DivOpsContext) AllMathExp() []IMathExpContext {
+	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IMathExpContext)(nil)).Elem())
+	var tst = make([]IMathExpContext, len(ts))
+
+	for i, t := range ts {
+		if t != nil {
+			tst[i] = t.(IMathExpContext)
+		}
+	}
+
+	return tst
+}
+
+func (s *DivOpsContext) MathExp(i int) IMathExpContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IMathExpContext)(nil)).Elem(), i)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(IMathExpContext)
+}
+
+func (s *DivOpsContext) LiteralValue() ILiteralValueContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*ILiteralValueContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ILiteralValueContext)
+}
+
+func (s *DivOpsContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(TSLListener); ok {
+		listenerT.EnterDivOps(s)
+	}
+}
+
+func (s *DivOpsContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(TSLListener); ok {
+		listenerT.ExitDivOps(s)
+	}
+}
+
+type ColumnIdentifierContext struct {
+	*MathExpContext
+}
+
+func NewColumnIdentifierContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ColumnIdentifierContext {
+	var p = new(ColumnIdentifierContext)
+
+	p.MathExpContext = NewEmptyMathExpContext()
+	p.parser = parser
+	p.CopyFrom(ctx.(*MathExpContext))
+
+	return p
+}
+
+func (s *ColumnIdentifierContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *ColumnIdentifierContext) ColumnName() IColumnNameContext {
 	var t = s.GetTypedRuleContext(reflect.TypeOf((*IColumnNameContext)(nil)).Elem(), 0)
 
 	if t == nil {
@@ -2255,193 +2433,93 @@ func (s *ColumnContext) ColumnName() IColumnNameContext {
 	return t.(IColumnNameContext)
 }
 
-func (s *ColumnContext) EnterRule(listener antlr.ParseTreeListener) {
+func (s *ColumnIdentifierContext) EnterRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(TSLListener); ok {
-		listenerT.EnterColumn(s)
+		listenerT.EnterColumnIdentifier(s)
 	}
 }
 
-func (s *ColumnContext) ExitRule(listener antlr.ParseTreeListener) {
+func (s *ColumnIdentifierContext) ExitRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(TSLListener); ok {
-		listenerT.ExitColumn(s)
+		listenerT.ExitColumnIdentifier(s)
 	}
 }
 
-type ColumnNameOpContext struct {
-	*ColumnOpContext
+type AddOpsContext struct {
+	*MathExpContext
 }
 
-func NewColumnNameOpContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ColumnNameOpContext {
-	var p = new(ColumnNameOpContext)
+func NewAddOpsContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *AddOpsContext {
+	var p = new(AddOpsContext)
 
-	p.ColumnOpContext = NewEmptyColumnOpContext()
+	p.MathExpContext = NewEmptyMathExpContext()
 	p.parser = parser
-	p.CopyFrom(ctx.(*ColumnOpContext))
+	p.CopyFrom(ctx.(*MathExpContext))
 
 	return p
 }
 
-func (s *ColumnNameOpContext) GetRuleContext() antlr.RuleContext {
+func (s *AddOpsContext) GetRuleContext() antlr.RuleContext {
 	return s
 }
 
-func (s *ColumnNameOpContext) AllColumnOp() []IColumnOpContext {
-	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IColumnOpContext)(nil)).Elem())
-	var tst = make([]IColumnOpContext, len(ts))
+func (s *AddOpsContext) AllMathExp() []IMathExpContext {
+	var ts = s.GetTypedRuleContexts(reflect.TypeOf((*IMathExpContext)(nil)).Elem())
+	var tst = make([]IMathExpContext, len(ts))
 
 	for i, t := range ts {
 		if t != nil {
-			tst[i] = t.(IColumnOpContext)
+			tst[i] = t.(IMathExpContext)
 		}
 	}
 
 	return tst
 }
 
-func (s *ColumnNameOpContext) ColumnOp(i int) IColumnOpContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IColumnOpContext)(nil)).Elem(), i)
+func (s *AddOpsContext) MathExp(i int) IMathExpContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*IMathExpContext)(nil)).Elem(), i)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(IColumnOpContext)
+	return t.(IMathExpContext)
 }
 
-func (s *ColumnNameOpContext) NumericOp() INumericOpContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*INumericOpContext)(nil)).Elem(), 0)
+func (s *AddOpsContext) LiteralValue() ILiteralValueContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*ILiteralValueContext)(nil)).Elem(), 0)
 
 	if t == nil {
 		return nil
 	}
 
-	return t.(INumericOpContext)
+	return t.(ILiteralValueContext)
 }
 
-func (s *ColumnNameOpContext) EnterRule(listener antlr.ParseTreeListener) {
+func (s *AddOpsContext) EnterRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(TSLListener); ok {
-		listenerT.EnterColumnNameOp(s)
+		listenerT.EnterAddOps(s)
 	}
 }
 
-func (s *ColumnNameOpContext) ExitRule(listener antlr.ParseTreeListener) {
+func (s *AddOpsContext) ExitRule(listener antlr.ParseTreeListener) {
 	if listenerT, ok := listener.(TSLListener); ok {
-		listenerT.ExitColumnNameOp(s)
+		listenerT.ExitAddOps(s)
 	}
 }
 
-type ColumnNameNumericOpContext struct {
-	*ColumnOpContext
+func (p *TSLParser) MathExp() (localctx IMathExpContext) {
+	return p.mathExp(0)
 }
 
-func NewColumnNameNumericOpContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ColumnNameNumericOpContext {
-	var p = new(ColumnNameNumericOpContext)
-
-	p.ColumnOpContext = NewEmptyColumnOpContext()
-	p.parser = parser
-	p.CopyFrom(ctx.(*ColumnOpContext))
-
-	return p
-}
-
-func (s *ColumnNameNumericOpContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *ColumnNameNumericOpContext) ColumnOp() IColumnOpContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IColumnOpContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IColumnOpContext)
-}
-
-func (s *ColumnNameNumericOpContext) NumericOp() INumericOpContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*INumericOpContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(INumericOpContext)
-}
-
-func (s *ColumnNameNumericOpContext) NumericExp() INumericExpContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*INumericExpContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(INumericExpContext)
-}
-
-func (s *ColumnNameNumericOpContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(TSLListener); ok {
-		listenerT.EnterColumnNameNumericOp(s)
-	}
-}
-
-func (s *ColumnNameNumericOpContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(TSLListener); ok {
-		listenerT.ExitColumnNameNumericOp(s)
-	}
-}
-
-type ColumnNameParContext struct {
-	*ColumnOpContext
-}
-
-func NewColumnNameParContext(parser antlr.Parser, ctx antlr.ParserRuleContext) *ColumnNameParContext {
-	var p = new(ColumnNameParContext)
-
-	p.ColumnOpContext = NewEmptyColumnOpContext()
-	p.parser = parser
-	p.CopyFrom(ctx.(*ColumnOpContext))
-
-	return p
-}
-
-func (s *ColumnNameParContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *ColumnNameParContext) ColumnOp() IColumnOpContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IColumnOpContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IColumnOpContext)
-}
-
-func (s *ColumnNameParContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(TSLListener); ok {
-		listenerT.EnterColumnNamePar(s)
-	}
-}
-
-func (s *ColumnNameParContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(TSLListener); ok {
-		listenerT.ExitColumnNamePar(s)
-	}
-}
-
-func (p *TSLParser) ColumnOp() (localctx IColumnOpContext) {
-	return p.columnOp(0)
-}
-
-func (p *TSLParser) columnOp(_p int) (localctx IColumnOpContext) {
+func (p *TSLParser) mathExp(_p int) (localctx IMathExpContext) {
 	var _parentctx antlr.ParserRuleContext = p.GetParserRuleContext()
 	_parentState := p.GetState()
-	localctx = NewColumnOpContext(p, p.GetParserRuleContext(), _parentState)
-	var _prevctx IColumnOpContext = localctx
+	localctx = NewMathExpContext(p, p.GetParserRuleContext(), _parentState)
+	var _prevctx IMathExpContext = localctx
 	var _ antlr.ParserRuleContext = _prevctx // TODO: To prevent unused variable warning.
-	_startState := 18
-	p.EnterRecursionRule(localctx, 18, TSLParserRULE_columnOp, _p)
+	_startState := 16
+	p.EnterRecursionRule(localctx, 16, TSLParserRULE_mathExp, _p)
 
 	defer func() {
 		p.UnrollRecursionContexts(_parentctx)
@@ -2462,34 +2540,34 @@ func (p *TSLParser) columnOp(_p int) (localctx IColumnOpContext) {
 	var _alt int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(154)
+	p.SetState(135)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case TSLParserIDENTIFIER:
-		localctx = NewColumnContext(p, localctx)
+		localctx = NewColumnIdentifierContext(p, localctx)
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 
 		{
-			p.SetState(149)
+			p.SetState(130)
 			p.ColumnName()
 		}
 
 	case TSLParserT__0:
-		localctx = NewColumnNameParContext(p, localctx)
+		localctx = NewMathParContext(p, localctx)
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(150)
+			p.SetState(131)
 			p.Match(TSLParserT__0)
 		}
 		{
-			p.SetState(151)
-			p.columnOp(0)
+			p.SetState(132)
+			p.mathExp(0)
 		}
 		{
-			p.SetState(152)
+			p.SetState(133)
 			p.Match(TSLParserT__2)
 		}
 
@@ -2497,9 +2575,9 @@ func (p *TSLParser) columnOp(_p int) (localctx IColumnOpContext) {
 		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(166)
+	p.SetState(169)
 	p.GetErrorHandler().Sync(p)
-	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 17, p.GetParserRuleContext())
+	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 21, p.GetParserRuleContext())
 
 	for _alt != 2 && _alt != antlr.ATNInvalidAltNumber {
 		if _alt == 1 {
@@ -2507,49 +2585,175 @@ func (p *TSLParser) columnOp(_p int) (localctx IColumnOpContext) {
 				p.TriggerExitRuleEvent()
 			}
 			_prevctx = localctx
-			p.SetState(164)
+			p.SetState(167)
 			p.GetErrorHandler().Sync(p)
-			switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 16, p.GetParserRuleContext()) {
+			switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 20, p.GetParserRuleContext()) {
 			case 1:
-				localctx = NewColumnNameOpContext(p, NewColumnOpContext(p, _parentctx, _parentState))
-				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_columnOp)
-				p.SetState(156)
+				localctx = NewMulOpsContext(p, NewMathExpContext(p, _parentctx, _parentState))
+				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_mathExp)
+				p.SetState(137)
+
+				if !(p.Precpred(p.GetParserRuleContext(), 6)) {
+					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 6)", ""))
+				}
+				{
+					p.SetState(138)
+					p.Match(TSLParserT__13)
+				}
+				p.SetState(141)
+				p.GetErrorHandler().Sync(p)
+
+				switch p.GetTokenStream().LA(1) {
+				case TSLParserT__16, TSLParserT__17, TSLParserNUMERIC_LITERAL, TSLParserSTRING_LITERAL:
+					{
+						p.SetState(139)
+						p.LiteralValue()
+					}
+
+				case TSLParserT__0, TSLParserIDENTIFIER:
+					{
+						p.SetState(140)
+						p.mathExp(0)
+					}
+
+				default:
+					panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+				}
+
+			case 2:
+				localctx = NewDivOpsContext(p, NewMathExpContext(p, _parentctx, _parentState))
+				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_mathExp)
+				p.SetState(143)
+
+				if !(p.Precpred(p.GetParserRuleContext(), 5)) {
+					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 5)", ""))
+				}
+				{
+					p.SetState(144)
+					p.Match(TSLParserT__14)
+				}
+				p.SetState(147)
+				p.GetErrorHandler().Sync(p)
+
+				switch p.GetTokenStream().LA(1) {
+				case TSLParserT__16, TSLParserT__17, TSLParserNUMERIC_LITERAL, TSLParserSTRING_LITERAL:
+					{
+						p.SetState(145)
+						p.LiteralValue()
+					}
+
+				case TSLParserT__0, TSLParserIDENTIFIER:
+					{
+						p.SetState(146)
+						p.mathExp(0)
+					}
+
+				default:
+					panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+				}
+
+			case 3:
+				localctx = NewModOpsContext(p, NewMathExpContext(p, _parentctx, _parentState))
+				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_mathExp)
+				p.SetState(149)
+
+				if !(p.Precpred(p.GetParserRuleContext(), 4)) {
+					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 4)", ""))
+				}
+				{
+					p.SetState(150)
+					p.Match(TSLParserT__15)
+				}
+				p.SetState(153)
+				p.GetErrorHandler().Sync(p)
+
+				switch p.GetTokenStream().LA(1) {
+				case TSLParserT__16, TSLParserT__17, TSLParserNUMERIC_LITERAL, TSLParserSTRING_LITERAL:
+					{
+						p.SetState(151)
+						p.LiteralValue()
+					}
+
+				case TSLParserT__0, TSLParserIDENTIFIER:
+					{
+						p.SetState(152)
+						p.mathExp(0)
+					}
+
+				default:
+					panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
+				}
+
+			case 4:
+				localctx = NewAddOpsContext(p, NewMathExpContext(p, _parentctx, _parentState))
+				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_mathExp)
+				p.SetState(155)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 3)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 3)", ""))
 				}
 				{
-					p.SetState(157)
-					p.NumericOp()
+					p.SetState(156)
+					p.Match(TSLParserT__16)
 				}
-				{
-					p.SetState(158)
-					p.columnOp(4)
+				p.SetState(159)
+				p.GetErrorHandler().Sync(p)
+
+				switch p.GetTokenStream().LA(1) {
+				case TSLParserT__16, TSLParserT__17, TSLParserNUMERIC_LITERAL, TSLParserSTRING_LITERAL:
+					{
+						p.SetState(157)
+						p.LiteralValue()
+					}
+
+				case TSLParserT__0, TSLParserIDENTIFIER:
+					{
+						p.SetState(158)
+						p.mathExp(0)
+					}
+
+				default:
+					panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 				}
 
-			case 2:
-				localctx = NewColumnNameNumericOpContext(p, NewColumnOpContext(p, _parentctx, _parentState))
-				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_columnOp)
-				p.SetState(160)
+			case 5:
+				localctx = NewSubOpsContext(p, NewMathExpContext(p, _parentctx, _parentState))
+				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_mathExp)
+				p.SetState(161)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 2)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
 				}
 				{
-					p.SetState(161)
-					p.NumericOp()
-				}
-				{
 					p.SetState(162)
-					p.numericExp(0)
+					p.Match(TSLParserT__17)
+				}
+				p.SetState(165)
+				p.GetErrorHandler().Sync(p)
+
+				switch p.GetTokenStream().LA(1) {
+				case TSLParserT__16, TSLParserT__17, TSLParserNUMERIC_LITERAL, TSLParserSTRING_LITERAL:
+					{
+						p.SetState(163)
+						p.LiteralValue()
+					}
+
+				case TSLParserT__0, TSLParserIDENTIFIER:
+					{
+						p.SetState(164)
+						p.mathExp(0)
+					}
+
+				default:
+					panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 				}
 
 			}
 
 		}
-		p.SetState(168)
+		p.SetState(171)
 		p.GetErrorHandler().Sync(p)
-		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 17, p.GetParserRuleContext())
+		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 21, p.GetParserRuleContext())
 	}
 
 	return localctx
@@ -2619,7 +2823,7 @@ func (s *SignedNumberContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *TSLParser) SignedNumber() (localctx ISignedNumberContext) {
 	localctx = NewSignedNumberContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 20, TSLParserRULE_signedNumber)
+	p.EnterRule(localctx, 18, TSLParserRULE_signedNumber)
 	var _la int
 
 	defer func() {
@@ -2639,16 +2843,16 @@ func (p *TSLParser) SignedNumber() (localctx ISignedNumberContext) {
 	}()
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(170)
+	p.SetState(173)
 	p.GetErrorHandler().Sync(p)
 	_la = p.GetTokenStream().LA(1)
 
-	if _la == TSLParserT__13 || _la == TSLParserT__14 {
+	if _la == TSLParserT__16 || _la == TSLParserT__17 {
 		{
-			p.SetState(169)
+			p.SetState(172)
 			_la = p.GetTokenStream().LA(1)
 
-			if !(_la == TSLParserT__13 || _la == TSLParserT__14) {
+			if !(_la == TSLParserT__16 || _la == TSLParserT__17) {
 				p.GetErrorHandler().RecoverInline(p)
 			} else {
 				p.GetErrorHandler().ReportMatch(p)
@@ -2658,7 +2862,7 @@ func (p *TSLParser) SignedNumber() (localctx ISignedNumberContext) {
 
 	}
 	{
-		p.SetState(172)
+		p.SetState(175)
 		p.Match(TSLParserNUMERIC_LITERAL)
 	}
 
@@ -2729,7 +2933,7 @@ func (s *StringValueContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *TSLParser) StringValue() (localctx IStringValueContext) {
 	localctx = NewStringValueContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 22, TSLParserRULE_stringValue)
+	p.EnterRule(localctx, 20, TSLParserRULE_stringValue)
 
 	defer func() {
 		p.ExitRule()
@@ -2749,131 +2953,8 @@ func (p *TSLParser) StringValue() (localctx IStringValueContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(174)
+		p.SetState(177)
 		p.Match(TSLParserSTRING_LITERAL)
-	}
-
-	return localctx
-}
-
-// ILiteralValueContext is an interface to support dynamic dispatch.
-type ILiteralValueContext interface {
-	antlr.ParserRuleContext
-
-	// GetParser returns the parser.
-	GetParser() antlr.Parser
-
-	// IsLiteralValueContext differentiates from other interfaces.
-	IsLiteralValueContext()
-}
-
-type LiteralValueContext struct {
-	*antlr.BaseParserRuleContext
-	parser antlr.Parser
-}
-
-func NewEmptyLiteralValueContext() *LiteralValueContext {
-	var p = new(LiteralValueContext)
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
-	p.RuleIndex = TSLParserRULE_literalValue
-	return p
-}
-
-func (*LiteralValueContext) IsLiteralValueContext() {}
-
-func NewLiteralValueContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *LiteralValueContext {
-	var p = new(LiteralValueContext)
-
-	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
-
-	p.parser = parser
-	p.RuleIndex = TSLParserRULE_literalValue
-
-	return p
-}
-
-func (s *LiteralValueContext) GetParser() antlr.Parser { return s.parser }
-
-func (s *LiteralValueContext) SignedNumber() ISignedNumberContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*ISignedNumberContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(ISignedNumberContext)
-}
-
-func (s *LiteralValueContext) StringValue() IStringValueContext {
-	var t = s.GetTypedRuleContext(reflect.TypeOf((*IStringValueContext)(nil)).Elem(), 0)
-
-	if t == nil {
-		return nil
-	}
-
-	return t.(IStringValueContext)
-}
-
-func (s *LiteralValueContext) GetRuleContext() antlr.RuleContext {
-	return s
-}
-
-func (s *LiteralValueContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
-	return antlr.TreesStringTree(s, ruleNames, recog)
-}
-
-func (s *LiteralValueContext) EnterRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(TSLListener); ok {
-		listenerT.EnterLiteralValue(s)
-	}
-}
-
-func (s *LiteralValueContext) ExitRule(listener antlr.ParseTreeListener) {
-	if listenerT, ok := listener.(TSLListener); ok {
-		listenerT.ExitLiteralValue(s)
-	}
-}
-
-func (p *TSLParser) LiteralValue() (localctx ILiteralValueContext) {
-	localctx = NewLiteralValueContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 24, TSLParserRULE_literalValue)
-
-	defer func() {
-		p.ExitRule()
-	}()
-
-	defer func() {
-		if err := recover(); err != nil {
-			if v, ok := err.(antlr.RecognitionException); ok {
-				localctx.SetException(v)
-				p.GetErrorHandler().ReportError(p, v)
-				p.GetErrorHandler().Recover(p, v)
-			} else {
-				panic(err)
-			}
-		}
-	}()
-
-	p.SetState(178)
-	p.GetErrorHandler().Sync(p)
-
-	switch p.GetTokenStream().LA(1) {
-	case TSLParserT__13, TSLParserT__14, TSLParserNUMERIC_LITERAL:
-		p.EnterOuterAlt(localctx, 1)
-		{
-			p.SetState(176)
-			p.SignedNumber()
-		}
-
-	case TSLParserSTRING_LITERAL:
-		p.EnterOuterAlt(localctx, 2)
-		{
-			p.SetState(177)
-			p.StringValue()
-		}
-
-	default:
-		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 	}
 
 	return localctx
@@ -2943,7 +3024,7 @@ func (s *KeyNotContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *TSLParser) KeyNot() (localctx IKeyNotContext) {
 	localctx = NewKeyNotContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 26, TSLParserRULE_keyNot)
+	p.EnterRule(localctx, 22, TSLParserRULE_keyNot)
 
 	defer func() {
 		p.ExitRule()
@@ -2963,7 +3044,7 @@ func (p *TSLParser) KeyNot() (localctx IKeyNotContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(180)
+		p.SetState(179)
 		p.Match(TSLParserK_NOT)
 	}
 
@@ -2980,18 +3061,11 @@ func (p *TSLParser) Sempred(localctx antlr.RuleContext, ruleIndex, predIndex int
 		return p.Expr_Sempred(t, predIndex)
 
 	case 8:
-		var t *NumericExpContext = nil
+		var t *MathExpContext = nil
 		if localctx != nil {
-			t = localctx.(*NumericExpContext)
+			t = localctx.(*MathExpContext)
 		}
-		return p.NumericExp_Sempred(t, predIndex)
-
-	case 9:
-		var t *ColumnOpContext = nil
-		if localctx != nil {
-			t = localctx.(*ColumnOpContext)
-		}
-		return p.ColumnOp_Sempred(t, predIndex)
+		return p.MathExp_Sempred(t, predIndex)
 
 	default:
 		panic("No predicate with index: " + fmt.Sprint(ruleIndex))
@@ -3011,22 +3085,21 @@ func (p *TSLParser) Expr_Sempred(localctx antlr.RuleContext, predIndex int) bool
 	}
 }
 
-func (p *TSLParser) NumericExp_Sempred(localctx antlr.RuleContext, predIndex int) bool {
+func (p *TSLParser) MathExp_Sempred(localctx antlr.RuleContext, predIndex int) bool {
 	switch predIndex {
 	case 2:
-		return p.Precpred(p.GetParserRuleContext(), 2)
+		return p.Precpred(p.GetParserRuleContext(), 6)
 
-	default:
-		panic("No predicate with index: " + fmt.Sprint(predIndex))
-	}
-}
-
-func (p *TSLParser) ColumnOp_Sempred(localctx antlr.RuleContext, predIndex int) bool {
-	switch predIndex {
 	case 3:
-		return p.Precpred(p.GetParserRuleContext(), 3)
+		return p.Precpred(p.GetParserRuleContext(), 5)
 
 	case 4:
+		return p.Precpred(p.GetParserRuleContext(), 4)
+
+	case 5:
+		return p.Precpred(p.GetParserRuleContext(), 3)
+
+	case 6:
 		return p.Precpred(p.GetParserRuleContext(), 2)
 
 	default:
