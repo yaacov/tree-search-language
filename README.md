@@ -19,7 +19,12 @@ name like '%joe%' and (city = 'paris' or city = 'milan')
 ``` sql
 name in ('joe', 'jane') and grade not between 0 and 50
 ```
-
+``` sql
+memory.total - memory.cache > 2000 and cpu.usage > 50
+```
+``` sql
+(net.rx + net.tx) / 1000 > 3 or net.rx / 1000 > 6
+```
 ##### Examples
 
 For code examples see the cli tools in the [/cmd](/cmd) direcotry.
@@ -41,7 +46,12 @@ $in                          $nbetween
 |                            |
 +---------+                  +--------+
 |         |                  |        |
-"name"  ["joe", "jane"]      "grade"    [0, 50]
+$ident    |                  $ident   |
+|         |                  |        |
+"name"   [                   "grade" [
+           $string - "joe",            $number - 0,
+           $string - "jane"            $number - 50
+         ]                           ]
 ```
 
 ##### SquirrelWalk
@@ -120,7 +130,10 @@ args: [joe jane rome]
         "func": "$ident",
         "left": "name"
       },
-      "right": "joe"
+      "right": {
+        "func": "$string",
+        "left": "joe"
+      }
     },
     "right": {
       "func": "$eq",
@@ -128,7 +141,10 @@ args: [joe jane rome]
         "func": "$ident",
         "left": "name"
       },
-      "right": "jane"
+      "right": {
+        "func": "$string",
+        "left": "jane"
+      }
     }
   },
   "right": {
@@ -137,7 +153,10 @@ args: [joe jane rome]
       "func": "$ident",
       "left": "city"
     },
-    "right": "rome"
+    "right": {
+      "func": "$string",
+      "left": "rome"
+    }
   }
 }
 ```
