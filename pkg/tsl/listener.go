@@ -54,7 +54,12 @@ func (l *Listener) ExitNumberLiteral(c *parser.NumberLiteralContext) {
 
 // ExitStringLiteral is called when exiting the StringLiteral production.
 func (l *Listener) ExitStringLiteral(c *parser.StringLiteralContext) {
-	v := stringValueToArg(c.StringValue().GetText())
+	// StringValue must be a string of format \'.*'\,
+	// length must be greater or equal to 2.
+	s := c.StringValue().GetText()
+	ln := len(s)
+	v := strings.Replace(s[1:ln-1], "''", "'", -1)
+
 	l.exitLiteral(StringOp, v)
 }
 
@@ -258,18 +263,6 @@ func ternaryOp(conditional bool, lh string, rh string) string {
 	}
 
 	return rh
-}
-
-// stringValueToArg clean string value, and return an arg string.
-func stringValueToArg(v string) string {
-	l := len(v)
-
-	// Check string length.
-	if l < 1 {
-		return ""
-	}
-
-	return strings.Replace(v[1:l-1], "''", "'", -1)
 }
 
 // popLiterals collect literal values, and create args list.
