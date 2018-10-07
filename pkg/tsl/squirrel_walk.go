@@ -17,6 +17,7 @@ package tsl
 
 import (
 	"fmt"
+	"strconv"
 
 	sq "github.com/Masterminds/squirrel"
 )
@@ -164,7 +165,8 @@ func SquirrelWalk(n Node) (s sq.Sqlizer, err error) {
 	case IdentOp:
 		s = sq.Expr(n.Left.(string))
 	case NumberOp:
-		s = sq.Expr("%f", n.Left.(float64))
+		f := strconv.FormatFloat(n.Left.(float64), 'f', -1, 64)
+		s = sq.Expr(f)
 	case StringOp:
 		s = sq.Expr(n.Left.(string))
 	case AndOp, OrOp, AddOp, SubtractOp, MultiplyOp, DivideOp, ModuloOp:
