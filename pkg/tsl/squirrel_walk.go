@@ -165,7 +165,7 @@ func SquirrelWalk(n Node) (s sq.Sqlizer, err error) {
 	case IdentOp:
 		s = sq.Expr(n.Left.(string))
 	case NumberOp:
-		f := strconv.FormatFloat(n.Left.(float64), 'f', -1, 64)
+		f := strconv.FormatFloat(n.Left.(float64), 'g', -1, 64)
 		s = sq.Expr(f)
 	case StringOp:
 		s = sq.Expr(n.Left.(string))
