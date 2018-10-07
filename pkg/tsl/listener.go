@@ -17,6 +17,7 @@ package tsl
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/yaacov/tsl/pkg/parser"
@@ -55,7 +56,13 @@ func (l *Listener) ExitColumnIdentifier(c *parser.ColumnIdentifierContext) {
 
 // ExitNumberLiteral is called when exiting the NumberLiteral production.
 func (l *Listener) ExitNumberLiteral(c *parser.NumberLiteralContext) {
-	l.exitLiteral(NumberOp, c.SignedNumber().GetText())
+	// Check for a float value.
+	f, err := strconv.ParseFloat(c.SignedNumber().GetText(), 64)
+	if err != nil {
+		l.Errs = append(l.Errs, err)
+	}
+
+	l.exitLiteral(NumberOp, f)
 }
 
 // ExitStringLiteral is called when exiting the StringLiteral production.
@@ -257,7 +264,7 @@ func (l *Listener) exitMathOps(op string) {
 }
 
 // ExitColumnIdentifier is called when exiting a literal production.
-func (l *Listener) exitLiteral(f string, v string) {
+func (l *Listener) exitLiteral(f string, v interface{}) {
 	n := Node{Func: f, Left: v}
 	l.push(n)
 }

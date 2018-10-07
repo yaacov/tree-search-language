@@ -23,29 +23,30 @@ import (
 
 // Returns the identifier setring from an IdentOp operator node.
 func identString(n interface{}) string {
-	// This is just a string, not and IdentOp.
+	// This is an identifier.
 	if str, ok := n.(Node).Left.(string); ok {
 		return str
 	}
 
-	// This is an IdentOp.
-	return n.(Node).Left.(Node).Left.(string)
+	// This is not an identifier.
+	return ""
 }
 
 // bsonFromArray helper method creates a slice of bson values from an interface,
 // supported values can be strings or floats.
 func bsonFromArray(a interface{}) (values []*bson.Value, err error) {
-	for _, v := range a.([]interface{}) {
-		if w, ok := v.(string); ok {
-			// Check for a string value.
-			values = append(values, bson.VC.String(w))
-		} else if w, ok := v.(float64); ok {
-			// Check for a float value.
-			values = append(values, bson.VC.Double(w))
+	for _, v := range a.([]Node) {
+		// Check node value type.
+		if s, ok := v.Left.(string); ok {
+			// Node value is string.
+			values = append(values, bson.VC.String(s))
+		} else if f, ok := v.Left.(float64); ok {
+			// Node value is float.
+			values = append(values, bson.VC.Double(f))
 		} else {
 			// Not a string or a float,
 			// We do not support values other then strings or floats.
-			err = fmt.Errorf("un supported value type of var: %v", v)
+			err = fmt.Errorf("un supported value type of var: %v", v.Left)
 			return
 		}
 	}
@@ -90,7 +91,7 @@ func BSONWalk(n Node) (b *bson.Element, err error) {
 		)
 	case EqOp, NotEqOp, LtOp, LteOp, GtOp, GteOp:
 		b = bson.EC.SubDocumentFromElements(identString(n.Left),
-			bson.EC.Interface(n.Func, n.Right),
+			bson.EC.Interface(n.Func, n.Right.(Node).Left),
 		)
 	case InOp:
 		values, err = bsonFromArray(n.Right)
@@ -115,10 +116,10 @@ func BSONWalk(n Node) (b *bson.Element, err error) {
 	case IsNotNilOp:
 		b = bson.EC.SubDocumentFromElements(identString(n.Left), bson.EC.Boolean("$exists", true))
 	case RegexOp:
-		b = bson.EC.Regex(identString(n.Left), n.Right.(string), "")
+		b = bson.EC.Regex(identString(n.Left), n.Right.(Node).Left.(string), "")
 	case NotRegexOp:
 		b = bson.EC.SubDocumentFromElements(identString(n.Left),
-			bson.EC.Regex("$not", n.Right.(string), ""),
+			bson.EC.Regex("$not", n.Right.(Node).Left.(string), ""),
 		)
 	case BetweenOp:
 		// Mongo does not have a between function, translating sql's between into

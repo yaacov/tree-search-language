@@ -21,7 +21,7 @@ import (
 	sq "github.com/Masterminds/squirrel"
 )
 
-func nodesToStrings(in interface{}) (s []string) {
+func nodesToStrings(in interface{}) (s []interface{}) {
 	var nn []Node
 	var ok bool
 
@@ -38,7 +38,7 @@ func nodesToStrings(in interface{}) (s []string) {
 
 	// Assume all Nodes are Leafs.
 	for _, n := range nn {
-		s = append(s, n.Left.(string))
+		s = append(s, n.Left)
 	}
 
 	return
@@ -164,7 +164,7 @@ func SquirrelWalk(n Node) (s sq.Sqlizer, err error) {
 	case IdentOp:
 		s = sq.Expr(n.Left.(string))
 	case NumberOp:
-		s = sq.Expr(n.Left.(string))
+		s = sq.Expr("%f", n.Left.(float64))
 	case StringOp:
 		s = sq.Expr(n.Left.(string))
 	case AndOp, OrOp, AddOp, SubtractOp, MultiplyOp, DivideOp, ModuloOp:
