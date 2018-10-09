@@ -36,23 +36,9 @@ The TSL package include the [ParseTSL](https://godoc.org/github.com/yaacov/tsl/p
 tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
 ```
 
-After parsing the TSL tree will look like this:
-``` bash
-$and
-|
-+----------------------------+
-|                            |
-$in                          $nbetween
-|                            |
-+---------+                  +--------+
-|         |                  |        |
-$ident    |                  $ident   |
-|         |                  |        |
-"name"   [                   "grade" [
-           $string - "joe",            $number - 0,
-           $string - "jane"            $number - 50
-         ]                           ]
-```
+After parsing the TSL tree will look like this (image created using the `tsl_parser` cli utility using `.dot` output option):
+
+![TSL](/img/example01.png?raw=true "example tree")
 
 ##### SquirrelWalk
 
@@ -103,7 +89,7 @@ Usage of ./tls_parser:
   -i string
     	the tsl string to parse (e.g. "animal = 'kitty'")
   -o string
-    	output format [json/yaml/prettyjson/sql] (default "json")
+    	output format [json/yaml/prettyjson/sql/dot] (default "json")
 ```
 
 

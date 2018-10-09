@@ -37,6 +37,7 @@ func check(err error) {
 
 func main() {
 	var s []byte
+	var st string
 
 	// Setup the input.
 	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"Title = 'kitty'\")")
@@ -65,6 +66,9 @@ func main() {
 		s, err = yaml.Marshal(tree)
 	case "prettyjson":
 		s, err = prettyjson.Marshal(tree)
+	case "dot":
+		st, err = tsl.GraphvizWalk("", tree, "root")
+		s = append(s, fmt.Sprintf("digraph {\n%s\n}\n", st)...)
 	case "sql":
 		var sql string
 		var args []interface{}
