@@ -22,9 +22,9 @@ import (
 )
 
 var pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-var identStyle = "shape=box color=red"
-var numberStyle = "shape=box color=green"
-var stringStyle = "shape=box color=blue"
+var identStyle = "shape=record color=red"
+var numberStyle = "shape=record color=blue"
+var stringStyle = "shape=record color=blue"
 var opStyle = "shape=box color=black"
 
 // Generate a random string.
@@ -64,7 +64,7 @@ func GraphvizWalk(in string, n Node, nodeID string) (out string, err error) {
 	switch n.Func {
 	case IdentOp:
 		// Add leaf label and value.
-		nodeLabel := fmt.Sprintf("%s [%s label=<<b>%s</b>: \"%s\">]",
+		nodeLabel := fmt.Sprintf("%s [%s label=\"%s | '%s'\" ]",
 			nodeID,
 			identStyle,
 			n.Func,
@@ -72,7 +72,7 @@ func GraphvizWalk(in string, n Node, nodeID string) (out string, err error) {
 		out = fmt.Sprintf("%s%s", in, nodeLabel)
 	case StringOp:
 		// Add leaf label and value.
-		nodeLabel := fmt.Sprintf("%s [%s label=<<b>%s</b>: \"%s\">]",
+		nodeLabel := fmt.Sprintf("%s [%s label=\"%s | '%s'\" ]",
 			nodeID,
 			stringStyle,
 			n.Func,
@@ -80,7 +80,7 @@ func GraphvizWalk(in string, n Node, nodeID string) (out string, err error) {
 		out = fmt.Sprintf("%s%s", in, nodeLabel)
 	case NumberOp:
 		// Add leaf label and value.
-		nodeLabel := fmt.Sprintf("%s [%s label=<<b>%s</b>: %g>]",
+		nodeLabel := fmt.Sprintf("%s [%s label=\"%s | %g\" ]",
 			nodeID,
 			numberStyle,
 			n.Func,
@@ -88,7 +88,7 @@ func GraphvizWalk(in string, n Node, nodeID string) (out string, err error) {
 		out = fmt.Sprintf("%s%s", in, nodeLabel)
 	default:
 		// Add node label.
-		st := fmt.Sprintf("%s [%s label=<<b>%s</b>>]",
+		st := fmt.Sprintf("%s [%s label=\"%s\"]",
 			nodeID,
 			opStyle,
 			n.Func)
