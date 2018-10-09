@@ -16,15 +16,23 @@ The TSL language grammar is similar to SQL syntax, for example:
 ``` sql
 name like '%joe%' and (city = 'paris' or city = 'milan')
 ```
+![TSL](/img/example_a.png?raw=true "example tree")
+
 ``` sql
 name in ('joe', 'jane') and grade not between 0 and 50
 ```
+![TSL](/img/example_b.png?raw=true "example tree")
+
 ``` sql
 memory.total - memory.cache > 2000 and cpu.usage > 50
 ```
+![TSL](/img/example_c.png?raw=true "example tree")
+
 ``` sql
 (net.rx + net.tx) / 1000 > 3 or net.rx / 1000 > 6
 ```
+![TSL](/img/example_d.png?raw=true "example tree")
+
 ##### Examples
 
 For code examples see the cli tools in the [/cmd](/cmd) direcotry.
