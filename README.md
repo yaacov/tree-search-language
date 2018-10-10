@@ -85,6 +85,18 @@ filter, err = tsl.BSONWalk(tree)
 cur, err := collection.Find(ctx, bson.NewDocument(filter))
 ```
 
+##### GraphvizWalk
+
+The TSL package include a helper [BSONWalk](/pkg/tsl/graphviz_walk.go) method that exports `.dot` file nodes :
+
+``` go
+// Prepare .dot file nodes as a string.
+s, err = tsl.GraphvizWalk("", tree, "")
+
+// Wrap the nodes in a digraph wrapper.
+s = fmt.Sprintf("digraph {\n%s\n}\n", s)
+```
+
 ## Cli tools
 
 [tls_parser](/cmd/tsl_parser), [tls_mongo](/cmd/tsl_mongo) and [tsl_sqlite](/cmd/tsl_sqlite) are example cli tools showcasing the TSL language and TSL golang package.
@@ -152,6 +164,19 @@ args: [joe jane rome]
       "left": "rome"
     }
   }
+}
+```
+
+``` bash
+./tsl_parser -i "city = 'rome'" -o dot
+```
+
+``` dot
+digraph {
+root [shape=box color=black label="$eq"]
+XVlB [shape=record color=red label="$ident | 'city'" ]
+zgba [shape=record color=blue label="$string | 'rome'" ]
+root -> { XVlB, zgba }
 }
 ```
 

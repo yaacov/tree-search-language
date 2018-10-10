@@ -21,11 +21,14 @@ import (
 	"strings"
 )
 
-var pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-var identStyle = "shape=record color=red"
-var numberStyle = "shape=record color=blue"
-var stringStyle = "shape=record color=blue"
-var opStyle = "shape=box color=black"
+// Character poll for random string genrator.
+const pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+// Default styles for .dot file output.
+const identStyle = "shape=record color=red"
+const numberStyle = "shape=record color=blue"
+const stringStyle = "shape=record color=blue"
+const opStyle = "shape=box color=black"
 
 // Generate a random string.
 func randStr(l int) string {
@@ -45,11 +48,16 @@ func randStr(l int) string {
 //
 // The return string will be a node list for a .dot file:
 //
-//   XVlB [shape=circle label=<<b>$eq</b>>]
-//   zgba [shape=box label=<<b>$ident</b>: "city">]
-//   iCMR [shape=box label=<<b>$string</b>: "rome">]
-//   XVlB -> { zgba, iCMR }
+//   tcuA [shape=box color=black label="$eq"]
+//   xhxK [shape=record color=red label="$ident | 'city'" ]
+//   QFDa [shape=record color=blue label="$string | 'rome'" ]
+//   tcuA -> { xhxK, QFDa }
 //
+// For valid Graphviz dot file, the nodes must be wrapped in a `digraph` object:
+//
+//   	s, err = tsl.GraphvizWalk("", tree, "")
+// 	  s = fmt.Sprintf("digraph {\n%s\n}\n", s)
+
 func GraphvizWalk(in string, n Node, nodeID string) (out string, err error) {
 	// If node ID is missing, create one.
 	if nodeID == "" {
