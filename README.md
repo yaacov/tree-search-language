@@ -87,7 +87,7 @@ cur, err := collection.Find(ctx, bson.NewDocument(filter))
 
 ##### GraphvizWalk
 
-The TSL package include a helper [BSONWalk](/pkg/tsl/graphviz_walk.go) method that exports `.dot` file nodes :
+The TSL package include a helper [GraphvizWalk](/pkg/tsl/graphviz_walk.go) method that exports `.dot` file nodes :
 
 ``` go
 // Prepare .dot file nodes as a string.
