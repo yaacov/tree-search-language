@@ -12,7 +12,10 @@ where part. implementing query based search engines was never that easy.
 
 [ awesome image by [gophers...](https://github.com/egonelbre/gophers) ]
 
-The TSL language grammar is similar to SQL syntax, for example:
+The TSL language grammar is similar to SQL syntax.
+
+##### Syntax examples
+
 ``` sql
 name like '%joe%' and (city = 'paris' or city = 'milan')
 ```
@@ -33,7 +36,6 @@ memory.total - memory.cache > 2000 and cpu.usage > 50
 ```
 ![TSL](/img/example_d.png?raw=true "example tree")
 
-##### Examples
 
 For code examples see the cli tools in the [/cmd](/cmd) direcotry.
 
