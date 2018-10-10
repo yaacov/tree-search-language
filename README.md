@@ -14,23 +14,27 @@ where part. implementing query based search engines was never that easy.
 
 The TSL language grammar is similar to SQL syntax.
 
-##### Syntax examples
+## Syntax examples
 
+#### Operator precedence
 ``` sql
 name like '%joe%' and (city = 'paris' or city = 'milan')
 ```
 ![TSL](/img/example_a.png?raw=true "example tree")
 
+#### Operators with multiple arguments
 ``` sql
 name in ('joe', 'jane') and grade not between 0 and 50
 ```
 ![TSL](/img/example_b.png?raw=true "example tree")
 
+#### Math operators
 ``` sql
 memory.total - memory.cache > 2000 and cpu.usage > 50
 ```
 ![TSL](/img/example_c.png?raw=true "example tree")
 
+#### More math operators
 ``` sql
 (net.rx + net.tx) / 1000 > 3 or net.rx / 1000 > 6
 ```
