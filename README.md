@@ -248,7 +248,7 @@ Usage of ./tsl_sqlite:
 $ SQL="Title like '%Book%' and Pages > 100"
 $ ./tsl_sqlite -i "$SQL" -p | jq
 ```
-```
+``` json
 {
   "id": 2,
   "title": "Other Book",
