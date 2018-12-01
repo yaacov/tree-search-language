@@ -38,13 +38,11 @@ func identString(n interface{}) string {
 func bsonFromArray(a interface{}) (values []interface{}, err error) {
 	for _, v := range a.([]Node) {
 		// Check node value type.
-		if s, ok := v.Left.(string); ok {
-			// Node value is string.
-			values = append(values, s)
-		} else if f, ok := v.Left.(float64); ok {
-			// Node value is float.
-			values = append(values, f)
-		} else {
+		switch l := v.Left.(type) {
+		case string, float64:
+			// Node value is string or float.
+			values = append(values, l)
+		default:
 			// Not a string or a float,
 			// We do not support values other then strings or floats.
 			err = fmt.Errorf("un supported value type of var: %v", v.Left)
