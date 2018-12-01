@@ -57,7 +57,6 @@ func randStr(l int) string {
 //
 //   	s, err = tsl.GraphvizWalk("", tree, "")
 // 	  s = fmt.Sprintf("digraph {\n%s\n}\n", s)
-
 func GraphvizWalk(in string, n Node, nodeID string) (out string, err error) {
 	// If node ID is missing, create one.
 	if nodeID == "" {
