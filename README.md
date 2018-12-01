@@ -88,7 +88,7 @@ The TSL package include a helper [BSONWalk](/pkg/tsl/bson_walk.go) method that a
 filter, err = tsl.BSONWalk(tree)
 
 // Run query.
-cur, err := collection.Find(ctx, bson.NewDocument(filter))
+cur, err := collection.Find(ctx, bson.D(filter))
 ```
 
 ##### GraphvizWalk

@@ -55,7 +55,7 @@
 //   filter, err = tsl.BSONWalk(tree)
 //
 //   // Run query
-//   cur, err := collection.Find(ctx, bson.NewDocument(filter))
+//   cur, err := collection.Find(ctx, bson.D(filter))
 //
 // squirrel: https://github.com/Masterminds/squirrel
 //
