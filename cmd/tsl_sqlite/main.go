@@ -19,6 +19,7 @@ package main
 import (
 	"context"
 	"database/sql"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -82,17 +83,18 @@ func main() {
 	check(err)
 
 	for rows.Next() {
-		b := book{}
+		elem := book{}
 		err = rows.Scan(
-			&b.ID,
-			&b.Title,
-			&b.Author,
-			&b.Pages,
-			&b.Rating,
+			&elem.ID,
+			&elem.Title,
+			&elem.Author,
+			&elem.Pages,
+			&elem.Rating,
 		)
 		check(err)
 
-		fmt.Printf("%v\n", b)
+		b, _ := json.Marshal(elem)
+		fmt.Printf("%s\n", string(b))
 	}
 
 	// Check for errors and exit.
