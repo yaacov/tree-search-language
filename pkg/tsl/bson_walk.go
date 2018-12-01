@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	"github.com/mongodb/mongo-go-driver/bson"
+	"github.com/mongodb/mongo-go-driver/bson/primitive"
 )
 
 // Returns the identifier setring from an IdentOp operator node.
@@ -34,15 +35,15 @@ func identString(n interface{}) string {
 
 // bsonFromArray helper method creates a slice of bson values from an interface,
 // supported values can be strings or floats.
-func bsonFromArray(a interface{}) (values []*bson.Value, err error) {
+func bsonFromArray(a interface{}) (values []interface{}, err error) {
 	for _, v := range a.([]Node) {
 		// Check node value type.
 		if s, ok := v.Left.(string); ok {
 			// Node value is string.
-			values = append(values, bson.VC.String(s))
+			values = append(values, s)
 		} else if f, ok := v.Left.(float64); ok {
 			// Node value is float.
-			values = append(values, bson.VC.Double(f))
+			values = append(values, f)
 		} else {
 			// Not a string or a float,
 			// We do not support values other then strings or floats.
@@ -67,9 +68,9 @@ func bsonFromArray(a interface{}) (values []*bson.Value, err error) {
 //
 // mongo-go-driver: https://github.com/mongodb/mongo-go-driver
 //
-func BSONWalk(n Node) (b *bson.Element, err error) {
-	var values []*bson.Value
-	var l, r *bson.Element
+func BSONWalk(n Node) (b bson.D, err error) {
+	var values []interface{}
+	var l, r interface{}
 
 	// Note: tsl function constants should be the same as mongo bson
 	// functions (e.g. tsl.AndOp is "$and" in tsl and in mongo bson),
@@ -85,42 +86,30 @@ func BSONWalk(n Node) (b *bson.Element, err error) {
 		if err != nil {
 			return
 		}
-		b = bson.EC.ArrayFromElements(n.Func,
-			bson.VC.DocumentFromElements(l),
-			bson.VC.DocumentFromElements(r),
-		)
+		b = bson.D{{n.Func, bson.A{l, r}}}
 	case EqOp, NotEqOp, LtOp, LteOp, GtOp, GteOp:
-		b = bson.EC.SubDocumentFromElements(identString(n.Left),
-			bson.EC.Interface(n.Func, n.Right.(Node).Left),
-		)
+		b = bson.D{{identString(n.Left), bson.D{{n.Func, n.Right.(Node).Left}}}}
 	case InOp:
 		values, err = bsonFromArray(n.Right)
 		if err != nil {
 			return
 		}
-		b = bson.EC.SubDocumentFromElements(identString(n.Left),
-			bson.EC.ArrayFromElements("$in", values...),
-		)
+		b = bson.D{{identString(n.Left), bson.D{{"$in", bson.A{values}}}}}
 	case NotInOp:
 		values, err = bsonFromArray(n.Right)
 		if err != nil {
 			return
 		}
-		b = bson.EC.SubDocumentFromElements(identString(n.Left),
-			bson.EC.SubDocumentFromElements("$not",
-				bson.EC.ArrayFromElements("$in", values...),
-			),
-		)
+		b = bson.D{{identString(n.Left), bson.E{"$not", bson.D{{"$in", bson.A{values}}}}}}
 	case IsNilOp:
-		b = bson.EC.SubDocumentFromElements(identString(n.Left), bson.EC.Boolean("$exists", false))
+		b = bson.D{{identString(n.Left), bson.D{{"$exists", false}}}}
 	case IsNotNilOp:
-		b = bson.EC.SubDocumentFromElements(identString(n.Left), bson.EC.Boolean("$exists", true))
+		b = bson.D{{identString(n.Left), bson.D{{"$exists", true}}}}
 	case RegexOp:
-		b = bson.EC.Regex(identString(n.Left), n.Right.(Node).Left.(string), "")
+		b = bson.D{{identString(n.Left), primitive.Regex{n.Right.(Node).Left.(string), ""}}}
 	case NotRegexOp:
-		b = bson.EC.SubDocumentFromElements(identString(n.Left),
-			bson.EC.Regex("$not", n.Right.(Node).Left.(string), ""),
-		)
+		b = bson.D{{identString(n.Left),
+			bson.D{{"$not", primitive.Regex{n.Right.(Node).Left.(string), ""}}}}}
 	case BetweenOp:
 		// Mongo does not have a between function, translating sql's between into
 		// two none eq operators.
@@ -129,14 +118,11 @@ func BSONWalk(n Node) (b *bson.Element, err error) {
 		if err != nil {
 			return
 		}
-		b = bson.EC.ArrayFromElements("$and",
-			bson.VC.DocumentFromElements(
-				bson.EC.SubDocumentFromElements(identString(n.Left), bson.EC.Interface("$gte", values[0])),
-			),
-			bson.VC.DocumentFromElements(
-				bson.EC.SubDocumentFromElements(identString(n.Left), bson.EC.Interface("$lte", values[1])),
-			),
-		)
+		b = bson.D{{"$and",
+			bson.A{
+				bson.E{identString(n.Left), bson.D{{"$gte", values[0]}}},
+				bson.E{identString(n.Left), bson.D{{"$lte", values[1]}}},
+			}}}
 	case NotBetweenOp:
 		// Mongo does not have a between function, translating sql's not between into
 		// two none eq operators.
@@ -144,14 +130,11 @@ func BSONWalk(n Node) (b *bson.Element, err error) {
 		if err != nil {
 			return
 		}
-		b = bson.EC.ArrayFromElements("$or",
-			bson.VC.DocumentFromElements(
-				bson.EC.SubDocumentFromElements(identString(n.Left), bson.EC.Interface("$lt", values[0])),
-			),
-			bson.VC.DocumentFromElements(
-				bson.EC.SubDocumentFromElements(identString(n.Left), bson.EC.Interface("$gt", values[1])),
-			),
-		)
+		b = bson.D{{"$or",
+			bson.A{
+				bson.E{identString(n.Left), bson.D{{"$lt", values[0]}}},
+				bson.E{identString(n.Left), bson.D{{"$gt", values[1]}}},
+			}}}
 	default:
 		// If here than the operator is not supported.
 		err = fmt.Errorf("un supported operand: %s", n.Func)

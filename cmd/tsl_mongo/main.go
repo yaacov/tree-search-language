@@ -18,6 +18,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -31,9 +32,7 @@ func main() {
 	var err error
 	var client *mongo.Client
 	var collection *mongo.Collection
-	var filter *bson.Element
-	var s string
-	var b []byte
+	var filter bson.D
 
 	// Setup the input.
 	inputPtr := flag.String("i", "title is not null", "the tsl string to parse (e.g. \"author = 'Jane'\")")
@@ -74,9 +73,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
 	// Run query.
-	cur, err := collection.Find(ctx, bson.NewDocument(filter))
+	cur, err := collection.Find(ctx, filter)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -84,16 +82,14 @@ func main() {
 
 	// Loop on query elements.
 	for cur.Next(ctx) {
-		elem := bson.NewDocument()
-		err := cur.Decode(elem)
+		elem := book{}
+		err := cur.Decode(&elem)
 		if err != nil {
 			log.Fatal(err)
 		}
 
-		// Print out books as json.
-		b, _ = elem.MarshalBSON()
-		s, _ = bson.ToExtJSON(true, b)
-		fmt.Printf("%v\n", s)
+		b, _ := json.Marshal(elem)
+		fmt.Printf("%s\n", string(b))
 	}
 	if err := cur.Err(); err != nil {
 		log.Fatal(err)
