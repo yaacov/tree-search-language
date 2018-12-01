@@ -1,7 +1,7 @@
 # Tree Search Language (TSL)
 
 <p align="center">
-  <img src="/img/search-500.png?raw=true" alt="TSL Logo">
+  <img src="https://raw.githubusercontent.com/yaacov/tsl/master/img/search-248.png" alt="TSL Logo">
 </p>
 
 Tree Search Language (TSL) is a wonderful search language, With similar grammar to SQL's
