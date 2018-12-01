@@ -19,7 +19,6 @@ package main
 import (
 	"context"
 	"database/sql"
-	"fmt"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -64,12 +63,10 @@ func connect(ctx context.Context, url string) (tx *sql.Tx, err error) {
 
 func prepareCollection(ctx context.Context, tx *sql.Tx) (err error) {
 	// Create table.
-	fmt.Println("Createing table.")
 	_, err = tx.ExecContext(ctx, sqlStmt)
 	check(err)
 
 	// Insert new books into the table.
-	fmt.Println("Insert demo books.")
 	stmt, err := tx.PrepareContext(ctx, "insert into books(title, author, pages, rating) values(?, ?, ?, ?)")
 	check(err)
 

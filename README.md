@@ -210,39 +210,24 @@ $ ./tsl_mongo -p -i "title is not null" | jq
 ```
 ``` json
 {
-  "_id": {
-    "$oid": "5b8999c0f678c456481f7baf"
-  },
   "title": "Book",
   "author": "Joe",
   "spec": {
-    "pages": {
-      "$numberLong": "100"
-    },
-    "Rating": {
-      "$numberLong": "4"
-    }
+    "pages": 100,
+    "rating": 4
   }
 }
-
 ```
 ``` bash
 $ ./tsl_mongo -i "title ~= 'Other' and spec.rating > 1" | jq
 ```
 ``` json
 {
-  "_id": {
-    "$oid": "5b899a6c3707c8ba0b00b656"
-  },
   "title": "Other Book",
   "author": "Jane",
   "spec": {
-    "pages": {
-      "$numberLong": "200"
-    },
-    "Rating": {
-      "$numberLong": "3"
-    }
+    "pages": 200,
+    "rating": 3
   }
 }
 ```
@@ -261,14 +246,23 @@ Usage of ./tsl_sqlite:
 
 ``` bash
 $ SQL="Title like '%Book%' and Pages > 100"
-$ ./tsl_sqlite -i "$SQL" -p
+$ ./tsl_sqlite -i "$SQL" -p | jq
 ```
 ```
-Creating table.
-Insert demo books.
-{2 Other Book Jane 200 3}
-{5 Good Book Joe 150 4}
-
+{
+  "id": 2,
+  "title": "Other Book",
+  "author": "Jane",
+  "pages": 200,
+  "Rating": 3
+}
+{
+  "id": 5,
+  "title": "Good Book",
+  "author": "Joe",
+  "pages": 150,
+  "Rating": 4
+}
 ```
 
 ## Grammar
