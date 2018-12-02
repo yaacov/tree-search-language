@@ -87,7 +87,7 @@ The TSL package include a helper [mongo.Walk](/pkg/walkers/mongo/walk.go) method
 
 ``` go
 // Prepare a bson filter.
-filter, err = tsl.BSONWalk(tree)
+filter, err = mongo.Walk(tree)
 
 // Run query.
 cur, err := collection.Find(ctx, bson.D{filter})
@@ -190,7 +190,7 @@ root -> { XVlB, zgba }
 
 ##### tsl_mongo
 
-tsl_mongo include an example using [BSONWalk](/pkg/tsl/bson_walk.go) method, for building a mongo bson filter.
+tsl_mongo include an example using [mongo.NWalk](/pkg/walkers/mongo/walk.go) method, for building a mongo bson filter.
 
 ``` bash
 $ ./tsl_mongo -h
@@ -345,7 +345,7 @@ sql, args, err := sq.Select("name, city, state").
 
 ##### mongo.Walk
 
-BSONWalk takes the base Node ( tree ) of the search tree, and return a MongoDB BSON object.
+mongo.Walk takes the base Node ( tree ) of the search tree, and return a MongoDB BSON object.
 
 ``` go
 ...
