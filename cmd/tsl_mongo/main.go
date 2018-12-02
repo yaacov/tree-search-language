@@ -33,7 +33,7 @@ func main() {
 	var err error
 	var client *mongo.Client
 	var collection *mongo.Collection
-	var filter bson.E
+	var filter bson.D
 
 	// Setup the input.
 	inputPtr := flag.String("i", "title is not null", "the tsl string to parse (e.g. \"author = 'Jane'\")")
@@ -75,7 +75,7 @@ func main() {
 		log.Fatal(err)
 	}
 	// Run query.
-	cur, err := collection.Find(ctx, bson.D{filter})
+	cur, err := collection.Find(ctx, filter)
 	if err != nil {
 		log.Fatal(err)
 	}
