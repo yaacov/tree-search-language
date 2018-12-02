@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Package sql helps to create SQL squirrel filters using the TSL package.
 package sql
 
 import (
