@@ -21,23 +21,9 @@ import (
 	"database/sql"
 
 	_ "github.com/mattn/go-sqlite3"
+
+	"github.com/yaacov/tsl/cmd/model"
 )
-
-type book struct {
-	ID     uint   `db:"id" json:"id"`
-	Title  string `db:"title,omitempty" json:"title,omitempty"`
-	Author string `db:"author,omitempty" json:"author,omitempty"`
-	Pages  uint   `db:"pages,omitempty" json:"pages,omitempty"`
-	Rating uint   `db:"Rating,omitempty" json:"Rating,omitempty"`
-}
-
-var books = []interface{}{
-	book{Title: "Book", Author: "Joe", Pages: 100, Rating: 4},
-	book{Title: "Other Book", Author: "Jane", Pages: 200, Rating: 3},
-	book{Title: "Some Book", Author: "Jane", Pages: 50, Rating: 5},
-	book{Title: "Some Other Book", Author: "Jane", Pages: 50},
-	book{Title: "Good Book", Author: "Joe", Pages: 150, Rating: 4},
-}
 
 const sqlStmt = `
 create table if not exists books (
@@ -72,12 +58,12 @@ func prepareCollection(ctx context.Context, tx *sql.Tx) (err error) {
 
 	defer stmt.Close()
 
-	for _, b := range books {
+	for _, b := range model.Books {
 		_, err = stmt.ExecContext(ctx,
-			b.(book).Title,
-			b.(book).Author,
-			b.(book).Pages,
-			b.(book).Rating)
+			b.(model.Book).Title,
+			b.(model.Book).Author,
+			b.(model.Book).Spec.Pages,
+			b.(model.Book).Spec.Rating)
 
 		check(err)
 	}

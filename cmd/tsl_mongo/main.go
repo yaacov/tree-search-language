@@ -27,6 +27,8 @@ import (
 	"github.com/mongodb/mongo-go-driver/mongo"
 	"github.com/yaacov/tsl/pkg/tsl"
 	walker "github.com/yaacov/tsl/pkg/walkers/mongo"
+
+	"github.com/yaacov/tsl/cmd/model"
 )
 
 func check(err error) {
@@ -80,7 +82,7 @@ func main() {
 
 	// Loop on query elements.
 	for cur.Next(ctx) {
-		elem := book{}
+		elem := model.Book{}
 		err := cur.Decode(&elem)
 		check(err)
 

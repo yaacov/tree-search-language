@@ -20,26 +20,9 @@ import (
 	"context"
 
 	"github.com/mongodb/mongo-go-driver/mongo"
+
+	"github.com/yaacov/tsl/cmd/model"
 )
-
-type bookSpecs struct {
-	Pages  uint `bson:"pages,omitempty" json:"pages,omitempty"`
-	Rating uint `bson:"rating,omitempty" json:"rating,omitempty"`
-}
-
-type book struct {
-	Title  string    `bson:"title,omitempty" json:"title,omitempty"`
-	Author string    `bson:"author,omitempty" json:"author,omitempty"`
-	Spec   bookSpecs `bson:"spec,omitempty" json:"spec,omitempty"`
-}
-
-var books = []interface{}{
-	book{Title: "Book", Author: "Joe", Spec: bookSpecs{Pages: 100, Rating: 4}},
-	book{Title: "Other Book", Author: "Jane", Spec: bookSpecs{Pages: 200, Rating: 3}},
-	book{Title: "Some Book", Author: "Jane", Spec: bookSpecs{Pages: 50, Rating: 5}},
-	book{Title: "Some Other Book", Author: "Jane", Spec: bookSpecs{Pages: 50}},
-	book{Title: "Good Book", Author: "Joe", Spec: bookSpecs{Pages: 150, Rating: 4}},
-}
 
 func connect(ctx context.Context, url string) (client *mongo.Client, err error) {
 	client, err = mongo.NewClient(url)
@@ -59,7 +42,7 @@ func prepareCollection(ctx context.Context, collection *mongo.Collection) (err e
 	}
 
 	// Insert new books into the collection.
-	_, err = collection.InsertMany(ctx, books)
+	_, err = collection.InsertMany(ctx, model.Books)
 
 	return
 }

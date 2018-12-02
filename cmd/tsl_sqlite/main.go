@@ -27,7 +27,10 @@ import (
 	sq "github.com/Masterminds/squirrel"
 
 	"github.com/yaacov/tsl/pkg/tsl"
+	"github.com/yaacov/tsl/pkg/walkers/ident"
 	walker "github.com/yaacov/tsl/pkg/walkers/sql"
+
+	"github.com/yaacov/tsl/cmd/model"
 )
 
 func check(err error) {
@@ -37,6 +40,7 @@ func check(err error) {
 }
 
 func main() {
+	var bookID uint
 	var rows *sql.Rows
 
 	// Setup the input.
@@ -63,6 +67,15 @@ func main() {
 	tree, err := tsl.ParseTSL(*inputPtr)
 	check(err)
 
+	// Check and replace user identifiers with the SQL table column names.
+	tree, err = ident.Walk(tree, map[string]string{
+		"title":       "title",
+		"author":      "author",
+		"spec.pages":  "pages",
+		"spec.rating": "rating",
+	})
+	check(err)
+
 	// Prepare SQL filter.
 	filter, err := walker.Walk(tree)
 	check(err)
@@ -77,13 +90,13 @@ func main() {
 	check(err)
 
 	for rows.Next() {
-		elem := book{}
+		elem := model.Book{}
 		err = rows.Scan(
-			&elem.ID,
+			&bookID,
 			&elem.Title,
 			&elem.Author,
-			&elem.Pages,
-			&elem.Rating,
+			&elem.Spec.Pages,
+			&elem.Spec.Rating,
 		)
 		check(err)
 
