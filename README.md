@@ -61,6 +61,12 @@ After parsing the TSL tree will look like this (image created using the `tsl_par
 The TSL package include a helper [sql.Walk](/pkg/walkers/sql/walk.go) method that adds search to [squirrel](https://github.com/Masterminds/squirrel)'s SelectBuilder object:
 
 ``` go
+import (
+    ...
+    "github.com/yaacov/tsl/pkg/walkers/sql"
+    ...
+)
+
 // Prepare squirrel filter.
 filter, err := sql.Walk(tree)
 
@@ -86,6 +92,12 @@ SELECT name, city, state FROM users WHERE (name IN (?,?) AND grade NOT BETWEEN ?
 The TSL package include a helper [mongo.Walk](/pkg/walkers/mongo/walk.go) method that adds search bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
 
 ``` go
+import (
+    ...
+    "github.com/yaacov/tsl/pkg/walkers/mongo"
+    ...
+)
+
 // Prepare a bson filter.
 filter, err = mongo.Walk(tree)
 
@@ -98,6 +110,12 @@ cur, err := collection.Find(ctx, bson.D{filter})
 The TSL package include a helper [graphviz.Walk](/pkg/walkers/graphviz/walk.go) method that exports `.dot` file nodes :
 
 ``` go
+import (
+    ...
+    "github.com/yaacov/tsl/pkg/walkers/graphviz"
+    ...
+)
+
 // Prepare .dot file nodes as a string.
 s, err = graphviz.Walk("", tree, "")
 
