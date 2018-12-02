@@ -26,6 +26,7 @@ import (
 	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/mongodb/mongo-go-driver/mongo"
 	"github.com/yaacov/tsl/pkg/tsl"
+	walker "github.com/yaacov/tsl/pkg/walkers/mongo"
 )
 
 func main() {
@@ -69,7 +70,7 @@ func main() {
 	}
 
 	// Prepare a bson filter.
-	filter, err = tsl.BSONWalk(tree)
+	filter, err = walker.Walk(tree)
 	if err != nil {
 		log.Fatal(err)
 	}

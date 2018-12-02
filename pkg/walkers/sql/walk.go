@@ -13,17 +13,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package tsl
+package sql
 
 import (
 	"fmt"
 	"strconv"
 
 	sq "github.com/Masterminds/squirrel"
+
+	"github.com/yaacov/tsl/pkg/tsl"
 )
 
 func nodesToStrings(in interface{}) (s []interface{}) {
-	var nn []Node
+	var nn []tsl.Node
 	var ok bool
 
 	// Check for nil
@@ -32,9 +34,9 @@ func nodesToStrings(in interface{}) (s []interface{}) {
 	}
 
 	// Assume input is []Node or Node.
-	nn, ok = in.([]Node)
+	nn, ok = in.([]tsl.Node)
 	if !ok {
-		nn = []Node{in.(Node)}
+		nn = []tsl.Node{in.(tsl.Node)}
 	}
 
 	// Assume all Nodes are Leafs.
@@ -45,36 +47,36 @@ func nodesToStrings(in interface{}) (s []interface{}) {
 	return
 }
 
-// binaryStep handle a binary operator step for SquirrelWalk.
-func binaryStep(n Node) (s sq.Sqlizer, err error) {
+// binaryStep handle a binary operator step for Walk.
+func binaryStep(n tsl.Node) (s sq.Sqlizer, err error) {
 	var l, r sq.Sqlizer
 
 	// Get left hand side node.
-	l, err = SquirrelWalk(n.Left.(Node))
+	l, err = Walk(n.Left.(tsl.Node))
 	if err != nil {
 		return
 	}
 
 	// Get right hand side node.
-	r, err = SquirrelWalk(n.Right.(Node))
+	r, err = Walk(n.Right.(tsl.Node))
 	if err != nil {
 		return
 	}
 
 	switch n.Func {
-	case AndOp:
+	case tsl.AndOp:
 		s = sq.And{l, r}
-	case OrOp:
+	case tsl.OrOp:
 		s = sq.Or{l, r}
-	case AddOp:
+	case tsl.AddOp:
 		s = addExpr{l, r}
-	case SubtractOp:
+	case tsl.SubtractOp:
 		s = subExpr{l, r}
-	case MultiplyOp:
+	case tsl.MultiplyOp:
 		s = mulExpr{l, r}
-	case DivideOp:
+	case tsl.DivideOp:
 		s = divExpr{l, r}
-	case ModuloOp:
+	case tsl.ModuloOp:
 		s = modExpr{l, r}
 	default:
 		// If here than the operator is not supported.
@@ -84,12 +86,12 @@ func binaryStep(n Node) (s sq.Sqlizer, err error) {
 	return
 }
 
-// unaryStep handle a unary operator step for SquirrelWalk.
-func unaryStep(n Node) (s sq.Sqlizer, err error) {
+// unaryStep handle a unary operator step for Walk.
+func unaryStep(n tsl.Node) (s sq.Sqlizer, err error) {
 	var l sq.Sqlizer
 	var sql string
 
-	l, err = SquirrelWalk(n.Left.(Node))
+	l, err = Walk(n.Left.(tsl.Node))
 	if err != nil {
 		return
 	}
@@ -102,42 +104,42 @@ func unaryStep(n Node) (s sq.Sqlizer, err error) {
 	right := nodesToStrings(n.Right)
 
 	switch n.Func {
-	case NotOp:
+	case tsl.NotOp:
 		s = notExpr{l}
-	case EqOp:
+	case tsl.EqOp:
 		s = sq.Eq{sql: right[0]}
-	case NotEqOp:
+	case tsl.NotEqOp:
 		s = sq.NotEq{sql: right[0]}
-	case LtOp:
+	case tsl.LtOp:
 		s = sq.Lt{sql: right[0]}
-	case LteOp:
+	case tsl.LteOp:
 		s = sq.LtOrEq{sql: right[0]}
-	case GtOp:
+	case tsl.GtOp:
 		s = sq.Gt{sql: right[0]}
-	case GteOp:
+	case tsl.GteOp:
 		s = sq.GtOrEq{sql: right[0]}
-	case InOp:
+	case tsl.InOp:
 		// Multiple eq will be translated into IN (?, ? ...).
 		s = sq.Eq{sql: right}
-	case NotInOp:
+	case tsl.NotInOp:
 		// Multiple not eq will be translated into NOT IN (?, ? ...).
 		s = sq.NotEq{sql: right}
-	case IsNilOp:
+	case tsl.IsNilOp:
 		// eq nil will be translated into IS NULL.
 		s = sq.Eq{sql: nil}
-	case IsNotNilOp:
+	case tsl.IsNotNilOp:
 		// not eq nil will be translated into IS NOT NULL.
 		s = sq.NotEq{sql: nil}
-	case LikeOp:
+	case tsl.LikeOp:
 		t := fmt.Sprintf("%s LIKE ?", sql)
 		s = sq.Expr(t, right[0])
-	case NotLikeOp:
+	case tsl.NotLikeOp:
 		t := fmt.Sprintf("%s NOT LIKE ?", sql)
 		s = sq.Expr(t, right[0])
-	case BetweenOp:
+	case tsl.BetweenOp:
 		t := fmt.Sprintf("%s BETWEEN ? AND ?", sql)
 		s = sq.Expr(t, right[0], right[1])
-	case NotBetweenOp:
+	case tsl.NotBetweenOp:
 		t := fmt.Sprintf("%s NOT BETWEEN ? AND ?", sql)
 		s = sq.Expr(t, right[0], right[1])
 	default:
@@ -148,11 +150,11 @@ func unaryStep(n Node) (s sq.Sqlizer, err error) {
 	return
 }
 
-// SquirrelWalk travel the TSL tree to create squirrel SQL select operators.
+// Walk travel the TSL tree to create squirrel SQL select operators.
 //
-// Users can call the SquirrelWalk method inside a squirrel Where to add the query.
+// Users can call the Walk method inside a squirrel Where to add the query.
 //
-//  filter, _ := SquirrelWalk(tree)
+//  filter, _ := sql.Walk(tree)
 //  sql, args, _ := sq.Select("name, city, state").
 //    From("users").
 //    Where(filter).
@@ -160,20 +162,20 @@ func unaryStep(n Node) (s sq.Sqlizer, err error) {
 //
 // Squirrel: https://github.com/Masterminds/squirrel
 //
-func SquirrelWalk(n Node) (s sq.Sqlizer, err error) {
+func Walk(n tsl.Node) (s sq.Sqlizer, err error) {
 	switch n.Func {
-	case IdentOp:
+	case tsl.IdentOp:
 		s = sq.Expr(n.Left.(string))
-	case NumberOp:
+	case tsl.NumberOp:
 		f := strconv.FormatFloat(n.Left.(float64), 'g', -1, 64)
 		s = sq.Expr(f)
-	case StringOp:
+	case tsl.StringOp:
 		s = sq.Expr(n.Left.(string))
-	case AndOp, OrOp, AddOp, SubtractOp, MultiplyOp, DivideOp, ModuloOp:
+	case tsl.AndOp, tsl.OrOp, tsl.AddOp, tsl.SubtractOp, tsl.MultiplyOp, tsl.DivideOp, tsl.ModuloOp:
 		return binaryStep(n)
-	case NotOp, EqOp, NotEqOp, LtOp, LteOp, GtOp, GteOp, InOp, NotInOp, IsNilOp, IsNotNilOp:
+	case tsl.NotOp, tsl.EqOp, tsl.NotEqOp, tsl.LtOp, tsl.LteOp, tsl.GtOp, tsl.GteOp, tsl.InOp, tsl.NotInOp, tsl.IsNilOp, tsl.IsNotNilOp:
 		return unaryStep(n)
-	case LikeOp, NotLikeOp, BetweenOp, NotBetweenOp:
+	case tsl.LikeOp, tsl.NotLikeOp, tsl.BetweenOp, tsl.NotBetweenOp:
 		return unaryStep(n)
 	default:
 		// If here than the operator is not supported.

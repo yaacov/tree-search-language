@@ -13,19 +13,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package tsl
+package mongo
 
 import (
 	"fmt"
 
 	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/mongodb/mongo-go-driver/bson/primitive"
+
+	"github.com/yaacov/tsl/pkg/tsl"
 )
 
 // Returns the identifier setring from an IdentOp operator node.
 func identString(n interface{}) string {
 	// This is an identifier.
-	if str, ok := n.(Node).Left.(string); ok {
+	if str, ok := n.(tsl.Node).Left.(string); ok {
 		return str
 	}
 
@@ -36,7 +38,7 @@ func identString(n interface{}) string {
 // bsonFromArray helper method creates a slice of bson values from an interface,
 // supported values can be strings or floats.
 func bsonFromArray(a interface{}) (values []interface{}, err error) {
-	for _, v := range a.([]Node) {
+	for _, v := range a.([]tsl.Node) {
 		// Check node value type.
 		switch l := v.Left.(type) {
 		case string, float64:
@@ -54,19 +56,19 @@ func bsonFromArray(a interface{}) (values []interface{}, err error) {
 	return
 }
 
-// BSONWalk travel the TSL tree to create mongo-go-driver bson select operators.
+// Walk travel the TSL tree to create mongo-go-driver bson select operators.
 //
-// Users can call the BSONWalk method to filter a mongo Find.
+// Users can call the Walk method to filter a mongo Find.
 //
 //  // Prepare filter
-//  filter, _ := BSONWalk(tree)
+//  filter, _ := mongo.Walk(tree)
 //
 //  // Run query
 //  cur, _ := collection.Find(ctx, bson.D{filter})
 //
 // mongo-go-driver: https://github.com/mongodb/mongo-go-driver
 //
-func BSONWalk(n Node) (b bson.E, err error) {
+func Walk(n tsl.Node) (b bson.E, err error) {
 	var values []interface{}
 	var l, r bson.E
 
@@ -75,34 +77,34 @@ func BSONWalk(n Node) (b bson.E, err error) {
 	// this is the reason we can use n.Func as a function name in the mongo
 	// bson Element construction.
 	switch n.Func {
-	case OrOp, AndOp:
-		l, err = BSONWalk(n.Left.(Node))
+	case tsl.OrOp, tsl.AndOp:
+		l, err = Walk(n.Left.(tsl.Node))
 		if err != nil {
 			return
 		}
-		r, err = BSONWalk(n.Right.(Node))
+		r, err = Walk(n.Right.(tsl.Node))
 		if err != nil {
 			return
 		}
 		b = bson.E{n.Func, bson.A{bson.D{l}, bson.D{r}}}
-	case EqOp, NotEqOp, LtOp, LteOp, GtOp, GteOp:
-		b = bson.E{identString(n.Left), bson.D{{n.Func, n.Right.(Node).Left}}}
-	case InOp, NotInOp:
+	case tsl.EqOp, tsl.NotEqOp, tsl.LtOp, tsl.LteOp, tsl.GtOp, tsl.GteOp:
+		b = bson.E{identString(n.Left), bson.D{{n.Func, n.Right.(tsl.Node).Left}}}
+	case tsl.InOp, tsl.NotInOp:
 		values, err = bsonFromArray(n.Right)
 		if err != nil {
 			return
 		}
 		b = bson.E{identString(n.Left), bson.D{{n.Func, values}}}
-	case IsNilOp:
+	case tsl.IsNilOp:
 		b = bson.E{identString(n.Left), bson.D{{"$exists", false}}}
-	case IsNotNilOp:
+	case tsl.IsNotNilOp:
 		b = bson.E{identString(n.Left), bson.D{{"$exists", true}}}
-	case RegexOp:
-		b = bson.E{identString(n.Left), primitive.Regex{n.Right.(Node).Left.(string), ""}}
-	case NotRegexOp:
+	case tsl.RegexOp:
+		b = bson.E{identString(n.Left), primitive.Regex{n.Right.(tsl.Node).Left.(string), ""}}
+	case tsl.NotRegexOp:
 		b = bson.E{identString(n.Left),
-			bson.D{{"$not", primitive.Regex{n.Right.(Node).Left.(string), ""}}}}
-	case BetweenOp:
+			bson.D{{"$not", primitive.Regex{n.Right.(tsl.Node).Left.(string), ""}}}}
+	case tsl.BetweenOp:
 		// Mongo does not have a between function, translating sql's between into
 		// two none eq operators.
 		// Note: sql's between operator is inclusive: begin and end values are included.
@@ -115,7 +117,7 @@ func BSONWalk(n Node) (b bson.E, err error) {
 				bson.D{{identString(n.Left), bson.D{{"$gte", values[0]}}}},
 				bson.D{{identString(n.Left), bson.D{{"$lte", values[1]}}}},
 			}}
-	case NotBetweenOp:
+	case tsl.NotBetweenOp:
 		// Mongo does not have a between function, translating sql's not between into
 		// two none eq operators.
 		values, err = bsonFromArray(n.Right)

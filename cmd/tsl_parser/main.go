@@ -27,6 +27,8 @@ import (
 	"gopkg.in/yaml.v2"
 
 	"github.com/yaacov/tsl/pkg/tsl"
+	"github.com/yaacov/tsl/pkg/walkers/graphviz"
+	walker "github.com/yaacov/tsl/pkg/walkers/sql"
 )
 
 func check(err error) {
@@ -67,7 +69,7 @@ func main() {
 	case "prettyjson":
 		s, err = prettyjson.Marshal(tree)
 	case "dot":
-		st, err = tsl.GraphvizWalk("", tree, "root")
+		st, err = graphviz.Walk("", tree, "root")
 		s = append(s, fmt.Sprintf("digraph {\n%s\n}\n", st)...)
 	case "sql":
 		var sql string
@@ -75,7 +77,7 @@ func main() {
 		var filter sq.Sqlizer
 
 		// Use Squirrel to walk the tree, and create SQL filter.
-		filter, err = tsl.SquirrelWalk(tree)
+		filter, err = walker.Walk(tree)
 
 		// Add SQL template to bytes slice.
 		if err == nil {

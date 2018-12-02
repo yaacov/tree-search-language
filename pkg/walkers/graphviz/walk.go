@@ -13,12 +13,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package tsl
+package graphviz
 
 import (
 	"fmt"
 	"math/rand"
 	"strings"
+
+	"github.com/yaacov/tsl/pkg/tsl"
 )
 
 // Character poll for random string genrator.
@@ -39,12 +41,11 @@ func randStr(l int) string {
 	return string(bytes)
 }
 
-// GraphvizWalk travel the TSL tree to create Graphviz dot nodes.
+// Walk travel the TSL tree to create Graphviz dot nodes.
 //
-// Users can call the GraphvizWalk method to get the dot file graph string.
+// Users can call the Walk method to get the dot file graph string.
 //
-//   filter, _ := SquirrelWalk(tree)
-//   s, err = tsl.GraphvizWalk("", tree, "")
+//   s, err = graphviz.Walk("", tree, "")
 //
 // The return string will be a node list for a .dot file:
 //
@@ -55,9 +56,9 @@ func randStr(l int) string {
 //
 // For valid Graphviz dot file, the nodes must be wrapped in a `digraph` object:
 //
-//   	s, err = tsl.GraphvizWalk("", tree, "")
+//   	s, err = graphviz.Walk("", tree, "")
 // 	  s = fmt.Sprintf("digraph {\n%s\n}\n", s)
-func GraphvizWalk(in string, n Node, nodeID string) (out string, err error) {
+func Walk(in string, n tsl.Node, nodeID string) (out string, err error) {
 	// If node ID is missing, create one.
 	if nodeID == "" {
 		nodeID = randStr(4)
@@ -69,7 +70,7 @@ func GraphvizWalk(in string, n Node, nodeID string) (out string, err error) {
 	}
 
 	switch n.Func {
-	case IdentOp:
+	case tsl.IdentOp:
 		// Add leaf label and value.
 		nodeLabel := fmt.Sprintf("%s [%s label=\"%s | '%s'\" ]",
 			nodeID,
@@ -77,7 +78,7 @@ func GraphvizWalk(in string, n Node, nodeID string) (out string, err error) {
 			n.Func,
 			n.Left)
 		out = fmt.Sprintf("%s%s", in, nodeLabel)
-	case StringOp:
+	case tsl.StringOp:
 		// Add leaf label and value.
 		nodeLabel := fmt.Sprintf("%s [%s label=\"%s | '%s'\" ]",
 			nodeID,
@@ -85,7 +86,7 @@ func GraphvizWalk(in string, n Node, nodeID string) (out string, err error) {
 			n.Func,
 			n.Left)
 		out = fmt.Sprintf("%s%s", in, nodeLabel)
-	case NumberOp:
+	case tsl.NumberOp:
 		// Add leaf label and value.
 		nodeLabel := fmt.Sprintf("%s [%s label=\"%s | %g\" ]",
 			nodeID,
@@ -106,7 +107,7 @@ func GraphvizWalk(in string, n Node, nodeID string) (out string, err error) {
 			leftID := randStr(4)
 			childrens = append(childrens, leftID)
 
-			l, err := GraphvizWalk(in, n.Left.(Node), leftID)
+			l, err := Walk(in, n.Left.(tsl.Node), leftID)
 			if err != nil {
 				return "", err
 			}
@@ -115,13 +116,13 @@ func GraphvizWalk(in string, n Node, nodeID string) (out string, err error) {
 
 		// Add right child.
 		if n.Right != nil {
-			var nn []Node
+			var nn []tsl.Node
 
 			// Check if right hand arg is a node, or an array of nodes.
-			if _, ok := n.Right.(Node); ok {
-				nn = []Node{n.Right.(Node)}
+			if _, ok := n.Right.(tsl.Node); ok {
+				nn = []tsl.Node{n.Right.(tsl.Node)}
 			} else {
-				nn = n.Right.([]Node)
+				nn = n.Right.([]tsl.Node)
 			}
 
 			// Add all nodes to graph.
@@ -129,7 +130,7 @@ func GraphvizWalk(in string, n Node, nodeID string) (out string, err error) {
 				rightID := randStr(4)
 				childrens = append(childrens, rightID)
 
-				r, err := GraphvizWalk(in, v, rightID)
+				r, err := Walk(in, v, rightID)
 				if err != nil {
 					return "", err
 				}

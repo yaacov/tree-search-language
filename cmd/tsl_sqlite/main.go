@@ -27,6 +27,7 @@ import (
 	sq "github.com/Masterminds/squirrel"
 
 	"github.com/yaacov/tsl/pkg/tsl"
+	walker "github.com/yaacov/tsl/pkg/walkers/sql"
 )
 
 func check(err error) {
@@ -70,7 +71,7 @@ func main() {
 	}
 
 	// Prepare SQL filter.
-	filter, err := tsl.SquirrelWalk(tree)
+	filter, err := walker.Walk(tree)
 	check(err)
 
 	// Query SQL table.
