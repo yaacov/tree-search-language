@@ -29,6 +29,12 @@ import (
 	walker "github.com/yaacov/tsl/pkg/walkers/mongo"
 )
 
+func check(err error) {
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
 func main() {
 	var err error
 	var client *mongo.Client
@@ -46,17 +52,9 @@ func main() {
 	// Set context.
 	ctx := context.Background()
 
-	// Parse input string into a TSL tree.
-	tree, err := tsl.ParseTSL(*inputPtr)
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	// Try to connect to mongo server.
 	client, err = connect(ctx, *urlPtr)
-	if err != nil {
-		log.Fatal(err)
-	}
+	check(err)
 
 	// Set up a collection.
 	collection = client.Database(*dbNamePtr).Collection(*collectionNamePtr)
@@ -64,35 +62,33 @@ func main() {
 	// Create a clean books collection.
 	if *preparePtr {
 		err = prepareCollection(ctx, collection)
-		if err != nil {
-			log.Fatal(err)
-		}
+		check(err)
 	}
+
+	// Parse input string into a TSL tree.
+	tree, err := tsl.ParseTSL(*inputPtr)
+	check(err)
 
 	// Prepare a bson filter.
 	filter, err = walker.Walk(tree)
-	if err != nil {
-		log.Fatal(err)
-	}
+	check(err)
+
 	// Run query.
 	cur, err := collection.Find(ctx, filter)
-	if err != nil {
-		log.Fatal(err)
-	}
+	check(err)
 	defer cur.Close(ctx)
 
 	// Loop on query elements.
 	for cur.Next(ctx) {
 		elem := book{}
 		err := cur.Decode(&elem)
-		if err != nil {
-			log.Fatal(err)
-		}
+		check(err)
 
 		b, _ := json.Marshal(elem)
 		fmt.Printf("%s\n", string(b))
 	}
-	if err := cur.Err(); err != nil {
-		log.Fatal(err)
-	}
+
+	// Check for errors and exit.
+	err = cur.Err()
+	check(err)
 }

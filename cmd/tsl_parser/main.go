@@ -20,7 +20,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"os"
+	"log"
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/hokaccha/go-prettyjson"
@@ -33,7 +33,7 @@ import (
 
 func check(err error) {
 	if err != nil {
-		fmt.Printf("Err: %v\n", err)
+		log.Fatal(err)
 	}
 }
 
@@ -55,11 +55,6 @@ func main() {
 	// Parse input string into a TSL tree.
 	tree, err := tsl.ParseTSL(*inputPtr)
 	check(err)
-
-	// If listener has errors, we can not print the tree.
-	if err != nil {
-		os.Exit(1)
-	}
 
 	switch *outputPtr {
 	case "json":

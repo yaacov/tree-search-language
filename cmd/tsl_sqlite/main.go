@@ -40,28 +40,17 @@ func main() {
 	var rows *sql.Rows
 
 	// Setup the input.
-	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"Title = 'Book'\")")
+	inputPtr := flag.String("i", "title is not null", "the tsl string to parse (e.g. \"title = 'Book'\")")
 	preparePtr := flag.Bool("p", false, "prepare a book collection for queries")
 	filePtr := flag.String("f", "./sqlite.db", "the sqlite database file name")
 	flag.Parse()
 
-	// Sanity check.
-	if *inputPtr == "" {
-		err := fmt.Errorf("missing required flag -i (the tsl string to parse)")
-		check(err)
-	}
-
 	// Set context.
 	ctx := context.Background()
-
-	// Parse input string into a TSL tree.
-	tree, err := tsl.ParseTSL(*inputPtr)
-	check(err)
 
 	// Try to connect to mongo server.
 	tx, err := connect(ctx, *filePtr)
 	check(err)
-
 	defer tx.Commit()
 
 	// Create a clean books collection.
@@ -69,6 +58,10 @@ func main() {
 		err = prepareCollection(ctx, tx)
 		check(err)
 	}
+
+	// Parse input string into a TSL tree.
+	tree, err := tsl.ParseTSL(*inputPtr)
+	check(err)
 
 	// Prepare SQL filter.
 	filter, err := walker.Walk(tree)
