@@ -31,34 +31,8 @@
 //       log.Fatal(err)
 //   }
 //
-// TSL tree can be used to generate SQL and MongoDB query filters. sql.Walk
-// and mongo.Walk methods can be used to create such filters.
+// TSL tree can be used to generate SQL and MongoDB query filters, see the walkers
+// package for TSL tree walking examples.
 //
-// Squirrel walk code:  https://github.com/yaacov/tsl/blob/master/pkg/walkers/sql/walk.go
-//
-// SQL generation example:  https://github.com/yaacov/tsl/blob/master/cmd/tsl_sqlite/main.go
-//
-// Usage:
-//   filter, err := sql.Walk(tree)
-//
-//   sql, args, err := sq.Select("name, city, state").
-//        From("users").
-//        Where(filter).
-//        ToSql()
-//
-// BSON walk code: https://github.com/yaacov/tsl/blob/master/pkg/walkers/mongo/walk.go
-//
-// BSON generation example:  https://github.com/yaacov/tsl/blob/master/cmd/tsl_mongo/main.go
-//
-// Usage:
-//   // Prepare a bson filter
-//   filter, err = mongo.Walk(tree)
-//
-//   // Run query
-//   cur, err := collection.Find(ctx, bson.D{filter})
-//
-// squirrel: https://github.com/Masterminds/squirrel
-//
-// mongo-go-driver: https://github.com/mongodb/mongo-go-driver
-//
+// https://godoc.org/github.com/yaacov/tsl/pkg/walkers
 package tsl

@@ -56,13 +56,13 @@ After parsing the TSL tree will look like this (image created using the `tsl_par
 
 ![TSL](/img/example01.png?raw=true "example tree")
 
-##### SquirrelWalk
+##### sql.Walk
 
-The TSL package include a helper [SquirrelWalk](/pkg/tsl/squirrel_walk.go) method that adds search to [squirrel](https://github.com/Masterminds/squirrel)'s SelectBuilder object:
+The TSL package include a helper [sql.Walk](/pkg/walkers/sql/walk.go) method that adds search to [squirrel](https://github.com/Masterminds/squirrel)'s SelectBuilder object:
 
 ``` go
 // Prepare squirrel filter.
-filter, err := tsl.SquirrelWalk(tree)
+filter, err := sql.Walk(tree)
 
 // Create an SQL query.
 sql, args, err := sq.Select("name", "city", "state").
@@ -81,9 +81,9 @@ SELECT name, city, state FROM users WHERE (name IN (?,?) AND grade NOT BETWEEN ?
 
 ```
 
-##### BSONWalk
+##### mongo.Walk
 
-The TSL package include a helper [BSONWalk](/pkg/tsl/bson_walk.go) method that adds search bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
+The TSL package include a helper [mongo.Walk](/pkg/walkers/mongo/walk.go) method that adds search bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
 
 ``` go
 // Prepare a bson filter.
@@ -93,13 +93,13 @@ filter, err = tsl.BSONWalk(tree)
 cur, err := collection.Find(ctx, bson.D{filter})
 ```
 
-##### GraphvizWalk
+##### graphviz.Walk
 
-The TSL package include a helper [GraphvizWalk](/pkg/tsl/graphviz_walk.go) method that exports `.dot` file nodes :
+The TSL package include a helper [graphviz.Walk](/pkg/walkers/graphviz/walk.go) method that exports `.dot` file nodes :
 
 ``` go
 // Prepare .dot file nodes as a string.
-s, err = tsl.GraphvizWalk("", tree, "")
+s, err = graphviz.Walk("", tree, "")
 
 // Wrap the nodes in a digraph wrapper.
 s = fmt.Sprintf("digraph {\n%s\n}\n", s)
@@ -317,22 +317,23 @@ tree, err := tsl.ParseTSL(input)
 ...
 ```
 
-##### SquirrelWalk
+##### sql.Walk
 
-SquirrelWalk and BSONWalk are example methods the demonstrate traversing ( walk ) the search tree.
+sql.Walk and mongo.Walk are example methods the demonstrate traversing ( walk ) the search tree.
 
-SquirrelWalk takes the base Node ( tree ) of the search tree, and return a Squirrel SQL filter object.
+sql.Walk takes the base Node ( tree ) of the search tree, and return a Squirrel SQL filter object.
 
 ``` go
 import (
     ...
     sq "github.com/Masterminds/squirrel"
     "github.com/yaacov/tsl/pkg/tsl"
+    "github.com/yaacov/tsl/pkg/walkers/sql"
     ...
 )
 ...
 // Set filter.
-filter, err := tsl.SquirrelWalk(tree)
+filter, err := sql.Walk(tree)
 
 // Convert TSL tree into SQL string using squirrel select builder.
 sql, args, err := sq.Select("name, city, state").
@@ -342,14 +343,19 @@ sql, args, err := sq.Select("name, city, state").
 ...
 ```
 
-##### BSONWalk
+##### mongo.Walk
 
 BSONWalk takes the base Node ( tree ) of the search tree, and return a MongoDB BSON object.
 
 ``` go
 ...
+import (
+  ...
+  "github.com/yaacov/tsl/pkg/walkers/mongo"
+  ...
+)
 // Prepare a bson filter.
-filter, err = tsl.BSONWalk(tree)
+filter, err = mongo.Walk(tree)
 
 // Run query.
 cur, err := collection.Find(ctx, bson.D{filter})
