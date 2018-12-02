@@ -46,28 +46,25 @@ func Walk(n tsl.Node, identMap map[string]string) (tsl.Node, error) {
 		// This are our leafs.
 		return n, nil
 	default:
+		// Check identifiers on left side.
 		if n.Left != nil {
 			n.Left, err = Walk(n.Left.(tsl.Node), identMap)
 			if err != nil {
 				return n, err
 			}
 		}
+
+		// Check identifiers on right side.
 		if n.Right != nil {
 			// Check if right hand arg is a node, or an array of nodes.
+			//
+			// If it's an array of nodes.
+			// We assume that all are leafs, no nead to walk on them.
 			if _, ok := n.Right.(tsl.Node); ok {
+				// It's a node.
 				n.Right, err = Walk(n.Right.(tsl.Node), identMap)
 				if err != nil {
 					return n, err
-				}
-			} else {
-				nn := n.Right.([]tsl.Node)
-
-				// Walk all nodes.
-				for _, v := range nn {
-					_, err = Walk(v, identMap)
-					if err != nil {
-						return n, err
-					}
 				}
 			}
 		}
