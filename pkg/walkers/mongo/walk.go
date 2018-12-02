@@ -65,7 +65,7 @@ func bsonFromArray(a interface{}) (values []interface{}, err error) {
 //  filter, _ := mongo.Walk(tree)
 //
 //  // Run query
-//  cur, _ := collection.Find(ctx, bson.D{filter})
+//  cur, _ := collection.Find(ctx, filter)
 //
 // mongo-go-driver: https://github.com/mongodb/mongo-go-driver
 //

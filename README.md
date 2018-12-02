@@ -102,7 +102,7 @@ import (
 filter, err = mongo.Walk(tree)
 
 // Run query.
-cur, err := collection.Find(ctx, bson.D{filter})
+cur, err := collection.Find(ctx, filter)
 ```
 
 ##### graphviz.Walk
@@ -372,11 +372,12 @@ import (
   "github.com/yaacov/tsl/pkg/walkers/mongo"
   ...
 )
+...
 // Prepare a bson filter.
 filter, err = mongo.Walk(tree)
 
 // Run query.
-cur, err := collection.Find(ctx, bson.D{filter})
+cur, err := collection.Find(ctx, filter)
 defer cur.Close(ctx)
 
 // Loop on query elements.

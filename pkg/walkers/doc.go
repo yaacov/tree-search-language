@@ -37,7 +37,7 @@
 //   filter, err = mongo.Walk(tree)
 //
 //   // Run query
-//   cur, err := collection.Find(ctx, bson.D{filter})
+//   cur, err := collection.Find(ctx, filter)
 //
 // squirrel: https://github.com/Masterminds/squirrel
 //
