@@ -335,9 +335,9 @@ tree, err := tsl.ParseTSL(input)
 ...
 ```
 
-##### sql.Walk
-
 sql.Walk and mongo.Walk are example methods the demonstrate traversing ( walk ) the search tree.
+
+##### sql.Walk
 
 sql.Walk takes the base Node ( tree ) of the search tree, and return a Squirrel SQL filter object.
 
