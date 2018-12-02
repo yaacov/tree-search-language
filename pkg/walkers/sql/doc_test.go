@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package tsl describe and parse the Tree Search Language (TSL).
+// Package sql helps to create SQL squirrel filters using the TSL package.
 package sql
 
 import (
