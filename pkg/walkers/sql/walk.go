@@ -171,9 +171,11 @@ func Walk(n tsl.Node) (s sq.Sqlizer, err error) {
 		s = sq.Expr(f)
 	case tsl.StringOp:
 		s = sq.Expr(n.Left.(string))
-	case tsl.AndOp, tsl.OrOp, tsl.AddOp, tsl.SubtractOp, tsl.MultiplyOp, tsl.DivideOp, tsl.ModuloOp:
+	case tsl.AndOp, tsl.OrOp, tsl.AddOp, tsl.SubtractOp, tsl.MultiplyOp, tsl.DivideOp,
+		tsl.ModuloOp:
 		return binaryStep(n)
-	case tsl.NotOp, tsl.EqOp, tsl.NotEqOp, tsl.LtOp, tsl.LteOp, tsl.GtOp, tsl.GteOp, tsl.InOp, tsl.NotInOp, tsl.IsNilOp, tsl.IsNotNilOp:
+	case tsl.NotOp, tsl.EqOp, tsl.NotEqOp, tsl.LtOp, tsl.LteOp, tsl.GtOp, tsl.GteOp,
+		tsl.InOp, tsl.NotInOp, tsl.IsNilOp, tsl.IsNotNilOp:
 		return unaryStep(n)
 	case tsl.LikeOp, tsl.NotLikeOp, tsl.BetweenOp, tsl.NotBetweenOp:
 		return unaryStep(n)
