@@ -61,6 +61,9 @@ test:
 	go test ./cmd/tsl_sqlite
 	go test ./cmd/tsl_mongo
 	go test ./pkg/tsl
+	go test ./pkg/walkers/sql
+	go test ./pkg/walkers/mongo
+	go test ./pkg/walkers/graphviz
 
 .PHONY: generate
 generate:

@@ -14,12 +14,14 @@
 // limitations under the License.
 
 // Package tsl describe and parse the Tree Search Language (TSL).
-package tsl
+package sql
 
 import (
 	"fmt"
 
 	sq "github.com/Masterminds/squirrel"
+
+	"github.com/yaacov/tsl/pkg/tsl"
 )
 
 // Example for the tsl package.
@@ -28,10 +30,10 @@ func Example() {
 	input := "name = 'joe' and city != 'rome'"
 
 	// Parse input string into a TSL tree.
-	tree, _ := ParseTSL(input)
+	tree, _ := tsl.ParseTSL(input)
 
 	// Set filter
-	filter, _ := SquirrelWalk(tree)
+	filter, _ := Walk(tree)
 
 	// Convert TSL tree into SQL string using squirrel sql builder.
 	sql, args, _ := sq.Select("name, city, state").
