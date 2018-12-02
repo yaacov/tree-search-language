@@ -265,23 +265,25 @@ Usage of ./tsl_sqlite:
 ```
 
 ``` bash
-$ SQL="Title like '%Book%' and Pages > 100"
+$ SQL="title like '%Book%' and spec.pages > 100"
 $ ./tsl_sqlite -i "$SQL" -p | jq
 ```
 ``` json
 {
-  "id": 2,
   "title": "Other Book",
   "author": "Jane",
-  "pages": 200,
-  "Rating": 3
+  "spec": {
+    "pages": 200,
+    "rating": 3
+  }
 }
 {
-  "id": 5,
   "title": "Good Book",
   "author": "Joe",
-  "pages": 150,
-  "Rating": 4
+  "spec": {
+    "pages": 150,
+    "rating": 4
+  }
 }
 ```
 
@@ -382,7 +384,29 @@ defer cur.Close(ctx)
 
 // Loop on query elements.
 for cur.Next(ctx) {
-    ...
+...
+```
+
+##### ident.Walk
+
+ident.Walk helps to check validity of identifiers and replace them if necessary.
+
+``` go
+...
+import (
+  ...
+  "github.com/yaacov/tsl/pkg/walkers/ident"
+  ...
+)
+...
+// Check and replace user identifiers with the SQL table column names.
+tree, err = ident.Walk(tree, map[string]string{
+  "title":       "title",
+  "author":      "author",
+  "spec.pages":  "pages",
+  "spec.rating": "rating",
+})
+...
 ```
 
 [ awesome logo image by [gophers...](https://github.com/egonelbre/gophers) ]
