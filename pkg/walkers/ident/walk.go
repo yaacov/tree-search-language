@@ -17,8 +17,6 @@
 package ident
 
 import (
-	"fmt"
-
 	"github.com/yaacov/tsl/pkg/tsl"
 )
 
@@ -27,41 +25,53 @@ import (
 // Users can call the Walk method to check and replace identifiers.
 //
 // Example:
+//    columnNamesMap :=  map[string]string{
+//  		"title":       "title",
+//  		"author":      "author",
+//  		"spec.pages":  "pages",
+//  		"spec.rating": "rating",
+//  	}
 //
-//  	// Check and replace user identifiers with the SQL table column names.
+//   func check(s string) (string, error) {
+//   	// Chekc for column name in map.
+//   	if v, ok := columnNamesMap[s]; ok {
+//  		return v, nil
+//  	}
+//
+//  	// If not found return string as is, and an error.
+//  	return s, fmt.Errorf("column not found")
+//   }
+//
+//  		// Check and replace user identifiers with the SQL table column names.
 //  	//
 //  	// SQL table columns are "title, author, pages and rating", but for
 //  	// users pages and ratings are fields of an internal struct called
 //  	// spec (e.g. {"title": "Book", "author": "Joe", "spec": {"pages": 5, "rating": 5}}).
 //  	//
-//  	newTree, err = ident.Walk(tree, map[string]string{
-//  		"title":       "title",
-//  		"author":      "author",
-//  		"spec.pages":  "pages",
-//  		"spec.rating": "rating",
-//  	})
+//  	newTree, err = ident.Walk(tree, check)
 //
-func Walk(n tsl.Node, identMap map[string]string) (tsl.Node, error) {
+func Walk(n tsl.Node, checkColumnName func(string) (string, error)) (tsl.Node, error) {
 	var err error
+	var v string
 
 	// Walk tree.
 	switch n.Func {
 	case tsl.IdentOp:
 		// If we have an identifier, check for it in the identMap.
-		if v, ok := identMap[n.Left.(string)]; ok {
+		if v, err = checkColumnName(n.Left.(string)); err == nil {
 			// If valid identifier, use it.
 			n.Left = v
 			return n, nil
 		}
 
-		return n, fmt.Errorf("unknown identifier: %s", n.Left.(string))
+		return n, err
 	case tsl.StringOp, tsl.NumberOp:
 		// This are our leafs.
 		return n, nil
 	default:
 		// Check identifiers on left side.
 		if n.Left != nil {
-			n.Left, err = Walk(n.Left.(tsl.Node), identMap)
+			n.Left, err = Walk(n.Left.(tsl.Node), checkColumnName)
 			if err != nil {
 				return n, err
 			}
@@ -75,7 +85,7 @@ func Walk(n tsl.Node, identMap map[string]string) (tsl.Node, error) {
 			// We assume that all are leafs, no nead to walk on them.
 			if _, ok := n.Right.(tsl.Node); ok {
 				// It's a node.
-				n.Right, err = Walk(n.Right.(tsl.Node), identMap)
+				n.Right, err = Walk(n.Right.(tsl.Node), checkColumnName)
 				if err != nil {
 					return n, err
 				}

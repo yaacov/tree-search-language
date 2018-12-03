@@ -39,6 +39,26 @@ func check(err error) {
 	}
 }
 
+// columnNamesMap mapps between user namespace and the SQL column names.
+var columnNamesMap = map[string]string{
+	"title":       "title",
+	"author":      "author",
+	"spec.pages":  "pages",
+	"spec.rating": "rating",
+}
+
+// checkColumnName checks if a coulumn name is valid in user space replace it
+// with the mapped column name and returns and error if not a valid name.
+func checkColumnName(s string) (string, error) {
+	// Chekc for column name in map.
+	if v, ok := columnNamesMap[s]; ok {
+		return v, nil
+	}
+
+	// If not found return string as is, and an error.
+	return s, fmt.Errorf("column \"%s\" not found", s)
+}
+
 func main() {
 	var bookID uint
 	var rows *sql.Rows
@@ -68,12 +88,7 @@ func main() {
 	check(err)
 
 	// Check and replace user identifiers with the SQL table column names.
-	tree, err = ident.Walk(tree, map[string]string{
-		"title":       "title",
-		"author":      "author",
-		"spec.pages":  "pages",
-		"spec.rating": "rating",
-	})
+	tree, err = ident.Walk(tree, checkColumnName)
 	check(err)
 
 	// Prepare SQL filter.

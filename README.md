@@ -16,6 +16,10 @@ where part. implementing query based search engines was never that easy.
 
 The TSL language grammar is similar to SQL syntax.
 
+## Code examples
+
+For complete working code examples see the cli tools direcotry in the [/cmd](/cmd).
+
 ## Syntax examples
 
 #### Operator precedence
