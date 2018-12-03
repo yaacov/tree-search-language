@@ -26,7 +26,20 @@ import (
 //
 // Users can call the Walk method to check and replace identifiers.
 //
-//   newTree, err = ident.Walk(tree, map[string]string)
+// Example:
+//
+//  	// Check and replace user identifiers with the SQL table column names.
+//  	//
+//  	// SQL table columns are "title, author, pages and rating", but for
+//  	// users pages and ratings are fields of an internal struct called
+//  	// spec (e.g. {"title": "Book", "author": "Joe", "spec": {"pages": 5, "rating": 5}}).
+//  	//
+//  	newTree, err = ident.Walk(tree, map[string]string{
+//  		"title":       "title",
+//  		"author":      "author",
+//  		"spec.pages":  "pages",
+//  		"spec.rating": "rating",
+//  	})
 //
 func Walk(n tsl.Node, identMap map[string]string) (tsl.Node, error) {
 	var err error
