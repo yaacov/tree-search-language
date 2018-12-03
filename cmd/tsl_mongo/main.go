@@ -26,6 +26,7 @@ import (
 	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/mongodb/mongo-go-driver/mongo"
 	"github.com/yaacov/tsl/pkg/tsl"
+	"github.com/yaacov/tsl/pkg/walkers/ident"
 	walker "github.com/yaacov/tsl/pkg/walkers/mongo"
 
 	"github.com/yaacov/tsl/cmd/model"
@@ -35,6 +36,26 @@ func check(err error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+// columnNamesMap mapps between user namespace and the MongoDB document fields.
+var columnNamesMap = map[string]string{
+	"title":       "title",
+	"author":      "author",
+	"spec.pages":  "spec.pages",
+	"spec.rating": "spec.rating",
+}
+
+// checkColumnName checks if a coulumn name is valid in user space replace it
+// with the mapped column name and returns and error if not a valid name.
+func checkColumnName(s string) (string, error) {
+	// Chekc for column name in map.
+	if v, ok := columnNamesMap[s]; ok {
+		return v, nil
+	}
+
+	// If not found return string as is, and an error.
+	return s, fmt.Errorf("column \"%s\" not found", s)
 }
 
 func main() {
@@ -69,6 +90,10 @@ func main() {
 
 	// Parse input string into a TSL tree.
 	tree, err := tsl.ParseTSL(*inputPtr)
+	check(err)
+
+	// Check and replace user identifiers with MongoDB document field names.
+	tree, err = ident.Walk(tree, checkColumnName)
 	check(err)
 
 	// Prepare a bson filter.
