@@ -24,6 +24,8 @@ For complete working code examples see the cli tools direcotry in the [/cmd](/cm
 
 #### Installing the different packages
 
+See some code snippets [here](https://github.com/yaacov/tsl#code-snippets) and [here](https://github.com/yaacov/tsl#sqlwalk).
+
 ``` bash
 # Install the base package
 go get "github.com/yaacov/tsl/pkg/tsl"
@@ -39,6 +41,8 @@ go get "github.com/yaacov/tsl/pkg/walkers/graphviz"
 ```
 
 #### Installing the command line examples
+
+See CLI tools usage [here](https://github.com/yaacov/tsl#cli-tools).
 
 ``` bash
 go get -v "github.com/yaacov/tsl/cmd/tsl_parser"
@@ -151,6 +155,44 @@ s, err = graphviz.Walk("", tree, "")
 
 // Wrap the nodes in a digraph wrapper.
 s = fmt.Sprintf("digraph {\n%s\n}\n", s)
+```
+
+##### ident.Walk
+
+The TSL package include a helper [ident.Walk](/pkg/walkers/ident/walk.go) method that checks and mapps identifier names:
+
+``` go
+import (
+    ...
+    "github.com/yaacov/tsl/pkg/walkers/ident"
+    ...
+)
+...
+
+// columnNamesMap mapps between user namespace and the SQL column names.
+var columnNamesMap = map[string]string{
+	"title":       "title",
+	"author":      "author",
+	"spec.pages":  "pages",
+	"spec.rating": "rating",
+}
+
+// checkColumnName checks if a coulumn name is valid in user space replace it
+// with the mapped column name and returns and error if not a valid name.
+func checkColumnName(s string) (string, error) {
+	// Chekc for column name in map.
+	if v, ok := columnNamesMap[s]; ok {
+		return v, nil
+	}
+
+	// If not found return string as is, and an error.
+	return s, fmt.Errorf("column \"%s\" not found", s)
+}
+...
+
+// Check and replace user identifiers with the SQL table column names.
+tree, err = ident.Walk(tree, checkColumnName)
+...
 ```
 
 ## Cli tools
