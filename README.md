@@ -29,7 +29,7 @@ For complete working code examples see the cli tools direcotry in the [/cmd](/cm
 go get "github.com/yaacov/tsl/pkg/tsl"
 
 # Install all walkers
-go get "github.com/yaacov/tsl/pkg/walkers"
+go get "github.com/yaacov/tsl/pkg/walkers/..."
 
 # Or pick the walker needed
 go get "github.com/yaacov/tsl/pkg/walkers/sql"
