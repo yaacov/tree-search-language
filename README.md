@@ -403,13 +403,14 @@ import (
   ...
 )
 ...
+// check that the column idetifier is valid.
+// It returns a mapped valid column name, and an error if name is not valid.
+func check(s string) (string, error) {
+  return s, nil
+}
+...
 // Check and replace user identifiers with the SQL table column names.
-tree, err = ident.Walk(tree, map[string]string{
-  "title":       "title",
-  "author":      "author",
-  "spec.pages":  "pages",
-  "spec.rating": "rating",
-})
+tree, err = ident.Walk(tree, check)
 ...
 ```
 
