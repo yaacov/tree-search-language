@@ -20,6 +20,32 @@ The TSL language grammar is similar to SQL syntax.
 
 For complete working code examples see the cli tools direcotry in the [/cmd](/cmd).
 
+## Install
+
+#### Installing the different packages
+
+``` bash
+# Install the base package
+go get "github.com/yaacov/tsl/pkg/tsl"
+
+# Install all walkers
+go get "github.com/yaacov/tsl/pkg/walkers"
+
+# Or pick the walker needed
+go get "github.com/yaacov/tsl/pkg/walkers/sql"
+go get "github.com/yaacov/tsl/pkg/walkers/mongo"
+go get "github.com/yaacov/tsl/pkg/walkers/ident"
+go get "github.com/yaacov/tsl/pkg/walkers/graphviz"
+```
+
+#### Installing the command line examples
+
+``` bash
+go get -v "github.com/yaacov/tsl/cmd/tsl_parser"
+go get -v "github.com/yaacov/tsl/cmd/tsl_mongo"
+go get -v "github.com/yaacov/tsl/cmd/tsl_sqlite"
+```
+
 ## Syntax examples
 
 #### Operator precedence
