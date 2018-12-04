@@ -73,7 +73,7 @@ go get -v "github.com/yaacov/tsl/cmd/tsl_sqlite"
 
 #### Operator precedence
 
-This TSL phrase: 
+This TSL phrase:
 ``` sql
 name like '%joe%' and (city = 'paris' or city = 'milan')
 ```
@@ -83,7 +83,7 @@ Will be parsed into this TSL tree:
 
 #### Operators with multiple arguments
 
-This TSL phrase: 
+This TSL phrase:
 ``` sql
 name in ('joe', 'jane') and grade not between 0 and 50
 ```
@@ -93,7 +93,7 @@ Will be parsed into this TSL tree:
 
 #### Math operators
 
-This TSL phrase: 
+This TSL phrase:
 ``` sql
 memory.total - memory.cache > 2000 and cpu.usage > 50
 ```
@@ -103,7 +103,7 @@ Will be parsed into this TSL tree:
 
 #### More math operators
 
-This TSL phrase: 
+This TSL phrase:
 ``` sql
 (net.rx + net.tx) / 1000 > 3 or net.rx / 1000 > 6
 ```
@@ -124,7 +124,7 @@ For code examples see the cli tools in the [/cmd](/cmd) direcotry.
 
 ##### ParseTSL
 
-The TSL package include the ParseTSL [code](/pkg/tsl/parse_tsl.go), [doc](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
+The TSL package include the ParseTSL [code](/pkg/tsl/tsl.go), [doc](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
 ``` go
 tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
 ```
