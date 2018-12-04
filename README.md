@@ -181,7 +181,7 @@ import (
 // Parse a TSL phrase into a TSL tree.
 tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
 
-// Prepare a bson filter.
+// Prepare a MongoDB BSON document as a filter.
 filter, err = mongo.Walk(tree)
 
 // Run query.
