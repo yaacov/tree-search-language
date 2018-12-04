@@ -42,14 +42,13 @@ func main() {
 	var st string
 
 	// Setup the input.
-	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"Title = 'kitty'\")")
+	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"title = 'kitty'\")")
 	outputPtr := flag.String("o", "json", "output format [json/yaml/prettyjson/sql]")
 	flag.Parse()
 
 	// Sanity check.
 	if *inputPtr == "" {
-		err := fmt.Errorf("missing required flag -i (the tsl string to parse)")
-		check(err)
+		log.Fatal("missing required flag -i (the tsl string to parse)")
 	}
 
 	// Parse input string into a TSL tree.

@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	sq "github.com/Masterminds/squirrel"
+	"github.com/yaacov/tsl/pkg/tsl"
 )
 
 // Currently squirrel does not have a some needed operator expression.
@@ -29,7 +30,7 @@ type notExpr []sq.Sqlizer
 //nolint
 func (n notExpr) ToSql() (sql string, args []interface{}, err error) {
 	if len(n) != 1 {
-		return "", nil, fmt.Errorf("operator not does not have one argument")
+		return "", nil, tsl.MissingArgError{}
 	}
 
 	partSQL, partArgs, err := n[0].ToSql()
@@ -50,7 +51,7 @@ func mathExpToSQL(n []sq.Sqlizer, mathOp string) (sql string, args []interface{}
 	var partArgs []interface{}
 
 	if len(n) != 2 {
-		return "", nil, fmt.Errorf("operator not does not have one argument")
+		return "", nil, tsl.MissingArgError{}
 	}
 
 	left, partArgs, err = n[0].ToSql()

@@ -81,7 +81,7 @@ func binaryStep(n tsl.Node) (s sq.Sqlizer, err error) {
 		s = modExpr{l, r}
 	default:
 		// If here than the operator is not supported.
-		err = fmt.Errorf("un supported operand: %s", n.Func)
+		err = tsl.UnexpectedOpError{Op: n.Func}
 	}
 
 	return
@@ -145,7 +145,7 @@ func unaryStep(n tsl.Node) (s sq.Sqlizer, err error) {
 		s = sq.Expr(t, right[0], right[1])
 	default:
 		// If here than the operator is not supported.
-		err = fmt.Errorf("un supported operand: %s", n.Func)
+		err = tsl.UnexpectedOpError{Op: n.Func}
 	}
 
 	return
@@ -182,7 +182,7 @@ func Walk(n tsl.Node) (s sq.Sqlizer, err error) {
 		return unaryStep(n)
 	default:
 		// If here than the operator is not supported.
-		err = fmt.Errorf("un supported operand: %s", n.Func)
+		err = tsl.UnexpectedOpError{Op: n.Func}
 	}
 
 	return

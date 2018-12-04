@@ -17,8 +17,6 @@
 package mongo
 
 import (
-	"fmt"
-
 	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/mongodb/mongo-go-driver/bson/primitive"
 
@@ -48,7 +46,7 @@ func bsonFromArray(a interface{}) (values []interface{}, err error) {
 		default:
 			// Not a string or a float,
 			// We do not support values other then strings or floats.
-			err = fmt.Errorf("un supported value type of var: %v", v.Left)
+			err = tsl.UnexpectedArgError{Arg: v.Left}
 			return
 		}
 	}
@@ -132,7 +130,7 @@ func Walk(n tsl.Node) (b bson.D, err error) {
 			}}}
 	default:
 		// If here than the operator is not supported.
-		err = fmt.Errorf("un supported operand: %s", n.Func)
+		err = tsl.UnexpectedOpError{Op: n.Func}
 	}
 
 	return
