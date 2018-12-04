@@ -52,13 +52,6 @@ go get -v "github.com/yaacov/tsl/cmd/tsl_sqlite"
 
 ## Syntax examples
 
-Images created using the `tsl_parser` CLI example and Graphviz's `dot` utility:
-``` bash
-./tsl_parser -i "name like '%joe%' and (city = 'paris' or city = 'milan')" -o dot > file.dot
-
-dot file.dot -Tpng > image.png
-```
-
 #### Operator precedence
 ``` sql
 name like '%joe%' and (city = 'paris' or city = 'milan')
@@ -83,6 +76,12 @@ memory.total - memory.cache > 2000 and cpu.usage > 50
 ```
 ![TSL](/img/example_d.png?raw=true "example tree")
 
+
+Images created using the `tsl_parser` CLI example and Graphviz's `dot` utility:
+``` bash
+./tsl_parser -i "name like '%joe%' and (city = 'paris' or city = 'milan')" -o dot > file.dot
+dot file.dot -Tpng > image.png
+```
 
 For code examples see the cli tools in the [/cmd](/cmd) direcotry.
 
