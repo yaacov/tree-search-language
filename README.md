@@ -39,6 +39,8 @@ cd tsl
 make
 ```
 
+Other `make` options include `make lint` for linting check and `make test` for tests.
+
 #### Installing the different packages using `go get`
 
 See some code snippets [here](https://github.com/yaacov/tsl#code-snippets) and [here](https://github.com/yaacov/tsl#sqlwalk).
