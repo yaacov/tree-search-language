@@ -124,7 +124,7 @@ For code examples see the cli tools in the [/cmd](/cmd) direcotry.
 
 ##### ParseTSL
 
-The TSL package include the [ParseTSL](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
+The TSL package include the ParseTSL [code](/pkg/tsl/parse_tsl.go), [doc](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
 ``` go
 tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
 ```
@@ -135,7 +135,7 @@ After parsing the TSL tree will look like this (image created using the `tsl_par
 
 ##### sql.Walk
 
-The TSL package include a helper [sql.Walk](/pkg/walkers/sql/walk.go) method that adds search to [squirrel](https://github.com/Masterminds/squirrel)'s SelectBuilder object:
+The TSL package include a helper sql.Walk ([code](/pkg/walkers/sql/walk.go), [doc](https://godoc.org/github.com/yaacov/tsl/pkg/walkers/sql#Walk)) method that adds search to [squirrel](https://github.com/Masterminds/squirrel)'s SelectBuilder object:
 
 ``` go
 import (
@@ -166,7 +166,7 @@ SELECT name, city, state FROM users WHERE (name IN (?,?) AND grade NOT BETWEEN ?
 
 ##### mongo.Walk
 
-The TSL package include a helper [mongo.Walk](/pkg/walkers/mongo/walk.go) method that adds search bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
+The TSL package include a helper mongo.Walk ([code](/pkg/walkers/mongo/walk.go), [doc](https://godoc.org/github.com/yaacov/tsl/pkg/walkers/mongo#Walk)) method that adds search bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
 
 ``` go
 import (
@@ -184,7 +184,7 @@ cur, err := collection.Find(ctx, filter)
 
 ##### graphviz.Walk
 
-The TSL package include a helper [graphviz.Walk](/pkg/walkers/graphviz/walk.go) method that exports `.dot` file nodes :
+The TSL package include a helper graphviz.Walk ([code](/pkg/walkers/graphviz/walk.go), [doc](https://godoc.org/github.com/yaacov/tsl/pkg/walkers/graphviz#Walk)) method that exports `.dot` file nodes :
 
 ``` go
 import (
@@ -202,7 +202,7 @@ s = fmt.Sprintf("digraph {\n%s\n}\n", s)
 
 ##### ident.Walk
 
-The TSL package include a helper [ident.Walk](/pkg/walkers/ident/walk.go) method that checks and mapps identifier names:
+The TSL package include a helper ident.Walk ([code](/pkg/walkers/ident/walk.go), [doc](https://godoc.org/github.com/yaacov/tsl/pkg/walkers/ident#Walk)) method that checks and mapps identifier names:
 
 ``` go
 import (
