@@ -79,6 +79,8 @@ memory.total - memory.cache > 2000 and cpu.usage > 50
 
 For code examples see the cli tools in the [/cmd](/cmd) direcotry.
 
+## Usage examples
+
 ##### ParseTSL
 
 The TSL package include the [ParseTSL](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
