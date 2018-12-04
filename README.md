@@ -20,7 +20,7 @@ The TSL language grammar is similar to SQL syntax.
 
 See some code snippets [here](https://github.com/yaacov/tsl#usage-examples).
 
-For complete working code examples see the CLI tools direcotry in the [/cmd](/cmd), 
+For complete working code examples, see the CLI tools [direcotry](/cmd), 
 see CLI tools usage [here](https://github.com/yaacov/tsl#cli-tools).
 
 ## Install
