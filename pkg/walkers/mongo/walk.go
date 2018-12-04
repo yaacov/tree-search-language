@@ -46,7 +46,7 @@ func bsonFromArray(a interface{}) (values []interface{}, err error) {
 		default:
 			// Not a string or a float,
 			// We do not support values other then strings or floats.
-			err = tsl.UnexpectedArgError{Arg: v.Left}
+			err = tsl.UnexpectedLiteralError{Literal: v.Left}
 			return
 		}
 	}
@@ -130,7 +130,7 @@ func Walk(n tsl.Node) (b bson.D, err error) {
 			}}}
 	default:
 		// If here than the operator is not supported.
-		err = tsl.UnexpectedOpError{Op: n.Func}
+		err = tsl.UnexpectedLiteralError{Literal: n.Func}
 	}
 
 	return

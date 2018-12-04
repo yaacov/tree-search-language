@@ -118,7 +118,7 @@ func (l *Listener) ExitStringOps(c *parser.StringOpsContext) {
 
 	// Check right op is a string.
 	if right.Func != StringOp {
-		l.Errs = append(l.Errs, UnexpectedLiteralError{expectedType: "string", literal: "right.Func"})
+		l.Errs = append(l.Errs, UnexpectedLiteralError{ExpectedType: "string", Literal: "right.Func"})
 		return
 	}
 
@@ -138,7 +138,7 @@ func (l *Listener) ExitLike(c *parser.LikeContext) {
 
 	// Check right op is a string.
 	if right.Func != StringOp {
-		l.Errs = append(l.Errs, UnexpectedLiteralError{expectedType: "string", literal: "right.Func"})
+		l.Errs = append(l.Errs, UnexpectedLiteralError{ExpectedType: "string", Literal: "right.Func"})
 		return
 	}
 
@@ -249,7 +249,7 @@ func (l *Listener) exitMathOps(op string) {
 
 	// Check right op is not a string.
 	if right.Func == StringOp {
-		l.Errs = append(l.Errs, UnexpectedLiteralError{expectedType: "float", literal: "right.Func"})
+		l.Errs = append(l.Errs, UnexpectedLiteralError{ExpectedType: "float", Literal: "right.Func"})
 		return
 	}
 

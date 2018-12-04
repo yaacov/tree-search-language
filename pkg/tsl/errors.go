@@ -19,12 +19,23 @@ import "fmt"
 
 // UnexpectedLiteralError is raised when an unexpected literal is found.
 type UnexpectedLiteralError struct {
-	expectedType string // the expected literal type.
-	literal      string // the literal found.
+	ExpectedType string      // the expected literal type.
+	Literal      interface{} // the literal found.
 }
 
 func (e UnexpectedLiteralError) Error() string {
-	return fmt.Sprintf("expected a %s literal, found %s", e.expectedType, e.literal)
+	// if no literal is given then it's a missing literal error.
+	if e.Literal == "" {
+		return fmt.Sprintf("unexpected missing literal")
+	}
+
+	// If no type is given it's an unexpected literal error.
+	if e.ExpectedType == "" {
+		return fmt.Sprintf("unexpected literal: %v", e.Literal)
+	}
+
+	// o/w it's an unexpected type of literal error.
+	return fmt.Sprintf("expected a %s literal, found: %v", e.ExpectedType, e.Literal)
 }
 
 // StackError is raised when the parser stack has unexpected size.
@@ -32,29 +43,4 @@ type StackError struct{}
 
 func (e StackError) Error() string {
 	return fmt.Sprintf("unexpected operator stack")
-}
-
-// UnexpectedOpError is raised when an unexpected operand is found.
-type UnexpectedOpError struct {
-	Op string // the operand found.
-}
-
-func (e UnexpectedOpError) Error() string {
-	return fmt.Sprintf("unexpected operand: %s", e.Op)
-}
-
-// UnexpectedArgError is raised when an unexpected argument is found.
-type UnexpectedArgError struct {
-	Arg interface{} // the argument found.
-}
-
-func (e UnexpectedArgError) Error() string {
-	return fmt.Sprintf("unexpected argument: %v", e.Arg)
-}
-
-// MissingArgError is raised when argument is missing.
-type MissingArgError struct{}
-
-func (e MissingArgError) Error() string {
-	return fmt.Sprintf("unexpected missing")
 }

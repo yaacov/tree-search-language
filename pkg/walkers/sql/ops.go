@@ -30,7 +30,7 @@ type notExpr []sq.Sqlizer
 //nolint
 func (n notExpr) ToSql() (sql string, args []interface{}, err error) {
 	if len(n) != 1 {
-		return "", nil, tsl.MissingArgError{}
+		return "", nil, tsl.UnexpectedLiteralError{}
 	}
 
 	partSQL, partArgs, err := n[0].ToSql()
@@ -51,7 +51,7 @@ func mathExpToSQL(n []sq.Sqlizer, mathOp string) (sql string, args []interface{}
 	var partArgs []interface{}
 
 	if len(n) != 2 {
-		return "", nil, tsl.MissingArgError{}
+		return "", nil, tsl.UnexpectedLiteralError{}
 	}
 
 	left, partArgs, err = n[0].ToSql()
