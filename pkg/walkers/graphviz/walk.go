@@ -120,10 +120,10 @@ func Walk(in string, n tsl.Node, nodeID string) (out string, err error) {
 			var nn []tsl.Node
 
 			// Check if right hand arg is a node, or an array of nodes.
-			if _, ok := n.Right.(tsl.Node); ok {
-				nn = []tsl.Node{n.Right.(tsl.Node)}
-			} else {
+			if n.Func == tsl.ArrayOp {
 				nn = n.Right.([]tsl.Node)
+			} else {
+				nn = []tsl.Node{n.Right.(tsl.Node)}
 			}
 
 			// Add all nodes to graph.
