@@ -22,7 +22,24 @@ For complete working code examples see the cli tools direcotry in the [/cmd](/cm
 
 ## Install
 
-#### Installing the different packages
+#### Building from source
+
+Building from code requires `golangci-lint` and `dep` go packages:
+
+```
+go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+go get -u github.com/golang/dep/cmd/dep
+```
+
+Clone the TSL `git` repository, and run `make`:
+
+```
+git clone git@github.com:yaacov/tsl.git
+cd tsl
+make
+```
+
+#### Installing the different packages using `go get`
 
 See some code snippets [here](https://github.com/yaacov/tsl#code-snippets) and [here](https://github.com/yaacov/tsl#sqlwalk).
 
