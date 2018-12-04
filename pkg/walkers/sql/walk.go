@@ -27,17 +27,22 @@ import (
 
 func nodesToStrings(in interface{}) (s []interface{}) {
 	var nn []tsl.Node
-	var ok bool
+
+	// Assume in is a node.
+	inNode := in.(tsl.Node)
 
 	// Check for nil
 	if in == nil {
 		return
 	}
 
-	// Assume input is []Node or Node.
-	nn, ok = in.([]tsl.Node)
-	if !ok {
-		nn = []tsl.Node{in.(tsl.Node)}
+	// Check for array node type.
+	if inNode.Func == tsl.ArrayOp {
+		// Take all nodes array from array RSE.
+		nn = inNode.Right.([]tsl.Node)
+	} else {
+		// Make a node array out of this node.
+		nn = []tsl.Node{inNode}
 	}
 
 	// Assume all Nodes are Leafs.

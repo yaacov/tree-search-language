@@ -37,7 +37,16 @@ func identString(n interface{}) string {
 // bsonFromArray helper method creates a slice of bson values from an interface,
 // supported values can be strings or floats.
 func bsonFromArray(a interface{}) (values []interface{}, err error) {
-	for _, v := range a.([]tsl.Node) {
+	n := a.(tsl.Node)
+
+	// Check that this is an array node.
+	if n.Func != tsl.ArrayOp {
+		err = tsl.UnexpectedLiteralError{Literal: n.Func}
+		return
+	}
+
+	nodes := n.Right.([]tsl.Node)
+	for _, v := range nodes {
 		// Check node value type.
 		switch l := v.Left.(type) {
 		case string, float64:

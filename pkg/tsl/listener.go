@@ -180,7 +180,10 @@ func (l *Listener) ExitIsNull(c *parser.IsNullContext) {
 
 // ExitIn is called when production In is exited.
 func (l *Listener) ExitIn(c *parser.InContext) {
-	right := l.popLiterals([]Node{})
+	right := Node{
+		Func:  ArrayOp,
+		Right: l.popLiterals([]Node{}),
+	}
 	left := l.pop()
 	op := ternaryOp(c.KeyNot() == nil, InOp, NotInOp)
 
@@ -195,14 +198,19 @@ func (l *Listener) ExitIn(c *parser.InContext) {
 
 // ExitBetween is called when production Between is exited.
 func (l *Listener) ExitBetween(c *parser.BetweenContext) {
-	right := []Node{l.pop(), l.pop()}
+	nodes := []Node{l.pop(), l.pop()}
+	right := Node{
+		Func:  ArrayOp,
+		Right: []Node{nodes[1], nodes[0]},
+	}
+
 	left := l.pop()
 	op := ternaryOp(c.KeyNot() == nil, BetweenOp, NotBetweenOp)
 
 	n := Node{
 		Func:  op,
 		Left:  left,
-		Right: []Node{right[1], right[0]},
+		Right: right,
 	}
 
 	l.push(n)

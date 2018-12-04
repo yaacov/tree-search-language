@@ -83,7 +83,7 @@ func Walk(n tsl.Node, checkColumnName func(string) (string, error)) (tsl.Node, e
 			//
 			// If it's an array of nodes.
 			// We assume that all are leafs, no nead to walk on them.
-			if _, ok := n.Right.(tsl.Node); ok {
+			if n.Func != tsl.ArrayOp {
 				// It's a node.
 				n.Right, err = Walk(n.Right.(tsl.Node), checkColumnName)
 				if err != nil {
