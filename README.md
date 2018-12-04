@@ -18,7 +18,8 @@ The TSL language grammar is similar to SQL syntax.
 
 ## Code examples
 
-For complete working code examples see the cli tools direcotry in the [/cmd](/cmd).
+For complete working code examples see the CLI tools direcotry in the [/cmd](/cmd), 
+see CLI tools usage [here](https://github.com/yaacov/tsl#cli-tools).
 
 ## Install
 
@@ -43,7 +44,7 @@ Other `make` options include `make lint` for linting check and `make test` for t
 
 #### Installing the different packages using `go get`
 
-See some code snippets [here](https://github.com/yaacov/tsl#code-snippets) and [here](https://github.com/yaacov/tsl#sqlwalk).
+See some code snippets [here](https://github.com/yaacov/tsl#parsetsl).
 
 ``` bash
 # Install the base package
@@ -440,101 +441,6 @@ city in ('paris', 'rome', 'milan') or sate = 'spain'
 ```
 ```
 net.tx + net.rx > 2000 or mem.total - mem.usage < 1000
-```
-
-## Code snippets
-
-
-``` go
-import "github.com/yaacov/tsl/pkg/tsl"
-```
-
-##### ParseTSL
-
-ParseTSL takes a string input and generate a search tree object, the function
-returns the root Node of the tree.
-
-``` go
-...
-// Set a TSL input string.
-input = "name='joe' or name='jane'"
-
-// Parse input string into a TSL tree.
-tree, err := tsl.ParseTSL(input)
-...
-```
-
-sql.Walk and mongo.Walk are example methods the demonstrate traversing ( walk ) the search tree.
-
-##### sql.Walk
-
-sql.Walk takes the base Node ( tree ) of the search tree, and return a Squirrel SQL filter object.
-
-``` go
-import (
-    ...
-    sq "github.com/Masterminds/squirrel"
-    "github.com/yaacov/tsl/pkg/tsl"
-    "github.com/yaacov/tsl/pkg/walkers/sql"
-    ...
-)
-...
-// Set filter.
-filter, err := sql.Walk(tree)
-
-// Convert TSL tree into SQL string using squirrel select builder.
-sql, args, err := sq.Select("name, city, state").
-    From("users").
-    Where(filter).
-    ToSql()
-...
-```
-
-##### mongo.Walk
-
-mongo.Walk takes the base Node ( tree ) of the search tree, and return a MongoDB BSON object.
-
-``` go
-...
-import (
-  ...
-  "github.com/yaacov/tsl/pkg/walkers/mongo"
-  ...
-)
-...
-// Prepare a bson filter.
-filter, err = mongo.Walk(tree)
-
-// Run query.
-cur, err := collection.Find(ctx, filter)
-defer cur.Close(ctx)
-
-// Loop on query elements.
-for cur.Next(ctx) {
-...
-```
-
-##### ident.Walk
-
-ident.Walk helps to check validity of identifiers and replace them if necessary.
-
-``` go
-...
-import (
-  ...
-  "github.com/yaacov/tsl/pkg/walkers/ident"
-  ...
-)
-...
-// check that the column idetifier is valid.
-// It returns a mapped valid column name, and an error if name is not valid.
-func check(s string) (string, error) {
-  return s, nil
-}
-...
-// Check and replace user identifiers with the SQL table column names.
-tree, err = ident.Walk(tree, check)
-...
 ```
 
 [ awesome logo image by [gophers...](https://github.com/egonelbre/gophers) ]
