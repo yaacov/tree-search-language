@@ -144,6 +144,9 @@ import (
     ...
 )
 
+// Parse a TSL phrase into a TSL tree.
+tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
+
 // Prepare squirrel filter.
 filter, err := sql.Walk(tree)
 
@@ -175,6 +178,9 @@ import (
     ...
 )
 
+// Parse a TSL phrase into a TSL tree.
+tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
+
 // Prepare a bson filter.
 filter, err = mongo.Walk(tree)
 
@@ -192,6 +198,9 @@ import (
     "github.com/yaacov/tsl/pkg/walkers/graphviz"
     ...
 )
+
+// Parse a TSL phrase into a TSL tree.
+tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
 
 // Prepare .dot file nodes as a string.
 s, err = graphviz.Walk("", tree, "")
@@ -232,6 +241,9 @@ func checkColumnName(s string) (string, error) {
 	return s, fmt.Errorf("column \"%s\" not found", s)
 }
 ...
+
+// Parse a TSL phrase into a TSL tree.
+tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
 
 // Check and replace user identifiers with the SQL table column names.
 tree, err = ident.Walk(tree, checkColumnName)
