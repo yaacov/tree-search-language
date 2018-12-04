@@ -18,6 +18,8 @@ The TSL language grammar is similar to SQL syntax.
 
 ## Code examples
 
+See some code snippets [here](https://github.com/yaacov/tsl#usage-examples).
+
 For complete working code examples see the CLI tools direcotry in the [/cmd](/cmd), 
 see CLI tools usage [here](https://github.com/yaacov/tsl#cli-tools).
 
@@ -44,8 +46,6 @@ Other `make` options include `make lint` for linting check and `make test` for t
 
 #### Installing the different packages using `go get`
 
-See some code snippets [here](https://github.com/yaacov/tsl#parsetsl).
-
 ``` bash
 # Install the base package
 go get "github.com/yaacov/tsl/pkg/tsl"
@@ -60,7 +60,7 @@ go get "github.com/yaacov/tsl/pkg/walkers/ident"
 go get "github.com/yaacov/tsl/pkg/walkers/graphviz"
 ```
 
-#### Installing the command line examples
+#### Installing the command line examples using `go get`
 
 See CLI tools usage [here](https://github.com/yaacov/tsl#cli-tools).
 
@@ -70,7 +70,7 @@ go get -v "github.com/yaacov/tsl/cmd/tsl_mongo"
 go get -v "github.com/yaacov/tsl/cmd/tsl_sqlite"
 ```
 
-## Syntax examples
+## TSL syntax examples
 
 #### Operator precedence
 
