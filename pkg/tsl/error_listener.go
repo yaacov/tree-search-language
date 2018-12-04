@@ -16,9 +16,6 @@
 package tsl
 
 import (
-	"fmt"
-	"strconv"
-
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 )
 
@@ -41,5 +38,5 @@ func (d *ErrorListener) SyntaxError(
 	msg string,
 	e antlr.RecognitionException) {
 
-	d.Err = fmt.Errorf("line " + strconv.Itoa(line) + ":" + strconv.Itoa(column) + " " + msg)
+	d.Err = ParseError{line: line, column: column, msg: msg}
 }

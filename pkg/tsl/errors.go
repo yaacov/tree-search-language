@@ -44,3 +44,14 @@ type StackError struct{}
 func (e StackError) Error() string {
 	return fmt.Sprintf("unexpected operator stack")
 }
+
+// ParseError is raised on parser error.
+type ParseError struct {
+	line   int
+	column int
+	msg    string
+}
+
+func (e ParseError) Error() string {
+	return fmt.Sprintf("parse error [%d:%d]: %s", e.line, e.column, e.msg)
+}
