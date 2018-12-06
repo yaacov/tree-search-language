@@ -339,8 +339,6 @@ root -> { XVlB, zgba }
 
 ##### tsl_mongo
 
-tsl_mongo include an example using [mongo.NWalk](/pkg/walkers/mongo/walk.go) method, for building a mongo bson filter.
-
 ``` bash
 $ ./tsl_mongo -h
 Usage of ./tsl_mongo:
