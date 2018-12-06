@@ -42,7 +42,7 @@ import (
 //  	return s, fmt.Errorf("column not found")
 //   }
 //
-//  		// Check and replace user identifiers with the SQL table column names.
+//  	// Check and replace user identifiers with the SQL table column names.
 //  	//
 //  	// SQL table columns are "title, author, pages and rating", but for
 //  	// users pages and ratings are fields of an internal struct called
