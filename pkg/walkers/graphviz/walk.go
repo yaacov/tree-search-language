@@ -58,7 +58,7 @@ func randStr(l int) string {
 // For valid Graphviz dot file, the nodes must be wrapped in a `digraph` object:
 //
 //   	s, err = graphviz.Walk("", tree, "")
-// 	  s = fmt.Sprintf("digraph {\n%s\n}\n", s)
+//  	s = fmt.Sprintf("digraph {\n%s\n}\n", s)
 func Walk(in string, n tsl.Node, nodeID string) (out string, err error) {
 	// If node ID is missing, create one.
 	if nodeID == "" {
