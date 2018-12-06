@@ -121,7 +121,10 @@ dot file.dot -Tpng > image.png
 
 For code examples see the cli tools in the [/cmd](/cmd) direcotry.
 
-## Usage examples
+## Code examples
+
+For complete working code examples, see the CLI tools [direcotry](/cmd), 
+see CLI tools usage [here](https://github.com/yaacov/tsl#cli-tools).
 
 ##### ParseTSL
 
