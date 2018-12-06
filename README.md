@@ -16,7 +16,7 @@ where part. implementing query based search engines was never that easy.
 
 The TSL language grammar is similar to SQL syntax.
 
-## Code examples
+## Usage
 
 See some code snippets [here](https://github.com/yaacov/tsl#code-examples).
 
