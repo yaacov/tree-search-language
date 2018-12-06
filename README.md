@@ -6,15 +6,14 @@
 
 # Tree Search Language (TSL)
 
-Tree Search Language (TSL) is a wonderful human readable filtering language, with similar grammar to SQL's
-where part. implementing query based search engines was never that easy.
+Tree Search Language (TSL) is a wonderful human readable filtering language. implementing query based search engines was never that easy.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/yaacov/tsl)](https://goreportcard.com/report/github.com/yaacov/tsl)
 [![Build Status](https://travis-ci.org/yaacov/tsl.svg?branch=master)](https://travis-ci.org/yaacov/tsl)
 [![GoDoc](https://godoc.org/github.com/yaacov/tsl/pkg/tsl?status.svg)](https://godoc.org/github.com/yaacov/tsl/pkg/tsl)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-The TSL language grammar is similar to SQL syntax.
+The TSL language grammar is human readable and similar to SQL syntax.
 
 ## Usage
 
