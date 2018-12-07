@@ -125,7 +125,7 @@ see CLI tools usage [here](https://github.com/yaacov/tsl#cli-tools).
 
 ##### ParseTSL
 
-The TSL package include the ParseTSL [code](/pkg/tsl/tsl.go), [doc](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
+The `tsl` package include the ParseTSL [code](/pkg/tsl/tsl.go), [doc](https://godoc.org/github.com/yaacov/tsl/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
 ``` go
 tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
 ```
@@ -417,7 +417,7 @@ $ ./tsl_sqlite -i "$SQL" -p | jq
 
 ##### Antlr4 grammar
 
-TSL is generated using [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammar file is [TSL.g4](/TSL.g4).
+TSL parser is generated using [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammar file is [TSL.g4](/TSL.g4).
 
 ##### Keywords
 ```
