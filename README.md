@@ -19,8 +19,8 @@ The TSL language grammar is human readable and similar to SQL syntax.
 
 See some code snippets [here](https://github.com/yaacov/tsl#code-examples).
 
-For complete working code examples, see the CLI tools [direcotry](/cmd), 
-see CLI tools usage [here](https://github.com/yaacov/tsl#cli-tools).
+For complete working code examples, see the CLI tools [direcotry](/cmd) 
+( see CLI tools usage [here](https://github.com/yaacov/tsl#cli-tools) ).
 
 ## Install
 
