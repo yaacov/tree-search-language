@@ -441,4 +441,6 @@ city in ('paris', 'rome', 'milan') or sate = 'spain'
 net.tx + net.rx > 2000 or mem.total - mem.usage < 1000
 ```
 
+## Logo
+
 [ awesome logo image by [gophers...](https://github.com/egonelbre/gophers) ]
