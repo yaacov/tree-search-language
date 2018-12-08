@@ -115,7 +115,7 @@ Will be parsed into this TSL tree:
 
 Images created using the `tsl_parser` CLI example and Graphviz's `dot` utility:
 ``` bash
-./tsl_parser -i "name like '%joe%' and (city = 'paris' or city = 'milan')" -o dot > file.dot
+$ ./tsl_parser -i "name like '%joe%' and (city = 'paris' or city = 'milan')" -o dot > file.dot
 dot file.dot -Tpng > image.png
 ```
 
@@ -278,7 +278,7 @@ args: [joe jane rome]
 ```
 
 ``` bash
-./tsl_parser -i "(name = 'joe' or name = 'jane') and city = 'rome'" -o prettyjson
+$ ./tsl_parser -i "(name = 'joe' or name = 'jane') and city = 'rome'" -o prettyjson
 ```
 
 ``` json
@@ -324,7 +324,7 @@ args: [joe jane rome]
 ```
 
 ``` bash
-./tsl_parser -i "city = 'rome'" -o dot
+$ ./tsl_parser -i "city = 'rome'" -o dot
 ```
 
 ``` dot
@@ -383,7 +383,7 @@ $ ./tsl_mongo -i "title ~= 'Other' and spec.rating > 1" | jq
 ##### tsl_sqlite
 
 ``` bash
-./tsl_sqlite -h
+$ ./tsl_sqlite -h
 Usage of ./tsl_sqlite:
   -f string
     	the sqlite database file name (default "./sqlite.db")
@@ -418,7 +418,7 @@ $ ./tsl_sqlite -i "$SQL" -p | jq
 ##### tsl_graphql
 
 ``` bash
-./tsl_graphql -h
+$ ./tsl_graphql -h
 Usage of ./tsl_graphql:
   -f string
     	the sqlite database file name (default "./sqlite.db")
@@ -426,7 +426,7 @@ Usage of ./tsl_graphql:
 ```
 
 ``` bash
-/tsl_graphql -p
+$ ./tsl_graphql -p
 
 TSL GraphQL server listen on port: 8080
 
@@ -436,7 +436,7 @@ Query example:
 ```
 
 ``` bash
-curl -sG "http://localhost:8080/graphql" --data-urlencode \
+$ curl -sG "http://localhost:8080/graphql" --data-urlencode \
      "query={books(filter:\"title like '%Other%' and spec.pages>100\"){title,author,spec{pages}}}" | jq
 {
   "data": {
