@@ -67,6 +67,7 @@ See CLI tools usage [here](https://github.com/yaacov/tsl#cli-tools).
 go get -v "github.com/yaacov/tsl/cmd/tsl_parser"
 go get -v "github.com/yaacov/tsl/cmd/tsl_mongo"
 go get -v "github.com/yaacov/tsl/cmd/tsl_sqlite"
+go get -v "github.com/yaacov/tsl/cmd/tsl_graphql"
 ```
 
 ## TSL syntax examples
@@ -253,7 +254,8 @@ tree, err = ident.Walk(tree, checkColumnName)
 
 ## Cli tools
 
-[tls_parser](/cmd/tsl_parser), [tls_mongo](/cmd/tsl_mongo) and [tsl_sqlite](/cmd/tsl_sqlite) are example cli tools showcasing the TSL language and TSL golang package.
+[tls_parser](/cmd/tsl_parser), [tls_mongo](/cmd/tsl_mongo), [tsl_graphql](/cmd/tsl_graphql) and [tsl_sqlite](/cmd/tsl_sqlite)
+are example cli tools showcasing the TSL language and TSL golang package.
 
 ##### tls_parser
 
@@ -434,7 +436,8 @@ Query example:
 ```
 
 ``` bash
-curl -sG "http://localhost:8080/graphql" --data-urlencode "query={books(filter:\"title like '%Other%' and spec.pages>100\"){title,author,spec{pages}}}" | jq
+curl -sG "http://localhost:8080/graphql" --data-urlencode \
+     "query={books(filter:\"title like '%Other%' and spec.pages>100\"){title,author,spec{pages}}}" | jq
 {
   "data": {
     "books": [
