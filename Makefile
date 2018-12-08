@@ -16,16 +16,16 @@
 
 all: fmt tsl_parser tsl_sqlite tsl_mongo tsl_graphql
 
-tsl_parser: vendor
+tsl_parser:
 	go build ./cmd/tsl_parser
 
-tsl_sqlite: vendor
+tsl_sqlite:
 	go build ./cmd/tsl_sqlite
 
-tsl_mongo: vendor
+tsl_mongo:
 	go build ./cmd/tsl_mongo
 
-tsl_graphql: vendor
+tsl_graphql:
 	go build ./cmd/tsl_graphql
 
 .PHONY: lint
