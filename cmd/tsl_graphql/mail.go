@@ -21,17 +21,57 @@ import (
 	"database/sql"
 	"encoding/json"
 	"flag"
+	"fmt"
 	"log"
 	"net/http"
 
 	sq "github.com/Masterminds/squirrel"
-
 	"github.com/graphql-go/graphql"
+
 	"github.com/yaacov/tsl/pkg/tsl"
+	"github.com/yaacov/tsl/pkg/walkers/ident"
 	walker "github.com/yaacov/tsl/pkg/walkers/sql"
 
 	"github.com/yaacov/tsl/cmd/model"
 )
+
+var preparePtr *bool
+var filePtr *string
+
+// columnNamesMap mapps between user namespace and the SQL column names.
+var columnNamesMap = map[string]string{
+	"title":       "title",
+	"author":      "author",
+	"spec.pages":  "pages",
+	"spec.rating": "rating",
+}
+
+var bookSpecType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "BookSpecs",
+	Fields: graphql.Fields{
+		"pages": &graphql.Field{
+			Type: graphql.Int,
+		},
+		"rating": &graphql.Field{
+			Type: graphql.Int,
+		},
+	},
+})
+
+var bookType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Book",
+	Fields: graphql.Fields{
+		"title": &graphql.Field{
+			Type: graphql.String,
+		},
+		"author": &graphql.Field{
+			Type: graphql.String,
+		},
+		"spec": &graphql.Field{
+			Type: bookSpecType,
+		},
+	},
+})
 
 func check(err error) {
 	if err != nil {
@@ -39,9 +79,87 @@ func check(err error) {
 	}
 }
 
+// checkColumnName checks if a coulumn name is valid in user space replace it
+// with the mapped column name and returns and error if not a valid name.
+func checkColumnName(s string) (string, error) {
+	// Chekc for column name in map.
+	if v, ok := columnNamesMap[s]; ok {
+		return v, nil
+	}
+
+	// If not found return string as is, and an error.
+	return s, fmt.Errorf("column \"%s\" not found", s)
+}
+
+func sqlQuery(ctx context.Context, filter string) (books []model.Book, err error) {
+	var bookID uint
+	var rows *sql.Rows
+
+	// Try to connect to mongo server.
+	tx, err := connect(ctx, *filePtr)
+	if err != nil {
+		return nil, err
+	}
+	defer tx.Commit()
+
+	// Parse input string into a TSL tree.
+	tree, err := tsl.ParseTSL(filter)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check and replace user identifiers with the SQL table column names.
+	tree, err = ident.Walk(tree, checkColumnName)
+	if err != nil {
+		return nil, err
+	}
+
+	// Prepare SQL filter.
+	sqFilter, err := walker.Walk(tree)
+	if err != nil {
+		return nil, err
+	}
+
+	// Query SQL table.
+	rows, err = sq.
+		Select("*").
+		Where(sqFilter).
+		From("books").
+		RunWith(tx).
+		QueryContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+
+	for rows.Next() {
+		elem := model.Book{}
+		err = rows.Scan(
+			&bookID,
+			&elem.Title,
+			&elem.Author,
+			&elem.Spec.Pages,
+			&elem.Spec.Rating,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		books = append(books, elem)
+	}
+
+	// Check for errors and exit.
+	err = rows.Err()
+	if err != nil {
+		return nil, err
+	}
+
+	return
+}
+
 func main() {
-	preparePtr := flag.Bool("p", false, "prepare a book collection for queries")
-	filePtr := flag.String("f", "./sqlite.db", "the sqlite database file name")
+	// Setup the input.
+	preparePtr = flag.Bool("p", false, "prepare a book collection for queries")
+	filePtr = flag.String("f", "./sqlite.db", "the sqlite database file name")
 	flag.Parse()
 
 	// Set context.
@@ -71,65 +189,8 @@ func main() {
 					},
 				},
 				Resolve: func(params graphql.ResolveParams) (interface{}, error) {
-					var bookID uint
-					var rows *sql.Rows
-					var books []model.Book
-
 					filter := params.Args["filter"].(string)
-
-					// Try to connect to mongo server.
-					tx, err := connect(ctx, *filePtr)
-					if err != nil {
-						return nil, err
-					}
-					defer tx.Commit()
-
-					// Parse input string into a TSL tree.
-					tree, err := tsl.ParseTSL(filter)
-					if err != nil {
-						return nil, err
-					}
-
-					// Prepare SQL filter.
-					sqFilter, err := walker.Walk(tree)
-					if err != nil {
-						return nil, err
-					}
-
-					// Query SQL table.
-					rows, err = sq.
-						Select("*").
-						Where(sqFilter).
-						From("books").
-						RunWith(tx).
-						QueryContext(ctx)
-					if err != nil {
-						return nil, err
-					}
-
-					for rows.Next() {
-						elem := model.Book{}
-						err = rows.Scan(
-							&bookID,
-							&elem.Title,
-							&elem.Author,
-							&elem.Spec.Pages,
-							&elem.Spec.Rating,
-						)
-						if err != nil {
-							return nil, err
-						}
-
-						books = append(books, elem)
-					}
-
-					// Check for errors and exit.
-					err = rows.Err()
-					if err != nil {
-						return nil, err
-					}
-
-					return books, nil
+					return sqlQuery(ctx, filter)
 				},
 			},
 		},
