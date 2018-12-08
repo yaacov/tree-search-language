@@ -26,13 +26,13 @@ For complete working code examples, see the CLI tools [direcotry](/cmd)
 
 #### Building from source
 
-Building from code requires `golangci-lint` and `dep` go packages:
+Building from code requires `golangci-lint` [ and `dep` if using go ver < v1.11 ] go packages:
 
 ( TSL also include a `go.mod` file for use with `go v1.11` modules, instead of the `dep` tool )
 
 ```
 go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
-go get -u github.com/golang/dep/cmd/dep
+go get -u github.com/golang/dep/cmd/dep  # if using go ver < v1.11
 ```
 
 Clone the TSL `git` repository, and run `make`:
@@ -40,6 +40,7 @@ Clone the TSL `git` repository, and run `make`:
 ```
 git clone git@github.com:yaacov/tsl.git
 cd tsl
+make vendor # if using go ver < v1.11
 make
 ```
 
