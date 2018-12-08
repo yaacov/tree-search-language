@@ -21,3 +21,4 @@
 /data/
 /vendor/
 Gopkg.lock
+go.sum
