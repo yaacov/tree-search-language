@@ -21,6 +21,7 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 
+	"github.com/graphql-go/graphql"
 	"github.com/yaacov/tsl/cmd/model"
 )
 
@@ -34,6 +35,33 @@ create table if not exists books (
 );
 delete from books;
 `
+
+var bookSpecType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "BookSpecs",
+	Fields: graphql.Fields{
+		"pages": &graphql.Field{
+			Type: graphql.Int,
+		},
+		"rating": &graphql.Field{
+			Type: graphql.Int,
+		},
+	},
+})
+
+var bookType = graphql.NewObject(graphql.ObjectConfig{
+	Name: "Book",
+	Fields: graphql.Fields{
+		"title": &graphql.Field{
+			Type: graphql.String,
+		},
+		"author": &graphql.Field{
+			Type: graphql.String,
+		},
+		"spec": &graphql.Field{
+			Type: bookSpecType,
+		},
+	},
+})
 
 func connect(ctx context.Context, url string) (tx *sql.Tx, err error) {
 	var db *sql.DB

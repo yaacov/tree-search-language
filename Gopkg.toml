@@ -52,3 +52,7 @@
 [[constraint]]
   name = "github.com/mattn/go-sqlite3"
   version = "v1.10.0"
+
+[[constraint]]
+  name = "github.com/graphql-go/graphql"
+  version = "v0.7.7"

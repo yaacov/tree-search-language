@@ -28,13 +28,13 @@ import (
 func nodesToStrings(in interface{}) (s []interface{}) {
 	var nn []tsl.Node
 
-	// Assume in is a node.
-	inNode := in.(tsl.Node)
-
 	// Check for nil
 	if in == nil {
 		return
 	}
+
+	// Assume in is a node.
+	inNode := in.(tsl.Node)
 
 	// Check for array node type.
 	if inNode.Func == tsl.ArrayOp {
