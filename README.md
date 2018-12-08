@@ -120,8 +120,8 @@ dot file.dot -Tpng > image.png
 
 ## Code examples
 
-For complete working code examples, see the CLI tools [direcotry](/cmd), 
-see CLI tools usage [here](https://github.com/yaacov/tsl#cli-tools).
+For complete working code examples, see the CLI tools [direcotry](/cmd) 
+( see more on TSL's CLI tools usage [here](https://github.com/yaacov/tsl#cli-tools) ).
 
 ##### ParseTSL
 
