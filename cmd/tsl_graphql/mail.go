@@ -211,5 +211,15 @@ func main() {
 	}
 
 	http.HandleFunc("/graphql", qraphqlHandler)
+
+	msg := `
+TSL GraphQL server listen on port: 8080
+
+Query example:
+  curl -sG "http://localhost:8080/graphql" --data-urlencode \
+	"query={books(filter:\"title like '%%Other%%' and spec.pages>100\"){title,author,spec{pages}}}"
+`
+
+	fmt.Printf(msg)
 	http.ListenAndServe(":8080", nil)
 }
