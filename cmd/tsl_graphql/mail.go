@@ -220,6 +220,6 @@ Query example:
 	"query={books(filter:\"title like '%%Other%%' and spec.pages>100\"){title,author,spec{pages}}}"
 `
 
-	fmt.Printf(msg)
+	fmt.Println(msg)
 	http.ListenAndServe(":8080", nil)
 }

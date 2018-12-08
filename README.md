@@ -19,7 +19,7 @@ The TSL language grammar is human readable and similar to SQL syntax.
 
 See some code snippets [here](https://github.com/yaacov/tsl#code-examples).
 
-For complete working code examples, see the CLI tools [direcotry](/cmd) 
+For complete working code examples, see the CLI tools [direcotry](/cmd)
 ( see more on TSL's CLI tools usage [here](https://github.com/yaacov/tsl#cli-tools) ).
 
 ## Install
@@ -120,7 +120,7 @@ dot file.dot -Tpng > image.png
 
 ## Code examples
 
-For complete working code examples, see the CLI tools [direcotry](/cmd) 
+For complete working code examples, see the CLI tools [direcotry](/cmd)
 ( see more on TSL's CLI tools usage [here](https://github.com/yaacov/tsl#cli-tools) ).
 
 ##### ParseTSL
@@ -409,6 +409,50 @@ $ ./tsl_sqlite -i "$SQL" -p | jq
   "spec": {
     "pages": 150,
     "rating": 4
+  }
+}
+```
+
+##### tsl_graphql
+
+``` bash
+./tsl_graphql -h
+Usage of ./tsl_graphql:
+  -f string
+    	the sqlite database file name (default "./sqlite.db")
+  -p	prepare a book collection for queries
+```
+
+``` bash
+/tsl_graphql -p
+
+TSL GraphQL server listen on port: 8080
+
+Query example:
+  curl -sG "http://localhost:8080/graphql" --data-urlencode \
+	"query={books(filter:\"title like '%Other%' and spec.pages>100\"){title,author,spec{pages}}}"
+```
+
+``` bash
+curl -sG "http://localhost:8080/graphql" --data-urlencode "query={books(filter:\"title like '%Other%' and spec.pages>100\"){title,author,spec{pages}}}" | jq
+{
+  "data": {
+    "books": [
+      {
+        "author": "Jane",
+        "spec": {
+          "pages": 200
+        },
+        "title": "Other Book"
+      },
+      {
+        "author": "Jane",
+        "spec": {
+          "pages": 250
+        },
+        "title": "Other Great Book"
+      }
+    ]
   }
 }
 ```
