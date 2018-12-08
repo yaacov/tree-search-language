@@ -26,9 +26,7 @@ For complete working code examples, see the CLI tools [direcotry](/cmd)
 
 #### Building from source
 
-Building from code requires `golangci-lint` [ and `dep` if using go ver < v1.11 ] go packages:
-
-( TSL also include a `go.mod` file for use with `go v1.11` modules, instead of the `dep` tool )
+Building from code requires `golangci-lint` and `dep` (if using go ver < v1.11) go packages:
 
 ```
 go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
