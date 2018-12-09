@@ -72,7 +72,3 @@ test:
 .PHONY: generate
 generate:
 	antlr4 -Dlanguage=Go -o pkg/parser TSL.g4
-
-.PHONY: vendor
-vendor:
-	dep ensure
