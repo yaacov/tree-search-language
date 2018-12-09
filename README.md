@@ -24,7 +24,7 @@ For complete working code examples, see the CLI tools [direcotry](/cmd)
 
 ## Install
 
-#### Building from source
+#### Building from source using go modules
 
 Building from code requires `go mod`, available on go v1.11 and above:
 
