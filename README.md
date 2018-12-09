@@ -26,19 +26,18 @@ For complete working code examples, see the CLI tools [direcotry](/cmd)
 
 #### Building from source
 
-Building from code requires `golangci-lint` and `dep` (if using go ver < v1.11) go packages:
+Building from code requires `go mod`, available on go v1.11 and above:
 
 ```
 go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
-go get -u github.com/golang/dep/cmd/dep  # if using go ver < v1.11
 ```
 
 Clone the TSL `git` repository, and run `make`:
 
 ```
+[ export GO111MODULE=on if we are on $GOPATH, we need to explicitly set modules on ]
 git clone git@github.com:yaacov/tsl.git
 cd tsl
-make vendor # if using go ver < v1.11
 make
 ```
 
