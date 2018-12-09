@@ -26,7 +26,12 @@ For complete working code examples, see the CLI tools [direcotry](/cmd)
 
 #### Building from source using go modules
 
-Building from code requires `go mod`, available on go v1.11 and above:
+Building from code requires `go mod`, available on **go v1.11** and above:
+
+``` bash
+$ go version
+go version go1.11.2 linux/amd64
+```
 
 Clone the TSL `git` repository, and run `make`:
 
