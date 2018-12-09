@@ -28,10 +28,6 @@ For complete working code examples, see the CLI tools [direcotry](/cmd)
 
 Building from code requires `go mod`, available on go v1.11 and above:
 
-```
-go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
-```
-
 Clone the TSL `git` repository, and run `make`:
 
 ```
@@ -39,6 +35,12 @@ Clone the TSL `git` repository, and run `make`:
 git clone git@github.com:yaacov/tsl.git
 cd tsl
 make
+```
+
+Running `make lint` requires `golangci-lint`:
+
+``` bash
+go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
 ```
 
 Other `make` options include `make lint` for linting check and `make test` for tests.
