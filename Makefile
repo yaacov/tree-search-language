@@ -14,13 +14,16 @@
 # limitations under the License.
 #
 
-all: fmt tsl_parser tsl_sqlite tsl_mongo tsl_graphql
+all: fmt tsl_parser tsl_sqlite tsl_gorm tsl_mongo tsl_graphql
 
 tsl_parser:
 	go build ./cmd/tsl_parser
 
 tsl_sqlite:
 	go build ./cmd/tsl_sqlite
+
+tsl_gorm:
+	go build ./cmd/tsl_gorm
 
 tsl_mongo:
 	go build ./cmd/tsl_mongo
@@ -62,6 +65,7 @@ fmt:
 test:
 	go test ./cmd/tsl_parser
 	go test ./cmd/tsl_sqlite
+	go test ./cmd/tsl_gorm
 	go test ./cmd/tsl_mongo
 	go test ./cmd/tsl_graphql
 	go test ./pkg/tsl

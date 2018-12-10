@@ -16,9 +16,10 @@
 
 /tsl_parser
 /tsl_sqlite
+/tsl_gorm
 /tsl_mongo
+/tsl_graphql
 
 /data/
 /vendor/
-Gopkg.lock
 go.sum
