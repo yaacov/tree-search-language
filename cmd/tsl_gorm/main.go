@@ -89,7 +89,7 @@ func main() {
 	filter, err := sql.Walk(tree)
 	check(err)
 
-	// Create SQL qury.
+	// Create SQL query.
 	sql, args, err := filter.ToSql()
 	check(err)
 
@@ -101,7 +101,7 @@ func main() {
 	for rows.Next() {
 		var elem Book
 
-		// ScanRows scan a row into user
+		// ScanRows scan a row into our gorm Book element.
 		err = tx.ScanRows(rows, &elem)
 		check(err)
 
