@@ -262,7 +262,7 @@ tree, err = ident.Walk(tree, checkColumnName)
 
 ## Cli tools
 
-The example cli tools showcase the TSL language and `tsl` golang package, see the [direcotry](/cmd) directory for code.
+The example cli tools showcase the TSL language and `tsl` golang package, see the [cmd](/cmd) directory for code.
 
 ##### tls_parser
 
