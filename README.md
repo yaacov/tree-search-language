@@ -74,6 +74,7 @@ See CLI tools usage [here](https://github.com/yaacov/tsl#cli-tools).
 go get -v "github.com/yaacov/tsl/cmd/tsl_parser"
 go get -v "github.com/yaacov/tsl/cmd/tsl_mongo"
 go get -v "github.com/yaacov/tsl/cmd/tsl_sqlite"
+go get -v "github.com/yaacov/tsl/cmd/tsl_gorm"
 go get -v "github.com/yaacov/tsl/cmd/tsl_graphql"
 ```
 
@@ -261,8 +262,7 @@ tree, err = ident.Walk(tree, checkColumnName)
 
 ## Cli tools
 
-[tls_parser](/cmd/tsl_parser), [tls_mongo](/cmd/tsl_mongo), [tsl_graphql](/cmd/tsl_graphql) and [tsl_sqlite](/cmd/tsl_sqlite)
-are example cli tools showcasing the TSL language and TSL golang package.
+The example cli tools showcase the TSL language and `tsl` golang package.
 
 ##### tls_parser
 
@@ -402,6 +402,41 @@ Usage of ./tsl_sqlite:
 ``` bash
 $ SQL="title like '%Book%' and spec.pages > 100"
 $ ./tsl_sqlite -i "$SQL" -p | jq
+```
+``` json
+{
+  "title": "Other Book",
+  "author": "Jane",
+  "spec": {
+    "pages": 200,
+    "rating": 3
+  }
+}
+{
+  "title": "Good Book",
+  "author": "Joe",
+  "spec": {
+    "pages": 150,
+    "rating": 4
+  }
+}
+```
+
+##### tsl_gorm
+
+``` bash
+$ ./tsl_gorm -h
+Usage of ./tsl_gorm:
+  -f string
+    	the sqlite database file name (default "./sqlite.db")
+  -i string
+    	the tsl string to parse (e.g. "title = 'Book'") (default "title is not null")
+  -p	prepare a book collection for queries
+```
+
+``` bash
+$ SQL="title like '%Book%' and spec.pages > 100"
+$ ./tsl_gorm -i "$SQL" -p | jq
 ```
 ``` json
 {
