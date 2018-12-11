@@ -61,6 +61,15 @@ lint:
 fmt:
 	gofmt -s -l -w ./pkg/ ./cmd/
 
+.PHONY: clean
+clean:
+	rm -rf vendor
+	rm tsl_parser
+	rm tsl_gorm
+	rm tsl_mongo
+	rm tsl_sqlite
+	rm tsl_graphql
+
 .PHONY: test
 test:
 	go test ./cmd/tsl_parser
