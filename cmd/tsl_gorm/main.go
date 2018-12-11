@@ -23,10 +23,11 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/yaacov/tsl/cmd/model"
 	"github.com/yaacov/tsl/pkg/tsl"
 	"github.com/yaacov/tsl/pkg/walkers/ident"
-	walker "github.com/yaacov/tsl/pkg/walkers/sql"
+	"github.com/yaacov/tsl/pkg/walkers/sql"
+
+	"github.com/yaacov/tsl/cmd/model"
 )
 
 func check(err error) {
@@ -85,7 +86,7 @@ func main() {
 	check(err)
 
 	// Prepare SQL filter.
-	filter, err := walker.Walk(tree)
+	filter, err := sql.Walk(tree)
 	check(err)
 
 	// Create SQL qury.
@@ -104,6 +105,7 @@ func main() {
 		err = tx.ScanRows(rows, &elem)
 		check(err)
 
+		// Conver gorm Book type to model Book type.
 		book := model.Book{
 			Title:  elem.Title,
 			Author: elem.Author,
@@ -113,6 +115,7 @@ func main() {
 			},
 		}
 
+		// Print out one Book in json format.
 		b, _ := json.Marshal(book)
 		fmt.Printf("%s\n", string(b))
 	}
