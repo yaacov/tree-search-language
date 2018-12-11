@@ -66,7 +66,7 @@ func main() {
 	// Set context.
 	ctx := context.Background()
 
-	// Try to connect to mongo server.
+	// Try to connect to sqlite driver.
 	tx, err := connect(ctx, *filePtr)
 	check(err)
 	defer tx.Commit()
