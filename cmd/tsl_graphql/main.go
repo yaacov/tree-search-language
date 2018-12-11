@@ -95,7 +95,7 @@ func sqlQuery(ctx context.Context, filter string) (books []model.Book, err error
 	var bookID uint
 	var rows *sql.Rows
 
-	// Try to connect to mongo server.
+	// Try to connect to sqlite driver.
 	tx, err := connect(ctx, *filePtr)
 	if err != nil {
 		return nil, err
