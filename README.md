@@ -6,7 +6,7 @@
 
 # Tree Search Language (TSL)
 
-Tree Search Language (TSL) is a wonderful human readable filtering language. implementing query based search engines was never that easy.
+Tree Search Language (TSL) is a wonderful human readable filtering language. Implementing query based filtering engines was never that easy.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/yaacov/tsl)](https://goreportcard.com/report/github.com/yaacov/tsl)
 [![Build Status](https://travis-ci.org/yaacov/tsl.svg?branch=master)](https://travis-ci.org/yaacov/tsl)
@@ -14,13 +14,6 @@ Tree Search Language (TSL) is a wonderful human readable filtering language. imp
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 The TSL language grammar is human readable and similar to SQL syntax.
-
-## Usage
-
-See some code snippets [here](https://github.com/yaacov/tsl#code-examples).
-
-For complete working code examples, see the CLI tools [direcotry](/cmd)
-( see more on TSL's CLI tools usage [here](https://github.com/yaacov/tsl#cli-tools) ).
 
 ## Install
 
@@ -77,6 +70,15 @@ go get -v "github.com/yaacov/tsl/cmd/tsl_sqlite"
 go get -v "github.com/yaacov/tsl/cmd/tsl_gorm"
 go get -v "github.com/yaacov/tsl/cmd/tsl_graphql"
 ```
+
+## Usage
+
+See some code snippets [here](https://github.com/yaacov/tsl#code-examples).
+
+## Complete working demos
+
+For complete working code examples, see the CLI tools code at [/cmd](/cmd).
+For CLI tools usage examples see [CLI tools usage](https://github.com/yaacov/tsl#cli-tools) ).
 
 ## TSL syntax examples
 
