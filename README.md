@@ -78,7 +78,7 @@ See some code snippets [here](https://github.com/yaacov/tsl#code-examples).
 ## Complete working demos
 
 For complete working code examples, see the CLI tools code at [/cmd](/cmd).
-For CLI tools usage examples see [CLI tools usage](https://github.com/yaacov/tsl#cli-tools) ).
+For CLI tools usage examples see [CLI tools usage](https://github.com/yaacov/tsl#cli-tools).
 
 ## TSL syntax examples
 
