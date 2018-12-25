@@ -25,22 +25,22 @@ import (
 // Users can call the Walk method to check and replace identifiers.
 //
 // Example:
-//    columnNamesMap :=  map[string]string{
+//  	columnNamesMap :=  map[string]string{
 //  		"title":       "title",
 //  		"author":      "author",
 //  		"spec.pages":  "pages",
 //  		"spec.rating": "rating",
 //  	}
 //
-//   func check(s string) (string, error) {
-//   	// Chekc for column name in map.
-//   	if v, ok := columnNamesMap[s]; ok {
-//  		return v, nil
-//  	}
+//  	func check(s string) (string, error) {
+//  		// Chekc for column name in map.
+//  		if v, ok := columnNamesMap[s]; ok {
+//  			return v, nil
+//  		}
 //
-//  	// If not found return string as is, and an error.
-//  	return s, fmt.Errorf("column not found")
-//   }
+//  		// If not found return string as is, and an error.
+//  		return s, fmt.Errorf("column not found")
+//  	}
 //
 //  	// Check and replace user identifiers with the SQL table column names.
 //  	//
