@@ -6,6 +6,6 @@ env:
   - GO111MODULE=on
 script:
   - GO111MODULE=off go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+  - make
   - make lint
   - make test
-  - make
