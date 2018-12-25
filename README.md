@@ -29,7 +29,7 @@ go version go1.11.2 linux/amd64
 Clone the TSL `git` repository, and run `make`:
 
 ```
-[ export GO111MODULE=on if we are on $GOPATH, we need to explicitly set modules on ]
+[ export GO111MODULE=on # if we are on $GOPATH, we need to explicitly set modules on ]
 git clone git@github.com:yaacov/tsl.git
 cd tsl
 make
