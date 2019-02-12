@@ -41,7 +41,6 @@ tsl_graphql: $(tsl_graphql_src)
 tsl_mem: $(tsl_mem_src)
 	go build ./cmd/tsl_mem
 
-
 .PHONY: lint
 lint:
 	golangci-lint \
