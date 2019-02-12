@@ -28,12 +28,22 @@ var Books = []Book{}
 func prepareCollection() (err error) {
 	// Insert new books into the table.
 	for _, b := range model.Books {
-		Books = append(Books, Book{
-			"title":       b.(model.Book).Title,
-			"author":      b.(model.Book).Author,
-			"spec.pages":  b.(model.Book).Spec.Pages,
-			"spec.rating": b.(model.Book).Spec.Rating,
-		})
+		// Create a new book.
+		newBook := Book{
+			"title":  b.(model.Book).Title,
+			"author": b.(model.Book).Author,
+		}
+
+		// Add optional parameters.
+		if b.(model.Book).Spec.Pages > 0 {
+			newBook["spec.pages"] = b.(model.Book).Spec.Pages
+		}
+		if b.(model.Book).Spec.Rating > 0 {
+			newBook["spec.rating"] = b.(model.Book).Spec.Rating
+		}
+
+		// Insert new book to the books arra.
+		Books = append(Books, newBook)
 	}
 
 	return

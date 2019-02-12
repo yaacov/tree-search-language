@@ -33,6 +33,11 @@ func handleIdent(n tsl.Node, book Book) tsl.Node {
 			Func: tsl.StringOp,
 			Left: book[l.Left.(string)].(string),
 		}
+	case float64:
+		n.Left = tsl.Node{
+			Func: tsl.StringOp,
+			Left: book[l.Left.(string)].(float64),
+		}
 	case int:
 		n.Left = tsl.Node{
 			Func: tsl.NumberOp,
@@ -46,19 +51,56 @@ func handleIdent(n tsl.Node, book Book) tsl.Node {
 	default:
 		n.Left = tsl.Node{
 			Func: tsl.NumberOp,
-			Left: book[l.Left.(string)].(float64),
+			Left: nil,
 		}
 	}
 
 	return n
 }
 
+func handleNullOp(n tsl.Node, book Book) (bool, error) {
+	var left interface{}
+	var right interface{}
+
+	r, ok := n.Right.(tsl.Node)
+	if ok {
+		right = r.Left
+	} else {
+		right = nil
+	}
+	l, ok := n.Left.(tsl.Node)
+	if ok {
+		left = l.Left
+	} else {
+		left = nil
+	}
+
+	switch n.Func {
+	case tsl.EqOp:
+		return left == right, nil
+	case tsl.NotEqOp:
+		return left != right, nil
+	case tsl.IsNilOp:
+		return left == nil, nil
+	case tsl.IsNotNilOp:
+		return left != nil, nil
+	}
+
+	return false, fmt.Errorf("not supported null operator")
+}
+
 func handleStringOp(n tsl.Node, book Book) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
-	left := l.Left.(string)
-	right := r.Left.(string)
+	left, ok := l.Left.(string)
+	if !ok {
+		return handleNullOp(n, book)
+	}
+	right, ok := r.Left.(string)
+	if !ok {
+		return handleNullOp(n, book)
+	}
 
 	switch n.Func {
 	case tsl.EqOp:
@@ -73,6 +115,10 @@ func handleStringOp(n tsl.Node, book Book) (bool, error) {
 		return left > right, nil
 	case tsl.GteOp:
 		return left >= right, nil
+	case tsl.IsNilOp:
+		return false, nil
+	case tsl.IsNotNilOp:
+		return true, nil
 	case tsl.RegexOp:
 		var valid = regexp.MustCompile(right)
 		return valid.MatchString(left), nil
@@ -88,8 +134,14 @@ func handleNumberOp(n tsl.Node, book Book) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
-	left := l.Left.(float64)
-	right := r.Left.(float64)
+	left, ok := l.Left.(float64)
+	if !ok {
+		return handleNullOp(n, book)
+	}
+	right, ok := r.Left.(float64)
+	if !ok {
+		return handleNullOp(n, book)
+	}
 
 	switch n.Func {
 	case tsl.EqOp:
@@ -104,6 +156,10 @@ func handleNumberOp(n tsl.Node, book Book) (bool, error) {
 		return left > right, nil
 	case tsl.GteOp:
 		return left >= right, nil
+	case tsl.IsNilOp:
+		return false, nil
+	case tsl.IsNotNilOp:
+		return true, nil
 	}
 
 	return false, fmt.Errorf("not supported number operator")
@@ -113,8 +169,14 @@ func handleStringArrayOp(n tsl.Node, book Book) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
-	left := l.Left.(string)
-	right := r.Right.([]tsl.Node)
+	left, ok := l.Left.(string)
+	if !ok {
+		return handleNullOp(n, book)
+	}
+	right, ok := r.Right.([]tsl.Node)
+	if !ok {
+		return handleNullOp(n, book)
+	}
 
 	switch n.Func {
 	case tsl.BetweenOp:
@@ -146,8 +208,14 @@ func handleNumberArrayOp(n tsl.Node, book Book) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
-	left := l.Left.(float64)
-	right := r.Right.([]tsl.Node)
+	left, ok := l.Left.(float64)
+	if !ok {
+		return handleNullOp(n, book)
+	}
+	right, ok := r.Right.([]tsl.Node)
+	if !ok {
+		return handleNullOp(n, book)
+	}
 
 	switch n.Func {
 	case tsl.BetweenOp:
@@ -218,6 +286,15 @@ func Walk(n tsl.Node, book Book) (bool, error) {
 			if r.Func == tsl.ArrayOp {
 				return handleNumberArrayOp(n, book)
 			}
+		}
+	case tsl.IsNotNilOp, tsl.IsNilOp:
+		l := n.Left.(tsl.Node)
+
+		switch l.Func {
+		case tsl.IdentOp:
+			return Walk(handleIdent(n, book), book)
+		default:
+			return handleNullOp(n, book)
 		}
 	case tsl.AndOp, tsl.OrOp:
 		return handleLogicalOp(n, book)
