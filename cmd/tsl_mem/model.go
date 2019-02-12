@@ -17,16 +17,24 @@
 
 package main
 
+import "github.com/yaacov/tsl/cmd/model"
+
+// Book represent one book in our in memory data table.
 type Book map[string]interface{}
 
 // Books are the demo list of books.
-var Books = []Book{
-	{"title": "Book", "author": "Joe", "spec.pages": 100, "spec.rating": 4},
-	{"title": "Other Book", "author": "Jane", "spec.pages": 200, "spec.rating": 3},
-	{"title": "Some Book", "author": "Jane", "spec.pages": 50},
-	{"title": "Some Other Book", "author": "Jane", "spec.pages": 50, "spec.rating": 4},
-	{"title": "Good Book", "author": "Joe", "spec.pages": 150, "spec.rating": 4},
-	{"title": "Some Great Book", "author": "Jane", "spec.pages": 550, "spec.rating": 2},
-	{"title": "Other Great Book", "author": "Jane", "spec.pages": 250},
-	{"title": "My Big Book", "author": "Joe", "spec.pages": 15, "spec.rating": 5},
+var Books = []Book{}
+
+func prepareCollection() (err error) {
+	// Insert new books into the table.
+	for _, b := range model.Books {
+		Books = append(Books, Book{
+			"title":       b.(model.Book).Title,
+			"author":      b.(model.Book).Author,
+			"spec.pages":  b.(model.Book).Spec.Pages,
+			"spec.rating": b.(model.Book).Spec.Rating,
+		})
+	}
+
+	return
 }

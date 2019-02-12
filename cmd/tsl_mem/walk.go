@@ -38,6 +38,11 @@ func handleIdent(n tsl.Node, book Book) tsl.Node {
 			Func: tsl.NumberOp,
 			Left: float64(book[l.Left.(string)].(int)),
 		}
+	case uint:
+		n.Left = tsl.Node{
+			Func: tsl.NumberOp,
+			Left: float64(book[l.Left.(string)].(uint)),
+		}
 	default:
 		n.Left = tsl.Node{
 			Func: tsl.NumberOp,

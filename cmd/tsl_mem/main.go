@@ -53,6 +53,11 @@ func main() {
 	tree, err := tsl.ParseTSL(*inputPtr)
 	check(err)
 
+	// Prepare the books in memeory collection.
+	err = prepareCollection()
+	check(err)
+
+	// Fileter the books collection using our stl tree.
 	for _, book := range Books {
 		walk, err := Walk(tree, book)
 		check(err)
@@ -61,6 +66,7 @@ func main() {
 		}
 	}
 
+	// Printout the filtered list.
 	switch *outputPtr {
 	case "json":
 		s, err = json.Marshal(books)
@@ -68,6 +74,8 @@ func main() {
 		s, err = yaml.Marshal(books)
 	case "prettyjson":
 		s, err = prettyjson.Marshal(books)
+	default:
+		err = fmt.Errorf("unsuported output format: %s", *outputPtr)
 	}
 
 	check(err)

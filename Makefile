@@ -14,24 +14,31 @@
 # limitations under the License.
 #
 
+tsl_parser_src := $(wildcard ./cmd/tsl_parser/*.go)
+tsl_sqlite_src := $(wildcard ./cmd/tsl_sqlite/*.go)
+tsl_gorm_src := $(wildcard ./cmd/tsl_gorm/*.go)
+tsl_mongo_src := $(wildcard ./cmd/tsl_mongo/*.go)
+tsl_graphql_src := $(wildcard ./cmd/tsl_graphql/*.go)
+tsl_mem_src := $(wildcard ./cmd/tsl_mem/*.go)
+
 all: fmt tsl_parser tsl_sqlite tsl_gorm tsl_mongo tsl_graphql tsl_mem
 
-tsl_parser:
+tsl_parser: $(tsl_parser_src)
 	go build ./cmd/tsl_parser
 
-tsl_sqlite:
+tsl_sqlite: $(tsl_sqlite_src)
 	go build ./cmd/tsl_sqlite
 
-tsl_gorm:
+tsl_gorm: $(tsl_gorm_src)
 	go build ./cmd/tsl_gorm
 
-tsl_mongo:
+tsl_mongo: $(tsl_mongo_src)
 	go build ./cmd/tsl_mongo
 
-tsl_graphql:
+tsl_graphql: $(tsl_graphql_src)
 	go build ./cmd/tsl_graphql
 
-tsl_mem:
+tsl_mem: $(tsl_mem_src)
 	go build ./cmd/tsl_mem
 
 
