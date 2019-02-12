@@ -222,8 +222,14 @@ func handleLogicalOp(n tsl.Node, book Book) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
-	right, _ := Walk(r, book)
-	left, _ := Walk(l, book)
+	right, err := Walk(r, book)
+	if err != nil {
+		return false, err
+	}
+	left, err := Walk(l, book)
+	if err != nil {
+		return false, err
+	}
 
 	switch n.Func {
 	case tsl.AndOp:
