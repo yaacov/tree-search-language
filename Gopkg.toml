@@ -27,7 +27,7 @@
 
 [[constraint]]
   name = "github.com/Masterminds/squirrel"
-  version = "1.0.0"
+  version = "1.1.0"
 
 [[constraint]]
   name = "github.com/antlr/antlr4"
@@ -51,7 +51,7 @@
 
 [[constraint]]
   name = "github.com/mongodb/mongo-go-driver"
-  version = "0.1.0"
+  version = "0.3.0"
 
 [[constraint]]
   name = "gopkg.in/yaml.v2"

@@ -19,6 +19,7 @@
 /tsl_gorm
 /tsl_mongo
 /tsl_graphql
+/tsl_mem
 
 /data/
 /vendor/
