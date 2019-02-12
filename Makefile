@@ -14,7 +14,7 @@
 # limitations under the License.
 #
 
-all: fmt tsl_parser tsl_sqlite tsl_gorm tsl_mongo tsl_graphql
+all: fmt tsl_parser tsl_sqlite tsl_gorm tsl_mongo tsl_graphql tsl_mem
 
 tsl_parser:
 	go build ./cmd/tsl_parser
@@ -30,6 +30,10 @@ tsl_mongo:
 
 tsl_graphql:
 	go build ./cmd/tsl_graphql
+
+tsl_mem:
+	go build ./cmd/tsl_mem
+
 
 .PHONY: lint
 lint:
@@ -69,6 +73,7 @@ clean:
 	rm tsl_mongo
 	rm tsl_sqlite
 	rm tsl_graphql
+	rm tsl_mem
 
 .PHONY: test
 test:
@@ -77,6 +82,7 @@ test:
 	go test ./cmd/tsl_gorm
 	go test ./cmd/tsl_mongo
 	go test ./cmd/tsl_graphql
+	go test ./cmd/tsl_mem
 	go test ./pkg/tsl
 	go test ./pkg/walkers/sql
 	go test ./pkg/walkers/mongo
