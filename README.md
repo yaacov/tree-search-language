@@ -268,6 +268,8 @@ The example cli tools showcase the TSL language and `tsl` golang package, see th
 
 ##### tls_parser
 
+`tsl_parser` is a basic example, showing how to parse a `tsl phras`e into a `tsl tree`.
+
 ``` bash
 $ ./tsl_parser -h
 Usage of ./tls_parser:
@@ -347,6 +349,9 @@ root -> { XVlB, zgba }
 
 ##### tsl_mongo
 
+`tsl_mongo` is an example showing `tsl` use with a `mongodb`.
+
+
 ``` bash
 $ ./tsl_mongo -h
 Usage of ./tsl_mongo:
@@ -391,6 +396,8 @@ $ ./tsl_mongo -i "title ~= 'Other' and spec.rating > 1" | jq
 
 ##### tsl_sqlite
 
+`tsl_sqlite` is an example showing `tsl` use with `sqlite`.
+
 ``` bash
 $ ./tsl_sqlite -h
 Usage of ./tsl_sqlite:
@@ -426,6 +433,8 @@ $ ./tsl_sqlite -i "$SQL" -p | jq
 
 ##### tsl_gorm
 
+`tsl_gorm` is an example showing `tsl` use the `gorm` package.
+
 ``` bash
 $ ./tsl_gorm -h
 Usage of ./tsl_gorm:
@@ -459,7 +468,23 @@ $ ./tsl_gorm -i "$SQL" -p | jq
 }
 ```
 
+##### tsl_mem
+
+`tsl_mem` is an advanced example showing a custom walker, implementing in-memory sql server.
+
+``` bash
+ $ ./tsl_mem -i "spec.rating > 4 and title ~= 'Big'" -o yaml
+ ```
+ ``` yaml
+- author: Joe
+  spec.pages: 15
+  spec.rating: 5
+  title: My Big Book
+```
+
 ##### tsl_graphql
+
+`tsl_graphql` is an example showing a `graphql` serve using `tsl`.
 
 ``` bash
 $ ./tsl_graphql -h
