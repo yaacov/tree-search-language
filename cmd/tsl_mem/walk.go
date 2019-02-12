@@ -60,14 +60,7 @@ func handleIdent(n tsl.Node, book Book) tsl.Node {
 
 func handleNullOp(n tsl.Node, book Book) (bool, error) {
 	var left interface{}
-	var right interface{}
 
-	r, ok := n.Right.(tsl.Node)
-	if ok {
-		right = r.Left
-	} else {
-		right = nil
-	}
 	l, ok := n.Left.(tsl.Node)
 	if ok {
 		left = l.Left
@@ -77,9 +70,11 @@ func handleNullOp(n tsl.Node, book Book) (bool, error) {
 
 	switch n.Func {
 	case tsl.EqOp:
-		return left == right, nil
+		// if here left must be null and right must be not null
+		return false, nil
 	case tsl.NotEqOp:
-		return left != right, nil
+		// if here left must be null and right must be not null
+		return true, nil
 	case tsl.IsNilOp:
 		return left == nil, nil
 	case tsl.IsNotNilOp:
@@ -97,10 +92,7 @@ func handleStringOp(n tsl.Node, book Book) (bool, error) {
 	if !ok {
 		return handleNullOp(n, book)
 	}
-	right, ok := r.Left.(string)
-	if !ok {
-		return handleNullOp(n, book)
-	}
+	right := r.Left.(string)
 
 	switch n.Func {
 	case tsl.EqOp:
@@ -115,10 +107,6 @@ func handleStringOp(n tsl.Node, book Book) (bool, error) {
 		return left > right, nil
 	case tsl.GteOp:
 		return left >= right, nil
-	case tsl.IsNilOp:
-		return false, nil
-	case tsl.IsNotNilOp:
-		return true, nil
 	case tsl.RegexOp:
 		var valid = regexp.MustCompile(right)
 		return valid.MatchString(left), nil
@@ -138,10 +126,7 @@ func handleNumberOp(n tsl.Node, book Book) (bool, error) {
 	if !ok {
 		return handleNullOp(n, book)
 	}
-	right, ok := r.Left.(float64)
-	if !ok {
-		return handleNullOp(n, book)
-	}
+	right := r.Left.(float64)
 
 	switch n.Func {
 	case tsl.EqOp:
@@ -156,10 +141,6 @@ func handleNumberOp(n tsl.Node, book Book) (bool, error) {
 		return left > right, nil
 	case tsl.GteOp:
 		return left >= right, nil
-	case tsl.IsNilOp:
-		return false, nil
-	case tsl.IsNotNilOp:
-		return true, nil
 	}
 
 	return false, fmt.Errorf("not supported number operator")
@@ -171,12 +152,9 @@ func handleStringArrayOp(n tsl.Node, book Book) (bool, error) {
 
 	left, ok := l.Left.(string)
 	if !ok {
-		return handleNullOp(n, book)
+		return false, fmt.Errorf("not supported string array null operator")
 	}
-	right, ok := r.Right.([]tsl.Node)
-	if !ok {
-		return handleNullOp(n, book)
-	}
+	right := r.Right.([]tsl.Node)
 
 	switch n.Func {
 	case tsl.BetweenOp:
@@ -210,12 +188,9 @@ func handleNumberArrayOp(n tsl.Node, book Book) (bool, error) {
 
 	left, ok := l.Left.(float64)
 	if !ok {
-		return handleNullOp(n, book)
+		return false, fmt.Errorf("not supported number array null operator")
 	}
-	right, ok := r.Right.([]tsl.Node)
-	if !ok {
-		return handleNullOp(n, book)
-	}
+	right := r.Right.([]tsl.Node)
 
 	switch n.Func {
 	case tsl.BetweenOp:
