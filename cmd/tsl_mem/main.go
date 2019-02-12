@@ -19,11 +19,14 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
 
+	prettyjson "github.com/hokaccha/go-prettyjson"
 	"github.com/yaacov/tsl/pkg/tsl"
+	yaml "gopkg.in/yaml.v2"
 )
 
 func check(err error) {
@@ -34,9 +37,11 @@ func check(err error) {
 
 func main() {
 	var s []byte
+	books := []Book{}
 
 	// Setup the input.
 	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"title = 'kitty'\")")
+	outputPtr := flag.String("o", "json", "output format [json/yaml/prettyjson]")
 	flag.Parse()
 
 	// Sanity check.
@@ -52,9 +57,19 @@ func main() {
 		walk, err := Walk(tree, book)
 		check(err)
 		if walk {
-			fmt.Printf("%+v\n", book)
+			books = append(books, book)
 		}
 	}
 
-	fmt.Println(string(s))
+	switch *outputPtr {
+	case "json":
+		s, err = json.Marshal(books)
+	case "yaml":
+		s, err = yaml.Marshal(books)
+	case "prettyjson":
+		s, err = prettyjson.Marshal(books)
+	}
+
+	check(err)
+	fmt.Printf("%s\n", s)
 }
