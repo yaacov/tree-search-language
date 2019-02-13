@@ -6,7 +6,7 @@
 
 # Tree Search Language (TSL)
 
-Tree Search Language (TSL) is a wonderful human readable filtering language. Implementing query based filtering engines was never that easy.
+Tree Search Language (TSL) is a wonderful human readable filtering language.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/yaacov/tsl)](https://goreportcard.com/report/github.com/yaacov/tsl)
 [![Build Status](https://travis-ci.org/yaacov/tsl.svg?branch=master)](https://travis-ci.org/yaacov/tsl)
@@ -14,6 +14,66 @@ Tree Search Language (TSL) is a wonderful human readable filtering language. Imp
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 The TSL language grammar is human readable and similar to SQL syntax.
+
+## What does it do ?
+
+The TSL package parses `tsl pharses` into `tsl trees`, it also include extra `walkers` pakages that add
+optional sematics for common usages, for example SQL exporter, in-memory search and BSON object search builder. 
+
+#### Parsing tsl phrases
+
+For example, this `tsl phrase`:
+``` sql
+name like '%joe%' and (city = 'paris' or city = 'milan')
+```
+
+Will be parsed into this `tsl tree`:
+![TSL](/img/example_a.png?raw=true "example tree")
+
+## What I can do with it ?
+
+You can use the TSL package to add uniform and powefull filtering to your RESTful API or GraphQL services, implement recipe searches for your smart coffee machine, or even make your own memory based SQL server like we show in the `tsl_mem` example ([examples code](/cmd/)):
+
+``` bash
+$  ./tsl_mem -i "spec.rating is not null and author ~= 'Joe'" -o prettyjson
+```
+``` json
+[
+  {
+    "author": "Joe",
+    "spec.pages": 100,
+    "spec.rating": 4,
+    "title": "Book"
+  },
+  {
+    "author": "Joe",
+    "spec.pages": 150,
+    "spec.rating": 4,
+    "title": "Good Book"
+  },
+  {
+    "author": "Joe",
+    "spec.pages": 15,
+    "spec.rating": 5,
+    "title": "My Big Book"
+  }
+]
+```
+
+``` bash
+ $  ./tsl_mem -i "spec.rating is null and spec.pages < 250" -o prettyjson
+ ```
+ ``` json
+[
+  {
+    "author": "Jane",
+    "spec.pages": 50,
+    "title": "Some Other Book"
+  }
+]
+
+```
+
 
 ## Install
 
