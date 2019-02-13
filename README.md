@@ -608,17 +608,3 @@ and or not is null like between in
 ##### Operators
 ```
 = <= >= != ~= ~! <> + - * / %
-```
-##### Examples
-```
-name = 'Joe'
-```
-```
-city in ('paris', 'rome', 'milan') or sate = 'spain'
-```
-```
-(name = 'joe' or city = 'rome') and state = 'italy'
-```
-```
-net.tx + net.rx > 2000 or mem.total - mem.usage < 1000
-```
