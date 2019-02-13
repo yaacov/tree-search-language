@@ -65,7 +65,7 @@ $  ./tsl_mem -i "spec.rating is not null and author ~= 'Joe'" -o prettyjson
 
 ## What does it do ?
 
-The TSL package parses `tsl pharses` into `tsl trees`, it also include extra `walkers` that iterate (walk) over the `tsl tree` to perform exhilarating tasks, for example convert a `tsl tree` into a SQL expression, create in-memory search engines and BSON object exporters. 
+The TSL package parses `tsl pharses` into `tsl trees`, it also include extra `walkers` that iterate (walk) over the `tsl tree` to perform exhilarating tasks, for example, convert a `tsl tree` into an SQL expression, create in-memory search engines and BSON object exporters. 
 
 #### Parsing tsl phrases
 
