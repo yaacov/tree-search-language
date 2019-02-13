@@ -18,7 +18,7 @@ The TSL language grammar is human readable and similar to SQL syntax.
 ## Awsome:
 
 -  [What I can do with it ?](#what-i-can-do-with-it-)
--  [what does it do ?](#what-does-it-do-)
+-  [What does it do ?](#what-does-it-do-)
 -  [Cool logo](#cool-logo)
 -  [Install](#install)
 -  [Syntax examples](#syntax-examples)
