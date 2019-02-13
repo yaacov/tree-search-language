@@ -22,7 +22,7 @@ The TSL language grammar is human readable and similar to SQL syntax.
 -  [Cool logo](#cool-logo)
 -  [Install](#install)
 -  [Syntax examples](#syntax-examples)
--  [code-examples](#code-examples)
+-  [Code examples](#code-examples)
 -  [CLI tools](#cli-tools)
 -  [Grammar](#grammar)
 
