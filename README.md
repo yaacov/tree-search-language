@@ -21,7 +21,7 @@ You can use the TSL package to add uniform and powefull filtering to your RESTfu
 
 ([more examples](/cmd/))
 
-Look, here is an in memory SQL server example, using the TSL package:
+Look, here is an in memory search engine, it is using the TSL package to filter through an array of books using `sql phrases`:
 
 ``` bash
 $  ./tsl_mem -i "spec.rating is not null and author ~= 'Joe'" -o prettyjson
