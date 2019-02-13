@@ -21,7 +21,7 @@ You can use the TSL package to add uniform and powefull filtering to your RESTfu
 
 ([more examples](/cmd/))
 
-Here is an in-memory search engine, it is using the TSL package to filter through an in-memory array of books using `tsl phrases`:
+Here is an in-memory search engine, it is using the TSL package to filter through an in-memory array of books using "SQL like" `tsl phrases`:
 
 ``` bash
 $  ./tsl_mem -i "spec.rating is not null and author ~= 'Joe'" -o prettyjson
