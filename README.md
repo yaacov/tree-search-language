@@ -18,7 +18,7 @@ The TSL language grammar is human readable and similar to SQL syntax.
 ## What does it do ?
 
 The TSL package parses `tsl pharses` into `tsl trees`, it also include extra `walkers` pakages that add
-optional sematics for common usages, for example SQL exporter, in-memory search and BSON object search builder. 
+optional sematics for common usages, for example SQL exporter, in-memory search and BSON object builder. 
 
 #### Parsing tsl phrases
 
