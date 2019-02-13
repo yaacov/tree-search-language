@@ -21,6 +21,8 @@ You can use the TSL package to add uniform and powefull filtering to your RESTfu
 
 ([more examples](/cmd/))
 
+Look, here is an in memory SQL server example, using the TSL package:
+
 ``` bash
 $  ./tsl_mem -i "spec.rating is not null and author ~= 'Joe'" -o prettyjson
 ```
