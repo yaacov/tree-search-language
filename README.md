@@ -15,21 +15,6 @@ Tree Search Language (TSL) is a wonderful human readable filtering language.
 
 The TSL language grammar is human readable and similar to SQL syntax.
 
-## What does it do ?
-
-The TSL package parses `tsl pharses` into `tsl trees`, it also include extra `walkers` pakages that add
-optional sematics for common usages, for example SQL exporter, in-memory search engine and BSON object builder. 
-
-#### Parsing tsl phrases
-
-For example, this `tsl phrase`:
-``` sql
-name like '%joe%' and (city = 'paris' or city = 'milan')
-```
-
-Will be parsed into this `tsl tree`:
-![TSL](/img/example_a.png?raw=true "example tree")
-
 ## What I can do with it ?
 
 You can use the TSL package to add uniform and powefull filtering to your RESTful API or GraphQL services, implement recipe searches for your smart coffee machine, or even make your own memory based SQL server like we show in the `tsl_mem` example:
@@ -76,6 +61,24 @@ $  ./tsl_mem -i "spec.rating is not null and author ~= 'Joe'" -o prettyjson
 
 ```
 
+## What does it do ?
+
+The TSL package parses `tsl pharses` into `tsl trees`, it also include extra `walkers` pakages that add
+optional sematics for common usages, for example SQL exporter, in-memory search engine and BSON object builder. 
+
+#### Parsing tsl phrases
+
+For example, this `tsl phrase`:
+``` sql
+name like '%joe%' and (city = 'paris' or city = 'milan')
+```
+
+Will be parsed into this `tsl tree`:
+![TSL](/img/example_a.png?raw=true "example tree")
+
+## Cool logo :sunglasses:
+
+Awesome logo image by [gophers...](https://github.com/egonelbre/gophers).
 
 ## Install
 
@@ -618,7 +621,3 @@ city in ('paris', 'rome', 'milan') or sate = 'spain'
 ```
 net.tx + net.rx > 2000 or mem.total - mem.usage < 1000
 ```
-
-## Logo
-
-[ awesome logo image by [gophers...](https://github.com/egonelbre/gophers) ]
