@@ -44,12 +44,12 @@ type Doc map[string]interface{}
 //
 //  	// Check if our record complie with our tsl tree.
 //  	//
-//      // For example:
+//  	// For example:
 //  	//   if our tsl tree represents the tsl phrase "author = 'Joe'"
-//      //   we will get the boolean value `true` for our record.
-//      //
-//      //   if our tsl tree represents the tsl phrase "spec.pages > 50"
-//      //   we will get the boolean value `false` for our record.
+//  	//   we will get the boolean value `true` for our record.
+//  	//
+//  	//   if our tsl tree represents the tsl phrase "spec.pages > 50"
+//  	//   we will get the boolean value `false` for our record.
 //  	compliance, err = semantics.Walk(tree, record)
 //
 func Walk(n tsl.Node, book Doc) (bool, error) {
