@@ -28,7 +28,7 @@ The TSL language grammar is human readable and similar to SQL syntax.
 
 ## What I can do with it ?
 
-You can use the TSL package to add uniform and powefull filtering to your RESTful API or GraphQL services, implement brewing-recipe searches on your smart tea brewer, or even make your own memory based SQL server like our `tsl_mem` cli example.
+You can use the TSL package to add uniform and powefull filtering to your RESTful API or GraphQL services, implement brewing-recipe searches on your smart tea brewer, or even make your own memory based "SQL like" server like our `tsl_mem` cli example.
 
 ([more examples](/cmd/))
 
