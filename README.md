@@ -15,6 +15,17 @@ Tree Search Language (TSL) is a wonderful human readable filtering language.
 
 The TSL language grammar is human readable and similar to SQL syntax.
 
+## Awsome:
+
+-  [What I can do with it ?](#what-i-can-do-with-it-)
+-  [what does it do ?](#what-does-it-do-)
+-  [Cool logo](#cool-logo)
+-  [Install](#install)
+-  [Syntax examples](#syntax-examples)
+-  [code-examples](#code-examples)
+-  [CLI tools](#cli-tools)
+-  [Grammar](#grammar)
+
 ## What I can do with it ?
 
 You can use the TSL package to add uniform and powefull filtering to your RESTful API or GraphQL services, implement brewing-recipe searches on your smart tea brewer, or even make your own memory based SQL server like our `tsl_mem` cli example.
@@ -137,7 +148,7 @@ go get -v "github.com/yaacov/tsl/cmd/tsl_gorm"
 go get -v "github.com/yaacov/tsl/cmd/tsl_graphql"
 ```
 
-## TSL syntax examples
+## Syntax examples
 
 #### Operator precedence
 
@@ -319,9 +330,9 @@ tree, err = ident.Walk(tree, checkColumnName)
 ...
 ```
 
-## Cli tools
+## CLI tools
 
-The example cli tools showcase the TSL language and `tsl` golang package, see the [cmd](/cmd) directory for code.
+The example CLI tools showcase the TSL language and `tsl` golang package, see the [cmd](/cmd) directory for code.
 
 ##### tls_parser
 
