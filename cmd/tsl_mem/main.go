@@ -37,7 +37,7 @@ func check(err error) {
 
 func main() {
 	var s []byte
-	books := []Book{}
+	books := []Doc{}
 
 	// Setup the input.
 	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"title = 'kitty'\")")

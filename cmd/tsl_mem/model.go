@@ -19,17 +19,14 @@ package main
 
 import "github.com/yaacov/tsl/cmd/model"
 
-// Book represent one book in our in memory data table.
-type Book map[string]interface{}
-
 // Books are the demo list of books.
-var Books = []Book{}
+var Books = []Doc{}
 
 func prepareCollection() (err error) {
 	// Insert new books into the table.
 	for _, b := range model.Books {
 		// Create a new book.
-		newBook := Book{
+		newBook := Doc{
 			"title":  b.(model.Book).Title,
 			"author": b.(model.Book).Author,
 		}

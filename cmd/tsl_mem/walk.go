@@ -24,7 +24,10 @@ import (
 	"github.com/yaacov/tsl/pkg/tsl"
 )
 
-func handleIdent(n tsl.Node, book Book) (tsl.Node, error) {
+// Doc represent one document in our in-memmory data base.
+type Doc map[string]interface{}
+
+func handleIdent(n tsl.Node, book Doc) (tsl.Node, error) {
 	var err error
 
 	l := n.Left.(tsl.Node)
@@ -96,7 +99,7 @@ func handleIdent(n tsl.Node, book Book) (tsl.Node, error) {
 	return n, err
 }
 
-func handleStringOp(n tsl.Node, book Book) (bool, error) {
+func handleStringOp(n tsl.Node, book Doc) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
@@ -117,17 +120,23 @@ func handleStringOp(n tsl.Node, book Book) (bool, error) {
 	case tsl.GteOp:
 		return left >= right, nil
 	case tsl.RegexOp:
-		var valid = regexp.MustCompile(right)
+		valid, err := regexp.Compile(right)
+		if err != nil {
+			return false, tsl.UnexpectedLiteralError{Literal: right}
+		}
 		return valid.MatchString(left), nil
 	case tsl.NotRegexOp:
-		var valid = regexp.MustCompile(right)
+		valid, err := regexp.Compile(right)
+		if err != nil {
+			return false, tsl.UnexpectedLiteralError{Literal: right}
+		}
 		return !valid.MatchString(left), nil
 	}
 
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }
 
-func handleNumberOp(n tsl.Node, book Book) (bool, error) {
+func handleNumberOp(n tsl.Node, book Doc) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
@@ -152,7 +161,7 @@ func handleNumberOp(n tsl.Node, book Book) (bool, error) {
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }
 
-func handleStringArrayOp(n tsl.Node, book Book) (bool, error) {
+func handleStringArrayOp(n tsl.Node, book Doc) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
@@ -185,7 +194,7 @@ func handleStringArrayOp(n tsl.Node, book Book) (bool, error) {
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }
 
-func handleNumberArrayOp(n tsl.Node, book Book) (bool, error) {
+func handleNumberArrayOp(n tsl.Node, book Doc) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
@@ -218,7 +227,7 @@ func handleNumberArrayOp(n tsl.Node, book Book) (bool, error) {
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }
 
-func handleLogicalOp(n tsl.Node, book Book) (bool, error) {
+func handleLogicalOp(n tsl.Node, book Doc) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
@@ -242,7 +251,7 @@ func handleLogicalOp(n tsl.Node, book Book) (bool, error) {
 }
 
 // Walk implements sql semantics.
-func Walk(n tsl.Node, book Book) (bool, error) {
+func Walk(n tsl.Node, book Doc) (bool, error) {
 	// Check for identifiers.
 	l := n.Left.(tsl.Node)
 	if l.Func == tsl.IdentOp {
