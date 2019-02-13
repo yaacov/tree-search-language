@@ -24,74 +24,83 @@ import (
 	"github.com/yaacov/tsl/pkg/tsl"
 )
 
-func handleIdent(n tsl.Node, book Book) tsl.Node {
+func handleIdent(n tsl.Node, book Book) (tsl.Node, error) {
+	var err error
+
 	l := n.Left.(tsl.Node)
 
-	switch book[l.Left.(string)].(type) {
+	switch v := book[l.Left.(string)].(type) {
 	case string:
 		n.Left = tsl.Node{
 			Func: tsl.StringOp,
-			Left: book[l.Left.(string)].(string),
+			Left: v,
+		}
+	case nil:
+		n.Left = tsl.Node{
+			Func: tsl.NullOp,
+			Left: nil,
+		}
+	case bool:
+		val := "false"
+		if v {
+			val = "true"
+		}
+		n.Left = tsl.Node{
+			Func: tsl.StringOp,
+			Left: val,
+		}
+	case float32:
+		n.Left = tsl.Node{
+			Func: tsl.NumberOp,
+			Left: float64(v),
 		}
 	case float64:
 		n.Left = tsl.Node{
-			Func: tsl.StringOp,
-			Left: book[l.Left.(string)].(float64),
+			Func: tsl.NumberOp,
+			Left: v,
+		}
+	case int32:
+		n.Left = tsl.Node{
+			Func: tsl.NumberOp,
+			Left: float64(v),
+		}
+	case int64:
+		n.Left = tsl.Node{
+			Func: tsl.NumberOp,
+			Left: float64(v),
+		}
+	case uint32:
+		n.Left = tsl.Node{
+			Func: tsl.NumberOp,
+			Left: float64(v),
+		}
+	case uint64:
+		n.Left = tsl.Node{
+			Func: tsl.NumberOp,
+			Left: float64(v),
 		}
 	case int:
 		n.Left = tsl.Node{
 			Func: tsl.NumberOp,
-			Left: float64(book[l.Left.(string)].(int)),
+			Left: float64(v),
 		}
 	case uint:
 		n.Left = tsl.Node{
 			Func: tsl.NumberOp,
-			Left: float64(book[l.Left.(string)].(uint)),
+			Left: float64(v),
 		}
 	default:
-		n.Left = tsl.Node{
-			Func: tsl.NumberOp,
-			Left: nil,
-		}
+		err = tsl.UnexpectedLiteralError{Literal: fmt.Sprintf("%s[%v]", l.Left.(string), v)}
 	}
 
-	return n
-}
-
-func handleNullOp(n tsl.Node, book Book) (bool, error) {
-	var left interface{}
-
-	l, ok := n.Left.(tsl.Node)
-	if ok {
-		left = l.Left
-	} else {
-		left = nil
-	}
-
-	switch n.Func {
-	case tsl.EqOp:
-		// if here left must be null and right must be not null
-		return false, nil
-	case tsl.NotEqOp:
-		// if here left must be null and right must be not null
-		return true, nil
-	case tsl.IsNilOp:
-		return left == nil, nil
-	case tsl.IsNotNilOp:
-		return left != nil, nil
-	}
-
-	return false, fmt.Errorf("not supported null operator")
+	return n, err
 }
 
 func handleStringOp(n tsl.Node, book Book) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
-	left, ok := l.Left.(string)
-	if !ok {
-		return handleNullOp(n, book)
-	}
+	left := l.Left.(string)
 	right := r.Left.(string)
 
 	switch n.Func {
@@ -115,17 +124,14 @@ func handleStringOp(n tsl.Node, book Book) (bool, error) {
 		return !valid.MatchString(left), nil
 	}
 
-	return false, fmt.Errorf("not supported string operator")
+	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }
 
 func handleNumberOp(n tsl.Node, book Book) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
-	left, ok := l.Left.(float64)
-	if !ok {
-		return handleNullOp(n, book)
-	}
+	left := l.Left.(float64)
 	right := r.Left.(float64)
 
 	switch n.Func {
@@ -143,17 +149,14 @@ func handleNumberOp(n tsl.Node, book Book) (bool, error) {
 		return left >= right, nil
 	}
 
-	return false, fmt.Errorf("not supported number operator")
+	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }
 
 func handleStringArrayOp(n tsl.Node, book Book) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
-	left, ok := l.Left.(string)
-	if !ok {
-		return false, fmt.Errorf("not supported string array null operator")
-	}
+	left := l.Left.(string)
 	right := r.Right.([]tsl.Node)
 
 	switch n.Func {
@@ -179,17 +182,14 @@ func handleStringArrayOp(n tsl.Node, book Book) (bool, error) {
 		return b, nil
 	}
 
-	return false, fmt.Errorf("not supported string array operator")
+	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }
 
 func handleNumberArrayOp(n tsl.Node, book Book) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
-	left, ok := l.Left.(float64)
-	if !ok {
-		return false, fmt.Errorf("not supported number array null operator")
-	}
+	left := l.Left.(float64)
 	right := r.Right.([]tsl.Node)
 
 	switch n.Func {
@@ -215,7 +215,7 @@ func handleNumberArrayOp(n tsl.Node, book Book) (bool, error) {
 		return b, nil
 	}
 
-	return false, fmt.Errorf("not supported number array operator")
+	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }
 
 func handleLogicalOp(n tsl.Node, book Book) (bool, error) {
@@ -238,21 +238,28 @@ func handleLogicalOp(n tsl.Node, book Book) (bool, error) {
 		return right || left, nil
 	}
 
-	return false, fmt.Errorf("not supported logical operator")
+	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }
 
 // Walk implements sql semantics.
 func Walk(n tsl.Node, book Book) (bool, error) {
+	// Check for identifiers.
+	l := n.Left.(tsl.Node)
+	if l.Func == tsl.IdentOp {
+		newNode, err := handleIdent(n, book)
+		if err != nil {
+			return false, err
+		}
+		return Walk(newNode, book)
+	}
+
 	// Walk tree.
 	switch n.Func {
 	case tsl.EqOp, tsl.NotEqOp, tsl.LtOp, tsl.LteOp, tsl.GtOp, tsl.GteOp, tsl.RegexOp, tsl.NotRegexOp,
 		tsl.BetweenOp, tsl.NotBetweenOp, tsl.NotInOp, tsl.InOp:
-		l := n.Left.(tsl.Node)
 		r := n.Right.(tsl.Node)
 
 		switch l.Func {
-		case tsl.IdentOp:
-			return Walk(handleIdent(n, book), book)
 		case tsl.StringOp:
 			if r.Func == tsl.StringOp {
 				return handleStringOp(n, book)
@@ -267,19 +274,17 @@ func Walk(n tsl.Node, book Book) (bool, error) {
 			if r.Func == tsl.ArrayOp {
 				return handleNumberArrayOp(n, book)
 			}
+		case tsl.NullOp:
+			// Any comparison operation on a null element is false.
+			return false, nil
 		}
-	case tsl.IsNotNilOp, tsl.IsNilOp:
-		l := n.Left.(tsl.Node)
-
-		switch l.Func {
-		case tsl.IdentOp:
-			return Walk(handleIdent(n, book), book)
-		default:
-			return handleNullOp(n, book)
-		}
+	case tsl.IsNotNilOp:
+		return l.Func != tsl.NullOp, nil
+	case tsl.IsNilOp:
+		return l.Func == tsl.NullOp, nil
 	case tsl.AndOp, tsl.OrOp:
 		return handleLogicalOp(n, book)
 	}
 
-	return false, fmt.Errorf("unimplemented syntax")
+	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }

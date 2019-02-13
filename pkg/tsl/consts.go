@@ -21,6 +21,7 @@ const (
 	ArrayOp      = "$array"  // Empty operator for arrays
 	StringOp     = "$string" // Empty operator for strings
 	NumberOp     = "$number" // Empty operator for numbers
+	NullOp       = "$null"   // Empty operator for nulls
 	LtOp         = "$lt"
 	LteOp        = "$lte"
 	GtOp         = "$gt"
