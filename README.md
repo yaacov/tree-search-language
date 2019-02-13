@@ -77,7 +77,7 @@ name like '%joe%' and (city = 'paris' or city = 'milan')
 Will be parsed into this `tsl tree`:
 ![TSL](/img/example_a.png?raw=true "example tree")
 
-## Cool logo :sunglasses:
+## Cool logo
 
 Awesome logo image by [gophers...](https://github.com/egonelbre/gophers).
 
