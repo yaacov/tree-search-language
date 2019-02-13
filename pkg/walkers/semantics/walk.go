@@ -89,6 +89,8 @@ func Walk(n tsl.Node, book Doc) (bool, error) {
 			// Any comparison operation on a null element is false.
 			return false, nil
 		}
+
+		return false, tsl.UnexpectedLiteralError{Literal: fmt.Sprintf("%v", r.Left)}
 	case tsl.IsNotNilOp:
 		return l.Func != tsl.NullOp, nil
 	case tsl.IsNilOp:

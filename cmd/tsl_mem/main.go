@@ -42,7 +42,7 @@ func main() {
 	books := []semantics.Doc{}
 
 	// Setup the input.
-	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"title = 'kitty'\")")
+	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"author = 'Joe'\")")
 	outputPtr := flag.String("o", "json", "output format [json/yaml/prettyjson]")
 	flag.Parse()
 
@@ -59,11 +59,11 @@ func main() {
 	err = prepareCollection()
 	check(err)
 
-	// Fileter the books collection using our stl tree.
+	// Filter the books collection using our stl tree.
 	for _, book := range Books {
-		walk, err := semantics.Walk(tree, book)
+		matchingFilter, err := semantics.Walk(tree, book)
 		check(err)
-		if walk {
+		if matchingFilter {
 			books = append(books, book)
 		}
 	}
