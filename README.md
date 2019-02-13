@@ -17,11 +17,11 @@ The TSL language grammar is human readable and similar to SQL syntax.
 
 ## What I can do with it ?
 
-You can use the TSL package to add uniform and powefull filtering to your RESTful API or GraphQL services, implement brewing recipe searches on your smart tea brewer, or even make your own memory based SQL server like we show in the `tsl_mem` example.
+You can use the TSL package to add uniform and powefull filtering to your RESTful API or GraphQL services, implement brewing-recipe searches on your smart tea brewer, or even make your own memory based SQL server like `tsl_mem` cli example.
 
 ([more examples](/cmd/))
 
-Look, here is an in memory search engine, it is using the TSL package to filter through an array of books using `sql phrases`:
+Here is an in-memory search engine, it is using the TSL package to filter through an array of books using `sql phrases`:
 
 ``` bash
 $  ./tsl_mem -i "spec.rating is not null and author ~= 'Joe'" -o prettyjson
