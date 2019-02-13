@@ -14,6 +14,7 @@
 // limitations under the License.
 
 // Author: 2019 Nimrod Shneor <nimrodshn@gmail.com>
+// Author: 2019 Yaacov Zamir <kobi.zamir@gmail.com>
 
 // Package main.
 package main
@@ -26,6 +27,7 @@ import (
 
 	prettyjson "github.com/hokaccha/go-prettyjson"
 	"github.com/yaacov/tsl/pkg/tsl"
+	"github.com/yaacov/tsl/pkg/walkers/semantics"
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -37,7 +39,7 @@ func check(err error) {
 
 func main() {
 	var s []byte
-	books := []Doc{}
+	books := []semantics.Doc{}
 
 	// Setup the input.
 	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"title = 'kitty'\")")
@@ -59,7 +61,7 @@ func main() {
 
 	// Fileter the books collection using our stl tree.
 	for _, book := range Books {
-		walk, err := Walk(tree, book)
+		walk, err := semantics.Walk(tree, book)
 		check(err)
 		if walk {
 			books = append(books, book)

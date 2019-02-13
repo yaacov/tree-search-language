@@ -14,19 +14,24 @@
 // limitations under the License.
 
 // Author: 2019 Nimrod Shneor <nimrodshn@gmail.com>
+// Author: 2019 Yaacov Zamir <kobi.zamir@gmail.com>
 
 package main
 
-import "github.com/yaacov/tsl/cmd/model"
+import (
+	"github.com/yaacov/tsl/pkg/walkers/semantics"
+
+	"github.com/yaacov/tsl/cmd/model"
+)
 
 // Books are the demo list of books.
-var Books = []Doc{}
+var Books = []semantics.Doc{}
 
 func prepareCollection() (err error) {
 	// Insert new books into the table.
 	for _, b := range model.Books {
 		// Create a new book.
-		newBook := Doc{
+		newBook := semantics.Doc{
 			"title":  b.(model.Book).Title,
 			"author": b.(model.Book).Author,
 		}
