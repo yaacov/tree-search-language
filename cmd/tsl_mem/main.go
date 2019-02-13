@@ -38,7 +38,7 @@ func check(err error) {
 	}
 }
 
-// columnNamesMap mapps between user namespace and the SQL column names.
+// columnNamesMap mapps between user namespace and the document field names.
 var columnNamesMap = map[string]string{
 	"title":       "title",
 	"author":      "author",
@@ -76,7 +76,7 @@ func main() {
 	tree, err := tsl.ParseTSL(*inputPtr)
 	check(err)
 
-	// Check and replace user identifiers with the SQL table column names.
+	// Check and replace user identifiers with the document field names.
 	tree, err = ident.Walk(tree, checkColumnName)
 	check(err)
 
