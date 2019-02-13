@@ -53,8 +53,9 @@ type Doc map[string]interface{}
 //  	compliance, err = semantics.Walk(tree, record)
 //
 func Walk(n tsl.Node, book Doc) (bool, error) {
-	// Check for identifiers.
 	l := n.Left.(tsl.Node)
+
+	// Check for identifiers.
 	if l.Func == tsl.IdentOp {
 		newNode, err := handleIdent(n, book)
 		if err != nil {
@@ -63,7 +64,7 @@ func Walk(n tsl.Node, book Doc) (bool, error) {
 		return Walk(newNode, book)
 	}
 
-	// Walk tree.
+	// Implement tree semantics.
 	switch n.Func {
 	case tsl.EqOp, tsl.NotEqOp, tsl.LtOp, tsl.LteOp, tsl.GtOp, tsl.GteOp, tsl.RegexOp, tsl.NotRegexOp,
 		tsl.BetweenOp, tsl.NotBetweenOp, tsl.NotInOp, tsl.InOp:
@@ -100,8 +101,6 @@ func Walk(n tsl.Node, book Doc) (bool, error) {
 }
 
 func handleIdent(n tsl.Node, book Doc) (tsl.Node, error) {
-	var err error
-
 	l := n.Left.(tsl.Node)
 
 	switch v := book[l.Left.(string)].(type) {
@@ -165,10 +164,10 @@ func handleIdent(n tsl.Node, book Doc) (tsl.Node, error) {
 			Left: float64(v),
 		}
 	default:
-		err = tsl.UnexpectedLiteralError{Literal: fmt.Sprintf("%s[%v]", l.Left.(string), v)}
+		return n, tsl.UnexpectedLiteralError{Literal: fmt.Sprintf("%s[%v]", l.Left.(string), v)}
 	}
 
-	return n, err
+	return n, nil
 }
 
 func handleStringOp(n tsl.Node, book Doc) (bool, error) {
