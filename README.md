@@ -18,7 +18,7 @@ The TSL language grammar is human readable and similar to SQL syntax.
 ## What does it do ?
 
 The TSL package parses `tsl pharses` into `tsl trees`, it also include extra `walkers` pakages that add
-optional sematics for common usages, for example SQL exporter, in-memory search and BSON object builder. 
+optional sematics for common usages, for example SQL exporter, in-memory search engine and BSON object builder. 
 
 #### Parsing tsl phrases
 
@@ -32,7 +32,9 @@ Will be parsed into this `tsl tree`:
 
 ## What I can do with it ?
 
-You can use the TSL package to add uniform and powefull filtering to your RESTful API or GraphQL services, implement recipe searches for your smart coffee machine, or even make your own memory based SQL server like we show in the `tsl_mem` example ([examples code](/cmd/)):
+You can use the TSL package to add uniform and powefull filtering to your RESTful API or GraphQL services, implement recipe searches for your smart coffee machine, or even make your own memory based SQL server like we show in the `tsl_mem` example:
+
+([more examples](/cmd/))
 
 ``` bash
 $  ./tsl_mem -i "spec.rating is not null and author ~= 'Joe'" -o prettyjson
