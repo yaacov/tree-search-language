@@ -27,7 +27,7 @@ import (
 )
 
 // EvalFunc is a key evaluation function type.
-type EvalFunc = func(string) (interface{}, error)
+type EvalFunc = func(string) (interface{}, bool)
 
 // Walk travel the TSL tree and implements search semantics.
 //
@@ -44,9 +44,9 @@ type EvalFunc = func(string) (interface{}, error)
 //
 //  	// evalFactory creates an evaluation function for a data record.
 //  	func evalFactory(r map[string]string) semantics.EvalFunc {
-//  		return func(k string) (interface{}, error) {
-//  			v := r[k]
-//  			return v, nil
+//  		return func(k string) (interface{}, bool) {
+//  			v, ok := r[k]
+//  			return v, ok
 //  		}
 //  	}
 //

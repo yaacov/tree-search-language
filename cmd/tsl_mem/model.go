@@ -19,8 +19,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/yaacov/tsl/pkg/walkers/semantics"
 
 	"github.com/yaacov/tsl/cmd/model"
@@ -33,13 +31,8 @@ type Book map[string]interface{}
 var Books = []Book{}
 
 func evalFactory(book Book) semantics.EvalFunc {
-	return func(k string) (interface{}, error) {
-		v, ok := book[k]
-		if !ok {
-			return nil, fmt.Errorf("no value for key %s", k)
-		}
-
-		return v, nil
+	return func(k string) (interface{}, bool) {
+		return book[k], true
 	}
 }
 
