@@ -19,19 +19,35 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/yaacov/tsl/pkg/walkers/semantics"
 
 	"github.com/yaacov/tsl/cmd/model"
 )
 
+// Doc represent one document in our in-memmory data base.
+type Book map[string]interface{}
+
 // Books are the demo list of books.
-var Books = []semantics.Doc{}
+var Books = []Book{}
+
+func evalFactory(book Book) semantics.EvalFunc {
+	return func(k string) (interface{}, error) {
+		v, ok := book[k]
+		if !ok {
+			return nil, fmt.Errorf("no value for key %s", k)
+		}
+
+		return v, nil
+	}
+}
 
 func prepareCollection() (err error) {
 	// Insert new books into the table.
 	for _, b := range model.Books {
 		// Create a new book.
-		newBook := semantics.Doc{
+		newBook := Book{
 			"title":  b.(model.Book).Title,
 			"author": b.(model.Book).Author,
 		}

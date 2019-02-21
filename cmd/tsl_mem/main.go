@@ -60,7 +60,7 @@ func checkColumnName(s string) (string, error) {
 
 func main() {
 	var s []byte
-	books := []semantics.Doc{}
+	books := []Book{}
 
 	// Setup the input.
 	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"author = 'Joe'\")")
@@ -86,7 +86,7 @@ func main() {
 
 	// Filter the books collection using our stl tree.
 	for _, book := range Books {
-		matchingFilter, err := semantics.Walk(tree, book)
+		matchingFilter, err := semantics.Walk(tree, evalFactory(book))
 		check(err)
 		if matchingFilter {
 			books = append(books, book)

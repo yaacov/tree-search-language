@@ -26,8 +26,8 @@ import (
 	"github.com/yaacov/tsl/pkg/tsl"
 )
 
-// Doc represent one document in our in-memmory data base.
-type Doc map[string]interface{}
+// EvalFunc is a key evaluation function type.
+type EvalFunc = func(string) (interface{}, error)
 
 // Walk travel the TSL tree and implements search semantics.
 //
@@ -35,11 +35,19 @@ type Doc map[string]interface{}
 // when applied to a tsl tree.
 //
 // Example:
-//  	record :=  map[string]string{
+//  	record :=  map[string]string {
 //  		"title":       "A good book",
 //  		"author":      "Joe",
 //  		"spec.pages":  14,
 //  		"spec.rating": 5,
+//  	}
+//
+//  	// evalFactory creates an evaluation function for a data record.
+//  	func evalFactory(r map[string]string) semantics.EvalFunc {
+//  		return func(k string) (interface{}, error) {
+//  			v := r[k]
+//  			return v, nil
+//  		}
 //  	}
 //
 //  	// Check if our record complie with our tsl tree.
@@ -50,18 +58,19 @@ type Doc map[string]interface{}
 //  	//
 //  	//   if our tsl tree represents the tsl phrase "spec.pages > 50"
 //  	//   we will get the boolean value `false` for our record.
-//  	compliance, err = semantics.Walk(tree, record)
+//  	eval :=  evalFactory(record)
+//  	compliance, err = semantics.Walk(tree, eval)
 //
-func Walk(n tsl.Node, book Doc) (bool, error) {
+func Walk(n tsl.Node, eval EvalFunc) (bool, error) {
 	l := n.Left.(tsl.Node)
 
 	// Check for identifiers.
 	if l.Func == tsl.IdentOp {
-		newNode, err := handleIdent(n, book)
+		newNode, err := handleIdent(n, eval)
 		if err != nil {
 			return false, err
 		}
-		return Walk(newNode, book)
+		return Walk(newNode, eval)
 	}
 
 	// Implement tree semantics.
@@ -73,17 +82,17 @@ func Walk(n tsl.Node, book Doc) (bool, error) {
 		switch l.Func {
 		case tsl.StringOp:
 			if r.Func == tsl.StringOp {
-				return handleStringOp(n, book)
+				return handleStringOp(n, eval)
 			}
 			if r.Func == tsl.ArrayOp {
-				return handleStringArrayOp(n, book)
+				return handleStringArrayOp(n, eval)
 			}
 		case tsl.NumberOp:
 			if r.Func == tsl.NumberOp {
-				return handleNumberOp(n, book)
+				return handleNumberOp(n, eval)
 			}
 			if r.Func == tsl.ArrayOp {
-				return handleNumberArrayOp(n, book)
+				return handleNumberArrayOp(n, eval)
 			}
 		case tsl.NullOp:
 			// Any comparison operation on a null element is false.
@@ -96,16 +105,17 @@ func Walk(n tsl.Node, book Doc) (bool, error) {
 	case tsl.IsNilOp:
 		return l.Func == tsl.NullOp, nil
 	case tsl.AndOp, tsl.OrOp:
-		return handleLogicalOp(n, book)
+		return handleLogicalOp(n, eval)
 	}
 
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }
 
-func handleIdent(n tsl.Node, book Doc) (tsl.Node, error) {
+func handleIdent(n tsl.Node, eval EvalFunc) (tsl.Node, error) {
 	l := n.Left.(tsl.Node)
 
-	switch v := book[l.Left.(string)].(type) {
+	_v, _ := eval(l.Left.(string))
+	switch v := _v.(type) {
 	case string:
 		n.Left = tsl.Node{
 			Func: tsl.StringOp,
@@ -172,7 +182,7 @@ func handleIdent(n tsl.Node, book Doc) (tsl.Node, error) {
 	return n, nil
 }
 
-func handleStringOp(n tsl.Node, book Doc) (bool, error) {
+func handleStringOp(n tsl.Node, eval EvalFunc) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
@@ -209,7 +219,7 @@ func handleStringOp(n tsl.Node, book Doc) (bool, error) {
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }
 
-func handleNumberOp(n tsl.Node, book Doc) (bool, error) {
+func handleNumberOp(n tsl.Node, eval EvalFunc) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
@@ -234,7 +244,7 @@ func handleNumberOp(n tsl.Node, book Doc) (bool, error) {
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }
 
-func handleStringArrayOp(n tsl.Node, book Doc) (bool, error) {
+func handleStringArrayOp(n tsl.Node, eval EvalFunc) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
@@ -267,7 +277,7 @@ func handleStringArrayOp(n tsl.Node, book Doc) (bool, error) {
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }
 
-func handleNumberArrayOp(n tsl.Node, book Doc) (bool, error) {
+func handleNumberArrayOp(n tsl.Node, eval EvalFunc) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
@@ -300,15 +310,15 @@ func handleNumberArrayOp(n tsl.Node, book Doc) (bool, error) {
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }
 
-func handleLogicalOp(n tsl.Node, book Doc) (bool, error) {
+func handleLogicalOp(n tsl.Node, eval EvalFunc) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
 
-	right, err := Walk(r, book)
+	right, err := Walk(r, eval)
 	if err != nil {
 		return false, err
 	}
-	left, err := Walk(l, book)
+	left, err := Walk(l, eval)
 	if err != nil {
 		return false, err
 	}
