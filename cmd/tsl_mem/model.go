@@ -26,7 +26,7 @@ import (
 	"github.com/yaacov/tsl/cmd/model"
 )
 
-// Doc represent one document in our in-memmory data base.
+// Book represent one book in our in-memmory data base.
 type Book map[string]interface{}
 
 // Books are the demo list of books.
