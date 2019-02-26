@@ -23,11 +23,11 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/yaacov/tsl/pkg/tsl"
-	"github.com/yaacov/tsl/pkg/walkers/ident"
-	"github.com/yaacov/tsl/pkg/walkers/sql"
+	"github.com/yaacov/tree-search-language/pkg/tsl"
+	"github.com/yaacov/tree-search-language/pkg/walkers/ident"
+	"github.com/yaacov/tree-search-language/pkg/walkers/sql"
 
-	"github.com/yaacov/tsl/cmd/model"
+	"github.com/yaacov/tree-search-language/cmd/model"
 )
 
 func check(err error) {

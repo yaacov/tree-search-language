@@ -21,7 +21,7 @@ import (
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/sqlite"
 
-	"github.com/yaacov/tsl/cmd/model"
+	"github.com/yaacov/tree-search-language/cmd/model"
 )
 
 // Book represent a book model.

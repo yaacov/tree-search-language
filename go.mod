@@ -1,4 +1,4 @@
-module github.com/yaacov/tsl
+module github.com/yaacov/tree-search-language
 
 require (
 	github.com/Masterminds/squirrel v1.1.0

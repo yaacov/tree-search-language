@@ -17,7 +17,7 @@
 package ident
 
 import (
-	"github.com/yaacov/tsl/pkg/tsl"
+	"github.com/yaacov/tree-search-language/pkg/tsl"
 )
 
 // Walk travel the TSL tree and replace identifiers.

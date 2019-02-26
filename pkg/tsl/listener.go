@@ -19,7 +19,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/yaacov/tsl/pkg/parser"
+	"github.com/yaacov/tree-search-language/pkg/parser"
 )
 
 // Listener is a Tree search listener.

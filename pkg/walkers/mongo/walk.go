@@ -20,7 +20,7 @@ import (
 	"github.com/mongodb/mongo-go-driver/bson"
 	"github.com/mongodb/mongo-go-driver/bson/primitive"
 
-	"github.com/yaacov/tsl/pkg/tsl"
+	"github.com/yaacov/tree-search-language/pkg/tsl"
 )
 
 // Returns the identifier setring from an IdentOp operator node.

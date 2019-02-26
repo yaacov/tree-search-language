@@ -19,7 +19,7 @@ import (
 	"fmt"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/yaacov/tsl/pkg/tsl"
+	"github.com/yaacov/tree-search-language/pkg/tsl"
 )
 
 // Currently squirrel does not have a some needed operator expression.

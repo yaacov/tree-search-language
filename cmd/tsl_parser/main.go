@@ -26,9 +26,9 @@ import (
 	"github.com/hokaccha/go-prettyjson"
 	"gopkg.in/yaml.v2"
 
-	"github.com/yaacov/tsl/pkg/tsl"
-	"github.com/yaacov/tsl/pkg/walkers/graphviz"
-	walker "github.com/yaacov/tsl/pkg/walkers/sql"
+	"github.com/yaacov/tree-search-language/pkg/tsl"
+	"github.com/yaacov/tree-search-language/pkg/walkers/graphviz"
+	walker "github.com/yaacov/tree-search-language/pkg/walkers/sql"
 )
 
 func check(err error) {

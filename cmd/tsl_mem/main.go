@@ -26,9 +26,9 @@ import (
 	"log"
 
 	prettyjson "github.com/hokaccha/go-prettyjson"
-	"github.com/yaacov/tsl/pkg/tsl"
-	"github.com/yaacov/tsl/pkg/walkers/ident"
-	"github.com/yaacov/tsl/pkg/walkers/semantics"
+	"github.com/yaacov/tree-search-language/pkg/tsl"
+	"github.com/yaacov/tree-search-language/pkg/walkers/ident"
+	"github.com/yaacov/tree-search-language/pkg/walkers/semantics"
 	yaml "gopkg.in/yaml.v2"
 )
 

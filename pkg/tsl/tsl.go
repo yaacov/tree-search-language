@@ -18,7 +18,7 @@ package tsl
 import (
 	"github.com/antlr/antlr4/runtime/Go/antlr"
 
-	"github.com/yaacov/tsl/pkg/parser"
+	"github.com/yaacov/tree-search-language/pkg/parser"
 )
 
 // ParseTSL parses the input string into TSL tree.

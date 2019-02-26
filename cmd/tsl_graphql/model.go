@@ -21,7 +21,7 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/yaacov/tsl/cmd/model"
+	"github.com/yaacov/tree-search-language/cmd/model"
 )
 
 const sqlStmt = `

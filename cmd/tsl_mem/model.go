@@ -19,9 +19,9 @@
 package main
 
 import (
-	"github.com/yaacov/tsl/pkg/walkers/semantics"
+	"github.com/yaacov/tree-search-language/pkg/walkers/semantics"
 
-	"github.com/yaacov/tsl/cmd/model"
+	"github.com/yaacov/tree-search-language/cmd/model"
 )
 
 // Book represent one book in our in-memmory data base.

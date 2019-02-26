@@ -20,7 +20,7 @@ import (
 
 	sq "github.com/Masterminds/squirrel"
 
-	"github.com/yaacov/tsl/pkg/tsl"
+	"github.com/yaacov/tree-search-language/pkg/tsl"
 )
 
 // Example for the tsl package.

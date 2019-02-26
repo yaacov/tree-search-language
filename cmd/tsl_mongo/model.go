@@ -20,7 +20,7 @@ import (
 
 	"github.com/mongodb/mongo-go-driver/mongo"
 
-	"github.com/yaacov/tsl/cmd/model"
+	"github.com/yaacov/tree-search-language/cmd/model"
 )
 
 func connect(ctx context.Context, url string) (client *mongo.Client, err error) {

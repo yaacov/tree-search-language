@@ -23,7 +23,7 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/yaacov/tsl/pkg/tsl"
+	"github.com/yaacov/tree-search-language/pkg/tsl"
 )
 
 // EvalFunc is a key evaluation function type.
