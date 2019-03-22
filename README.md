@@ -220,6 +220,7 @@ The `walkers` `sql` package include a helper sql.Walk ([code](/pkg/walkers/sql/w
 ``` go
 import (
     ...
+    sq "github.com/Masterminds/squirrel"
     "github.com/yaacov/tree-search-language/pkg/walkers/sql"
     ...
 )
