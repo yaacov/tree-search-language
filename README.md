@@ -15,7 +15,7 @@ Tree Search Language (TSL) is a wonderful human readable filtering language.
 
 The TSL language grammar is human readable and similar to SQL syntax.
 
-## Awsome:
+## Awesome:
 
 -  [What I can do with it ?](#what-i-can-do-with-it-)
 -  [What does it do ?](#what-does-it-do-)
@@ -28,7 +28,7 @@ The TSL language grammar is human readable and similar to SQL syntax.
 
 ## What I can do with it ?
 
-You can use the TSL package to add uniform and powefull filtering to your RESTful API or GraphQL services, implement brewing-recipe searches on your smart tea brewer, or even make your own memory based "SQL like" server as we do in our `tsl_mem` CLI example.
+You can use the TSL package to add uniform and powerful filtering to your RESTful API or GraphQL services, implement brewing-recipe searches on your smart tea brewer, or even make your own memory based "SQL like" server as we do in our `tsl_mem` CLI example.
 
 ([more examples](/cmd/))
 
@@ -76,7 +76,7 @@ $  ./tsl_mem -i "spec.rating is not null and author ~= 'Joe'" -o prettyjson
 
 ## What does it do ?
 
-The TSL package parses `tsl pharses` into `tsl trees`, it also include extra `walkers` that iterate (walk) over the `tsl tree` to perform exhilarating tasks, for example, convert a `tsl tree` into an SQL expression, create in-memory search engines, BSON object exporters and even more exciting stuff. 
+The TSL package parses `tsl phrases` into `tsl trees`, it also include extra `walkers` that iterate (walk) over the `tsl tree` to perform exhilarating tasks, for example, convert a `tsl tree` into an SQL expression, create in-memory search engines, BSON object exporters and even more exciting stuff. 
 
 #### Parsing tsl phrases
 
@@ -199,7 +199,7 @@ dot file.dot -Tpng > image.png
 
 ## Code examples
 
-For complete working code examples, see the CLI tools [direcotry](/cmd)
+For complete working code examples, see the CLI tools [directory](/cmd)
 ( see more on TSL's CLI tools usage [here](https://github.com/yaacov/tree-search-language#cli-tools) ).
 
 ##### ParseTSL
@@ -309,10 +309,10 @@ var columnNamesMap = map[string]string{
 	"spec.rating": "rating",
 }
 
-// checkColumnName checks if a coulumn name is valid in user space replace it
+// checkColumnName checks if a column name is valid in user space replace it
 // with the mapped column name and returns and error if not a valid name.
 func checkColumnName(s string) (string, error) {
-	// Chekc for column name in map.
+	// Check for column name in map.
 	if v, ok := columnNamesMap[s]; ok {
 		return v, nil
 	}
@@ -334,13 +334,13 @@ tree, err = ident.Walk(tree, checkColumnName)
 
 The example CLI tools showcase the TSL language and `tsl` golang package, see the [cmd](/cmd) directory for code.
 
-##### tls_parser
+##### tsl_parser
 
 `tsl_parser` is a basic example, showing how to parse a `tsl phrase` into a `tsl tree`.
 
 ``` bash
 $ ./tsl_parser -h
-Usage of ./tls_parser:
+Usage of ./tsl_parser:
   -i string
     	the tsl string to parse (e.g. "animal = 'kitty'")
   -o string
