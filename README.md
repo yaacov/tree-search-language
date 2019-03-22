@@ -336,7 +336,7 @@ The example CLI tools showcase the TSL language and `tsl` golang package, see th
 
 ##### tls_parser
 
-`tsl_parser` is a basic example, showing how to parse a `tsl phras`e into a `tsl tree`.
+`tsl_parser` is a basic example, showing how to parse a `tsl phrase` into a `tsl tree`.
 
 ``` bash
 $ ./tsl_parser -h
