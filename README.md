@@ -10,7 +10,7 @@ Tree Search Language (TSL) is a wonderful human readable filtering language.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/yaacov/tree-search-language)](https://goreportcard.com/report/github.com/yaacov/tree-search-language)
 [![Build Status](https://travis-ci.org/yaacov/tree-search-language.svg?branch=master)](https://travis-ci.org/yaacov/tree-search-language)
-[![GoDoc](https://godoc.org/github.com/yaacov/tree-search-language/pkg/tree-search-language?status.svg)](https://godoc.org/github.com/yaacov/tree-search-language/pkg/tree-search-language)
+[![GoDoc](https://godoc.org/github.com/yaacov/tree-search-language/pkg/tsl?status.svg)](https://godoc.org/github.com/yaacov/tree-search-language/pkg/tsl)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 The TSL language grammar is human readable and similar to SQL syntax.
@@ -329,6 +329,49 @@ tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 5
 // Check and replace user identifiers with the SQL table column names.
 tree, err = ident.Walk(tree, checkColumnName)
 ...
+```
+
+##### semantics.Walk
+
+The `walkers` `semantics`  package include a helper semantics.Walk ([code](/pkg/walkers/semantics/walk.go), [doc](https://godoc.org/github.com/yaacov/tree-search-language/pkg/walkers/semantics#Walk)) method that helps filter a list of objects using a `tsl tree`, and a `type` `semantics.EvalFunc` ([code](/pkg/walkers/semantics/walk.go), [doc](https://godoc.org/github.com/yaacov/tree-search-language/pkg/walkers/semantics#EvalFunc)) that return a record's value for a record key:
+
+``` go
+import (
+    ...
+    "github.com/yaacov/tree-search-language/pkg/walkers/semantics"
+    ...
+)
+...
+
+// evalFactory creates an evaluation function for a data record.
+//
+// Returns:
+// A function that gets a `key` for a record and returns the value.
+// If no value can be found for this `key` in our record, it will return
+// ok = false, if value is found it will return ok = true.
+func evalFactory(r map[string]string) semantics.EvalFunc {
+	return func(k string) (interface{}, bool) {
+		v, ok := r[k]
+		return v, ok
+	}
+}
+
+// Check if a record complie with our tsl tree.
+//
+// For example:
+//   if our tsl tree represents the tsl phrase "author = 'Joe'"
+//   we will get the boolean value `true` for our record.
+//
+//   if our tsl tree represents the tsl phrase "spec.pages > 50"
+//   we will get the boolean value `false` for our record.
+record :=  map[string]string {
+	"title":       "A good book",
+	"author":      "Joe",
+	"spec.pages":  14,
+	"spec.rating": 5,
+}
+eval :=  evalFactory(record)
+compliance, err = semantics.Walk(tree, eval)
 ```
 
 ## CLI tools
