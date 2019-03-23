@@ -18,13 +18,14 @@ package main
 import (
 	"context"
 
-	"github.com/mongodb/mongo-go-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"github.com/yaacov/tree-search-language/cmd/model"
 )
 
 func connect(ctx context.Context, url string) (client *mongo.Client, err error) {
-	client, err = mongo.NewClient(url)
+	client, err = mongo.NewClient(options.Client().ApplyURI(url))
 	if err != nil {
 		return
 	}

@@ -17,8 +17,8 @@
 package mongo
 
 import (
-	"github.com/mongodb/mongo-go-driver/bson"
-	"github.com/mongodb/mongo-go-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/yaacov/tree-search-language/pkg/tsl"
 )
@@ -74,7 +74,7 @@ func bsonFromArray(a interface{}) (values []interface{}, err error) {
 //  // Run query
 //  cur, _ := collection.Find(ctx, filter)
 //
-// mongo-go-driver: https://github.com/mongodb/mongo-go-driver
+// mongo-go-driver: https://go.mongodb.org/mongo-driver
 //
 func Walk(n tsl.Node) (b bson.D, err error) {
 	var values []interface{}

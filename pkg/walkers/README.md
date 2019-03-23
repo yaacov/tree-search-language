@@ -12,7 +12,7 @@ The `sql` package include a helper `sql.Walk` ([code](/pkg/walkers/sql/walk.go),
 
 ##### mongo
 
-The `mongo` package include a helper `mongo.Walk` ([code](/pkg/walkers/mongo/walk.go), [doc](https://godoc.org/github.com/yaacov/tree-search-language/pkg/walkers/mongo#Walk)) method that adds search `bson` filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver).
+The `mongo` package include a helper `mongo.Walk` ([code](/pkg/walkers/mongo/walk.go), [doc](https://godoc.org/github.com/yaacov/tree-search-language/pkg/walkers/mongo#Walk)) method that adds search `bson` filter to [mongo-go-driver](https://go.mongodb.org/mongo-driver).
 
 ##### graphviz
 
