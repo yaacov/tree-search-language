@@ -32,7 +32,7 @@ You can use the TSL package to add uniform and powerful filtering to your RESTfu
 
 ([more examples](/cmd/))
 
-Here is our `tsl_mem`CLI tool, it's an in-memory search engine, it is using the TSL package to filter through an in-memory array of books using "SQL like" `tsl phrases`:
+Here is our `tsl_mem`CLI tool ([code](/cmd/tsl_mem)), it's an in-memory search engine, it is using the TSL package to filter through an in-memory array of books using "SQL like" `tsl phrases`:
 
 ``` bash
 $  ./tsl_mem -i "spec.rating is not null and author ~= 'Joe'" -o prettyjson
