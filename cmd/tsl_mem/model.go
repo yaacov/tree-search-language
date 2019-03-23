@@ -19,6 +19,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/yaacov/tree-search-language/pkg/walkers/semantics"
 
 	"github.com/yaacov/tree-search-language/cmd/model"
@@ -29,6 +31,26 @@ type Book map[string]interface{}
 
 // Books are the demo list of books.
 var Books = []Book{}
+
+// columnNamesMap mapps between user namespace and the document field names.
+var columnNamesMap = map[string]string{
+	"title":       "title",
+	"author":      "author",
+	"spec.pages":  "spec.pages",
+	"spec.rating": "spec.rating",
+}
+
+// checkColumnName checks if a coulumn name is valid in user space replace it
+// with the mapped column name and returns and error if not a valid name.
+func checkColumnName(s string) (string, error) {
+	// Chekc for column name in map.
+	if v, ok := columnNamesMap[s]; ok {
+		return v, nil
+	}
+
+	// If not found return string as is, and an error.
+	return s, fmt.Errorf("column \"%s\" not found", s)
+}
 
 func evalFactory(book Book) semantics.EvalFunc {
 	return func(k string) (interface{}, bool) {
