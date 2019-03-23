@@ -250,7 +250,7 @@ SELECT name, city, state FROM users WHERE (name IN (?,?) AND grade NOT BETWEEN ?
 
 ##### mongo.Walk
 
-The `walkers` `mongo`  package include a helper mongo.Walk ([code](/pkg/walkers/mongo/walk.go), [doc](https://godoc.org/github.com/yaacov/tree-search-language/pkg/walkers/mongo#Walk)) method that adds search bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
+The `walkers` `mongo`  package include a helper mongo.Walk ([code](/pkg/walkers/mongo/walk.go), [doc](https://godoc.org/github.com/yaacov/tree-search-language/pkg/walkers/mongo#Walk)) method that adds search bson filter to [mongo-go-driver](https://go.mongodb.org/mongo-driver):
 
 ``` go
 import (

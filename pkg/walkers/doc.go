@@ -41,5 +41,5 @@
 //
 // squirrel: https://github.com/Masterminds/squirrel
 //
-// mongo-go-driver: https://github.com/mongodb/mongo-go-driver
+// mongo-go-driver: https://go.mongodb.org/mongo-driver
 package walkers
