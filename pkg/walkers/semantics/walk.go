@@ -22,6 +22,7 @@ package semantics
 import (
 	"fmt"
 	"regexp"
+	"strings"
 
 	"github.com/yaacov/tree-search-language/pkg/tsl"
 )
@@ -83,7 +84,7 @@ func Walk(n tsl.Node, eval EvalFunc) (bool, error) {
 	// Implement tree semantics.
 	switch n.Func {
 	case tsl.EqOp, tsl.NotEqOp, tsl.LtOp, tsl.LteOp, tsl.GtOp, tsl.GteOp, tsl.RegexOp, tsl.NotRegexOp,
-		tsl.BetweenOp, tsl.NotBetweenOp, tsl.NotInOp, tsl.InOp:
+		tsl.BetweenOp, tsl.NotBetweenOp, tsl.NotInOp, tsl.InOp, tsl.LikeOp, tsl.NotLikeOp:
 		r := n.Right.(tsl.Node)
 
 		switch l.Func {
@@ -209,6 +210,18 @@ func handleStringOp(n tsl.Node, eval EvalFunc) (bool, error) {
 		return left > right, nil
 	case tsl.GteOp:
 		return left >= right, nil
+	case tsl.LikeOp:
+		valid, err := regexp.Compile(likeToRegExp(right))
+		if err != nil {
+			return false, tsl.UnexpectedLiteralError{Literal: right}
+		}
+		return valid.MatchString(left), nil
+	case tsl.NotLikeOp:
+		valid, err := regexp.Compile(likeToRegExp(right))
+		if err != nil {
+			return false, tsl.UnexpectedLiteralError{Literal: right}
+		}
+		return !valid.MatchString(left), nil
 	case tsl.RegexOp:
 		valid, err := regexp.Compile(right)
 		if err != nil {
@@ -338,4 +351,13 @@ func handleLogicalOp(n tsl.Node, eval EvalFunc) (bool, error) {
 	}
 
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+}
+
+func likeToRegExp(l string) string {
+	e := regexp.QuoteMeta(l)
+	e = strings.Replace(e, "%", ".*", -1)
+	e = strings.Replace(e, "_", ".", -1)
+	e = fmt.Sprintf("^%s$", e)
+
+	return e
 }
