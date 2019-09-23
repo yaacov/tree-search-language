@@ -84,7 +84,7 @@ func Walk(n tsl.Node, eval EvalFunc) (bool, error) {
 	// Implement tree semantics.
 	switch n.Func {
 	case tsl.EqOp, tsl.NotEqOp, tsl.LtOp, tsl.LteOp, tsl.GtOp, tsl.GteOp, tsl.RegexOp, tsl.NotRegexOp,
-		tsl.BetweenOp, tsl.NotBetweenOp, tsl.NotInOp, tsl.InOp, tsl.LikeOp, tsl.ILikeOp, tsl.NotLikeOp:
+		tsl.BetweenOp, tsl.NotBetweenOp, tsl.NotInOp, tsl.InOp, tsl.LikeOp, tsl.ILikeOp:
 		r := n.Right.(tsl.Node)
 
 		switch l.Func {
@@ -114,6 +114,8 @@ func Walk(n tsl.Node, eval EvalFunc) (bool, error) {
 		return l.Func == tsl.NullOp, nil
 	case tsl.AndOp, tsl.OrOp:
 		return handleLogicalOp(n, eval)
+	case tsl.NotOp:
+		return handleNotOp(n, eval)
 	}
 
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
@@ -222,12 +224,6 @@ func handleStringOp(n tsl.Node, eval EvalFunc) (bool, error) {
 			return false, tsl.UnexpectedLiteralError{Literal: right}
 		}
 		return valid.MatchString(left), nil
-	case tsl.NotLikeOp:
-		valid, err := regexp.Compile(likeToRegExp(right))
-		if err != nil {
-			return false, tsl.UnexpectedLiteralError{Literal: right}
-		}
-		return !valid.MatchString(left), nil
 	case tsl.RegexOp:
 		valid, err := regexp.Compile(right)
 		if err != nil {
@@ -357,6 +353,17 @@ func handleLogicalOp(n tsl.Node, eval EvalFunc) (bool, error) {
 	}
 
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+}
+
+func handleNotOp(n tsl.Node, eval EvalFunc) (bool, error) {
+	l := n.Left.(tsl.Node)
+
+	left, err := Walk(l, eval)
+	if err != nil {
+		return false, err
+	}
+
+	return !left, nil
 }
 
 func likeToRegExp(l string) string {

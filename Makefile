@@ -83,16 +83,7 @@ clean:
 
 .PHONY: test
 test:
-	go test ./cmd/tsl_parser
-	go test ./cmd/tsl_sqlite
-	go test ./cmd/tsl_gorm
-	go test ./cmd/tsl_mongo
-	go test ./cmd/tsl_graphql
-	go test ./cmd/tsl_mem
-	go test ./pkg/tsl
-	go test ./pkg/walkers/sql
-	go test ./pkg/walkers/mongo
-	go test ./pkg/walkers/graphviz
+	ginkgo -r ./cmd ./pkg
 
 .PHONY: generate
 generate:
