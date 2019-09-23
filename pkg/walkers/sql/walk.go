@@ -142,9 +142,6 @@ func unaryStep(n tsl.Node) (s sq.Sqlizer, err error) {
 	case tsl.ILikeOp:
 		t := fmt.Sprintf("%s ILIKE ?", sql)
 		s = sq.Expr(t, right[0])
-	case tsl.NotLikeOp:
-		t := fmt.Sprintf("%s NOT LIKE ?", sql)
-		s = sq.Expr(t, right[0])
 	case tsl.BetweenOp:
 		t := fmt.Sprintf("%s BETWEEN ? AND ?", sql)
 		s = sq.Expr(t, right[0], right[1])
@@ -186,7 +183,7 @@ func Walk(n tsl.Node) (s sq.Sqlizer, err error) {
 	case tsl.NotOp, tsl.EqOp, tsl.NotEqOp, tsl.LtOp, tsl.LteOp, tsl.GtOp, tsl.GteOp,
 		tsl.InOp, tsl.NotInOp, tsl.IsNilOp, tsl.IsNotNilOp:
 		return unaryStep(n)
-	case tsl.LikeOp, tsl.ILikeOp, tsl.NotLikeOp, tsl.BetweenOp, tsl.NotBetweenOp:
+	case tsl.LikeOp, tsl.ILikeOp, tsl.BetweenOp, tsl.NotBetweenOp:
 		return unaryStep(n)
 	default:
 		// If here than the operator is not supported.

@@ -138,6 +138,7 @@ func TestLikeOp(t *testing.T) {
 		t.Fail()
 	}
 }
+
 func TestILikeOp(t *testing.T) {
 	// Test valid string.
 	input := "a ilike 'my%'"
@@ -151,6 +152,52 @@ func TestILikeOp(t *testing.T) {
 	// Test json output.
 	expected := `
 		{"func":"$ilike","left":{"func":"$ident","left":"a"},"right":{"func":"$string","left":"my%"}}
+	`
+	expected = removeWhitespace(expected)
+	s, _ := json.Marshal(n)
+	if string(s) != expected {
+		t.Fatalf("expected %s instead it was %s", expected, string(s))
+		t.Fail()
+	}
+}
+
+func TestNotLikeOp(t *testing.T) {
+	// Test valid string.
+	input := "a not like 'my%'"
+
+	// Test TSL parser.
+	n, err := parseTSL(input)
+	if err != nil {
+		t.Fail()
+	}
+
+	// Test json output.
+	expected := `
+		{"func":"$not","left":{"func":"$like","left":{"func":"$ident","left":"a"},
+		"right":{"func":"$string","left":"my%"}}}
+	`
+	expected = removeWhitespace(expected)
+	s, _ := json.Marshal(n)
+	if string(s) != expected {
+		t.Fatalf("expected %s instead it was %s", expected, string(s))
+		t.Fail()
+	}
+}
+
+func TestNotILikeOp(t *testing.T) {
+	// Test valid string.
+	input := "a not ilike 'my%'"
+
+	// Test TSL parser.
+	n, err := parseTSL(input)
+	if err != nil {
+		t.Fail()
+	}
+
+	// Test json output.
+	expected := `
+		{"func":"$not","left":{"func":"$ilike","left":{"func":"$ident","left":"a"},
+		"right":{"func":"$string","left":"my%"}}}
 	`
 	expected = removeWhitespace(expected)
 	s, _ := json.Marshal(n)
