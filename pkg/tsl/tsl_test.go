@@ -116,3 +116,46 @@ func TestListenerOpOrder(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestLikeOp(t *testing.T) {
+	// Test valid string.
+	input := "a like 'my%'"
+
+	// Test TSL parser.
+	n, err := parseTSL(input)
+	if err != nil {
+		t.Fail()
+	}
+
+	// Test json output.
+	expected := `
+		{"func":"$like","left":{"func":"$ident","left":"a"},"right":{"func":"$string","left":"my%"}}
+	`
+	expected = removeWhitespace(expected)
+	s, _ := json.Marshal(n)
+	if string(s) != expected {
+		t.Fatalf("expected %s instead it was %s", expected, string(s))
+		t.Fail()
+	}
+}
+func TestILikeOp(t *testing.T) {
+	// Test valid string.
+	input := "a ilike 'my%'"
+
+	// Test TSL parser.
+	n, err := parseTSL(input)
+	if err != nil {
+		t.Fail()
+	}
+
+	// Test json output.
+	expected := `
+		{"func":"$ilike","left":{"func":"$ident","left":"a"},"right":{"func":"$string","left":"my%"}}
+	`
+	expected = removeWhitespace(expected)
+	s, _ := json.Marshal(n)
+	if string(s) != expected {
+		t.Fatalf("expected %s instead it was %s", expected, string(s))
+		t.Fail()
+	}
+}

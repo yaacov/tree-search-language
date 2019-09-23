@@ -7,7 +7,7 @@ start : expr EOF;
 expr
   : mathExp literalOp literalValue                                           # LiteralOps
   | mathExp stringOp literalValue                                            # StringOps
-  | mathExp keyNot? K_LIKE literalValue                                      # Like
+  | mathExp keyNot? likeOp literalValue                                      # Like
   | mathExp K_IS keyNot? K_NULL                                              # IsNull
   | mathExp K_IS keyNot? literalValue                                        # IsLiteral
   | mathExp keyNot? K_BETWEEN literalValue K_AND literalValue                # Between
@@ -25,6 +25,10 @@ literalOp
 
 stringOp
   : ( '~=' | '~!' )
+  ;
+
+likeOp
+  : ( K_LIKE | K_ILIKE )
   ;
 
 databaseName
@@ -68,6 +72,7 @@ keyNot
 
 // Words
 K_LIKE : L I K E;
+K_ILIKE : I L I K E;
 K_AND : A N D;
 K_OR : O R;
 K_BETWEEN : B E T W E E N;

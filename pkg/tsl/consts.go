@@ -31,6 +31,7 @@ const (
 	RegexOp      = "$regex"
 	NotRegexOp   = "$nregex"
 	LikeOp       = "$like"
+	ILikeOp      = "$ilike"
 	NotLikeOp    = "$nlike"
 	InOp         = "$in"
 	NotInOp      = "$nin"

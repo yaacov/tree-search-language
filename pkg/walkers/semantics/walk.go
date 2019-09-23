@@ -84,7 +84,7 @@ func Walk(n tsl.Node, eval EvalFunc) (bool, error) {
 	// Implement tree semantics.
 	switch n.Func {
 	case tsl.EqOp, tsl.NotEqOp, tsl.LtOp, tsl.LteOp, tsl.GtOp, tsl.GteOp, tsl.RegexOp, tsl.NotRegexOp,
-		tsl.BetweenOp, tsl.NotBetweenOp, tsl.NotInOp, tsl.InOp, tsl.LikeOp, tsl.NotLikeOp:
+		tsl.BetweenOp, tsl.NotBetweenOp, tsl.NotInOp, tsl.InOp, tsl.LikeOp, tsl.ILikeOp, tsl.NotLikeOp:
 		r := n.Right.(tsl.Node)
 
 		switch l.Func {
@@ -212,6 +212,12 @@ func handleStringOp(n tsl.Node, eval EvalFunc) (bool, error) {
 		return left >= right, nil
 	case tsl.LikeOp:
 		valid, err := regexp.Compile(likeToRegExp(right))
+		if err != nil {
+			return false, tsl.UnexpectedLiteralError{Literal: right}
+		}
+		return valid.MatchString(left), nil
+	case tsl.ILikeOp:
+		valid, err := regexp.Compile(iLikeToRegExp(right))
 		if err != nil {
 			return false, tsl.UnexpectedLiteralError{Literal: right}
 		}
@@ -360,4 +366,8 @@ func likeToRegExp(l string) string {
 	e = fmt.Sprintf("^%s$", e)
 
 	return e
+}
+
+func iLikeToRegExp(l string) string {
+	return "(?i)" + likeToRegExp(l)
 }
