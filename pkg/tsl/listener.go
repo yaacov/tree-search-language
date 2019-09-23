@@ -16,6 +16,7 @@
 package tsl
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -134,7 +135,21 @@ func (l *Listener) ExitStringOps(c *parser.StringOpsContext) {
 // ExitLike is called when production Like is exited.
 func (l *Listener) ExitLike(c *parser.LikeContext) {
 	right, left := l.pop(), l.pop()
-	op := ternaryOp(c.KeyNot() == nil, LikeOp, NotLikeOp)
+
+	// Check the operator to use according to the given LIKE or ILIKE keyword:
+	var op string
+	switch c.LikeOp().GetStart().GetTokenType() {
+	case parser.TSLLexerK_LIKE:
+		op = LikeOp
+	case parser.TSLLexerK_ILIKE:
+		op = ILikeOp
+	default:
+		// This will never happen, as the grammar doesn't allow it, however this will catch
+		// errors if in the future we add new operators to the grammar but we forget to
+		// update this code.
+		l.Errs = append(l.Errs, fmt.Errorf("expected LIKE or ILIKE"))
+		return
+	}
 
 	// Check right op is a string.
 	if right.Func != StringOp {
@@ -142,10 +157,20 @@ func (l *Listener) ExitLike(c *parser.LikeContext) {
 		return
 	}
 
+	// Create the node for the LIKE or ILIKE operation:
 	n := Node{
 		Func:  op,
 		Left:  left,
 		Right: right,
+	}
+
+	// If there is a NOT before the LIKE or ILIKE operations then create an
+	// additional node for the negation:
+	if c.KeyNot() != nil {
+		n = Node{
+			Func: NotOp,
+			Left: n,
+		}
 	}
 
 	l.push(n)

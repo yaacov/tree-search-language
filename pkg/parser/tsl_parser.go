@@ -16,88 +16,90 @@ var _ = reflect.Copy
 var _ = strconv.Itoa
 
 var parserATN = []uint16{
-	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 32, 184,
+	3, 24715, 42794, 33075, 47597, 16764, 15335, 30598, 22884, 3, 33, 188,
 	4, 2, 9, 2, 4, 3, 9, 3, 4, 4, 9, 4, 4, 5, 9, 5, 4, 6, 9, 6, 4, 7, 9, 7,
 	4, 8, 9, 8, 4, 9, 9, 9, 4, 10, 9, 10, 4, 11, 9, 11, 4, 12, 9, 12, 4, 13,
-	9, 13, 3, 2, 3, 2, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 3, 3, 3, 3, 5, 3, 41, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	5, 3, 49, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 3, 56, 10, 3, 3, 3, 3,
-	3, 3, 3, 3, 3, 5, 3, 62, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 5, 3, 71, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 3, 78, 10, 3, 12,
-	3, 14, 3, 81, 11, 3, 5, 3, 83, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 3, 3, 3, 5, 3, 93, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7,
-	3, 101, 10, 3, 12, 3, 14, 3, 104, 11, 3, 3, 4, 3, 4, 5, 4, 108, 10, 4,
-	3, 5, 3, 5, 3, 6, 3, 6, 3, 7, 3, 7, 3, 8, 3, 8, 3, 8, 5, 8, 119, 10, 8,
-	3, 8, 3, 8, 3, 8, 5, 8, 124, 10, 8, 3, 8, 3, 8, 3, 9, 3, 9, 5, 9, 130,
-	10, 9, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 3, 10, 5, 10, 138, 10, 10, 3,
-	10, 3, 10, 3, 10, 3, 10, 5, 10, 144, 10, 10, 3, 10, 3, 10, 3, 10, 3, 10,
-	5, 10, 150, 10, 10, 3, 10, 3, 10, 3, 10, 3, 10, 5, 10, 156, 10, 10, 3,
-	10, 3, 10, 3, 10, 3, 10, 5, 10, 162, 10, 10, 3, 10, 3, 10, 3, 10, 3, 10,
-	5, 10, 168, 10, 10, 7, 10, 170, 10, 10, 12, 10, 14, 10, 173, 11, 10, 3,
-	11, 5, 11, 176, 10, 11, 3, 11, 3, 11, 3, 12, 3, 12, 3, 13, 3, 13, 3, 13,
-	2, 4, 4, 18, 14, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 2, 6, 3, 2,
-	6, 9, 3, 2, 10, 12, 3, 2, 13, 14, 3, 2, 19, 20, 2, 204, 2, 26, 3, 2, 2,
-	2, 4, 92, 3, 2, 2, 2, 6, 107, 3, 2, 2, 2, 8, 109, 3, 2, 2, 2, 10, 111,
-	3, 2, 2, 2, 12, 113, 3, 2, 2, 2, 14, 123, 3, 2, 2, 2, 16, 129, 3, 2, 2,
-	2, 18, 137, 3, 2, 2, 2, 20, 175, 3, 2, 2, 2, 22, 179, 3, 2, 2, 2, 24, 181,
-	3, 2, 2, 2, 26, 27, 5, 4, 3, 2, 27, 28, 7, 2, 2, 3, 28, 3, 3, 2, 2, 2,
-	29, 30, 8, 3, 1, 2, 30, 31, 5, 18, 10, 2, 31, 32, 5, 6, 4, 2, 32, 33, 5,
-	16, 9, 2, 33, 93, 3, 2, 2, 2, 34, 35, 5, 18, 10, 2, 35, 36, 5, 8, 5, 2,
-	36, 37, 5, 16, 9, 2, 37, 93, 3, 2, 2, 2, 38, 40, 5, 18, 10, 2, 39, 41,
-	5, 24, 13, 2, 40, 39, 3, 2, 2, 2, 40, 41, 3, 2, 2, 2, 41, 42, 3, 2, 2,
-	2, 42, 43, 7, 21, 2, 2, 43, 44, 5, 16, 9, 2, 44, 93, 3, 2, 2, 2, 45, 46,
-	5, 18, 10, 2, 46, 48, 7, 26, 2, 2, 47, 49, 5, 24, 13, 2, 48, 47, 3, 2,
-	2, 2, 48, 49, 3, 2, 2, 2, 49, 50, 3, 2, 2, 2, 50, 51, 7, 27, 2, 2, 51,
-	93, 3, 2, 2, 2, 52, 53, 5, 18, 10, 2, 53, 55, 7, 26, 2, 2, 54, 56, 5, 24,
-	13, 2, 55, 54, 3, 2, 2, 2, 55, 56, 3, 2, 2, 2, 56, 57, 3, 2, 2, 2, 57,
-	58, 5, 16, 9, 2, 58, 93, 3, 2, 2, 2, 59, 61, 5, 18, 10, 2, 60, 62, 5, 24,
-	13, 2, 61, 60, 3, 2, 2, 2, 61, 62, 3, 2, 2, 2, 62, 63, 3, 2, 2, 2, 63,
-	64, 7, 24, 2, 2, 64, 65, 5, 16, 9, 2, 65, 66, 7, 22, 2, 2, 66, 67, 5, 16,
-	9, 2, 67, 93, 3, 2, 2, 2, 68, 70, 5, 18, 10, 2, 69, 71, 5, 24, 13, 2, 70,
-	69, 3, 2, 2, 2, 70, 71, 3, 2, 2, 2, 71, 72, 3, 2, 2, 2, 72, 73, 7, 25,
-	2, 2, 73, 82, 7, 3, 2, 2, 74, 79, 5, 16, 9, 2, 75, 76, 7, 4, 2, 2, 76,
-	78, 5, 16, 9, 2, 77, 75, 3, 2, 2, 2, 78, 81, 3, 2, 2, 2, 79, 77, 3, 2,
-	2, 2, 79, 80, 3, 2, 2, 2, 80, 83, 3, 2, 2, 2, 81, 79, 3, 2, 2, 2, 82, 74,
-	3, 2, 2, 2, 82, 83, 3, 2, 2, 2, 83, 84, 3, 2, 2, 2, 84, 85, 7, 5, 2, 2,
-	85, 93, 3, 2, 2, 2, 86, 87, 7, 28, 2, 2, 87, 93, 5, 4, 3, 6, 88, 89, 7,
-	3, 2, 2, 89, 90, 5, 4, 3, 2, 90, 91, 7, 5, 2, 2, 91, 93, 3, 2, 2, 2, 92,
-	29, 3, 2, 2, 2, 92, 34, 3, 2, 2, 2, 92, 38, 3, 2, 2, 2, 92, 45, 3, 2, 2,
-	2, 92, 52, 3, 2, 2, 2, 92, 59, 3, 2, 2, 2, 92, 68, 3, 2, 2, 2, 92, 86,
-	3, 2, 2, 2, 92, 88, 3, 2, 2, 2, 93, 102, 3, 2, 2, 2, 94, 95, 12, 5, 2,
-	2, 95, 96, 7, 22, 2, 2, 96, 101, 5, 4, 3, 6, 97, 98, 12, 4, 2, 2, 98, 99,
-	7, 23, 2, 2, 99, 101, 5, 4, 3, 5, 100, 94, 3, 2, 2, 2, 100, 97, 3, 2, 2,
-	2, 101, 104, 3, 2, 2, 2, 102, 100, 3, 2, 2, 2, 102, 103, 3, 2, 2, 2, 103,
-	5, 3, 2, 2, 2, 104, 102, 3, 2, 2, 2, 105, 108, 9, 2, 2, 2, 106, 108, 9,
-	3, 2, 2, 107, 105, 3, 2, 2, 2, 107, 106, 3, 2, 2, 2, 108, 7, 3, 2, 2, 2,
-	109, 110, 9, 4, 2, 2, 110, 9, 3, 2, 2, 2, 111, 112, 7, 29, 2, 2, 112, 11,
-	3, 2, 2, 2, 113, 114, 7, 29, 2, 2, 114, 13, 3, 2, 2, 2, 115, 116, 5, 10,
-	6, 2, 116, 117, 7, 15, 2, 2, 117, 119, 3, 2, 2, 2, 118, 115, 3, 2, 2, 2,
-	118, 119, 3, 2, 2, 2, 119, 120, 3, 2, 2, 2, 120, 121, 5, 12, 7, 2, 121,
-	122, 7, 15, 2, 2, 122, 124, 3, 2, 2, 2, 123, 118, 3, 2, 2, 2, 123, 124,
-	3, 2, 2, 2, 124, 125, 3, 2, 2, 2, 125, 126, 7, 29, 2, 2, 126, 15, 3, 2,
-	2, 2, 127, 130, 5, 20, 11, 2, 128, 130, 5, 22, 12, 2, 129, 127, 3, 2, 2,
-	2, 129, 128, 3, 2, 2, 2, 130, 17, 3, 2, 2, 2, 131, 132, 8, 10, 1, 2, 132,
-	138, 5, 14, 8, 2, 133, 134, 7, 3, 2, 2, 134, 135, 5, 18, 10, 2, 135, 136,
-	7, 5, 2, 2, 136, 138, 3, 2, 2, 2, 137, 131, 3, 2, 2, 2, 137, 133, 3, 2,
-	2, 2, 138, 171, 3, 2, 2, 2, 139, 140, 12, 8, 2, 2, 140, 143, 7, 16, 2,
-	2, 141, 144, 5, 16, 9, 2, 142, 144, 5, 18, 10, 2, 143, 141, 3, 2, 2, 2,
-	143, 142, 3, 2, 2, 2, 144, 170, 3, 2, 2, 2, 145, 146, 12, 7, 2, 2, 146,
-	149, 7, 17, 2, 2, 147, 150, 5, 16, 9, 2, 148, 150, 5, 18, 10, 2, 149, 147,
-	3, 2, 2, 2, 149, 148, 3, 2, 2, 2, 150, 170, 3, 2, 2, 2, 151, 152, 12, 6,
-	2, 2, 152, 155, 7, 18, 2, 2, 153, 156, 5, 16, 9, 2, 154, 156, 5, 18, 10,
-	2, 155, 153, 3, 2, 2, 2, 155, 154, 3, 2, 2, 2, 156, 170, 3, 2, 2, 2, 157,
-	158, 12, 5, 2, 2, 158, 161, 7, 19, 2, 2, 159, 162, 5, 16, 9, 2, 160, 162,
-	5, 18, 10, 2, 161, 159, 3, 2, 2, 2, 161, 160, 3, 2, 2, 2, 162, 170, 3,
-	2, 2, 2, 163, 164, 12, 4, 2, 2, 164, 167, 7, 20, 2, 2, 165, 168, 5, 16,
-	9, 2, 166, 168, 5, 18, 10, 2, 167, 165, 3, 2, 2, 2, 167, 166, 3, 2, 2,
-	2, 168, 170, 3, 2, 2, 2, 169, 139, 3, 2, 2, 2, 169, 145, 3, 2, 2, 2, 169,
-	151, 3, 2, 2, 2, 169, 157, 3, 2, 2, 2, 169, 163, 3, 2, 2, 2, 170, 173,
-	3, 2, 2, 2, 171, 169, 3, 2, 2, 2, 171, 172, 3, 2, 2, 2, 172, 19, 3, 2,
-	2, 2, 173, 171, 3, 2, 2, 2, 174, 176, 9, 5, 2, 2, 175, 174, 3, 2, 2, 2,
-	175, 176, 3, 2, 2, 2, 176, 177, 3, 2, 2, 2, 177, 178, 7, 30, 2, 2, 178,
-	21, 3, 2, 2, 2, 179, 180, 7, 31, 2, 2, 180, 23, 3, 2, 2, 2, 181, 182, 7,
-	28, 2, 2, 182, 25, 3, 2, 2, 2, 25, 40, 48, 55, 61, 70, 79, 82, 92, 100,
-	102, 107, 118, 123, 129, 137, 143, 149, 155, 161, 167, 169, 171, 175,
+	9, 13, 4, 14, 9, 14, 3, 2, 3, 2, 3, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 3, 43, 10, 3, 3, 3, 3, 3, 3, 3, 3,
+	3, 3, 3, 3, 3, 5, 3, 51, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 3, 58,
+	10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 3, 64, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+	3, 3, 3, 3, 3, 3, 5, 3, 73, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 7, 3,
+	80, 10, 3, 12, 3, 14, 3, 83, 11, 3, 5, 3, 85, 10, 3, 3, 3, 3, 3, 3, 3,
+	3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 5, 3, 95, 10, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+	3, 3, 3, 3, 7, 3, 103, 10, 3, 12, 3, 14, 3, 106, 11, 3, 3, 4, 3, 4, 5,
+	4, 110, 10, 4, 3, 5, 3, 5, 3, 6, 3, 6, 3, 7, 3, 7, 3, 8, 3, 8, 3, 9, 3,
+	9, 3, 9, 5, 9, 123, 10, 9, 3, 9, 3, 9, 3, 9, 5, 9, 128, 10, 9, 3, 9, 3,
+	9, 3, 10, 3, 10, 5, 10, 134, 10, 10, 3, 11, 3, 11, 3, 11, 3, 11, 3, 11,
+	3, 11, 5, 11, 142, 10, 11, 3, 11, 3, 11, 3, 11, 3, 11, 5, 11, 148, 10,
+	11, 3, 11, 3, 11, 3, 11, 3, 11, 5, 11, 154, 10, 11, 3, 11, 3, 11, 3, 11,
+	3, 11, 5, 11, 160, 10, 11, 3, 11, 3, 11, 3, 11, 3, 11, 5, 11, 166, 10,
+	11, 3, 11, 3, 11, 3, 11, 3, 11, 5, 11, 172, 10, 11, 7, 11, 174, 10, 11,
+	12, 11, 14, 11, 177, 11, 11, 3, 12, 5, 12, 180, 10, 12, 3, 12, 3, 12, 3,
+	13, 3, 13, 3, 14, 3, 14, 3, 14, 2, 4, 4, 20, 15, 2, 4, 6, 8, 10, 12, 14,
+	16, 18, 20, 22, 24, 26, 2, 7, 3, 2, 6, 9, 3, 2, 10, 12, 3, 2, 13, 14, 3,
+	2, 21, 22, 3, 2, 19, 20, 2, 207, 2, 28, 3, 2, 2, 2, 4, 94, 3, 2, 2, 2,
+	6, 109, 3, 2, 2, 2, 8, 111, 3, 2, 2, 2, 10, 113, 3, 2, 2, 2, 12, 115, 3,
+	2, 2, 2, 14, 117, 3, 2, 2, 2, 16, 127, 3, 2, 2, 2, 18, 133, 3, 2, 2, 2,
+	20, 141, 3, 2, 2, 2, 22, 179, 3, 2, 2, 2, 24, 183, 3, 2, 2, 2, 26, 185,
+	3, 2, 2, 2, 28, 29, 5, 4, 3, 2, 29, 30, 7, 2, 2, 3, 30, 3, 3, 2, 2, 2,
+	31, 32, 8, 3, 1, 2, 32, 33, 5, 20, 11, 2, 33, 34, 5, 6, 4, 2, 34, 35, 5,
+	18, 10, 2, 35, 95, 3, 2, 2, 2, 36, 37, 5, 20, 11, 2, 37, 38, 5, 8, 5, 2,
+	38, 39, 5, 18, 10, 2, 39, 95, 3, 2, 2, 2, 40, 42, 5, 20, 11, 2, 41, 43,
+	5, 26, 14, 2, 42, 41, 3, 2, 2, 2, 42, 43, 3, 2, 2, 2, 43, 44, 3, 2, 2,
+	2, 44, 45, 5, 10, 6, 2, 45, 46, 5, 18, 10, 2, 46, 95, 3, 2, 2, 2, 47, 48,
+	5, 20, 11, 2, 48, 50, 7, 27, 2, 2, 49, 51, 5, 26, 14, 2, 50, 49, 3, 2,
+	2, 2, 50, 51, 3, 2, 2, 2, 51, 52, 3, 2, 2, 2, 52, 53, 7, 28, 2, 2, 53,
+	95, 3, 2, 2, 2, 54, 55, 5, 20, 11, 2, 55, 57, 7, 27, 2, 2, 56, 58, 5, 26,
+	14, 2, 57, 56, 3, 2, 2, 2, 57, 58, 3, 2, 2, 2, 58, 59, 3, 2, 2, 2, 59,
+	60, 5, 18, 10, 2, 60, 95, 3, 2, 2, 2, 61, 63, 5, 20, 11, 2, 62, 64, 5,
+	26, 14, 2, 63, 62, 3, 2, 2, 2, 63, 64, 3, 2, 2, 2, 64, 65, 3, 2, 2, 2,
+	65, 66, 7, 25, 2, 2, 66, 67, 5, 18, 10, 2, 67, 68, 7, 23, 2, 2, 68, 69,
+	5, 18, 10, 2, 69, 95, 3, 2, 2, 2, 70, 72, 5, 20, 11, 2, 71, 73, 5, 26,
+	14, 2, 72, 71, 3, 2, 2, 2, 72, 73, 3, 2, 2, 2, 73, 74, 3, 2, 2, 2, 74,
+	75, 7, 26, 2, 2, 75, 84, 7, 3, 2, 2, 76, 81, 5, 18, 10, 2, 77, 78, 7, 4,
+	2, 2, 78, 80, 5, 18, 10, 2, 79, 77, 3, 2, 2, 2, 80, 83, 3, 2, 2, 2, 81,
+	79, 3, 2, 2, 2, 81, 82, 3, 2, 2, 2, 82, 85, 3, 2, 2, 2, 83, 81, 3, 2, 2,
+	2, 84, 76, 3, 2, 2, 2, 84, 85, 3, 2, 2, 2, 85, 86, 3, 2, 2, 2, 86, 87,
+	7, 5, 2, 2, 87, 95, 3, 2, 2, 2, 88, 89, 7, 29, 2, 2, 89, 95, 5, 4, 3, 6,
+	90, 91, 7, 3, 2, 2, 91, 92, 5, 4, 3, 2, 92, 93, 7, 5, 2, 2, 93, 95, 3,
+	2, 2, 2, 94, 31, 3, 2, 2, 2, 94, 36, 3, 2, 2, 2, 94, 40, 3, 2, 2, 2, 94,
+	47, 3, 2, 2, 2, 94, 54, 3, 2, 2, 2, 94, 61, 3, 2, 2, 2, 94, 70, 3, 2, 2,
+	2, 94, 88, 3, 2, 2, 2, 94, 90, 3, 2, 2, 2, 95, 104, 3, 2, 2, 2, 96, 97,
+	12, 5, 2, 2, 97, 98, 7, 23, 2, 2, 98, 103, 5, 4, 3, 6, 99, 100, 12, 4,
+	2, 2, 100, 101, 7, 24, 2, 2, 101, 103, 5, 4, 3, 5, 102, 96, 3, 2, 2, 2,
+	102, 99, 3, 2, 2, 2, 103, 106, 3, 2, 2, 2, 104, 102, 3, 2, 2, 2, 104, 105,
+	3, 2, 2, 2, 105, 5, 3, 2, 2, 2, 106, 104, 3, 2, 2, 2, 107, 110, 9, 2, 2,
+	2, 108, 110, 9, 3, 2, 2, 109, 107, 3, 2, 2, 2, 109, 108, 3, 2, 2, 2, 110,
+	7, 3, 2, 2, 2, 111, 112, 9, 4, 2, 2, 112, 9, 3, 2, 2, 2, 113, 114, 9, 5,
+	2, 2, 114, 11, 3, 2, 2, 2, 115, 116, 7, 30, 2, 2, 116, 13, 3, 2, 2, 2,
+	117, 118, 7, 30, 2, 2, 118, 15, 3, 2, 2, 2, 119, 120, 5, 12, 7, 2, 120,
+	121, 7, 15, 2, 2, 121, 123, 3, 2, 2, 2, 122, 119, 3, 2, 2, 2, 122, 123,
+	3, 2, 2, 2, 123, 124, 3, 2, 2, 2, 124, 125, 5, 14, 8, 2, 125, 126, 7, 15,
+	2, 2, 126, 128, 3, 2, 2, 2, 127, 122, 3, 2, 2, 2, 127, 128, 3, 2, 2, 2,
+	128, 129, 3, 2, 2, 2, 129, 130, 7, 30, 2, 2, 130, 17, 3, 2, 2, 2, 131,
+	134, 5, 22, 12, 2, 132, 134, 5, 24, 13, 2, 133, 131, 3, 2, 2, 2, 133, 132,
+	3, 2, 2, 2, 134, 19, 3, 2, 2, 2, 135, 136, 8, 11, 1, 2, 136, 142, 5, 16,
+	9, 2, 137, 138, 7, 3, 2, 2, 138, 139, 5, 20, 11, 2, 139, 140, 7, 5, 2,
+	2, 140, 142, 3, 2, 2, 2, 141, 135, 3, 2, 2, 2, 141, 137, 3, 2, 2, 2, 142,
+	175, 3, 2, 2, 2, 143, 144, 12, 8, 2, 2, 144, 147, 7, 16, 2, 2, 145, 148,
+	5, 18, 10, 2, 146, 148, 5, 20, 11, 2, 147, 145, 3, 2, 2, 2, 147, 146, 3,
+	2, 2, 2, 148, 174, 3, 2, 2, 2, 149, 150, 12, 7, 2, 2, 150, 153, 7, 17,
+	2, 2, 151, 154, 5, 18, 10, 2, 152, 154, 5, 20, 11, 2, 153, 151, 3, 2, 2,
+	2, 153, 152, 3, 2, 2, 2, 154, 174, 3, 2, 2, 2, 155, 156, 12, 6, 2, 2, 156,
+	159, 7, 18, 2, 2, 157, 160, 5, 18, 10, 2, 158, 160, 5, 20, 11, 2, 159,
+	157, 3, 2, 2, 2, 159, 158, 3, 2, 2, 2, 160, 174, 3, 2, 2, 2, 161, 162,
+	12, 5, 2, 2, 162, 165, 7, 19, 2, 2, 163, 166, 5, 18, 10, 2, 164, 166, 5,
+	20, 11, 2, 165, 163, 3, 2, 2, 2, 165, 164, 3, 2, 2, 2, 166, 174, 3, 2,
+	2, 2, 167, 168, 12, 4, 2, 2, 168, 171, 7, 20, 2, 2, 169, 172, 5, 18, 10,
+	2, 170, 172, 5, 20, 11, 2, 171, 169, 3, 2, 2, 2, 171, 170, 3, 2, 2, 2,
+	172, 174, 3, 2, 2, 2, 173, 143, 3, 2, 2, 2, 173, 149, 3, 2, 2, 2, 173,
+	155, 3, 2, 2, 2, 173, 161, 3, 2, 2, 2, 173, 167, 3, 2, 2, 2, 174, 177,
+	3, 2, 2, 2, 175, 173, 3, 2, 2, 2, 175, 176, 3, 2, 2, 2, 176, 21, 3, 2,
+	2, 2, 177, 175, 3, 2, 2, 2, 178, 180, 9, 6, 2, 2, 179, 178, 3, 2, 2, 2,
+	179, 180, 3, 2, 2, 2, 180, 181, 3, 2, 2, 2, 181, 182, 7, 31, 2, 2, 182,
+	23, 3, 2, 2, 2, 183, 184, 7, 32, 2, 2, 184, 25, 3, 2, 2, 2, 185, 186, 7,
+	29, 2, 2, 186, 27, 3, 2, 2, 2, 25, 42, 50, 57, 63, 72, 81, 84, 94, 102,
+	104, 109, 122, 127, 133, 141, 147, 153, 159, 165, 171, 173, 175, 179,
 }
 var deserializer = antlr.NewATNDeserializer(nil)
 var deserializedATN = deserializer.DeserializeFromUInt16(parserATN)
@@ -108,12 +110,12 @@ var literalNames = []string{
 }
 var symbolicNames = []string{
 	"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-	"", "K_LIKE", "K_AND", "K_OR", "K_BETWEEN", "K_IN", "K_IS", "K_NULL", "K_NOT",
-	"IDENTIFIER", "NUMERIC_LITERAL", "STRING_LITERAL", "SPACES",
+	"", "K_LIKE", "K_ILIKE", "K_AND", "K_OR", "K_BETWEEN", "K_IN", "K_IS",
+	"K_NULL", "K_NOT", "IDENTIFIER", "NUMERIC_LITERAL", "STRING_LITERAL", "SPACES",
 }
 
 var ruleNames = []string{
-	"start", "expr", "literalOp", "stringOp", "databaseName", "tableName",
+	"start", "expr", "literalOp", "stringOp", "likeOp", "databaseName", "tableName",
 	"columnName", "literalValue", "mathExp", "signedNumber", "stringValue",
 	"keyNot",
 }
@@ -165,17 +167,18 @@ const (
 	TSLParserT__16           = 17
 	TSLParserT__17           = 18
 	TSLParserK_LIKE          = 19
-	TSLParserK_AND           = 20
-	TSLParserK_OR            = 21
-	TSLParserK_BETWEEN       = 22
-	TSLParserK_IN            = 23
-	TSLParserK_IS            = 24
-	TSLParserK_NULL          = 25
-	TSLParserK_NOT           = 26
-	TSLParserIDENTIFIER      = 27
-	TSLParserNUMERIC_LITERAL = 28
-	TSLParserSTRING_LITERAL  = 29
-	TSLParserSPACES          = 30
+	TSLParserK_ILIKE         = 20
+	TSLParserK_AND           = 21
+	TSLParserK_OR            = 22
+	TSLParserK_BETWEEN       = 23
+	TSLParserK_IN            = 24
+	TSLParserK_IS            = 25
+	TSLParserK_NULL          = 26
+	TSLParserK_NOT           = 27
+	TSLParserIDENTIFIER      = 28
+	TSLParserNUMERIC_LITERAL = 29
+	TSLParserSTRING_LITERAL  = 30
+	TSLParserSPACES          = 31
 )
 
 // TSLParser rules.
@@ -184,14 +187,15 @@ const (
 	TSLParserRULE_expr         = 1
 	TSLParserRULE_literalOp    = 2
 	TSLParserRULE_stringOp     = 3
-	TSLParserRULE_databaseName = 4
-	TSLParserRULE_tableName    = 5
-	TSLParserRULE_columnName   = 6
-	TSLParserRULE_literalValue = 7
-	TSLParserRULE_mathExp      = 8
-	TSLParserRULE_signedNumber = 9
-	TSLParserRULE_stringValue  = 10
-	TSLParserRULE_keyNot       = 11
+	TSLParserRULE_likeOp       = 4
+	TSLParserRULE_databaseName = 5
+	TSLParserRULE_tableName    = 6
+	TSLParserRULE_columnName   = 7
+	TSLParserRULE_literalValue = 8
+	TSLParserRULE_mathExp      = 9
+	TSLParserRULE_signedNumber = 10
+	TSLParserRULE_stringValue  = 11
+	TSLParserRULE_keyNot       = 12
 )
 
 // IStartContext is an interface to support dynamic dispatch.
@@ -288,11 +292,11 @@ func (p *TSLParser) Start() (localctx IStartContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(24)
+		p.SetState(26)
 		p.expr(0)
 	}
 	{
-		p.SetState(25)
+		p.SetState(27)
 		p.Match(TSLParserEOF)
 	}
 
@@ -461,8 +465,14 @@ func (s *LikeContext) MathExp() IMathExpContext {
 	return t.(IMathExpContext)
 }
 
-func (s *LikeContext) K_LIKE() antlr.TerminalNode {
-	return s.GetToken(TSLParserK_LIKE, 0)
+func (s *LikeContext) LikeOp() ILikeOpContext {
+	var t = s.GetTypedRuleContext(reflect.TypeOf((*ILikeOpContext)(nil)).Elem(), 0)
+
+	if t == nil {
+		return nil
+	}
+
+	return t.(ILikeOpContext)
 }
 
 func (s *LikeContext) LiteralValue() ILiteralValueContext {
@@ -1044,7 +1054,7 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 	var _alt int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(90)
+	p.SetState(92)
 	p.GetErrorHandler().Sync(p)
 	switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 7, p.GetParserRuleContext()) {
 	case 1:
@@ -1053,15 +1063,15 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		_prevctx = localctx
 
 		{
-			p.SetState(28)
+			p.SetState(30)
 			p.mathExp(0)
 		}
 		{
-			p.SetState(29)
+			p.SetState(31)
 			p.LiteralOp()
 		}
 		{
-			p.SetState(30)
+			p.SetState(32)
 			p.LiteralValue()
 		}
 
@@ -1070,15 +1080,15 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(32)
+			p.SetState(34)
 			p.mathExp(0)
 		}
 		{
-			p.SetState(33)
+			p.SetState(35)
 			p.StringOp()
 		}
 		{
-			p.SetState(34)
+			p.SetState(36)
 			p.LiteralValue()
 		}
 
@@ -1087,26 +1097,26 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(36)
+			p.SetState(38)
 			p.mathExp(0)
 		}
-		p.SetState(38)
+		p.SetState(40)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		if _la == TSLParserK_NOT {
 			{
-				p.SetState(37)
+				p.SetState(39)
 				p.KeyNot()
 			}
 
 		}
 		{
-			p.SetState(40)
-			p.Match(TSLParserK_LIKE)
+			p.SetState(42)
+			p.LikeOp()
 		}
 		{
-			p.SetState(41)
+			p.SetState(43)
 			p.LiteralValue()
 		}
 
@@ -1115,26 +1125,26 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(43)
+			p.SetState(45)
 			p.mathExp(0)
 		}
 		{
-			p.SetState(44)
+			p.SetState(46)
 			p.Match(TSLParserK_IS)
 		}
-		p.SetState(46)
+		p.SetState(48)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		if _la == TSLParserK_NOT {
 			{
-				p.SetState(45)
+				p.SetState(47)
 				p.KeyNot()
 			}
 
 		}
 		{
-			p.SetState(48)
+			p.SetState(50)
 			p.Match(TSLParserK_NULL)
 		}
 
@@ -1143,26 +1153,26 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(50)
+			p.SetState(52)
 			p.mathExp(0)
 		}
 		{
-			p.SetState(51)
+			p.SetState(53)
 			p.Match(TSLParserK_IS)
 		}
-		p.SetState(53)
+		p.SetState(55)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		if _la == TSLParserK_NOT {
 			{
-				p.SetState(52)
+				p.SetState(54)
 				p.KeyNot()
 			}
 
 		}
 		{
-			p.SetState(55)
+			p.SetState(57)
 			p.LiteralValue()
 		}
 
@@ -1171,34 +1181,34 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(57)
+			p.SetState(59)
 			p.mathExp(0)
 		}
-		p.SetState(59)
+		p.SetState(61)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		if _la == TSLParserK_NOT {
 			{
-				p.SetState(58)
+				p.SetState(60)
 				p.KeyNot()
 			}
 
 		}
 		{
-			p.SetState(61)
+			p.SetState(63)
 			p.Match(TSLParserK_BETWEEN)
 		}
 		{
-			p.SetState(62)
+			p.SetState(64)
 			p.LiteralValue()
 		}
 		{
-			p.SetState(63)
+			p.SetState(65)
 			p.Match(TSLParserK_AND)
 		}
 		{
-			p.SetState(64)
+			p.SetState(66)
 			p.LiteralValue()
 		}
 
@@ -1207,60 +1217,60 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(66)
+			p.SetState(68)
 			p.mathExp(0)
 		}
-		p.SetState(68)
+		p.SetState(70)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		if _la == TSLParserK_NOT {
 			{
-				p.SetState(67)
+				p.SetState(69)
 				p.KeyNot()
 			}
 
 		}
 		{
-			p.SetState(70)
+			p.SetState(72)
 			p.Match(TSLParserK_IN)
 		}
 
 		{
-			p.SetState(71)
+			p.SetState(73)
 			p.Match(TSLParserT__0)
 		}
-		p.SetState(80)
+		p.SetState(82)
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
 		if ((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<TSLParserT__16)|(1<<TSLParserT__17)|(1<<TSLParserNUMERIC_LITERAL)|(1<<TSLParserSTRING_LITERAL))) != 0 {
 			{
-				p.SetState(72)
+				p.SetState(74)
 				p.LiteralValue()
 			}
-			p.SetState(77)
+			p.SetState(79)
 			p.GetErrorHandler().Sync(p)
 			_la = p.GetTokenStream().LA(1)
 
 			for _la == TSLParserT__1 {
 				{
-					p.SetState(73)
+					p.SetState(75)
 					p.Match(TSLParserT__1)
 				}
 				{
-					p.SetState(74)
+					p.SetState(76)
 					p.LiteralValue()
 				}
 
-				p.SetState(79)
+				p.SetState(81)
 				p.GetErrorHandler().Sync(p)
 				_la = p.GetTokenStream().LA(1)
 			}
 
 		}
 		{
-			p.SetState(82)
+			p.SetState(84)
 			p.Match(TSLParserT__2)
 		}
 
@@ -1269,11 +1279,11 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(84)
+			p.SetState(86)
 			p.Match(TSLParserK_NOT)
 		}
 		{
-			p.SetState(85)
+			p.SetState(87)
 			p.expr(4)
 		}
 
@@ -1282,21 +1292,21 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(86)
+			p.SetState(88)
 			p.Match(TSLParserT__0)
 		}
 		{
-			p.SetState(87)
+			p.SetState(89)
 			p.expr(0)
 		}
 		{
-			p.SetState(88)
+			p.SetState(90)
 			p.Match(TSLParserT__2)
 		}
 
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(100)
+	p.SetState(102)
 	p.GetErrorHandler().Sync(p)
 	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 9, p.GetParserRuleContext())
 
@@ -1306,47 +1316,47 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 				p.TriggerExitRuleEvent()
 			}
 			_prevctx = localctx
-			p.SetState(98)
+			p.SetState(100)
 			p.GetErrorHandler().Sync(p)
 			switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 8, p.GetParserRuleContext()) {
 			case 1:
 				localctx = NewAndContext(p, NewExprContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_expr)
-				p.SetState(92)
+				p.SetState(94)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 3)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 3)", ""))
 				}
 				{
-					p.SetState(93)
+					p.SetState(95)
 					p.Match(TSLParserK_AND)
 				}
 				{
-					p.SetState(94)
+					p.SetState(96)
 					p.expr(4)
 				}
 
 			case 2:
 				localctx = NewOrContext(p, NewExprContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_expr)
-				p.SetState(95)
+				p.SetState(97)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 2)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
 				}
 				{
-					p.SetState(96)
+					p.SetState(98)
 					p.Match(TSLParserK_OR)
 				}
 				{
-					p.SetState(97)
+					p.SetState(99)
 					p.expr(3)
 				}
 
 			}
 
 		}
-		p.SetState(102)
+		p.SetState(104)
 		p.GetErrorHandler().Sync(p)
 		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 9, p.GetParserRuleContext())
 	}
@@ -1432,14 +1442,14 @@ func (p *TSLParser) LiteralOp() (localctx ILiteralOpContext) {
 		}
 	}()
 
-	p.SetState(105)
+	p.SetState(107)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
 	case TSLParserT__3, TSLParserT__4, TSLParserT__5, TSLParserT__6:
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(103)
+			p.SetState(105)
 			_la = p.GetTokenStream().LA(1)
 
 			if !(((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<TSLParserT__3)|(1<<TSLParserT__4)|(1<<TSLParserT__5)|(1<<TSLParserT__6))) != 0) {
@@ -1453,7 +1463,7 @@ func (p *TSLParser) LiteralOp() (localctx ILiteralOpContext) {
 	case TSLParserT__7, TSLParserT__8, TSLParserT__9:
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(104)
+			p.SetState(106)
 			_la = p.GetTokenStream().LA(1)
 
 			if !(((_la)&-(0x1f+1)) == 0 && ((1<<uint(_la))&((1<<TSLParserT__7)|(1<<TSLParserT__8)|(1<<TSLParserT__9))) != 0) {
@@ -1551,10 +1561,113 @@ func (p *TSLParser) StringOp() (localctx IStringOpContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(107)
+		p.SetState(109)
 		_la = p.GetTokenStream().LA(1)
 
 		if !(_la == TSLParserT__10 || _la == TSLParserT__11) {
+			p.GetErrorHandler().RecoverInline(p)
+		} else {
+			p.GetErrorHandler().ReportMatch(p)
+			p.Consume()
+		}
+	}
+
+	return localctx
+}
+
+// ILikeOpContext is an interface to support dynamic dispatch.
+type ILikeOpContext interface {
+	antlr.ParserRuleContext
+
+	// GetParser returns the parser.
+	GetParser() antlr.Parser
+
+	// IsLikeOpContext differentiates from other interfaces.
+	IsLikeOpContext()
+}
+
+type LikeOpContext struct {
+	*antlr.BaseParserRuleContext
+	parser antlr.Parser
+}
+
+func NewEmptyLikeOpContext() *LikeOpContext {
+	var p = new(LikeOpContext)
+	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(nil, -1)
+	p.RuleIndex = TSLParserRULE_likeOp
+	return p
+}
+
+func (*LikeOpContext) IsLikeOpContext() {}
+
+func NewLikeOpContext(parser antlr.Parser, parent antlr.ParserRuleContext, invokingState int) *LikeOpContext {
+	var p = new(LikeOpContext)
+
+	p.BaseParserRuleContext = antlr.NewBaseParserRuleContext(parent, invokingState)
+
+	p.parser = parser
+	p.RuleIndex = TSLParserRULE_likeOp
+
+	return p
+}
+
+func (s *LikeOpContext) GetParser() antlr.Parser { return s.parser }
+
+func (s *LikeOpContext) K_LIKE() antlr.TerminalNode {
+	return s.GetToken(TSLParserK_LIKE, 0)
+}
+
+func (s *LikeOpContext) K_ILIKE() antlr.TerminalNode {
+	return s.GetToken(TSLParserK_ILIKE, 0)
+}
+
+func (s *LikeOpContext) GetRuleContext() antlr.RuleContext {
+	return s
+}
+
+func (s *LikeOpContext) ToStringTree(ruleNames []string, recog antlr.Recognizer) string {
+	return antlr.TreesStringTree(s, ruleNames, recog)
+}
+
+func (s *LikeOpContext) EnterRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(TSLListener); ok {
+		listenerT.EnterLikeOp(s)
+	}
+}
+
+func (s *LikeOpContext) ExitRule(listener antlr.ParseTreeListener) {
+	if listenerT, ok := listener.(TSLListener); ok {
+		listenerT.ExitLikeOp(s)
+	}
+}
+
+func (p *TSLParser) LikeOp() (localctx ILikeOpContext) {
+	localctx = NewLikeOpContext(p, p.GetParserRuleContext(), p.GetState())
+	p.EnterRule(localctx, 8, TSLParserRULE_likeOp)
+	var _la int
+
+	defer func() {
+		p.ExitRule()
+	}()
+
+	defer func() {
+		if err := recover(); err != nil {
+			if v, ok := err.(antlr.RecognitionException); ok {
+				localctx.SetException(v)
+				p.GetErrorHandler().ReportError(p, v)
+				p.GetErrorHandler().Recover(p, v)
+			} else {
+				panic(err)
+			}
+		}
+	}()
+
+	p.EnterOuterAlt(localctx, 1)
+	{
+		p.SetState(111)
+		_la = p.GetTokenStream().LA(1)
+
+		if !(_la == TSLParserK_LIKE || _la == TSLParserK_ILIKE) {
 			p.GetErrorHandler().RecoverInline(p)
 		} else {
 			p.GetErrorHandler().ReportMatch(p)
@@ -1629,7 +1742,7 @@ func (s *DatabaseNameContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *TSLParser) DatabaseName() (localctx IDatabaseNameContext) {
 	localctx = NewDatabaseNameContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 8, TSLParserRULE_databaseName)
+	p.EnterRule(localctx, 10, TSLParserRULE_databaseName)
 
 	defer func() {
 		p.ExitRule()
@@ -1649,7 +1762,7 @@ func (p *TSLParser) DatabaseName() (localctx IDatabaseNameContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(109)
+		p.SetState(113)
 		p.Match(TSLParserIDENTIFIER)
 	}
 
@@ -1720,7 +1833,7 @@ func (s *TableNameContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *TSLParser) TableName() (localctx ITableNameContext) {
 	localctx = NewTableNameContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 10, TSLParserRULE_tableName)
+	p.EnterRule(localctx, 12, TSLParserRULE_tableName)
 
 	defer func() {
 		p.ExitRule()
@@ -1740,7 +1853,7 @@ func (p *TSLParser) TableName() (localctx ITableNameContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(111)
+		p.SetState(115)
 		p.Match(TSLParserIDENTIFIER)
 	}
 
@@ -1831,7 +1944,7 @@ func (s *ColumnNameContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *TSLParser) ColumnName() (localctx IColumnNameContext) {
 	localctx = NewColumnNameContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 12, TSLParserRULE_columnName)
+	p.EnterRule(localctx, 14, TSLParserRULE_columnName)
 
 	defer func() {
 		p.ExitRule()
@@ -1850,36 +1963,36 @@ func (p *TSLParser) ColumnName() (localctx IColumnNameContext) {
 	}()
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(121)
+	p.SetState(125)
 	p.GetErrorHandler().Sync(p)
 
 	if p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 12, p.GetParserRuleContext()) == 1 {
-		p.SetState(116)
+		p.SetState(120)
 		p.GetErrorHandler().Sync(p)
 
 		if p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 11, p.GetParserRuleContext()) == 1 {
 			{
-				p.SetState(113)
+				p.SetState(117)
 				p.DatabaseName()
 			}
 			{
-				p.SetState(114)
+				p.SetState(118)
 				p.Match(TSLParserT__12)
 			}
 
 		}
 		{
-			p.SetState(118)
+			p.SetState(122)
 			p.TableName()
 		}
 		{
-			p.SetState(119)
+			p.SetState(123)
 			p.Match(TSLParserT__12)
 		}
 
 	}
 	{
-		p.SetState(123)
+		p.SetState(127)
 		p.Match(TSLParserIDENTIFIER)
 	}
 
@@ -2018,7 +2131,7 @@ func (s *NumberLiteralContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *TSLParser) LiteralValue() (localctx ILiteralValueContext) {
 	localctx = NewLiteralValueContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 14, TSLParserRULE_literalValue)
+	p.EnterRule(localctx, 16, TSLParserRULE_literalValue)
 
 	defer func() {
 		p.ExitRule()
@@ -2036,7 +2149,7 @@ func (p *TSLParser) LiteralValue() (localctx ILiteralValueContext) {
 		}
 	}()
 
-	p.SetState(127)
+	p.SetState(131)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
@@ -2044,7 +2157,7 @@ func (p *TSLParser) LiteralValue() (localctx ILiteralValueContext) {
 		localctx = NewNumberLiteralContext(p, localctx)
 		p.EnterOuterAlt(localctx, 1)
 		{
-			p.SetState(125)
+			p.SetState(129)
 			p.SignedNumber()
 		}
 
@@ -2052,7 +2165,7 @@ func (p *TSLParser) LiteralValue() (localctx ILiteralValueContext) {
 		localctx = NewStringLiteralContext(p, localctx)
 		p.EnterOuterAlt(localctx, 2)
 		{
-			p.SetState(126)
+			p.SetState(130)
 			p.StringValue()
 		}
 
@@ -2518,8 +2631,8 @@ func (p *TSLParser) mathExp(_p int) (localctx IMathExpContext) {
 	localctx = NewMathExpContext(p, p.GetParserRuleContext(), _parentState)
 	var _prevctx IMathExpContext = localctx
 	var _ antlr.ParserRuleContext = _prevctx // TODO: To prevent unused variable warning.
-	_startState := 16
-	p.EnterRecursionRule(localctx, 16, TSLParserRULE_mathExp, _p)
+	_startState := 18
+	p.EnterRecursionRule(localctx, 18, TSLParserRULE_mathExp, _p)
 
 	defer func() {
 		p.UnrollRecursionContexts(_parentctx)
@@ -2540,7 +2653,7 @@ func (p *TSLParser) mathExp(_p int) (localctx IMathExpContext) {
 	var _alt int
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(135)
+	p.SetState(139)
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
@@ -2550,7 +2663,7 @@ func (p *TSLParser) mathExp(_p int) (localctx IMathExpContext) {
 		_prevctx = localctx
 
 		{
-			p.SetState(130)
+			p.SetState(134)
 			p.ColumnName()
 		}
 
@@ -2559,15 +2672,15 @@ func (p *TSLParser) mathExp(_p int) (localctx IMathExpContext) {
 		p.SetParserRuleContext(localctx)
 		_prevctx = localctx
 		{
-			p.SetState(131)
+			p.SetState(135)
 			p.Match(TSLParserT__0)
 		}
 		{
-			p.SetState(132)
+			p.SetState(136)
 			p.mathExp(0)
 		}
 		{
-			p.SetState(133)
+			p.SetState(137)
 			p.Match(TSLParserT__2)
 		}
 
@@ -2575,7 +2688,7 @@ func (p *TSLParser) mathExp(_p int) (localctx IMathExpContext) {
 		panic(antlr.NewNoViableAltException(p, nil, nil, nil, nil, nil))
 	}
 	p.GetParserRuleContext().SetStop(p.GetTokenStream().LT(-1))
-	p.SetState(169)
+	p.SetState(173)
 	p.GetErrorHandler().Sync(p)
 	_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 21, p.GetParserRuleContext())
 
@@ -2585,34 +2698,34 @@ func (p *TSLParser) mathExp(_p int) (localctx IMathExpContext) {
 				p.TriggerExitRuleEvent()
 			}
 			_prevctx = localctx
-			p.SetState(167)
+			p.SetState(171)
 			p.GetErrorHandler().Sync(p)
 			switch p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 20, p.GetParserRuleContext()) {
 			case 1:
 				localctx = NewMulOpsContext(p, NewMathExpContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_mathExp)
-				p.SetState(137)
+				p.SetState(141)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 6)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 6)", ""))
 				}
 				{
-					p.SetState(138)
+					p.SetState(142)
 					p.Match(TSLParserT__13)
 				}
-				p.SetState(141)
+				p.SetState(145)
 				p.GetErrorHandler().Sync(p)
 
 				switch p.GetTokenStream().LA(1) {
 				case TSLParserT__16, TSLParserT__17, TSLParserNUMERIC_LITERAL, TSLParserSTRING_LITERAL:
 					{
-						p.SetState(139)
+						p.SetState(143)
 						p.LiteralValue()
 					}
 
 				case TSLParserT__0, TSLParserIDENTIFIER:
 					{
-						p.SetState(140)
+						p.SetState(144)
 						p.mathExp(0)
 					}
 
@@ -2623,28 +2736,28 @@ func (p *TSLParser) mathExp(_p int) (localctx IMathExpContext) {
 			case 2:
 				localctx = NewDivOpsContext(p, NewMathExpContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_mathExp)
-				p.SetState(143)
+				p.SetState(147)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 5)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 5)", ""))
 				}
 				{
-					p.SetState(144)
+					p.SetState(148)
 					p.Match(TSLParserT__14)
 				}
-				p.SetState(147)
+				p.SetState(151)
 				p.GetErrorHandler().Sync(p)
 
 				switch p.GetTokenStream().LA(1) {
 				case TSLParserT__16, TSLParserT__17, TSLParserNUMERIC_LITERAL, TSLParserSTRING_LITERAL:
 					{
-						p.SetState(145)
+						p.SetState(149)
 						p.LiteralValue()
 					}
 
 				case TSLParserT__0, TSLParserIDENTIFIER:
 					{
-						p.SetState(146)
+						p.SetState(150)
 						p.mathExp(0)
 					}
 
@@ -2655,28 +2768,28 @@ func (p *TSLParser) mathExp(_p int) (localctx IMathExpContext) {
 			case 3:
 				localctx = NewModOpsContext(p, NewMathExpContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_mathExp)
-				p.SetState(149)
+				p.SetState(153)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 4)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 4)", ""))
 				}
 				{
-					p.SetState(150)
+					p.SetState(154)
 					p.Match(TSLParserT__15)
 				}
-				p.SetState(153)
+				p.SetState(157)
 				p.GetErrorHandler().Sync(p)
 
 				switch p.GetTokenStream().LA(1) {
 				case TSLParserT__16, TSLParserT__17, TSLParserNUMERIC_LITERAL, TSLParserSTRING_LITERAL:
 					{
-						p.SetState(151)
+						p.SetState(155)
 						p.LiteralValue()
 					}
 
 				case TSLParserT__0, TSLParserIDENTIFIER:
 					{
-						p.SetState(152)
+						p.SetState(156)
 						p.mathExp(0)
 					}
 
@@ -2687,28 +2800,28 @@ func (p *TSLParser) mathExp(_p int) (localctx IMathExpContext) {
 			case 4:
 				localctx = NewAddOpsContext(p, NewMathExpContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_mathExp)
-				p.SetState(155)
+				p.SetState(159)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 3)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 3)", ""))
 				}
 				{
-					p.SetState(156)
+					p.SetState(160)
 					p.Match(TSLParserT__16)
 				}
-				p.SetState(159)
+				p.SetState(163)
 				p.GetErrorHandler().Sync(p)
 
 				switch p.GetTokenStream().LA(1) {
 				case TSLParserT__16, TSLParserT__17, TSLParserNUMERIC_LITERAL, TSLParserSTRING_LITERAL:
 					{
-						p.SetState(157)
+						p.SetState(161)
 						p.LiteralValue()
 					}
 
 				case TSLParserT__0, TSLParserIDENTIFIER:
 					{
-						p.SetState(158)
+						p.SetState(162)
 						p.mathExp(0)
 					}
 
@@ -2719,28 +2832,28 @@ func (p *TSLParser) mathExp(_p int) (localctx IMathExpContext) {
 			case 5:
 				localctx = NewSubOpsContext(p, NewMathExpContext(p, _parentctx, _parentState))
 				p.PushNewRecursionContext(localctx, _startState, TSLParserRULE_mathExp)
-				p.SetState(161)
+				p.SetState(165)
 
 				if !(p.Precpred(p.GetParserRuleContext(), 2)) {
 					panic(antlr.NewFailedPredicateException(p, "p.Precpred(p.GetParserRuleContext(), 2)", ""))
 				}
 				{
-					p.SetState(162)
+					p.SetState(166)
 					p.Match(TSLParserT__17)
 				}
-				p.SetState(165)
+				p.SetState(169)
 				p.GetErrorHandler().Sync(p)
 
 				switch p.GetTokenStream().LA(1) {
 				case TSLParserT__16, TSLParserT__17, TSLParserNUMERIC_LITERAL, TSLParserSTRING_LITERAL:
 					{
-						p.SetState(163)
+						p.SetState(167)
 						p.LiteralValue()
 					}
 
 				case TSLParserT__0, TSLParserIDENTIFIER:
 					{
-						p.SetState(164)
+						p.SetState(168)
 						p.mathExp(0)
 					}
 
@@ -2751,7 +2864,7 @@ func (p *TSLParser) mathExp(_p int) (localctx IMathExpContext) {
 			}
 
 		}
-		p.SetState(171)
+		p.SetState(175)
 		p.GetErrorHandler().Sync(p)
 		_alt = p.GetInterpreter().AdaptivePredict(p.GetTokenStream(), 21, p.GetParserRuleContext())
 	}
@@ -2823,7 +2936,7 @@ func (s *SignedNumberContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *TSLParser) SignedNumber() (localctx ISignedNumberContext) {
 	localctx = NewSignedNumberContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 18, TSLParserRULE_signedNumber)
+	p.EnterRule(localctx, 20, TSLParserRULE_signedNumber)
 	var _la int
 
 	defer func() {
@@ -2843,13 +2956,13 @@ func (p *TSLParser) SignedNumber() (localctx ISignedNumberContext) {
 	}()
 
 	p.EnterOuterAlt(localctx, 1)
-	p.SetState(173)
+	p.SetState(177)
 	p.GetErrorHandler().Sync(p)
 	_la = p.GetTokenStream().LA(1)
 
 	if _la == TSLParserT__16 || _la == TSLParserT__17 {
 		{
-			p.SetState(172)
+			p.SetState(176)
 			_la = p.GetTokenStream().LA(1)
 
 			if !(_la == TSLParserT__16 || _la == TSLParserT__17) {
@@ -2862,7 +2975,7 @@ func (p *TSLParser) SignedNumber() (localctx ISignedNumberContext) {
 
 	}
 	{
-		p.SetState(175)
+		p.SetState(179)
 		p.Match(TSLParserNUMERIC_LITERAL)
 	}
 
@@ -2933,7 +3046,7 @@ func (s *StringValueContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *TSLParser) StringValue() (localctx IStringValueContext) {
 	localctx = NewStringValueContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 20, TSLParserRULE_stringValue)
+	p.EnterRule(localctx, 22, TSLParserRULE_stringValue)
 
 	defer func() {
 		p.ExitRule()
@@ -2953,7 +3066,7 @@ func (p *TSLParser) StringValue() (localctx IStringValueContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(177)
+		p.SetState(181)
 		p.Match(TSLParserSTRING_LITERAL)
 	}
 
@@ -3024,7 +3137,7 @@ func (s *KeyNotContext) ExitRule(listener antlr.ParseTreeListener) {
 
 func (p *TSLParser) KeyNot() (localctx IKeyNotContext) {
 	localctx = NewKeyNotContext(p, p.GetParserRuleContext(), p.GetState())
-	p.EnterRule(localctx, 22, TSLParserRULE_keyNot)
+	p.EnterRule(localctx, 24, TSLParserRULE_keyNot)
 
 	defer func() {
 		p.ExitRule()
@@ -3044,7 +3157,7 @@ func (p *TSLParser) KeyNot() (localctx IKeyNotContext) {
 
 	p.EnterOuterAlt(localctx, 1)
 	{
-		p.SetState(179)
+		p.SetState(183)
 		p.Match(TSLParserK_NOT)
 	}
 
@@ -3060,7 +3173,7 @@ func (p *TSLParser) Sempred(localctx antlr.RuleContext, ruleIndex, predIndex int
 		}
 		return p.Expr_Sempred(t, predIndex)
 
-	case 8:
+	case 9:
 		var t *MathExpContext = nil
 		if localctx != nil {
 			t = localctx.(*MathExpContext)

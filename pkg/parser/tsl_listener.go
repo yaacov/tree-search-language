@@ -50,6 +50,9 @@ type TSLListener interface {
 	// EnterStringOp is called when entering the stringOp production.
 	EnterStringOp(c *StringOpContext)
 
+	// EnterLikeOp is called when entering the likeOp production.
+	EnterLikeOp(c *LikeOpContext)
+
 	// EnterDatabaseName is called when entering the databaseName production.
 	EnterDatabaseName(c *DatabaseNameContext)
 
@@ -136,6 +139,9 @@ type TSLListener interface {
 
 	// ExitStringOp is called when exiting the stringOp production.
 	ExitStringOp(c *StringOpContext)
+
+	// ExitLikeOp is called when exiting the likeOp production.
+	ExitLikeOp(c *LikeOpContext)
 
 	// ExitDatabaseName is called when exiting the databaseName production.
 	ExitDatabaseName(c *DatabaseNameContext)

@@ -105,6 +105,12 @@ func (s *BaseTSLListener) EnterStringOp(ctx *StringOpContext) {}
 // ExitStringOp is called when production stringOp is exited.
 func (s *BaseTSLListener) ExitStringOp(ctx *StringOpContext) {}
 
+// EnterLikeOp is called when production likeOp is entered.
+func (s *BaseTSLListener) EnterLikeOp(ctx *LikeOpContext) {}
+
+// ExitLikeOp is called when production likeOp is exited.
+func (s *BaseTSLListener) ExitLikeOp(ctx *LikeOpContext) {}
+
 // EnterDatabaseName is called when production databaseName is entered.
 func (s *BaseTSLListener) EnterDatabaseName(ctx *DatabaseNameContext) {}
 
