@@ -34,7 +34,7 @@ func TestSQLWalker(t *testing.T) {
 
 var _ = Describe("Walk", func() {
 	DescribeTable("Generates the expected SQL and arguments",
-		func(input string, expectedSql string, expectedArgs ...interface{}) {
+		func(input string, expectedSQL string, expectedArgs ...interface{}) {
 			// Parse the input:
 			tree, err := tsl.ParseTSL(input)
 			Expect(err).ToNot(HaveOccurred())
@@ -44,14 +44,14 @@ var _ = Describe("Walk", func() {
 			Expect(err).ToNot(HaveOccurred())
 
 			// Convert the filter to SQL text:
-			actualSql, actualArgs, err := sq.Select("name, city, state").
+			actualSQL, actualArgs, err := sq.Select("name, city, state").
 				From("users").
 				Where(filter).
 				ToSql()
 			Expect(err).ToNot(HaveOccurred())
 
 			// Check that the generated SQL and the arguments are the expected ones:
-			Expect(actualSql).To(Equal(expectedSql))
+			Expect(actualSQL).To(Equal(expectedSQL))
 			Expect(actualArgs).To(Equal(expectedArgs))
 		},
 
