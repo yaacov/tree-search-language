@@ -14,6 +14,11 @@
 # limitations under the License.
 #
 
+# Details of the version of 'antlr' that will be downloaded to process the
+# grammar and generate the parser:
+antlr_url:=https://www.antlr.org/download/antlr-4.7.1-complete.jar
+antlr_sum:=f41dce7441d523baf9769cb7756a00f27a4b67e55aacab44525541f62d7f6688
+
 tsl_parser_src := $(wildcard ./cmd/tsl_parser/*.go)
 tsl_sqlite_src := $(wildcard ./cmd/tsl_sqlite/*.go)
 tsl_gorm_src := $(wildcard ./cmd/tsl_gorm/*.go)
@@ -80,11 +85,16 @@ clean:
 	rm tsl_sqlite
 	rm tsl_graphql
 	rm tsl_mem
+	rm antlr
 
 .PHONY: test
 test:
 	ginkgo -r ./cmd ./pkg
 
 .PHONY: generate
-generate:
-	antlr4 -Dlanguage=Go -o pkg/parser TSL.g4
+generate: antlr
+	java -jar antlr -Dlanguage=Go -o pkg/parser TSL.g4
+
+antlr:
+	wget --progress=dot:giga --output-document="$@" "$(antlr_url)"
+	echo "$(antlr_sum) $@" | sha256sum --check
