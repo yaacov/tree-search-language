@@ -112,13 +112,19 @@ cd tree-search-language
 make
 ```
 
+Other `make` options include `make lint` for linting check and `make test` for tests.
+
 Running `make lint` requires `golangci-lint`:
 
 ``` bash
 go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
 ```
 
-Other `make` options include `make lint` for linting check and `make test` for tests.
+Running `make test` requires `ginkgo`:
+
+``` bash
+go get -u github.com/onsi/ginkgo/ginkgo
+```
 
 #### Installing the different packages using `go get`
 
