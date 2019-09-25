@@ -17,24 +17,169 @@ package tsl
 
 import (
 	"encoding/json"
-	"strings"
 	"testing"
-	"unicode"
 
 	"github.com/antlr/antlr4/runtime/Go/antlr"
+
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/ginkgo/extensions/table"
+	. "github.com/onsi/gomega"
 
 	"github.com/yaacov/tree-search-language/pkg/parser"
 )
 
-// Strip white spaces.
-func removeWhitespace(s string) string {
-	return strings.Map(func(r rune) rune {
-		if unicode.IsSpace(r) {
-			return -1
-		}
-		return r
-	}, s)
+func TestParser(t *testing.T) {
+	RegisterFailHandler(Fail)
+	RunSpecs(t, "TSL")
 }
+
+var _ = Describe("Parser", func() {
+	DescribeTable("Returns the expected tree",
+		func(input, expected string) {
+			// Parse the input:
+			tree, err := parseTSL(input)
+			Expect(err).ToNot(HaveOccurred())
+
+			// Convert the tree to JSON:
+			actual, err := json.Marshal(tree)
+			Expect(err).ToNot(HaveOccurred())
+
+			// Check that the actual JSON and the expected JSON are structurally
+			// identical:
+			Expect(actual).To(MatchJSON(expected))
+		},
+
+		Entry(
+			"Simple comparison",
+			"a = 'hello'",
+			`{
+				"func": "$eq",
+				"left": {
+					"func": "$ident",
+					"left": "a"
+				},
+				"right": {
+					"func": "$string",
+					"left": "hello"
+				}
+			}`,
+		),
+
+		Entry(
+			"Order of operators",
+			"a = 12.3e1 or b = 'world' and c = 'hello'",
+			`{
+				"func": "$or",
+				"left": {
+					"func": "$eq",
+					"left": {
+						"func": "$ident",
+						"left": "a"
+					},
+					"right": {
+						"func": "$number",
+						"left": 123
+					}
+				},
+				"right": {
+					"func": "$and",
+					"left": {
+						"func": "$eq",
+						"left": {
+							"func": "$ident",
+							"left": "b"
+						},
+						"right": {
+							"func": "$string",
+							"left": "world"
+						}
+					},
+					"right": {
+						"func": "$eq",
+						"left": {
+							"func": "$ident",
+							"left": "c"
+						},
+						"right": {
+							"func": "$string",
+							"left":"hello"
+						}
+					}
+				}
+			}`,
+		),
+
+		Entry(
+			"Simple use of 'like'",
+			"a like 'my%'",
+			`{
+				"func": "$like",
+				"left": {
+					"func": "$ident",
+					"left": "a"
+				},
+				"right": {
+					"func": "$string",
+					"left": "my%"
+				}
+			}`,
+		),
+
+		Entry(
+			"Simple use of 'ilike'",
+			"a ilike 'my%'",
+			`{
+				"func": "$ilike",
+				"left": {
+					"func": "$ident",
+					"left": "a"
+				},
+				"right": {
+					"func": "$string",
+					"left": "my%"
+				}
+			}`,
+		),
+
+		Entry(
+			"Use of 'not' with 'like'",
+			"a not like 'my%'",
+			`{
+				"func": "$not",
+				"left": {
+					"func": "$like",
+					"left": {
+						"func": "$ident",
+						"left": "a"
+					},
+					"right": {
+						"func": "$string",
+						"left": "my%"
+					}
+				}
+			}`,
+		),
+
+		Entry(
+			"Use of 'not' with 'ilike'",
+			"a not ilike 'my%'",
+			`{
+				"func": "$not",
+				"left": {
+					"func": "$ilike",
+					"left": {
+						"func": "$ident",
+						"left": "a"
+					},
+					"right": {
+						"func": "$string",
+						"left": "my%"
+					}
+				}
+			}`,
+		),
+	)
+})
 
 // parseTSL parse the TSL.
 func parseTSL(input string) (n Node, err error) {
@@ -67,142 +212,4 @@ func parseTSL(input string) (n Node, err error) {
 	n, err = listener.GetTree()
 
 	return
-}
-
-func TestListener(t *testing.T) {
-	// Test valid string.
-	input := "a = 'hello'"
-
-	// Test TSL parser
-	n, err := parseTSL(input)
-	if err != nil {
-		t.Fail()
-	}
-
-	// Test json output.
-	expected := `
-		{"func":"$eq","left":{"func":"$ident","left":"a"},"right":{"func":"$string","left":"hello"}}
-	`
-	expected = removeWhitespace(expected)
-	s, _ := json.Marshal(n)
-	if string(s) != expected {
-		t.Fatalf("expected %s instead it was %s", expected, string(s))
-		t.Fail()
-	}
-}
-
-func TestListenerOpOrder(t *testing.T) {
-	// Test valid string.
-	input := "a = 12.3e1 or b = 'world' and c = 'hello'"
-
-	// Test TSL parser.
-	n, err := parseTSL(input)
-	if err != nil {
-		t.Fail()
-	}
-
-	// Test json output.
-	expected := `
-		{"func":"$or","left":{"func":"$eq","left":{"func":"$ident","left":"a"},
-		"right":{"func":"$number","left":123}},"right":{"func":"$and","left":{
-		"func":"$eq","left":{"func":"$ident","left":"b"},"right":{"func":"$string",
-		"left":"world"}},"right":{"func":"$eq","left":{"func":"$ident","left":"c"},
-		"right":{"func":"$string","left":"hello"}}}}
-	`
-	expected = removeWhitespace(expected)
-	s, _ := json.Marshal(n)
-	if string(s) != expected {
-		t.Fatalf("expected %s instead it was %s", expected, string(s))
-		t.Fail()
-	}
-}
-
-func TestLikeOp(t *testing.T) {
-	// Test valid string.
-	input := "a like 'my%'"
-
-	// Test TSL parser.
-	n, err := parseTSL(input)
-	if err != nil {
-		t.Fail()
-	}
-
-	// Test json output.
-	expected := `
-		{"func":"$like","left":{"func":"$ident","left":"a"},"right":{"func":"$string","left":"my%"}}
-	`
-	expected = removeWhitespace(expected)
-	s, _ := json.Marshal(n)
-	if string(s) != expected {
-		t.Fatalf("expected %s instead it was %s", expected, string(s))
-		t.Fail()
-	}
-}
-
-func TestILikeOp(t *testing.T) {
-	// Test valid string.
-	input := "a ilike 'my%'"
-
-	// Test TSL parser.
-	n, err := parseTSL(input)
-	if err != nil {
-		t.Fail()
-	}
-
-	// Test json output.
-	expected := `
-		{"func":"$ilike","left":{"func":"$ident","left":"a"},"right":{"func":"$string","left":"my%"}}
-	`
-	expected = removeWhitespace(expected)
-	s, _ := json.Marshal(n)
-	if string(s) != expected {
-		t.Fatalf("expected %s instead it was %s", expected, string(s))
-		t.Fail()
-	}
-}
-
-func TestNotLikeOp(t *testing.T) {
-	// Test valid string.
-	input := "a not like 'my%'"
-
-	// Test TSL parser.
-	n, err := parseTSL(input)
-	if err != nil {
-		t.Fail()
-	}
-
-	// Test json output.
-	expected := `
-		{"func":"$not","left":{"func":"$like","left":{"func":"$ident","left":"a"},
-		"right":{"func":"$string","left":"my%"}}}
-	`
-	expected = removeWhitespace(expected)
-	s, _ := json.Marshal(n)
-	if string(s) != expected {
-		t.Fatalf("expected %s instead it was %s", expected, string(s))
-		t.Fail()
-	}
-}
-
-func TestNotILikeOp(t *testing.T) {
-	// Test valid string.
-	input := "a not ilike 'my%'"
-
-	// Test TSL parser.
-	n, err := parseTSL(input)
-	if err != nil {
-		t.Fail()
-	}
-
-	// Test json output.
-	expected := `
-		{"func":"$not","left":{"func":"$ilike","left":{"func":"$ident","left":"a"},
-		"right":{"func":"$string","left":"my%"}}}
-	`
-	expected = removeWhitespace(expected)
-	s, _ := json.Marshal(n)
-	if string(s) != expected {
-		t.Fatalf("expected %s instead it was %s", expected, string(s))
-		t.Fail()
-	}
 }
