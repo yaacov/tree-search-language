@@ -203,7 +203,7 @@ dot file.dot -Tpng > image.png
 ## Code examples
 
 For complete working code examples, see the CLI tools [directory](/v4/cmd)
-( see more on TSL's CLI tools usage [here](https://github.com/yaacov/tree-search-language/v4#cli-tools) ).
+( see more on TSL's CLI tools usage [here](https://github.com/yaacov/tree-search-language#cli-tools) ).
 
 ##### ParseTSL
 
