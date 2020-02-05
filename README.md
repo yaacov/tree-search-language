@@ -9,7 +9,7 @@
 Tree Search Language (TSL) is a wonderful human readable filtering language.
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/yaacov/tree-search-language/v4)](https://goreportcard.com/report/github.com/yaacov/tree-search-language/v4)
-[![Build Status](https://travis-ci.org/yaacov/tree-search-language/v4.svg?branch=master)](https://travis-ci.org/yaacov/tree-search-language/v4)
+[![Build Status](https://travis-ci.org/yaacov/tree-search-language/v4.svg?branch=master)](https://travis-ci.org/yaacov/tree-search-language)
 [![GoDoc](https://godoc.org/github.com/yaacov/tree-search-language/v4/pkg/tsl?status.svg)](https://godoc.org/github.com/yaacov/tree-search-language/v4/pkg/tsl)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
