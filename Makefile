@@ -14,41 +14,44 @@
 # limitations under the License.
 #
 
+# Major version directory
+major:=v4
+
 # Details of the version of 'antlr' that will be downloaded to process the
 # grammar and generate the parser:
 antlr_url:=https://www.antlr.org/download/antlr-4.7.1-complete.jar
 antlr_sum:=f41dce7441d523baf9769cb7756a00f27a4b67e55aacab44525541f62d7f6688
 
-tsl_parser_src := $(wildcard ./cmd/tsl_parser/*.go)
-tsl_sqlite_src := $(wildcard ./cmd/tsl_sqlite/*.go)
-tsl_gorm_src := $(wildcard ./cmd/tsl_gorm/*.go)
-tsl_mongo_src := $(wildcard ./cmd/tsl_mongo/*.go)
-tsl_graphql_src := $(wildcard ./cmd/tsl_graphql/*.go)
-tsl_mem_src := $(wildcard ./cmd/tsl_mem/*.go)
+tsl_parser_src := $(wildcard ./$(major)/cmd/tsl_parser/*.go)
+tsl_sqlite_src := $(wildcard ./$(major)/cmd/tsl_sqlite/*.go)
+tsl_gorm_src := $(wildcard ./$(major)/cmd/tsl_gorm/*.go)
+tsl_mongo_src := $(wildcard ./$(major)/cmd/tsl_mongo/*.go)
+tsl_graphql_src := $(wildcard ./$(major)/cmd/tsl_graphql/*.go)
+tsl_mem_src := $(wildcard ./$(major)/cmd/tsl_mem/*.go)
 
 all: fmt tsl_parser tsl_sqlite tsl_gorm tsl_mongo tsl_graphql tsl_mem
 
 tsl_parser: $(tsl_parser_src)
-	go build ./cmd/tsl_parser
+	cd ./$(major) && go build ./cmd/tsl_parser
 
 tsl_sqlite: $(tsl_sqlite_src)
-	go build ./cmd/tsl_sqlite
+	cd ./$(major) && go build ./cmd/tsl_sqlite
 
 tsl_gorm: $(tsl_gorm_src)
-	go build ./cmd/tsl_gorm
+	cd ./$(major) && go build ./cmd/tsl_gorm
 
 tsl_mongo: $(tsl_mongo_src)
-	go build ./cmd/tsl_mongo
+	cd ./$(major) && go build ./cmd/tsl_mongo
 
 tsl_graphql: $(tsl_graphql_src)
-	go build ./cmd/tsl_graphql
+	cd ./$(major) && go build ./cmd/tsl_graphql
 
 tsl_mem: $(tsl_mem_src)
-	go build ./cmd/tsl_mem
+	cd ./$(major) && go build ./cmd/tsl_mem
 
 .PHONY: lint
 lint:
-	golangci-lint \
+	cd ./$(major) && golangci-lint \
 		run \
 		--skip-dirs=/pkg/parser \
 		--no-config \
@@ -74,22 +77,21 @@ lint:
 
 .PHONY: fmt
 fmt:
-	gofmt -s -l -w ./pkg/ ./cmd/
+	cd ./$(major) && gofmt -s -l -w ./pkg/ ./cmd/
 
 .PHONY: clean
 clean:
-	rm -rf vendor
-	rm tsl_parser
-	rm tsl_gorm
-	rm tsl_mongo
-	rm tsl_sqlite
-	rm tsl_graphql
-	rm tsl_mem
+	rm ./$(major)/tsl_parser
+	rm ./$(major)/tsl_gorm
+	rm ./$(major)/tsl_mongo
+	rm ./$(major)/tsl_sqlite
+	rm ./$(major)/tsl_graphql
+	rm ./$(major)/tsl_mem
 	rm antlr
 
 .PHONY: test
 test:
-	ginkgo -r ./cmd ./pkg
+	cd ./$(major) && ginkgo -r ./cmd ./pkg
 
 .PHONY: generate
 generate: antlr
