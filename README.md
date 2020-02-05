@@ -96,8 +96,6 @@ Awesome logo image by [gophers...](https://github.com/egonelbre/gophers).
 
 #### Building from source using go modules
 
-Building from code requires `go mod`, available on **go v1.11** and above:
-
 ``` bash
 $ go version
 go version go1.11.2 linux/amd64
@@ -106,7 +104,6 @@ go version go1.11.2 linux/amd64
 Clone the TSL `git` repository, and run `make`:
 
 ```
-[ export GO111MODULE=on # if we are on $GOPATH, we need to explicitly set modules on ]
 git clone git@github.com:yaacov/tree-search-language.git
 cd tree-search-language
 make
