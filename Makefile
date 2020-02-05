@@ -95,7 +95,7 @@ test:
 
 .PHONY: generate
 generate: antlr
-	java -jar antlr -Dlanguage=Go -o pkg/parser TSL.g4
+	java -jar antlr -Dlanguage=Go -o $(major)/pkg/parser TSL.g4
 
 antlr:
 	wget --progress=dot:giga --output-document="$@" "$(antlr_url)"

@@ -648,7 +648,7 @@ $ curl -sG "http://localhost:8080/graphql" --data-urlencode \
 
 ##### Antlr4 grammar
 
-TSL parser is generated using [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammar file is [TSL.g4](/v4/TSL.g4).
+TSL parser is generated using [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammar file is [TSL.g4](/TSL.g4).
 
 ##### Keywords
 ```
