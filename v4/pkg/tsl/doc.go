@@ -34,5 +34,5 @@
 // TSL tree can be used to generate SQL and MongoDB query filters, see the walkers
 // package for TSL tree walking examples.
 //
-// https://pkg.go.dev/github.com/yaacov/tree-search-language/pkg/walkers
+// https://pkg.go.dev/github.com/yaacov/tree-search-language/v4/pkg/walkers
 package tsl
