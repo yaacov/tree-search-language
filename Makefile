@@ -32,22 +32,22 @@ tsl_mem_src := $(wildcard ./$(major)/cmd/tsl_mem/*.go)
 all: fmt tsl_parser tsl_sqlite tsl_gorm tsl_mongo tsl_graphql tsl_mem
 
 tsl_parser: $(tsl_parser_src)
-	cd ./$(major) && go build ./cmd/tsl_parser
+	cd ./$(major) && go build -o ../ ./cmd/tsl_parser
 
 tsl_sqlite: $(tsl_sqlite_src)
-	cd ./$(major) && go build ./cmd/tsl_sqlite
+	cd ./$(major) && go build -o ../ ./cmd/tsl_sqlite
 
 tsl_gorm: $(tsl_gorm_src)
-	cd ./$(major) && go build ./cmd/tsl_gorm
+	cd ./$(major) && go build -o ../ ./cmd/tsl_gorm
 
 tsl_mongo: $(tsl_mongo_src)
-	cd ./$(major) && go build ./cmd/tsl_mongo
+	cd ./$(major) && go build -o ../ ./cmd/tsl_mongo
 
 tsl_graphql: $(tsl_graphql_src)
-	cd ./$(major) && go build ./cmd/tsl_graphql
+	cd ./$(major) && go build -o ../ ./cmd/tsl_graphql
 
 tsl_mem: $(tsl_mem_src)
-	cd ./$(major) && go build ./cmd/tsl_mem
+	cd ./$(major) && go build -o ../ ./cmd/tsl_mem
 
 .PHONY: lint
 lint:
@@ -81,12 +81,12 @@ fmt:
 
 .PHONY: clean
 clean:
-	rm -f ./$(major)/tsl_parser
-	rm -f ./$(major)/tsl_gorm
-	rm -f ./$(major)/tsl_mongo
-	rm -f ./$(major)/tsl_sqlite
-	rm -f ./$(major)/tsl_graphql
-	rm -f ./$(major)/tsl_mem
+	rm -f tsl_parser
+	rm -f tsl_gorm
+	rm -f tsl_mongo
+	rm -f tsl_sqlite
+	rm -f tsl_graphql
+	rm -f tsl_mem
 	rm -f antlr
 
 .PHONY: test
