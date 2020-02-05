@@ -81,13 +81,13 @@ fmt:
 
 .PHONY: clean
 clean:
-	rm ./$(major)/tsl_parser
-	rm ./$(major)/tsl_gorm
-	rm ./$(major)/tsl_mongo
-	rm ./$(major)/tsl_sqlite
-	rm ./$(major)/tsl_graphql
-	rm ./$(major)/tsl_mem
-	rm antlr
+	rm -f ./$(major)/tsl_parser
+	rm -f ./$(major)/tsl_gorm
+	rm -f ./$(major)/tsl_mongo
+	rm -f ./$(major)/tsl_sqlite
+	rm -f ./$(major)/tsl_graphql
+	rm -f ./$(major)/tsl_mem
+	rm -f antlr
 
 .PHONY: test
 test:
