@@ -141,7 +141,7 @@ go get "github.com/yaacov/tree-search-language/v4/pkg/walkers/graphviz"
 
 #### Installing the command line examples using `go get`
 
-See CLI tools usage [here](https://github.com/yaacov/tree-search-language/v4#cli-tools).
+See CLI tools usage [here](https://github.com/yaacov/tree-search-language#cli-tools).
 
 ``` bash
 go get -v "github.com/yaacov/tree-search-language/v4/cmd/tsl_parser"
