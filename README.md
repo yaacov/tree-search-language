@@ -207,7 +207,7 @@ For complete working code examples, see the CLI tools [directory](/v4/cmd)
 
 ##### ParseTSL
 
-The `tsl` package include the ParseTSL [code](/v4/pkg/tsl/tsl.go), [doc](https://godoc.org/github.com/yaacov/tree-search-language/v4/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
+The `tsl` package include the ParseTSL [code](/v4/pkg/tsl/tsl.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v4/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
 ``` go
 tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
 ```
@@ -218,7 +218,7 @@ After parsing the TSL tree will look like this (image created using the `tsl_par
 
 ##### sql.Walk
 
-The `walkers` `sql` package include a helper sql.Walk ([code](/v4/pkg/walkers/sql/walk.go), [doc](https://godoc.org/github.com/yaacov/tree-search-language/v4/pkg/walkers/sql#Walk)) method that adds search to [squirrel](https://github.com/Masterminds/squirrel)'s SelectBuilder object:
+The `walkers` `sql` package include a helper sql.Walk ([code](/v4/pkg/walkers/sql/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v4/pkg/walkers/sql#Walk)) method that adds search to [squirrel](https://github.com/Masterminds/squirrel)'s SelectBuilder object:
 
 ``` go
 import (
@@ -253,7 +253,7 @@ SELECT name, city, state FROM users WHERE (name IN (?,?) AND grade NOT BETWEEN ?
 
 ##### mongo.Walk
 
-The `walkers` `mongo`  package include a helper mongo.Walk ([code](/v4/pkg/walkers/mongo/walk.go), [doc](https://godoc.org/github.com/yaacov/tree-search-language/v4/pkg/walkers/mongo#Walk)) method that adds search bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
+The `walkers` `mongo`  package include a helper mongo.Walk ([code](/v4/pkg/walkers/mongo/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v4/pkg/walkers/mongo#Walk)) method that adds search bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
 
 ``` go
 import (
@@ -274,7 +274,7 @@ cur, err := collection.Find(ctx, filter)
 
 ##### graphviz.Walk
 
-The `walkers` `graphviz`  package include a helper graphviz.Walk ([code](/v4/pkg/walkers/graphviz/walk.go), [doc](https://godoc.org/github.com/yaacov/tree-search-language/v4/pkg/walkers/graphviz#Walk)) method that exports `.dot` file nodes :
+The `walkers` `graphviz`  package include a helper graphviz.Walk ([code](/v4/pkg/walkers/graphviz/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v4/pkg/walkers/graphviz#Walk)) method that exports `.dot` file nodes :
 
 ``` go
 import (
@@ -295,7 +295,7 @@ s = fmt.Sprintf("digraph {\n%s\n}\n", s)
 
 ##### ident.Walk
 
-The `walkers` `ident`  package include a helper ident.Walk ([code](/v4/pkg/walkers/ident/walk.go), [doc](https://godoc.org/github.com/yaacov/tree-search-language/v4/pkg/walkers/ident#Walk)) method that checks and mapps identifier names:
+The `walkers` `ident`  package include a helper ident.Walk ([code](/v4/pkg/walkers/ident/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v4/pkg/walkers/ident#Walk)) method that checks and mapps identifier names:
 
 ``` go
 import (
@@ -336,7 +336,7 @@ tree, err = ident.Walk(tree, checkColumnName)
 
 ##### semantics.Walk
 
-The `walkers` `semantics`  package include a helper semantics.Walk ([code](/v4/pkg/walkers/semantics/walk.go), [doc](https://godoc.org/github.com/yaacov/tree-search-language/v4/pkg/walkers/semantics#Walk)) method that helps filter a list of objects using a `tsl tree`, and a `type` `semantics.EvalFunc` ([code](/v4/pkg/walkers/semantics/walk.go), [doc](https://godoc.org/github.com/yaacov/tree-search-language/v4/pkg/walkers/semantics#EvalFunc)) that return a record's value for a record key:
+The `walkers` `semantics`  package include a helper semantics.Walk ([code](/v4/pkg/walkers/semantics/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v4/pkg/walkers/semantics#Walk)) method that helps filter a list of objects using a `tsl tree`, and a `type` `semantics.EvalFunc` ([code](/v4/pkg/walkers/semantics/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v4/pkg/walkers/semantics#EvalFunc)) that return a record's value for a record key:
 
 ``` go
 import (
