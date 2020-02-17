@@ -8,9 +8,9 @@
 
 Tree Search Language (TSL) is a wonderful human readable filtering language.
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/yaacov/tree-search-language/v4)](https://goreportcard.com/report/github.com/yaacov/tree-search-language/v4)
+[![Go Report Card](https://goreportcard.com/badge/github.com/yaacov/tree-search-language/v5)](https://goreportcard.com/report/github.com/yaacov/tree-search-language/v5)
 [![Build Status](https://travis-ci.org/yaacov/tree-search-language.svg?branch=master)](https://travis-ci.org/yaacov/tree-search-language)
-[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/yaacov/tree-search-language/v4/pkg/tsl?tab=doc)
+[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/github.com/yaacov/tree-search-language/v5/pkg/tsl?tab=doc)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 The TSL language grammar is human readable and similar to SQL syntax.
@@ -30,9 +30,9 @@ The TSL language grammar is human readable and similar to SQL syntax.
 
 You can use the TSL package to add uniform and powerful filtering to your RESTful API or GraphQL services, implement brewing-recipe searches on your smart tea brewer, or even make your own memory based "SQL like" server as we do in our `tsl_mem` CLI example.
 
-([more examples](/v4/cmd/))
+([more examples](/v5/cmd/))
 
-Here is our `tsl_mem`CLI tool ([code](/v4/cmd/tsl_mem)), it's an in-memory search engine, it is using the TSL package to filter through an in-memory array of books using "SQL like" `tsl phrases`:
+Here is our `tsl_mem`CLI tool ([code](/v5/cmd/tsl_mem)), it's an in-memory search engine, it is using the TSL package to filter through an in-memory array of books using "SQL like" `tsl phrases`:
 
 ``` bash
 $  ./tsl_mem -i "spec.rating is not null and author ~= 'Joe'" -o prettyjson
@@ -127,16 +127,16 @@ go get -u github.com/onsi/ginkgo/ginkgo
 
 ``` bash
 # Install the base package
-go get "github.com/yaacov/tree-search-language/v4/pkg/tsl"
+go get "github.com/yaacov/tree-search-language/v5/pkg/tsl"
 
 # Install all walkers
-go get "github.com/yaacov/tree-search-language/v4/pkg/walkers/..."
+go get "github.com/yaacov/tree-search-language/v5/pkg/walkers/..."
 
 # Or pick the walker needed
-go get "github.com/yaacov/tree-search-language/v4/pkg/walkers/sql"
-go get "github.com/yaacov/tree-search-language/v4/pkg/walkers/mongo"
-go get "github.com/yaacov/tree-search-language/v4/pkg/walkers/ident"
-go get "github.com/yaacov/tree-search-language/v4/pkg/walkers/graphviz"
+go get "github.com/yaacov/tree-search-language/v5/pkg/walkers/sql"
+go get "github.com/yaacov/tree-search-language/v5/pkg/walkers/mongo"
+go get "github.com/yaacov/tree-search-language/v5/pkg/walkers/ident"
+go get "github.com/yaacov/tree-search-language/v5/pkg/walkers/graphviz"
 ```
 
 #### Installing the command line examples using `go get`
@@ -144,11 +144,11 @@ go get "github.com/yaacov/tree-search-language/v4/pkg/walkers/graphviz"
 See CLI tools usage [here](https://github.com/yaacov/tree-search-language#cli-tools).
 
 ``` bash
-go get -v "github.com/yaacov/tree-search-language/v4/cmd/tsl_parser"
-go get -v "github.com/yaacov/tree-search-language/v4/cmd/tsl_mongo"
-go get -v "github.com/yaacov/tree-search-language/v4/cmd/tsl_sqlite"
-go get -v "github.com/yaacov/tree-search-language/v4/cmd/tsl_gorm"
-go get -v "github.com/yaacov/tree-search-language/v4/cmd/tsl_graphql"
+go get -v "github.com/yaacov/tree-search-language/v5/cmd/tsl_parser"
+go get -v "github.com/yaacov/tree-search-language/v5/cmd/tsl_mongo"
+go get -v "github.com/yaacov/tree-search-language/v5/cmd/tsl_sqlite"
+go get -v "github.com/yaacov/tree-search-language/v5/cmd/tsl_gorm"
+go get -v "github.com/yaacov/tree-search-language/v5/cmd/tsl_graphql"
 ```
 
 ## Syntax examples
@@ -202,12 +202,12 @@ dot file.dot -Tpng > image.png
 
 ## Code examples
 
-For complete working code examples, see the CLI tools [directory](/v4/cmd)
+For complete working code examples, see the CLI tools [directory](/v5/cmd)
 ( see more on TSL's CLI tools usage [here](https://github.com/yaacov/tree-search-language#cli-tools) ).
 
 ##### ParseTSL
 
-The `tsl` package include the ParseTSL [code](/v4/pkg/tsl/tsl.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v4/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
+The `tsl` package include the ParseTSL [code](/v5/pkg/tsl/tsl.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v5/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
 ``` go
 tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
 ```
@@ -218,13 +218,13 @@ After parsing the TSL tree will look like this (image created using the `tsl_par
 
 ##### sql.Walk
 
-The `walkers` `sql` package include a helper sql.Walk ([code](/v4/pkg/walkers/sql/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v4/pkg/walkers/sql#Walk)) method that adds search to [squirrel](https://github.com/Masterminds/squirrel)'s SelectBuilder object:
+The `walkers` `sql` package include a helper sql.Walk ([code](/v5/pkg/walkers/sql/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v5/pkg/walkers/sql#Walk)) method that adds search to [squirrel](https://github.com/Masterminds/squirrel)'s SelectBuilder object:
 
 ``` go
 import (
     ...
     sq "github.com/Masterminds/squirrel"
-    "github.com/yaacov/tree-search-language/v4/pkg/walkers/sql"
+    "github.com/yaacov/tree-search-language/v5/pkg/walkers/sql"
     ...
 )
 
@@ -253,12 +253,12 @@ SELECT name, city, state FROM users WHERE (name IN (?,?) AND grade NOT BETWEEN ?
 
 ##### mongo.Walk
 
-The `walkers` `mongo`  package include a helper mongo.Walk ([code](/v4/pkg/walkers/mongo/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v4/pkg/walkers/mongo#Walk)) method that adds search bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
+The `walkers` `mongo`  package include a helper mongo.Walk ([code](/v5/pkg/walkers/mongo/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v5/pkg/walkers/mongo#Walk)) method that adds search bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
 
 ``` go
 import (
     ...
-    "github.com/yaacov/tree-search-language/v4/pkg/walkers/mongo"
+    "github.com/yaacov/tree-search-language/v5/pkg/walkers/mongo"
     ...
 )
 
@@ -274,12 +274,12 @@ cur, err := collection.Find(ctx, filter)
 
 ##### graphviz.Walk
 
-The `walkers` `graphviz`  package include a helper graphviz.Walk ([code](/v4/pkg/walkers/graphviz/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v4/pkg/walkers/graphviz#Walk)) method that exports `.dot` file nodes :
+The `walkers` `graphviz`  package include a helper graphviz.Walk ([code](/v5/pkg/walkers/graphviz/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v5/pkg/walkers/graphviz#Walk)) method that exports `.dot` file nodes :
 
 ``` go
 import (
     ...
-    "github.com/yaacov/tree-search-language/v4/pkg/walkers/graphviz"
+    "github.com/yaacov/tree-search-language/v5/pkg/walkers/graphviz"
     ...
 )
 
@@ -295,12 +295,12 @@ s = fmt.Sprintf("digraph {\n%s\n}\n", s)
 
 ##### ident.Walk
 
-The `walkers` `ident`  package include a helper ident.Walk ([code](/v4/pkg/walkers/ident/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v4/pkg/walkers/ident#Walk)) method that checks and mapps identifier names:
+The `walkers` `ident`  package include a helper ident.Walk ([code](/v5/pkg/walkers/ident/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v5/pkg/walkers/ident#Walk)) method that checks and mapps identifier names:
 
 ``` go
 import (
     ...
-    "github.com/yaacov/tree-search-language/v4/pkg/walkers/ident"
+    "github.com/yaacov/tree-search-language/v5/pkg/walkers/ident"
     ...
 )
 ...
@@ -336,12 +336,12 @@ tree, err = ident.Walk(tree, checkColumnName)
 
 ##### semantics.Walk
 
-The `walkers` `semantics`  package include a helper semantics.Walk ([code](/v4/pkg/walkers/semantics/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v4/pkg/walkers/semantics#Walk)) method that helps filter a list of objects using a `tsl tree`, and a `type` `semantics.EvalFunc` ([code](/v4/pkg/walkers/semantics/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v4/pkg/walkers/semantics#EvalFunc)) that return a record's value for a record key:
+The `walkers` `semantics`  package include a helper semantics.Walk ([code](/v5/pkg/walkers/semantics/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v5/pkg/walkers/semantics#Walk)) method that helps filter a list of objects using a `tsl tree`, and a `type` `semantics.EvalFunc` ([code](/v5/pkg/walkers/semantics/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v5/pkg/walkers/semantics#EvalFunc)) that return a record's value for a record key:
 
 ``` go
 import (
     ...
-    "github.com/yaacov/tree-search-language/v4/pkg/walkers/semantics"
+    "github.com/yaacov/tree-search-language/v5/pkg/walkers/semantics"
     ...
 )
 ...
@@ -379,7 +379,7 @@ compliance, err = semantics.Walk(tree, eval)
 
 ## CLI tools
 
-The example CLI tools showcase the TSL language and `tsl` golang package, see the [cmd](/v4/cmd) directory for code.
+The example CLI tools showcase the TSL language and `tsl` golang package, see the [cmd](/v5/cmd) directory for code.
 
 ##### tsl_parser
 

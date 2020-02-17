@@ -15,7 +15,7 @@
 #
 
 # Major version directory
-major:=v4
+major:=v5
 
 # Details of the version of 'antlr' that will be downloaded to process the
 # grammar and generate the parser:

@@ -40,7 +40,7 @@ tableName
   ;
 
 columnName
-  : ( ( databaseName '.' )? tableName '.' )? IDENTIFIER
+  : IDENTIFIER
   ;
 
 literalValue
@@ -85,7 +85,7 @@ IDENTIFIER
   : '"' (~'"' | '""')* '"'
   | '`' (~'`' | '``')* '`'
   | '[' ~']'* ']'
-  | [a-zA-Z_] [a-zA-Z_0-9]* // TODO check: needs more chars in set
+  | [a-zA-Z_] [a-zA-Z_./0-9]* [a-zA-Z_0-9]* // TODO check: needs more chars in set
   ;
 
 NUMERIC_LITERAL
