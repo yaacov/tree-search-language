@@ -75,6 +75,7 @@ func (l *Listener) ExitNumberLiteral(c *parser.NumberLiteralContext) {
 			s = s[:len(s)-1]
 		case "M":
 			multiplier = math.Pow(1024, 2)
+			s = s[:len(s)-1]
 		case "G":
 			multiplier = math.Pow(1024, 3)
 			s = s[:len(s)-1]
