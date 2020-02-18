@@ -81,6 +81,7 @@ The TSL package parses `tsl phrases` into `tsl trees`, it also include extra `wa
 #### Parsing tsl phrases
 
 For example, this `tsl phrase`:
+
 ``` sql
 name like '%joe%' and (city = 'paris' or city = 'milan')
 ```
@@ -103,7 +104,7 @@ go version go1.11.2 linux/amd64
 
 Clone the TSL `git` repository, and run `make`:
 
-```
+``` bash
 git clone git@github.com:yaacov/tree-search-language.git
 cd tree-search-language
 make
@@ -156,6 +157,7 @@ go get -v "github.com/yaacov/tree-search-language/v5/cmd/tsl_graphql"
 #### Operator precedence
 
 This TSL phrase:
+
 ``` sql
 name like '%joe%' and (city = 'paris' or city = 'milan')
 ```
@@ -166,6 +168,7 @@ Will be parsed into this TSL tree:
 #### Operators with multiple arguments
 
 This TSL phrase:
+
 ``` sql
 name in ('joe', 'jane') and grade not between 0 and 50
 ```
@@ -176,6 +179,7 @@ Will be parsed into this TSL tree:
 #### Math operators
 
 This TSL phrase:
+
 ``` sql
 memory.total - memory.cache > 2000 and cpu.usage > 50
 ```
@@ -186,6 +190,7 @@ Will be parsed into this TSL tree:
 #### More math operators
 
 This TSL phrase:
+
 ``` sql
 (net.rx + net.tx) / 1000 > 3 or net.rx / 1000 > 6
 ```
@@ -193,6 +198,27 @@ This TSL phrase:
 Will be parsed into this TSL tree:
 ![TSL](/img/example_d.png?raw=true "example tree")
 
+#### SI units
+
+This TSL phrase:
+
+``` sql
+(net.rx + net.tx) < 1Ki
+```
+
+Will be parsed into this TSL tree:
+![TSL](/img/example_e.png?raw=true "example tree")
+
+#### Identifier escaping
+
+This TSL phrase:
+
+``` sql
+([net.rx] + `net.tx`) < 1024
+```
+
+Will be parsed into this TSL tree:
+![TSL](/img/example_f.png?raw=true "example tree")
 
 Images created using the `tsl_parser` CLI example and Graphviz's `dot` utility:
 ``` bash
