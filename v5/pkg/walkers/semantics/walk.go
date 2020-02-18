@@ -71,18 +71,10 @@ type EvalFunc = func(string) (interface{}, bool)
 //
 func Walk(n tsl.Node, eval EvalFunc) (bool, error) {
 	l := n.Left.(tsl.Node)
-	r := n.Right.(tsl.Node)
 
 	// Check for identifiers.
 	if l.Func == tsl.IdentOp {
 		newNode, err := handleIdentLeft(n, eval)
-		if err != nil {
-			return false, err
-		}
-		return Walk(newNode, eval)
-	}
-	if r.Func == tsl.IdentOp {
-		newNode, err := handleIdentRight(n, eval)
 		if err != nil {
 			return false, err
 		}
@@ -97,12 +89,28 @@ func Walk(n tsl.Node, eval EvalFunc) (bool, error) {
 		}
 		return Walk(newNode, eval)
 	}
-	if r.Func == tsl.AddOp || r.Func == tsl.SubtractOp || r.Func == tsl.MultiplyOp || r.Func == tsl.DivideOp {
-		newNode, err := handleMathOpRight(n, eval)
-		if err != nil {
-			return false, err
+
+	// If we have a right hand side, check it for identifiers and math operators.
+	if n.Right != nil {
+		r := n.Right.(tsl.Node)
+
+		// Check for identifiers.
+		if r.Func == tsl.IdentOp {
+			newNode, err := handleIdentRight(n, eval)
+			if err != nil {
+				return false, err
+			}
+			return Walk(newNode, eval)
 		}
-		return Walk(newNode, eval)
+
+		// Check for math ops.
+		if r.Func == tsl.AddOp || r.Func == tsl.SubtractOp || r.Func == tsl.MultiplyOp || r.Func == tsl.DivideOp {
+			newNode, err := handleMathOpRight(n, eval)
+			if err != nil {
+				return false, err
+			}
+			return Walk(newNode, eval)
+		}
 	}
 
 	// Implement tree semantics.
@@ -110,6 +118,7 @@ func Walk(n tsl.Node, eval EvalFunc) (bool, error) {
 	case tsl.EqOp, tsl.NotEqOp, tsl.LtOp, tsl.LteOp, tsl.GtOp, tsl.GteOp, tsl.RegexOp, tsl.NotRegexOp,
 		tsl.BetweenOp, tsl.NotBetweenOp, tsl.NotInOp, tsl.InOp, tsl.LikeOp, tsl.ILikeOp:
 
+		r := n.Right.(tsl.Node)
 		if r.Func == tsl.NullOp {
 			// Any comparison operation on a null element is false.
 			return false, nil
