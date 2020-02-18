@@ -1,4 +1,4 @@
-// Code generated from TSL.g4 by ANTLR 4.7.1. DO NOT EDIT.
+// Code generated from ./TSL.g4 by ANTLR 4.7.1. DO NOT EDIT.
 
 package parser // TSL
 
@@ -67,6 +67,9 @@ type TSLListener interface {
 
 	// EnterStringLiteral is called when entering the StringLiteral production.
 	EnterStringLiteral(c *StringLiteralContext)
+
+	// EnterLiteralOrMath is called when entering the literalOrMath production.
+	EnterLiteralOrMath(c *LiteralOrMathContext)
 
 	// EnterMathPar is called when entering the MathPar production.
 	EnterMathPar(c *MathParContext)
@@ -157,6 +160,9 @@ type TSLListener interface {
 
 	// ExitStringLiteral is called when exiting the StringLiteral production.
 	ExitStringLiteral(c *StringLiteralContext)
+
+	// ExitLiteralOrMath is called when exiting the literalOrMath production.
+	ExitLiteralOrMath(c *LiteralOrMathContext)
 
 	// ExitMathPar is called when exiting the MathPar production.
 	ExitMathPar(c *MathParContext)

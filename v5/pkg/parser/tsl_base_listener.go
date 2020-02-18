@@ -1,4 +1,4 @@
-// Code generated from TSL.g4 by ANTLR 4.7.1. DO NOT EDIT.
+// Code generated from ./TSL.g4 by ANTLR 4.7.1. DO NOT EDIT.
 
 package parser // TSL
 
@@ -140,6 +140,12 @@ func (s *BaseTSLListener) EnterStringLiteral(ctx *StringLiteralContext) {}
 
 // ExitStringLiteral is called when production StringLiteral is exited.
 func (s *BaseTSLListener) ExitStringLiteral(ctx *StringLiteralContext) {}
+
+// EnterLiteralOrMath is called when production literalOrMath is entered.
+func (s *BaseTSLListener) EnterLiteralOrMath(ctx *LiteralOrMathContext) {}
+
+// ExitLiteralOrMath is called when production literalOrMath is exited.
+func (s *BaseTSLListener) ExitLiteralOrMath(ctx *LiteralOrMathContext) {}
 
 // EnterMathPar is called when production MathPar is entered.
 func (s *BaseTSLListener) EnterMathPar(ctx *MathParContext) {}

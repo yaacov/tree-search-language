@@ -71,10 +71,34 @@ type EvalFunc = func(string) (interface{}, bool)
 //
 func Walk(n tsl.Node, eval EvalFunc) (bool, error) {
 	l := n.Left.(tsl.Node)
+	r := n.Right.(tsl.Node)
 
 	// Check for identifiers.
 	if l.Func == tsl.IdentOp {
-		newNode, err := handleIdent(n, eval)
+		newNode, err := handleIdentLeft(n, eval)
+		if err != nil {
+			return false, err
+		}
+		return Walk(newNode, eval)
+	}
+	if r.Func == tsl.IdentOp {
+		newNode, err := handleIdentRight(n, eval)
+		if err != nil {
+			return false, err
+		}
+		return Walk(newNode, eval)
+	}
+
+	// Check for math ops.
+	if l.Func == tsl.AddOp || l.Func == tsl.SubtractOp || l.Func == tsl.MultiplyOp || l.Func == tsl.DivideOp {
+		newNode, err := handleMathOpLeft(n, eval)
+		if err != nil {
+			return false, err
+		}
+		return Walk(newNode, eval)
+	}
+	if r.Func == tsl.AddOp || r.Func == tsl.SubtractOp || r.Func == tsl.MultiplyOp || r.Func == tsl.DivideOp {
+		newNode, err := handleMathOpRight(n, eval)
 		if err != nil {
 			return false, err
 		}
@@ -85,7 +109,11 @@ func Walk(n tsl.Node, eval EvalFunc) (bool, error) {
 	switch n.Func {
 	case tsl.EqOp, tsl.NotEqOp, tsl.LtOp, tsl.LteOp, tsl.GtOp, tsl.GteOp, tsl.RegexOp, tsl.NotRegexOp,
 		tsl.BetweenOp, tsl.NotBetweenOp, tsl.NotInOp, tsl.InOp, tsl.LikeOp, tsl.ILikeOp:
-		r := n.Right.(tsl.Node)
+
+		if r.Func == tsl.NullOp {
+			// Any comparison operation on a null element is false.
+			return false, nil
+		}
 
 		switch l.Func {
 		case tsl.StringOp:
@@ -121,18 +149,40 @@ func Walk(n tsl.Node, eval EvalFunc) (bool, error) {
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }
 
-func handleIdent(n tsl.Node, eval EvalFunc) (tsl.Node, error) {
-	l := n.Left.(tsl.Node)
+func handleIdentLeft(n tsl.Node, eval EvalFunc) (tsl.Node, error) {
+	left := n.Left.(tsl.Node)
+	l, err := evalIdentNode(left, eval)
+	if err != nil {
+		return n, err
+	}
 
-	_v, _ := eval(l.Left.(string))
+	n.Left = l
+	return n, nil
+}
+
+func handleIdentRight(n tsl.Node, eval EvalFunc) (tsl.Node, error) {
+	right := n.Right.(tsl.Node)
+	r, err := evalIdentNode(right, eval)
+	if err != nil {
+		return n, err
+	}
+
+	n.Right = r
+	return n, nil
+}
+
+func evalIdentNode(node tsl.Node, eval EvalFunc) (tsl.Node, error) {
+	_v, _ := eval(node.Left.(string))
+	n := tsl.Node{}
+
 	switch v := _v.(type) {
 	case string:
-		n.Left = tsl.Node{
+		n = tsl.Node{
 			Func: tsl.StringOp,
 			Left: v,
 		}
 	case nil:
-		n.Left = tsl.Node{
+		n = tsl.Node{
 			Func: tsl.NullOp,
 			Left: nil,
 		}
@@ -141,54 +191,140 @@ func handleIdent(n tsl.Node, eval EvalFunc) (tsl.Node, error) {
 		if v {
 			val = "true"
 		}
-		n.Left = tsl.Node{
+		n = tsl.Node{
 			Func: tsl.StringOp,
 			Left: val,
 		}
 	case float32:
-		n.Left = tsl.Node{
+		n = tsl.Node{
 			Func: tsl.NumberOp,
 			Left: float64(v),
 		}
 	case float64:
-		n.Left = tsl.Node{
+		n = tsl.Node{
 			Func: tsl.NumberOp,
 			Left: v,
 		}
 	case int32:
-		n.Left = tsl.Node{
+		n = tsl.Node{
 			Func: tsl.NumberOp,
 			Left: float64(v),
 		}
 	case int64:
-		n.Left = tsl.Node{
+		n = tsl.Node{
 			Func: tsl.NumberOp,
 			Left: float64(v),
 		}
 	case uint32:
-		n.Left = tsl.Node{
+		n = tsl.Node{
 			Func: tsl.NumberOp,
 			Left: float64(v),
 		}
 	case uint64:
-		n.Left = tsl.Node{
+		n = tsl.Node{
 			Func: tsl.NumberOp,
 			Left: float64(v),
 		}
 	case int:
-		n.Left = tsl.Node{
+		n = tsl.Node{
 			Func: tsl.NumberOp,
 			Left: float64(v),
 		}
 	case uint:
-		n.Left = tsl.Node{
+		n = tsl.Node{
 			Func: tsl.NumberOp,
 			Left: float64(v),
 		}
 	default:
-		return n, tsl.UnexpectedLiteralError{Literal: fmt.Sprintf("%s[%v]", l.Left.(string), v)}
+		return n, tsl.UnexpectedLiteralError{Literal: fmt.Sprintf("%v[%v]", _v, v)}
 	}
 
+	return n, nil
+}
+
+func handleMathOp(n tsl.Node, eval EvalFunc) (tsl.Node, error) {
+	var err error
+
+	left := n.Left.(tsl.Node)
+	right := n.Right.(tsl.Node)
+
+	// Check for identifiers.
+	if left.Func == tsl.IdentOp {
+		left, err = evalIdentNode(left, eval)
+		if err != nil {
+			return n, err
+		}
+	}
+	if right.Func == tsl.IdentOp {
+		right, err = evalIdentNode(right, eval)
+		if err != nil {
+			return n, err
+		}
+	}
+
+	// Check for null
+	if left.Func == tsl.NullOp || right.Func == tsl.NullOp {
+		n = tsl.Node{
+			Func: tsl.NullOp,
+			Left: nil,
+		}
+		return n, nil
+	}
+
+	// Sanity check
+	if left.Func != tsl.NumberOp || right.Func != tsl.NumberOp {
+		return n, tsl.UnexpectedLiteralError{Literal: fmt.Sprintf("%v %v", left.Left, right.Left)}
+	}
+
+	switch n.Func {
+	case tsl.AddOp:
+		n = tsl.Node{
+			Func: tsl.NumberOp,
+			Left: left.Left.(float64) + right.Left.(float64),
+		}
+	case tsl.SubtractOp:
+		n = tsl.Node{
+			Func: tsl.NumberOp,
+			Left: left.Left.(float64) - right.Left.(float64),
+		}
+	case tsl.MultiplyOp:
+		n = tsl.Node{
+			Func: tsl.NumberOp,
+			Left: left.Left.(float64) * right.Left.(float64),
+		}
+	case tsl.DivideOp:
+		n = tsl.Node{
+			Func: tsl.NumberOp,
+			Left: left.Left.(float64) / right.Left.(float64),
+		}
+	default:
+		return n, tsl.UnexpectedLiteralError{Literal: fmt.Sprintf("%v %v", left.Left, right.Left)}
+	}
+
+	return n, nil
+}
+
+func handleMathOpLeft(n tsl.Node, eval EvalFunc) (tsl.Node, error) {
+	var err error
+
+	left, err := handleMathOp(n.Left.(tsl.Node), eval)
+	if err != nil {
+		return n, err
+	}
+
+	n.Left = left
+	return n, nil
+}
+
+func handleMathOpRight(n tsl.Node, eval EvalFunc) (tsl.Node, error) {
+	var err error
+
+	right, err := handleMathOp(n.Right.(tsl.Node), eval)
+	if err != nil {
+		return n, err
+	}
+
+	n.Right = right
 	return n, nil
 }
 

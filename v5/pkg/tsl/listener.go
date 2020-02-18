@@ -17,6 +17,7 @@ package tsl
 
 import (
 	"fmt"
+	"math"
 	"strconv"
 	"strings"
 
@@ -56,13 +57,37 @@ func (l *Listener) ExitColumnIdentifier(c *parser.ColumnIdentifierContext) {
 
 // ExitNumberLiteral is called when exiting the NumberLiteral production.
 func (l *Listener) ExitNumberLiteral(c *parser.NumberLiteralContext) {
+	multiplier := 1.0
+	s := c.SignedNumber().GetText()
+
+	// Check for SI postfix
+	if len(s) > 2 {
+		postfix := s[len(s)-2:]
+		switch postfix {
+		case "Ki":
+			multiplier = 1024
+			s = s[:len(s)-2]
+		case "Mi":
+			multiplier = math.Pow(1024, 2)
+		case "Gi":
+			multiplier = math.Pow(1024, 3)
+			s = s[:len(s)-2]
+		case "Ti":
+			multiplier = math.Pow(1024, 4)
+			s = s[:len(s)-2]
+		case "Pi":
+			multiplier = math.Pow(1024, 5)
+			s = s[:len(s)-2]
+		}
+	}
+
 	// Check for a float value.
-	f, err := strconv.ParseFloat(c.SignedNumber().GetText(), 64)
+	f, err := strconv.ParseFloat(s, 64)
 	if err != nil {
 		l.Errs = append(l.Errs, err)
 	}
 
-	l.exitLiteral(NumberOp, f)
+	l.exitLiteral(NumberOp, f*multiplier)
 }
 
 // ExitStringLiteral is called when exiting the StringLiteral production.
