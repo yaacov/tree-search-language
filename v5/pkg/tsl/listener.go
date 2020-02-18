@@ -52,7 +52,14 @@ func (l *Listener) GetTree() (n Node, err error) {
 
 // ExitColumnIdentifier is called when exiting the ColumnIdentifier production.
 func (l *Listener) ExitColumnIdentifier(c *parser.ColumnIdentifierContext) {
-	l.exitLiteral(IdentOp, c.ColumnName().GetText())
+	s := c.ColumnName().GetText()
+
+	// Identifier can be encapsulted by '`...`', '"..."', or '[...]'
+	if s[0] == '`' || s[0] == '"' || s[0] == '[' {
+		s = s[1 : len(s)-1]
+	}
+
+	l.exitLiteral(IdentOp, s)
 }
 
 // ExitNumberLiteral is called when exiting the NumberLiteral production.
