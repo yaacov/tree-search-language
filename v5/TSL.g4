@@ -94,6 +94,7 @@ IDENTIFIER
 
 NUMERIC_LITERAL
   : DIGIT+ ('Ki' | 'Mi' | 'Gi' | 'Ti' | 'Pi')
+  | DIGIT+ ('K' | 'M' | 'G' | 'T' | 'P')
   | DIGIT+ ( '.' DIGIT* )? ( E [-+]? DIGIT+ )?
   | '.' DIGIT+ ( E [-+]? DIGIT+ )?
   ;

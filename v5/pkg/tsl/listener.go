@@ -60,24 +60,30 @@ func (l *Listener) ExitNumberLiteral(c *parser.NumberLiteralContext) {
 	multiplier := 1.0
 	s := c.SignedNumber().GetText()
 
+	// Remove SI `i` if exist
+	// Note: we support "K", "M", "G" and "Ki", "Mi", "Gi" postfix
+	if len(s) > 1 && s[len(s)-1:] == "i" {
+		s = s[:len(s)-1]
+	}
+
 	// Check for SI postfix
-	if len(s) > 2 {
-		postfix := s[len(s)-2:]
+	if len(s) > 1 {
+		postfix := s[len(s)-1:]
 		switch postfix {
-		case "Ki":
+		case "K":
 			multiplier = 1024
-			s = s[:len(s)-2]
-		case "Mi":
+			s = s[:len(s)-1]
+		case "M":
 			multiplier = math.Pow(1024, 2)
-		case "Gi":
+		case "G":
 			multiplier = math.Pow(1024, 3)
-			s = s[:len(s)-2]
-		case "Ti":
+			s = s[:len(s)-1]
+		case "T":
 			multiplier = math.Pow(1024, 4)
-			s = s[:len(s)-2]
-		case "Pi":
+			s = s[:len(s)-1]
+		case "P":
 			multiplier = math.Pow(1024, 5)
-			s = s[:len(s)-2]
+			s = s[:len(s)-1]
 		}
 	}
 
