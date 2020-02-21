@@ -100,7 +100,7 @@ func Walk(in string, n tsl.Node, nodeID string) (out string, err error) {
 		// Add leaf label and value.
 		nodeLabel := fmt.Sprintf("%s [%s label=\"%s | %v\" ]",
 			nodeID,
-			numberStyle,
+			dateStyle,
 			n.Func,
 			n.Left)
 		out = fmt.Sprintf("%s%s", in, nodeLabel)
