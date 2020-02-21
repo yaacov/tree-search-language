@@ -17,6 +17,7 @@ package semantics
 
 import (
 	"testing"
+	"time"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/ginkgo/extensions/table"
@@ -32,12 +33,14 @@ func TestWalk(t *testing.T) {
 
 var _ = Describe("Walk", func() {
 	// This is the record that we will use for all the tests:
+	date, _ := time.Parse(time.RFC3339, "2020-01-01T00:00:00Z")
 	record := map[string]interface{}{
 		"title":       "A good book",
 		"author":      "Joe",
 		"spec.pages":  14,
 		"spec.rating": 5,
 		"loaned":      true,
+		"date":        date,
 	}
 
 	// This is the evaluation function that we will use to extract fields from the record:
@@ -75,6 +78,11 @@ var _ = Describe("Walk", func() {
 
 		// Booleans
 		Entry("booleans", "spec.pages < 20 and loaned = true", true),
-		Entry("booleans", "spec.pages < 20 and loaned != true", false),
+		Entry("booleans false", "spec.pages < 20 and loaned != true", false),
+
+		// dates
+		Entry("dates", "date = 2020-01-01T00:00:00Z", true),
+		Entry("dates", "date < 2020-01-02T00:00:00Z", false),
+		Entry("dates", "date between 2019-12-30T00:00:00Z and 2020-01-02T00:00:00Z", true),
 	)
 })

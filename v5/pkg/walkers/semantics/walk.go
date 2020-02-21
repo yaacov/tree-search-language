@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/yaacov/tree-search-language/v5/pkg/tsl"
 )
@@ -145,6 +146,13 @@ func runSemantics(n tsl.Node, eval EvalFunc) (bool, error) {
 			if r.Func == tsl.ArrayOp {
 				return handleNumberArrayOp(n, eval)
 			}
+		case tsl.DateOp:
+			if r.Func == tsl.DateOp {
+				return handleDateOp(n, eval)
+			}
+			if r.Func == tsl.ArrayOp {
+				return handleDateArrayOp(n, eval)
+			}
 		case tsl.BooleanOp:
 			if r.Func == tsl.BooleanOp {
 				return handleBooleanOp(n, eval)
@@ -208,6 +216,11 @@ func evalIdentNode(node tsl.Node, eval EvalFunc) (tsl.Node, error) {
 	case bool:
 		n = tsl.Node{
 			Func: tsl.BooleanOp,
+			Left: v,
+		}
+	case time.Time:
+		n = tsl.Node{
+			Func: tsl.DateOp,
 			Left: v,
 		}
 	case float32:
@@ -417,6 +430,31 @@ func handleNumberOp(n tsl.Node, eval EvalFunc) (bool, error) {
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
 }
 
+func handleDateOp(n tsl.Node, eval EvalFunc) (bool, error) {
+	l := n.Left.(tsl.Node)
+	r := n.Right.(tsl.Node)
+
+	left := l.Left.(time.Time)
+	right := r.Left.(time.Time)
+
+	switch n.Func {
+	case tsl.EqOp:
+		return left == right, nil
+	case tsl.NotEqOp:
+		return left != right, nil
+	case tsl.LtOp:
+		return right.Before(left), nil
+	case tsl.LteOp:
+		return !right.After(left), nil
+	case tsl.GtOp:
+		return left.Before(right), nil
+	case tsl.GteOp:
+		return !left.After(right), nil
+	}
+
+	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+}
+
 func handleBooleanOp(n tsl.Node, eval EvalFunc) (bool, error) {
 	l := n.Left.(tsl.Node)
 	r := n.Right.(tsl.Node)
@@ -493,6 +531,40 @@ func handleNumberArrayOp(n tsl.Node, eval EvalFunc) (bool, error) {
 		b := true
 		for _, node := range right {
 			b = b && left != node.Left.(float64)
+		}
+		return b, nil
+	}
+
+	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+}
+
+func handleDateArrayOp(n tsl.Node, eval EvalFunc) (bool, error) {
+	l := n.Left.(tsl.Node)
+	r := n.Right.(tsl.Node)
+
+	left := l.Left.(time.Time)
+	right := r.Right.([]tsl.Node)
+
+	switch n.Func {
+	case tsl.BetweenOp:
+		begin := right[0].Left.(time.Time)
+		end := right[1].Left.(time.Time)
+
+		return !left.Before(begin) && left.Before(end), nil
+	case tsl.NotBetweenOp:
+		begin := right[0].Left.(time.Time)
+		end := right[1].Left.(time.Time)
+		return left.Before(begin) || !left.Before(end), nil
+	case tsl.InOp:
+		b := false
+		for _, node := range right {
+			b = b || left == node.Left.(time.Time)
+		}
+		return b, nil
+	case tsl.NotInOp:
+		b := true
+		for _, node := range right {
+			b = b && left != node.Left.(time.Time)
 		}
 		return b, nil
 	}
