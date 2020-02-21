@@ -223,6 +223,7 @@ This TSL phrase:
 ```
 
 Will be parsed into this TSL tree:
+
 ![TSL](/img/example_f.png?raw=true "example tree")
 
 Images created using the `tsl_parser` CLI example and Graphviz's `dot` utility:
