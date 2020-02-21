@@ -114,6 +114,12 @@ func Walk(n tsl.Node, eval EvalFunc) (bool, error) {
 	}
 
 	// Implement tree semantics.
+	return runSemantics(n, eval)
+}
+
+func runSemantics(n tsl.Node, eval EvalFunc) (bool, error) {
+	l := n.Left.(tsl.Node)
+
 	switch n.Func {
 	case tsl.EqOp, tsl.NotEqOp, tsl.LtOp, tsl.LteOp, tsl.GtOp, tsl.GteOp, tsl.RegexOp, tsl.NotRegexOp,
 		tsl.BetweenOp, tsl.NotBetweenOp, tsl.NotInOp, tsl.InOp, tsl.LikeOp, tsl.ILikeOp:
@@ -138,6 +144,10 @@ func Walk(n tsl.Node, eval EvalFunc) (bool, error) {
 			}
 			if r.Func == tsl.ArrayOp {
 				return handleNumberArrayOp(n, eval)
+			}
+		case tsl.BooleanOp:
+			if r.Func == tsl.BooleanOp {
+				return handleBooleanOp(n, eval)
 			}
 		case tsl.NullOp:
 			// Any comparison operation on a null element is false.
@@ -196,13 +206,9 @@ func evalIdentNode(node tsl.Node, eval EvalFunc) (tsl.Node, error) {
 			Left: nil,
 		}
 	case bool:
-		val := "false"
-		if v {
-			val = "true"
-		}
 		n = tsl.Node{
-			Func: tsl.StringOp,
-			Left: val,
+			Func: tsl.BooleanOp,
+			Left: v,
 		}
 	case float32:
 		n = tsl.Node{
@@ -406,6 +412,23 @@ func handleNumberOp(n tsl.Node, eval EvalFunc) (bool, error) {
 		return left > right, nil
 	case tsl.GteOp:
 		return left >= right, nil
+	}
+
+	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+}
+
+func handleBooleanOp(n tsl.Node, eval EvalFunc) (bool, error) {
+	l := n.Left.(tsl.Node)
+	r := n.Right.(tsl.Node)
+
+	left := l.Left.(bool)
+	right := r.Left.(bool)
+
+	switch n.Func {
+	case tsl.EqOp:
+		return left == right, nil
+	case tsl.NotEqOp:
+		return left != right, nil
 	}
 
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
