@@ -17,11 +17,12 @@ package tsl
 
 // TLS operators.
 const (
-	IdentOp      = "$ident"  // Empty operator for itentifiers
-	ArrayOp      = "$array"  // Empty operator for arrays
-	StringOp     = "$string" // Empty operator for strings
-	NumberOp     = "$number" // Empty operator for numbers
-	NullOp       = "$null"   // Empty operator for nulls
+	IdentOp      = "$ident"   // Empty operator for itentifiers
+	ArrayOp      = "$array"   // Empty operator for arrays
+	StringOp     = "$string"  // Empty operator for strings
+	NumberOp     = "$number"  // Empty operator for numbers
+	BooleanOp    = "$boolean" // Empty operator for booleans
+	NullOp       = "$null"    // Empty operator for nulls
 	LtOp         = "$lt"
 	LteOp        = "$lte"
 	GtOp         = "$gt"

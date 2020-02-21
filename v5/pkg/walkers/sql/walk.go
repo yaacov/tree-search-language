@@ -177,6 +177,13 @@ func Walk(n tsl.Node) (s sq.Sqlizer, err error) {
 		s = sq.Expr(f)
 	case tsl.StringOp:
 		s = sq.Expr(n.Left.(string))
+	case tsl.BooleanOp:
+		// No Booleans in SQL, convert to 0 for false and 1 for true.
+		value := "0"
+		if n.Left.(bool) {
+			value = "1"
+		}
+		s = sq.Expr(value)
 	case tsl.AndOp, tsl.OrOp, tsl.AddOp, tsl.SubtractOp, tsl.MultiplyOp, tsl.DivideOp,
 		tsl.ModuloOp:
 		return binaryStep(n)

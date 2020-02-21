@@ -37,6 +37,7 @@ var _ = Describe("Walk", func() {
 		"author":      "Joe",
 		"spec.pages":  14,
 		"spec.rating": 5,
+		"loaned":      true,
 	}
 
 	// This is the evaluation function that we will use to extract fields from the record:

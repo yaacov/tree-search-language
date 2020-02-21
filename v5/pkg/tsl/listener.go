@@ -115,6 +115,13 @@ func (l *Listener) ExitStringLiteral(c *parser.StringLiteralContext) {
 	l.exitLiteral(StringOp, v)
 }
 
+// ExitBooleanLiteral is called when exiting the BooleanLiteral production.
+func (l *Listener) ExitBooleanLiteral(c *parser.BooleanLiteralContext) {
+	s := strings.ToUpper(c.GetRuleContext().GetText())
+
+	l.exitLiteral(BooleanOp, s == "TRUE")
+}
+
 // ExitMulOps is called when production multiply op is exited.
 func (l *Listener) ExitMulOps(c *parser.MulOpsContext) {
 	l.exitMathOps(MultiplyOp)

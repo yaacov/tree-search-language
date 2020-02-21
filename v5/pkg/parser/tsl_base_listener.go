@@ -141,6 +141,12 @@ func (s *BaseTSLListener) EnterStringLiteral(ctx *StringLiteralContext) {}
 // ExitStringLiteral is called when production StringLiteral is exited.
 func (s *BaseTSLListener) ExitStringLiteral(ctx *StringLiteralContext) {}
 
+// EnterBooleanLiteral is called when production BooleanLiteral is entered.
+func (s *BaseTSLListener) EnterBooleanLiteral(ctx *BooleanLiteralContext) {}
+
+// ExitBooleanLiteral is called when production BooleanLiteral is exited.
+func (s *BaseTSLListener) ExitBooleanLiteral(ctx *BooleanLiteralContext) {}
+
 // EnterLiteralOrMath is called when production literalOrMath is entered.
 func (s *BaseTSLListener) EnterLiteralOrMath(ctx *LiteralOrMathContext) {}
 

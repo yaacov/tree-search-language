@@ -44,8 +44,9 @@ columnName
   ;
 
 literalValue
-  : signedNumber # NumberLiteral
-  | stringValue  # StringLiteral
+  : signedNumber         # NumberLiteral
+  | stringValue          # StringLiteral
+  | ( K_TRUE | K_FALSE ) # BooleanLiteral
   ;
 
 literalOrMath
@@ -84,6 +85,8 @@ K_IN : I N;
 K_IS : I S;
 K_NULL : N U L L;
 K_NOT : N O T;
+K_TRUE : T R U E;
+K_FALSE : F A L S E;
 
 IDENTIFIER
   : '"' (~'"' | '""')* '"'
