@@ -31,6 +31,7 @@ const pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const identStyle = "shape=record color=red"
 const numberStyle = "shape=record color=blue"
 const stringStyle = "shape=record color=blue"
+const dateStyle = "shape=record color=orange"
 const opStyle = "shape=box color=black"
 
 // Generate a random string.
@@ -90,6 +91,14 @@ func Walk(in string, n tsl.Node, nodeID string) (out string, err error) {
 	case tsl.NumberOp:
 		// Add leaf label and value.
 		nodeLabel := fmt.Sprintf("%s [%s label=\"%s | %g\" ]",
+			nodeID,
+			numberStyle,
+			n.Func,
+			n.Left)
+		out = fmt.Sprintf("%s%s", in, nodeLabel)
+	case tsl.BooleanOp, tsl.DateOp:
+		// Add leaf label and value.
+		nodeLabel := fmt.Sprintf("%s [%s label=\"%s | %v\" ]",
 			nodeID,
 			numberStyle,
 			n.Func,
