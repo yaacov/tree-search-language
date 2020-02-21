@@ -48,7 +48,19 @@ func nodesToStrings(in interface{}) (s []interface{}) {
 
 	// Assume all Nodes are Leafs.
 	for _, n := range nn {
-		s = append(s, n.Left)
+		switch n.Func {
+		case tsl.BooleanOp:
+			v := 0
+			if n.Left.(bool) {
+				v = 1
+			}
+			s = append(s, v)
+		case tsl.DateOp:
+			d := n.Left.(time.Time).Format(time.RFC3339)
+			s = append(s, d)
+		default:
+			s = append(s, n.Left)
+		}
 	}
 
 	return

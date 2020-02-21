@@ -72,5 +72,9 @@ var _ = Describe("Walk", func() {
 		Entry("more pages", "spec.pages <= spec.rating", false),
 		Entry("add pages to number", "spec.pages = (spec.rating + 9)", true),
 		Entry("multiply pages with number", "spec.pages < (spec.rating * 3)", true),
+
+		// Booleans
+		Entry("booleans", "spec.pages < 20 and loaned = true", true),
+		Entry("booleans", "spec.pages < 20 and loaned != true", false),
 	)
 })

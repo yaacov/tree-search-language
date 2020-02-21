@@ -61,5 +61,19 @@ var _ = Describe("Walk", func() {
 			"SELECT name, city, state FROM users WHERE (name = ? AND city <> ?)",
 			"joe", "rome",
 		),
+
+		Entry(
+			"Search by name and city",
+			"name = 'joe' and isCarpenter = TRUE",
+			"SELECT name, city, state FROM users WHERE (name = ? AND isCarpenter = ?)",
+			"joe", 1,
+		),
+
+		Entry(
+			"Search by name and city",
+			"name = 'joe' and date = 2020-01-01T00:00:01Z",
+			"SELECT name, city, state FROM users WHERE (name = ? AND date = ?)",
+			"joe", "2020-01-01T00:00:01Z",
+		),
 	)
 })

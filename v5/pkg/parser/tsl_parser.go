@@ -35,7 +35,7 @@ var parserATN = []uint16{
 	12, 14, 12, 160, 11, 12, 3, 13, 5, 13, 163, 10, 13, 3, 13, 3, 13, 3, 14,
 	3, 14, 3, 15, 3, 15, 3, 15, 2, 4, 4, 22, 16, 2, 4, 6, 8, 10, 12, 14, 16,
 	18, 20, 22, 24, 26, 28, 2, 8, 3, 2, 6, 9, 3, 2, 10, 12, 3, 2, 13, 14, 3,
-	2, 31, 32, 3, 2, 40, 41, 3, 2, 18, 19, 2, 185, 2, 30, 3, 2, 2, 2, 4, 96,
+	2, 20, 21, 3, 2, 29, 30, 3, 2, 18, 19, 2, 185, 2, 30, 3, 2, 2, 2, 4, 96,
 	3, 2, 2, 2, 6, 111, 3, 2, 2, 2, 8, 113, 3, 2, 2, 2, 10, 115, 3, 2, 2, 2,
 	12, 117, 3, 2, 2, 2, 14, 119, 3, 2, 2, 2, 16, 121, 3, 2, 2, 2, 18, 127,
 	3, 2, 2, 2, 20, 131, 3, 2, 2, 2, 22, 139, 3, 2, 2, 2, 24, 162, 3, 2, 2,
@@ -45,34 +45,34 @@ var parserATN = []uint16{
 	22, 12, 2, 39, 40, 5, 8, 5, 2, 40, 41, 5, 20, 11, 2, 41, 97, 3, 2, 2, 2,
 	42, 44, 5, 22, 12, 2, 43, 45, 5, 28, 15, 2, 44, 43, 3, 2, 2, 2, 44, 45,
 	3, 2, 2, 2, 45, 46, 3, 2, 2, 2, 46, 47, 5, 10, 6, 2, 47, 48, 5, 18, 10,
-	2, 48, 97, 3, 2, 2, 2, 49, 50, 5, 22, 12, 2, 50, 52, 7, 37, 2, 2, 51, 53,
+	2, 48, 97, 3, 2, 2, 2, 49, 50, 5, 22, 12, 2, 50, 52, 7, 26, 2, 2, 51, 53,
 	5, 28, 15, 2, 52, 51, 3, 2, 2, 2, 52, 53, 3, 2, 2, 2, 53, 54, 3, 2, 2,
-	2, 54, 55, 7, 38, 2, 2, 55, 97, 3, 2, 2, 2, 56, 57, 5, 22, 12, 2, 57, 59,
-	7, 37, 2, 2, 58, 60, 5, 28, 15, 2, 59, 58, 3, 2, 2, 2, 59, 60, 3, 2, 2,
+	2, 54, 55, 7, 27, 2, 2, 55, 97, 3, 2, 2, 2, 56, 57, 5, 22, 12, 2, 57, 59,
+	7, 26, 2, 2, 58, 60, 5, 28, 15, 2, 59, 58, 3, 2, 2, 2, 59, 60, 3, 2, 2,
 	2, 60, 61, 3, 2, 2, 2, 61, 62, 5, 18, 10, 2, 62, 97, 3, 2, 2, 2, 63, 65,
 	5, 22, 12, 2, 64, 66, 5, 28, 15, 2, 65, 64, 3, 2, 2, 2, 65, 66, 3, 2, 2,
-	2, 66, 67, 3, 2, 2, 2, 67, 68, 7, 35, 2, 2, 68, 69, 5, 18, 10, 2, 69, 70,
-	7, 33, 2, 2, 70, 71, 5, 18, 10, 2, 71, 97, 3, 2, 2, 2, 72, 74, 5, 22, 12,
+	2, 66, 67, 3, 2, 2, 2, 67, 68, 7, 24, 2, 2, 68, 69, 5, 18, 10, 2, 69, 70,
+	7, 22, 2, 2, 70, 71, 5, 18, 10, 2, 71, 97, 3, 2, 2, 2, 72, 74, 5, 22, 12,
 	2, 73, 75, 5, 28, 15, 2, 74, 73, 3, 2, 2, 2, 74, 75, 3, 2, 2, 2, 75, 76,
-	3, 2, 2, 2, 76, 77, 7, 36, 2, 2, 77, 86, 7, 3, 2, 2, 78, 83, 5, 18, 10,
+	3, 2, 2, 2, 76, 77, 7, 25, 2, 2, 77, 86, 7, 3, 2, 2, 78, 83, 5, 18, 10,
 	2, 79, 80, 7, 4, 2, 2, 80, 82, 5, 18, 10, 2, 81, 79, 3, 2, 2, 2, 82, 85,
 	3, 2, 2, 2, 83, 81, 3, 2, 2, 2, 83, 84, 3, 2, 2, 2, 84, 87, 3, 2, 2, 2,
 	85, 83, 3, 2, 2, 2, 86, 78, 3, 2, 2, 2, 86, 87, 3, 2, 2, 2, 87, 88, 3,
-	2, 2, 2, 88, 89, 7, 5, 2, 2, 89, 97, 3, 2, 2, 2, 90, 91, 7, 39, 2, 2, 91,
+	2, 2, 2, 88, 89, 7, 5, 2, 2, 89, 97, 3, 2, 2, 2, 90, 91, 7, 28, 2, 2, 91,
 	97, 5, 4, 3, 6, 92, 93, 7, 3, 2, 2, 93, 94, 5, 4, 3, 2, 94, 95, 7, 5, 2,
 	2, 95, 97, 3, 2, 2, 2, 96, 33, 3, 2, 2, 2, 96, 38, 3, 2, 2, 2, 96, 42,
 	3, 2, 2, 2, 96, 49, 3, 2, 2, 2, 96, 56, 3, 2, 2, 2, 96, 63, 3, 2, 2, 2,
 	96, 72, 3, 2, 2, 2, 96, 90, 3, 2, 2, 2, 96, 92, 3, 2, 2, 2, 97, 106, 3,
-	2, 2, 2, 98, 99, 12, 5, 2, 2, 99, 100, 7, 33, 2, 2, 100, 105, 5, 4, 3,
-	6, 101, 102, 12, 4, 2, 2, 102, 103, 7, 34, 2, 2, 103, 105, 5, 4, 3, 5,
+	2, 2, 2, 98, 99, 12, 5, 2, 2, 99, 100, 7, 22, 2, 2, 100, 105, 5, 4, 3,
+	6, 101, 102, 12, 4, 2, 2, 102, 103, 7, 23, 2, 2, 103, 105, 5, 4, 3, 5,
 	104, 98, 3, 2, 2, 2, 104, 101, 3, 2, 2, 2, 105, 108, 3, 2, 2, 2, 106, 104,
 	3, 2, 2, 2, 106, 107, 3, 2, 2, 2, 107, 5, 3, 2, 2, 2, 108, 106, 3, 2, 2,
 	2, 109, 112, 9, 2, 2, 2, 110, 112, 9, 3, 2, 2, 111, 109, 3, 2, 2, 2, 111,
 	110, 3, 2, 2, 2, 112, 7, 3, 2, 2, 2, 113, 114, 9, 4, 2, 2, 114, 9, 3, 2,
-	2, 2, 115, 116, 9, 5, 2, 2, 116, 11, 3, 2, 2, 2, 117, 118, 7, 42, 2, 2,
-	118, 13, 3, 2, 2, 2, 119, 120, 7, 42, 2, 2, 120, 15, 3, 2, 2, 2, 121, 122,
-	7, 42, 2, 2, 122, 17, 3, 2, 2, 2, 123, 128, 5, 24, 13, 2, 124, 128, 5,
-	26, 14, 2, 125, 128, 9, 6, 2, 2, 126, 128, 7, 30, 2, 2, 127, 123, 3, 2,
+	2, 2, 115, 116, 9, 5, 2, 2, 116, 11, 3, 2, 2, 2, 117, 118, 7, 31, 2, 2,
+	118, 13, 3, 2, 2, 2, 119, 120, 7, 31, 2, 2, 120, 15, 3, 2, 2, 2, 121, 122,
+	7, 31, 2, 2, 122, 17, 3, 2, 2, 2, 123, 128, 5, 24, 13, 2, 124, 128, 5,
+	26, 14, 2, 125, 128, 9, 6, 2, 2, 126, 128, 7, 45, 2, 2, 127, 123, 3, 2,
 	2, 2, 127, 124, 3, 2, 2, 2, 127, 125, 3, 2, 2, 2, 127, 126, 3, 2, 2, 2,
 	128, 19, 3, 2, 2, 2, 129, 132, 5, 18, 10, 2, 130, 132, 5, 22, 12, 2, 131,
 	129, 3, 2, 2, 2, 131, 130, 3, 2, 2, 2, 132, 21, 3, 2, 2, 2, 133, 134, 8,
@@ -87,9 +87,9 @@ var parserATN = []uint16{
 	156, 147, 3, 2, 2, 2, 156, 150, 3, 2, 2, 2, 156, 153, 3, 2, 2, 2, 157,
 	160, 3, 2, 2, 2, 158, 156, 3, 2, 2, 2, 158, 159, 3, 2, 2, 2, 159, 23, 3,
 	2, 2, 2, 160, 158, 3, 2, 2, 2, 161, 163, 9, 7, 2, 2, 162, 161, 3, 2, 2,
-	2, 162, 163, 3, 2, 2, 2, 163, 164, 3, 2, 2, 2, 164, 165, 7, 43, 2, 2, 165,
-	25, 3, 2, 2, 2, 166, 167, 7, 44, 2, 2, 167, 27, 3, 2, 2, 2, 168, 169, 7,
-	39, 2, 2, 169, 29, 3, 2, 2, 2, 19, 44, 52, 59, 65, 74, 83, 86, 96, 104,
+	2, 162, 163, 3, 2, 2, 2, 163, 164, 3, 2, 2, 2, 164, 165, 7, 32, 2, 2, 165,
+	25, 3, 2, 2, 2, 166, 167, 7, 33, 2, 2, 167, 27, 3, 2, 2, 2, 168, 169, 7,
+	28, 2, 2, 169, 29, 3, 2, 2, 2, 19, 44, 52, 59, 65, 74, 83, 86, 96, 104,
 	106, 111, 127, 131, 139, 156, 158, 162,
 }
 var deserializer = antlr.NewATNDeserializer(nil)
@@ -101,10 +101,10 @@ var literalNames = []string{
 }
 var symbolicNames = []string{
 	"", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
-	"YEAR", "MONTH", "DAY", "HOUR", "MINUTE", "SEC", "SEC_FRAC", "DATE", "TIME",
-	"TIME_OFFSET", "RFC3339", "K_LIKE", "K_ILIKE", "K_AND", "K_OR", "K_BETWEEN",
-	"K_IN", "K_IS", "K_NULL", "K_NOT", "K_TRUE", "K_FALSE", "IDENTIFIER", "NUMERIC_LITERAL",
-	"STRING_LITERAL", "SPACES",
+	"K_LIKE", "K_ILIKE", "K_AND", "K_OR", "K_BETWEEN", "K_IN", "K_IS", "K_NULL",
+	"K_NOT", "K_TRUE", "K_FALSE", "IDENTIFIER", "NUMERIC_LITERAL", "STRING_LITERAL",
+	"SPACES", "YEAR", "MONTH", "DAY", "HOUR", "MINUTE", "SEC", "SEC_FRAC",
+	"DATE", "TIME", "TIME_OFFSET", "RFC3339",
 }
 
 var ruleNames = []string{
@@ -158,32 +158,32 @@ const (
 	TSLParserT__14           = 15
 	TSLParserT__15           = 16
 	TSLParserT__16           = 17
-	TSLParserYEAR            = 18
-	TSLParserMONTH           = 19
-	TSLParserDAY             = 20
-	TSLParserHOUR            = 21
-	TSLParserMINUTE          = 22
-	TSLParserSEC             = 23
-	TSLParserSEC_FRAC        = 24
-	TSLParserDATE            = 25
-	TSLParserTIME            = 26
-	TSLParserTIME_OFFSET     = 27
-	TSLParserRFC3339         = 28
-	TSLParserK_LIKE          = 29
-	TSLParserK_ILIKE         = 30
-	TSLParserK_AND           = 31
-	TSLParserK_OR            = 32
-	TSLParserK_BETWEEN       = 33
-	TSLParserK_IN            = 34
-	TSLParserK_IS            = 35
-	TSLParserK_NULL          = 36
-	TSLParserK_NOT           = 37
-	TSLParserK_TRUE          = 38
-	TSLParserK_FALSE         = 39
-	TSLParserIDENTIFIER      = 40
-	TSLParserNUMERIC_LITERAL = 41
-	TSLParserSTRING_LITERAL  = 42
-	TSLParserSPACES          = 43
+	TSLParserK_LIKE          = 18
+	TSLParserK_ILIKE         = 19
+	TSLParserK_AND           = 20
+	TSLParserK_OR            = 21
+	TSLParserK_BETWEEN       = 22
+	TSLParserK_IN            = 23
+	TSLParserK_IS            = 24
+	TSLParserK_NULL          = 25
+	TSLParserK_NOT           = 26
+	TSLParserK_TRUE          = 27
+	TSLParserK_FALSE         = 28
+	TSLParserIDENTIFIER      = 29
+	TSLParserNUMERIC_LITERAL = 30
+	TSLParserSTRING_LITERAL  = 31
+	TSLParserSPACES          = 32
+	TSLParserYEAR            = 33
+	TSLParserMONTH           = 34
+	TSLParserDAY             = 35
+	TSLParserHOUR            = 36
+	TSLParserMINUTE          = 37
+	TSLParserSEC             = 38
+	TSLParserSEC_FRAC        = 39
+	TSLParserDATE            = 40
+	TSLParserTIME            = 41
+	TSLParserTIME_OFFSET     = 42
+	TSLParserRFC3339         = 43
 )
 
 // TSLParser rules.
@@ -1250,7 +1250,7 @@ func (p *TSLParser) expr(_p int) (localctx IExprContext) {
 		p.GetErrorHandler().Sync(p)
 		_la = p.GetTokenStream().LA(1)
 
-		if ((_la-16)&-(0x1f+1)) == 0 && ((1<<uint((_la-16)))&((1<<(TSLParserT__15-16))|(1<<(TSLParserT__16-16))|(1<<(TSLParserRFC3339-16))|(1<<(TSLParserK_TRUE-16))|(1<<(TSLParserK_FALSE-16))|(1<<(TSLParserNUMERIC_LITERAL-16))|(1<<(TSLParserSTRING_LITERAL-16)))) != 0 {
+		if ((_la-16)&-(0x1f+1)) == 0 && ((1<<uint((_la-16)))&((1<<(TSLParserT__15-16))|(1<<(TSLParserT__16-16))|(1<<(TSLParserK_TRUE-16))|(1<<(TSLParserK_FALSE-16))|(1<<(TSLParserNUMERIC_LITERAL-16))|(1<<(TSLParserSTRING_LITERAL-16))|(1<<(TSLParserRFC3339-16)))) != 0 {
 			{
 				p.SetState(76)
 				p.LiteralValue()
@@ -2333,7 +2333,7 @@ func (p *TSLParser) LiteralOrMath() (localctx ILiteralOrMathContext) {
 	p.GetErrorHandler().Sync(p)
 
 	switch p.GetTokenStream().LA(1) {
-	case TSLParserT__15, TSLParserT__16, TSLParserRFC3339, TSLParserK_TRUE, TSLParserK_FALSE, TSLParserNUMERIC_LITERAL, TSLParserSTRING_LITERAL:
+	case TSLParserT__15, TSLParserT__16, TSLParserK_TRUE, TSLParserK_FALSE, TSLParserNUMERIC_LITERAL, TSLParserSTRING_LITERAL, TSLParserRFC3339:
 		{
 			p.SetState(127)
 			p.LiteralValue()
