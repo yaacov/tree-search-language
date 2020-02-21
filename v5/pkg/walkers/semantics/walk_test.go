@@ -66,5 +66,10 @@ var _ = Describe("Walk", func() {
 		Entry("not like bad", "title not like '%bad%'", true),
 		Entry("not ilike GOOD", "title not ilike '%GOOD%'", false),
 		Entry("not ilike BAD", "title not ilike '%BAD%'", true),
+
+		// Two identififers
+		Entry("more pages", "spec.pages <= spec.rating", false),
+		Entry("add pages to number", "spec.pages = (spec.rating + 9)", true),
+		Entry("multiply pages with number", "spec.pages < (spec.rating * 3)", true),
 	)
 })

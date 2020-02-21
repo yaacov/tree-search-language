@@ -178,6 +178,132 @@ var _ = Describe("Parser", func() {
 				}
 			}`,
 		),
+
+		Entry(
+			"Use of . and / as valid identifier",
+			"a.b.c.d.f/g.h not ilike 'my%'",
+			`{
+				"func": "$not",
+				"left": {
+					"func": "$ilike",
+					"left": {
+						"func": "$ident",
+						"left": "a.b.c.d.f/g.h"
+					},
+					"right": {
+						"func": "$string",
+						"left": "my%"
+					}
+				}
+			}`,
+		),
+
+		Entry(
+			"Use escaping with identifier",
+			"`a` > [b] and \"c\" is not null",
+			`{
+				"func": "$and",
+				"left": {
+				  "func": "$gt",
+				  "left": {
+					"func": "$ident",
+					"left": "a"
+				  },
+				  "right": {
+					"func": "$ident",
+					"left": "b"
+				  }
+				},
+				"right": {
+				  "func": "$exists",
+				  "left": {
+					"func": "$ident",
+					"left": "c"
+				  }
+				}
+			  }`,
+		),
+
+		Entry(
+			"Use identifiers with math operators on right hand side",
+			"a > (b + 1)",
+			`{
+				"func": "$gt",
+				"left": {
+				  "func": "$ident",
+				  "left": "a"
+				},
+				"right": {
+				  "func": "$add",
+				  "left": {
+					"func": "$ident",
+					"left": "b"
+				  },
+				  "right": {
+					"func": "$number",
+					"left": 1
+				  }
+				}
+			  }`,
+		),
+
+		Entry(
+			"Use SI units",
+			"a > 1Ki and b < 2Mi and c = 3Gi or d != 4Ti",
+			`{
+				"func": "$or",
+				"left": {
+				  "func": "$and",
+				  "left": {
+					"func": "$and",
+					"left": {
+					  "func": "$gt",
+					  "left": {
+						"func": "$ident",
+						"left": "a"
+					  },
+					  "right": {
+						"func": "$number",
+						"left": 1024
+					  }
+					},
+					"right": {
+					  "func": "$lt",
+					  "left": {
+						"func": "$ident",
+						"left": "b"
+					  },
+					  "right": {
+						"func": "$number",
+						"left": 2097152
+					  }
+					}
+				  },
+				  "right": {
+					"func": "$eq",
+					"left": {
+					  "func": "$ident",
+					  "left": "c"
+					},
+					"right": {
+					  "func": "$number",
+					  "left": 3221225472
+					}
+				  }
+				},
+				"right": {
+				  "func": "$ne",
+				  "left": {
+					"func": "$ident",
+					"left": "d"
+				  },
+				  "right": {
+					"func": "$number",
+					"left": 4398046511104
+				  }
+				}
+			  }`,
+		),
 	)
 })
 
