@@ -22,6 +22,7 @@ The TSL language grammar is human readable and similar to SQL syntax.
 -  [Cool logo](#cool-logo)
 -  [Install](#install)
 -  [Syntax examples](#syntax-examples)
+-  [Types](#types)
 -  [Code examples](#code-examples)
 -  [CLI tools](#cli-tools)
 -  [Grammar](#grammar)
@@ -31,6 +32,8 @@ The TSL language grammar is human readable and similar to SQL syntax.
 You can use the TSL package to add uniform and powerful filtering to your RESTful API or GraphQL services, implement brewing-recipe searches on your smart tea brewer, or even make your own memory based "SQL like" server as we do in our `tsl_mem` CLI example.
 
 ([more examples](/v5/cmd/))
+
+[kubesql](https://github.com/yaacov/kubesql) uses TSL to select Kubernetes resources based on the value of one or more resource fields.
 
 Here is our `tsl_mem`CLI tool ([code](/v5/cmd/tsl_mem)), it's an in-memory search engine, it is using the TSL package to filter through an in-memory array of books using "SQL like" `tsl phrases`:
 
@@ -196,6 +199,7 @@ This TSL phrase:
 ```
 
 Will be parsed into this TSL tree:
+
 ![TSL](/img/example_d.png?raw=true "example tree")
 
 #### SI units
@@ -207,6 +211,7 @@ This TSL phrase:
 ```
 
 Will be parsed into this TSL tree:
+
 ![TSL](/img/example_e.png?raw=true "example tree")
 
 #### Identifier escaping
@@ -225,6 +230,28 @@ Images created using the `tsl_parser` CLI example and Graphviz's `dot` utility:
 $ ./tsl_parser -i "name like '%joe%' and (city = 'paris' or city = 'milan')" -o dot > file.dot
 dot file.dot -Tpng > image.png
 ```
+
+## Types
+
+#### Booleans
+
+```  sql
+supported = true
+```
+
+Will be parsed into this TSL tree:
+
+![TSL](/img/example_g.png?raw=true "example tree")
+
+#### Dates (RFC3339)
+
+```  sql
+date = 2020-01-01T20:00:00Z
+```
+
+Will be parsed into this TSL tree:
+
+![TSL](/img/example_g.png?raw=true "example tree")
 
 ## Code examples
 
