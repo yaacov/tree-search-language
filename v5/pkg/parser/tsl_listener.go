@@ -71,6 +71,9 @@ type TSLListener interface {
 	// EnterBooleanLiteral is called when entering the BooleanLiteral production.
 	EnterBooleanLiteral(c *BooleanLiteralContext)
 
+	// EnterDateLiteral is called when entering the DateLiteral production.
+	EnterDateLiteral(c *DateLiteralContext)
+
 	// EnterLiteralOrMath is called when entering the literalOrMath production.
 	EnterLiteralOrMath(c *LiteralOrMathContext)
 
@@ -166,6 +169,9 @@ type TSLListener interface {
 
 	// ExitBooleanLiteral is called when exiting the BooleanLiteral production.
 	ExitBooleanLiteral(c *BooleanLiteralContext)
+
+	// ExitDateLiteral is called when exiting the DateLiteral production.
+	ExitDateLiteral(c *DateLiteralContext)
 
 	// ExitLiteralOrMath is called when exiting the literalOrMath production.
 	ExitLiteralOrMath(c *LiteralOrMathContext)

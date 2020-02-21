@@ -22,6 +22,7 @@ const (
 	StringOp     = "$string"  // Empty operator for strings
 	NumberOp     = "$number"  // Empty operator for numbers
 	BooleanOp    = "$boolean" // Empty operator for booleans
+	DateOp       = "$date"    // Empty operator for dates
 	NullOp       = "$null"    // Empty operator for nulls
 	LtOp         = "$lt"
 	LteOp        = "$lte"

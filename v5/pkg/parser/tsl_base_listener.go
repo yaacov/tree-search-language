@@ -147,6 +147,12 @@ func (s *BaseTSLListener) EnterBooleanLiteral(ctx *BooleanLiteralContext) {}
 // ExitBooleanLiteral is called when production BooleanLiteral is exited.
 func (s *BaseTSLListener) ExitBooleanLiteral(ctx *BooleanLiteralContext) {}
 
+// EnterDateLiteral is called when production DateLiteral is entered.
+func (s *BaseTSLListener) EnterDateLiteral(ctx *DateLiteralContext) {}
+
+// ExitDateLiteral is called when production DateLiteral is exited.
+func (s *BaseTSLListener) ExitDateLiteral(ctx *DateLiteralContext) {}
+
 // EnterLiteralOrMath is called when production literalOrMath is entered.
 func (s *BaseTSLListener) EnterLiteralOrMath(ctx *LiteralOrMathContext) {}
 
