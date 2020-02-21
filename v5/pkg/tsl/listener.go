@@ -20,6 +20,7 @@ import (
 	"math"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/yaacov/tree-search-language/v5/pkg/parser"
 )
@@ -120,6 +121,17 @@ func (l *Listener) ExitBooleanLiteral(c *parser.BooleanLiteralContext) {
 	s := strings.ToUpper(c.GetRuleContext().GetText())
 
 	l.exitLiteral(BooleanOp, s == "TRUE")
+}
+
+// ExitDateLiteral is called when exiting the DateLiteral production.
+func (l *Listener) ExitDateLiteral(c *parser.DateLiteralContext) {
+	s := c.GetRuleContext().GetText()
+	t, err := time.Parse(time.RFC3339, s)
+	if err != nil {
+		l.Errs = append(l.Errs, err)
+	}
+
+	l.exitLiteral(DateOp, t)
 }
 
 // ExitMulOps is called when production multiply op is exited.

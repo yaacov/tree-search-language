@@ -19,6 +19,7 @@ package sql
 import (
 	"fmt"
 	"strconv"
+	"time"
 
 	sq "github.com/Masterminds/squirrel"
 
@@ -174,6 +175,9 @@ func Walk(n tsl.Node) (s sq.Sqlizer, err error) {
 		s = sq.Expr(n.Left.(string))
 	case tsl.NumberOp:
 		f := strconv.FormatFloat(n.Left.(float64), 'g', -1, 64)
+		s = sq.Expr(f)
+	case tsl.DateOp:
+		f := n.Left.(time.Time).Format(time.RFC3339)
 		s = sq.Expr(f)
 	case tsl.StringOp:
 		s = sq.Expr(n.Left.(string))

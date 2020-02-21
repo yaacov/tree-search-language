@@ -47,6 +47,7 @@ literalValue
   : signedNumber         # NumberLiteral
   | stringValue          # StringLiteral
   | ( K_TRUE | K_FALSE ) # BooleanLiteral
+  | RFC3339              # DateLiteral
   ;
 
 literalOrMath
@@ -74,6 +75,21 @@ stringValue
 keyNot
  : K_NOT
  ;
+
+// RFC3339
+YEAR : DIGIT DIGIT DIGIT DIGIT;
+MONTH : DIGIT DIGIT;
+DAY  : DIGIT DIGIT;
+HOUR  : DIGIT DIGIT;
+MINUTE : DIGIT DIGIT;
+SEC: DIGIT DIGIT;
+SEC_FRAC : '.' DIGIT+;
+
+DATE : YEAR '-' MONTH '-' DAY;
+TIME:  HOUR ':' MINUTE ':' SEC SEC_FRAC?;
+TIME_OFFSET : ('+' | '-') HOUR ':' MINUTE;
+
+RFC3339: DATE 'T' TIME ('Z' | TIME_OFFSET);
 
 // Words
 K_LIKE : L I K E;
