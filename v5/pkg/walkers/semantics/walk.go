@@ -481,23 +481,43 @@ func handleStringArrayOp(n tsl.Node, eval EvalFunc) (bool, error) {
 
 	switch n.Func {
 	case tsl.BetweenOp:
-		begin := right[0].Left.(string)
-		end := right[1].Left.(string)
+		begin, ok := right[0].Left.(string)
+		if !ok {
+			return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+		}
+		end, ok := right[1].Left.(string)
+		if !ok {
+			return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+		}
 		return left >= begin && left < end, nil
 	case tsl.NotBetweenOp:
-		begin := right[0].Left.(string)
-		end := right[1].Left.(string)
+		begin, ok := right[0].Left.(string)
+		if !ok {
+			return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+		}
+		end, ok := right[1].Left.(string)
+		if !ok {
+			return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+		}
 		return left < begin || left >= end, nil
 	case tsl.InOp:
 		b := false
 		for _, node := range right {
-			b = b || left == node.Left.(string)
+			s, ok := node.Left.(string)
+			if !ok {
+				return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+			}
+			b = b || left == s
 		}
 		return b, nil
 	case tsl.NotInOp:
 		b := true
 		for _, node := range right {
-			b = b && left != node.Left.(string)
+			s, ok := node.Left.(string)
+			if !ok {
+				return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+			}
+			b = b && left != s
 		}
 		return b, nil
 	}
@@ -514,23 +534,43 @@ func handleNumberArrayOp(n tsl.Node, eval EvalFunc) (bool, error) {
 
 	switch n.Func {
 	case tsl.BetweenOp:
-		begin := right[0].Left.(float64)
-		end := right[1].Left.(float64)
+		begin, ok := right[0].Left.(float64)
+		if !ok {
+			return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+		}
+		end, ok := right[1].Left.(float64)
+		if !ok {
+			return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+		}
 		return left >= begin && left < end, nil
 	case tsl.NotBetweenOp:
-		begin := right[0].Left.(float64)
-		end := right[1].Left.(float64)
+		begin, ok := right[0].Left.(float64)
+		if !ok {
+			return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+		}
+		end, ok := right[1].Left.(float64)
+		if !ok {
+			return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+		}
 		return left < begin || left >= end, nil
 	case tsl.InOp:
 		b := false
 		for _, node := range right {
-			b = b || left == node.Left.(float64)
+			f, ok := node.Left.(float64)
+			if !ok {
+				return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+			}
+			b = b || left == f
 		}
 		return b, nil
 	case tsl.NotInOp:
 		b := true
 		for _, node := range right {
-			b = b && left != node.Left.(float64)
+			f, ok := node.Left.(float64)
+			if !ok {
+				return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+			}
+			b = b && left != f
 		}
 		return b, nil
 	}
@@ -547,24 +587,43 @@ func handleDateArrayOp(n tsl.Node, eval EvalFunc) (bool, error) {
 
 	switch n.Func {
 	case tsl.BetweenOp:
-		begin := right[0].Left.(time.Time)
-		end := right[1].Left.(time.Time)
-
+		begin, ok := right[0].Left.(time.Time)
+		if !ok {
+			return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+		}
+		end, ok := right[1].Left.(time.Time)
+		if !ok {
+			return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+		}
 		return !left.Before(begin) && left.Before(end), nil
 	case tsl.NotBetweenOp:
-		begin := right[0].Left.(time.Time)
-		end := right[1].Left.(time.Time)
+		begin, ok := right[0].Left.(time.Time)
+		if !ok {
+			return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+		}
+		end, ok := right[1].Left.(time.Time)
+		if !ok {
+			return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+		}
 		return left.Before(begin) || !left.Before(end), nil
 	case tsl.InOp:
 		b := false
 		for _, node := range right {
-			b = b || left == node.Left.(time.Time)
+			t, ok := node.Left.(time.Time)
+			if !ok {
+				return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+			}
+			b = b || left == t
 		}
 		return b, nil
 	case tsl.NotInOp:
 		b := true
 		for _, node := range right {
-			b = b && left != node.Left.(time.Time)
+			t, ok := node.Left.(time.Time)
+			if !ok {
+				return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+			}
+			b = b && left != t
 		}
 		return b, nil
 	}
