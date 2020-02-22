@@ -65,7 +65,7 @@ func Walk(n tsl.Node, checkColumnName func(string) (string, error)) (tsl.Node, e
 		}
 
 		return n, err
-	case tsl.StringOp, tsl.NumberOp:
+	case tsl.StringOp, tsl.NumberOp, tsl.BooleanOp, tsl.DateOp:
 		// This are our leafs.
 		return n, nil
 	default:
