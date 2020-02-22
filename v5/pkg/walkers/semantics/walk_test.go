@@ -28,7 +28,7 @@ import (
 
 func TestWalk(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Walk")
+	RunSpecs(t, "Semantic walker")
 }
 
 var _ = Describe("Walk", func() {
@@ -82,7 +82,7 @@ var _ = Describe("Walk", func() {
 
 		// dates
 		Entry("dates", "date = 2020-01-01T00:00:00Z", true),
-		Entry("dates", "date < 2020-01-02T00:00:00Z", false),
+		Entry("dates", "date > 2020-01-02T00:00:00Z", false),
 		Entry("dates", "date between 2019-12-30T00:00:00Z and 2020-01-02T00:00:00Z", true),
 	)
 })

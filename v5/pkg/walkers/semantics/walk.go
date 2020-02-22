@@ -443,13 +443,13 @@ func handleDateOp(n tsl.Node, eval EvalFunc) (bool, error) {
 	case tsl.NotEqOp:
 		return left != right, nil
 	case tsl.LtOp:
-		return right.Before(left), nil
+		return right.After(left), nil
 	case tsl.LteOp:
-		return !right.After(left), nil
+		return !right.Before(left), nil
 	case tsl.GtOp:
-		return left.Before(right), nil
+		return left.After(right), nil
 	case tsl.GteOp:
-		return !left.After(right), nil
+		return !left.Before(right), nil
 	}
 
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
