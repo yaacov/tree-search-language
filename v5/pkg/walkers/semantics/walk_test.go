@@ -84,5 +84,10 @@ var _ = Describe("Walk", func() {
 		Entry("dates", "date = 2020-01-01T00:00:00Z", true),
 		Entry("dates", "date > 2020-01-02T00:00:00Z", false),
 		Entry("dates", "date between 2019-12-30T00:00:00Z and 2020-01-02T00:00:00Z", true),
+
+		// short dates
+		Entry("dates", "date = 2020-01-01", true),
+		Entry("dates", "date > 2020-01-02", false),
+		Entry("dates", "date between 2019-12-30 and 2020-01-02", true),
 	)
 })
