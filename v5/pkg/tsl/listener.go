@@ -187,7 +187,7 @@ func (l *Listener) ExitStringOps(c *parser.StringOpsContext) {
 	right, left := l.pop(), l.pop()
 
 	// Check right op is a string.
-	if right.Func != StringOp {
+	if right.Func != StringOp && right.Func != IdentOp {
 		l.Errs = append(l.Errs, UnexpectedLiteralError{ExpectedType: "string", Literal: right.Left})
 		return
 	}
@@ -221,7 +221,7 @@ func (l *Listener) ExitLike(c *parser.LikeContext) {
 	}
 
 	// Check right op is a string.
-	if right.Func != StringOp {
+	if right.Func != StringOp && right.Func != IdentOp {
 		l.Errs = append(l.Errs, UnexpectedLiteralError{ExpectedType: "string", Literal: right.Left})
 		return
 	}
