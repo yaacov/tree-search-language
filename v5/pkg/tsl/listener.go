@@ -134,8 +134,8 @@ func (l *Listener) ExitDateLiteral(c *parser.DateLiteralContext) {
 	l.exitLiteral(DateOp, t)
 }
 
-// ExitShortDateLiteral is called when exiting the DateLiteral production.
-func (l *Listener) ExitShortDateLiteral(c *parser.DateLiteralContext) {
+// ExitShortDateLiteral is called when exiting the ShortDateLiteral production.
+func (l *Listener) ExitShortDateLiteral(c *parser.ShortDateLiteralContext) {
 	s := c.GetRuleContext().GetText()
 	t, err := time.Parse("2006-01-02", s)
 	if err != nil {
