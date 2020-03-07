@@ -153,6 +153,12 @@ func (s *BaseTSLListener) EnterDateLiteral(ctx *DateLiteralContext) {}
 // ExitDateLiteral is called when production DateLiteral is exited.
 func (s *BaseTSLListener) ExitDateLiteral(ctx *DateLiteralContext) {}
 
+// EnterShortDateLiteral is called when production ShortDateLiteral is entered.
+func (s *BaseTSLListener) EnterShortDateLiteral(ctx *ShortDateLiteralContext) {}
+
+// ExitShortDateLiteral is called when production ShortDateLiteral is exited.
+func (s *BaseTSLListener) ExitShortDateLiteral(ctx *ShortDateLiteralContext) {}
+
 // EnterLiteralOrMath is called when production literalOrMath is entered.
 func (s *BaseTSLListener) EnterLiteralOrMath(ctx *LiteralOrMathContext) {}
 

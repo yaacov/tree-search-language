@@ -48,6 +48,7 @@ literalValue
   | stringValue          # StringLiteral
   | ( K_TRUE | K_FALSE ) # BooleanLiteral
   | RFC3339              # DateLiteral
+  | DATE                 # ShortDateLiteral
   ;
 
 literalOrMath

@@ -74,6 +74,9 @@ type TSLListener interface {
 	// EnterDateLiteral is called when entering the DateLiteral production.
 	EnterDateLiteral(c *DateLiteralContext)
 
+	// EnterShortDateLiteral is called when entering the ShortDateLiteral production.
+	EnterShortDateLiteral(c *ShortDateLiteralContext)
+
 	// EnterLiteralOrMath is called when entering the literalOrMath production.
 	EnterLiteralOrMath(c *LiteralOrMathContext)
 
@@ -172,6 +175,9 @@ type TSLListener interface {
 
 	// ExitDateLiteral is called when exiting the DateLiteral production.
 	ExitDateLiteral(c *DateLiteralContext)
+
+	// ExitShortDateLiteral is called when exiting the ShortDateLiteral production.
+	ExitShortDateLiteral(c *ShortDateLiteralContext)
 
 	// ExitLiteralOrMath is called when exiting the literalOrMath production.
 	ExitLiteralOrMath(c *LiteralOrMathContext)
