@@ -33,7 +33,7 @@ You can use the TSL package to add uniform and powerful filtering to your RESTfu
 
 ([more examples](/v5/cmd/))
 
-[kubesql](https://github.com/yaacov/kubesql) uses TSL to select Kubernetes resources based on the value of one or more resource fields.
+[kubesql](https://github.com/yaacov/kubectl-sql) uses TSL to select Kubernetes resources based on the value of one or more resource fields.
 
 Here is our `tsl_mem`CLI tool ([code](/v5/cmd/tsl_mem)), it's an in-memory search engine, it is using the TSL package to filter through an in-memory array of books using "SQL like" `tsl phrases`:
 
