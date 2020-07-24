@@ -470,7 +470,8 @@ func handleBooleanOp(n tsl.Node, eval EvalFunc) (bool, error) {
 
 	switch r.Func {
 	case tsl.StringOp:
-		right = r.Left.(string)[0] == 't' || r.Left.(string)[0] == 'T'
+		right = len(r.Left.(string)) == 1 && r.Left.(string)[0] == 't' ||
+			len(r.Left.(string)) == 4 && r.Left.(string)[0] == 'T'
 	case tsl.NumberOp:
 		right = r.Left.(float64) != 0
 	case tsl.BooleanOp:
