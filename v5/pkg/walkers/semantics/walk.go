@@ -168,7 +168,7 @@ func runSemantics(n tsl.Node, eval EvalFunc) (bool, error) {
 			return false, nil
 		}
 
-		return false, tsl.UnexpectedLiteralError{Literal: fmt.Sprintf("%v hello", r.Left)}
+		return false, tsl.UnexpectedLiteralError{Literal: fmt.Sprintf("%v", r.Left)}
 	case tsl.IsNotNilOp:
 		return l.Func != tsl.NullOp, nil
 	case tsl.IsNilOp:
