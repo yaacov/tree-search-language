@@ -45,6 +45,7 @@ var columnNamesMap = map[string]string{
 	"author":      "author",
 	"spec.pages":  "pages",
 	"spec.rating": "rating",
+	"on_loan":     "onloan",
 }
 
 // checkColumnName checks if a coulumn name is valid in user space replace it
@@ -112,6 +113,7 @@ func main() {
 			&elem.Author,
 			&elem.Spec.Pages,
 			&elem.Spec.Rating,
+			&elem.OnLoan,
 		)
 		check(err)
 

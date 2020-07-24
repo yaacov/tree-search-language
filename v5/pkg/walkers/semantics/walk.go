@@ -157,12 +157,18 @@ func runSemantics(n tsl.Node, eval EvalFunc) (bool, error) {
 			if r.Func == tsl.BooleanOp {
 				return handleBooleanOp(n, eval)
 			}
+			if r.Func == tsl.StringOp {
+				return handleBooleanOp(n, eval)
+			}
+			if r.Func == tsl.NumberOp {
+				return handleBooleanOp(n, eval)
+			}
 		case tsl.NullOp:
 			// Any comparison operation on a null element is false.
 			return false, nil
 		}
 
-		return false, tsl.UnexpectedLiteralError{Literal: fmt.Sprintf("%v", r.Left)}
+		return false, tsl.UnexpectedLiteralError{Literal: fmt.Sprintf("%v hello", r.Left)}
 	case tsl.IsNotNilOp:
 		return l.Func != tsl.NullOp, nil
 	case tsl.IsNilOp:
@@ -460,7 +466,18 @@ func handleBooleanOp(n tsl.Node, eval EvalFunc) (bool, error) {
 	r := n.Right.(tsl.Node)
 
 	left := l.Left.(bool)
-	right := r.Left.(bool)
+	right := false
+
+	switch r.Func {
+	case tsl.StringOp:
+		right = r.Left.(string)[0] == 't' || r.Left.(string)[0] == 'T'
+	case tsl.NumberOp:
+		right = r.Left.(float64) != 0
+	case tsl.BooleanOp:
+		right = r.Left.(bool)
+	default:
+		return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+	}
 
 	switch n.Func {
 	case tsl.EqOp:

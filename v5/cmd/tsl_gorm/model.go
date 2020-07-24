@@ -31,6 +31,7 @@ type Book struct {
 	Author string
 	Pages  uint
 	Rating uint
+	OnLoan bool
 }
 
 func connect(ctx context.Context, url string) (tx *gorm.DB, err error) {
@@ -57,6 +58,7 @@ func prepareCollection(tx *gorm.DB) (err error) {
 			Author: b.(model.Book).Author,
 			Pages:  b.(model.Book).Spec.Pages,
 			Rating: b.(model.Book).Spec.Rating,
+			OnLoan: b.(model.Book).OnLoan,
 		})
 
 		if tx.Error != nil {

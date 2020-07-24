@@ -38,6 +38,7 @@ var columnNamesMap = map[string]string{
 	"author":      "author",
 	"spec.pages":  "spec.pages",
 	"spec.rating": "spec.rating",
+	"on_loan":     "onloan",
 }
 
 // checkColumnName checks if a coulumn name is valid in user space replace it
@@ -65,6 +66,7 @@ func prepareCollection() (err error) {
 		newBook := Book{
 			"title":  b.(model.Book).Title,
 			"author": b.(model.Book).Author,
+			"onloan": b.(model.Book).OnLoan,
 		}
 
 		// Add optional parameters.

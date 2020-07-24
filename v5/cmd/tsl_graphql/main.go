@@ -44,6 +44,7 @@ var columnNamesMap = map[string]string{
 	"author":      "author",
 	"spec.pages":  "pages",
 	"spec.rating": "rating",
+	"on_loan":     "onloan",
 }
 
 var bookSpecType = graphql.NewObject(graphql.ObjectConfig{
@@ -69,6 +70,9 @@ var bookType = graphql.NewObject(graphql.ObjectConfig{
 		},
 		"spec": &graphql.Field{
 			Type: bookSpecType,
+		},
+		"onloan": &graphql.Field{
+			Type: graphql.Boolean,
 		},
 	},
 })
@@ -139,6 +143,7 @@ func sqlQuery(ctx context.Context, filter string) (books []model.Book, err error
 			&elem.Author,
 			&elem.Spec.Pages,
 			&elem.Spec.Rating,
+			&elem.OnLoan,
 		)
 		if err != nil {
 			return nil, err

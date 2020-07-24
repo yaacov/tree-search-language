@@ -27,16 +27,17 @@ type Book struct {
 	Title  string    `bson:"title,omitempty" json:"title,omitempty"`
 	Author string    `bson:"author,omitempty" json:"author,omitempty"`
 	Spec   BookSpecs `bson:"spec,omitempty" json:"spec,omitempty"`
+	OnLoan bool      `bson:"on-loan" json:"on-loan"`
 }
 
 // Books are the demo list of books.
 var Books = []interface{}{
-	Book{Title: "Book", Author: "Joe", Spec: BookSpecs{Pages: 100, Rating: 4}},
-	Book{Title: "Other Book", Author: "Jane", Spec: BookSpecs{Pages: 200, Rating: 3}},
-	Book{Title: "Some Book", Author: "Jane", Spec: BookSpecs{Pages: 50, Rating: 5}},
-	Book{Title: "Some Other Book", Author: "Jane", Spec: BookSpecs{Pages: 50}},
-	Book{Title: "Good Book", Author: "Joe", Spec: BookSpecs{Pages: 150, Rating: 4}},
-	Book{Title: "Some Great Book", Author: "Jane", Spec: BookSpecs{Pages: 550, Rating: 2}},
-	Book{Title: "Other Great Book", Author: "Jane", Spec: BookSpecs{Pages: 250}},
-	Book{Title: "My Big Book", Author: "Joe", Spec: BookSpecs{Pages: 15, Rating: 5}},
+	Book{Title: "Book", Author: "Joe", Spec: BookSpecs{Pages: 100, Rating: 4}, OnLoan: true},
+	Book{Title: "Other Book", Author: "Jane", Spec: BookSpecs{Pages: 200, Rating: 3}, OnLoan: true},
+	Book{Title: "Some Book", Author: "Jane", Spec: BookSpecs{Pages: 50, Rating: 5}, OnLoan: true},
+	Book{Title: "Some Other Book", Author: "Jane", Spec: BookSpecs{Pages: 50}, OnLoan: false},
+	Book{Title: "Good Book", Author: "Joe", Spec: BookSpecs{Pages: 150, Rating: 4}, OnLoan: true},
+	Book{Title: "Some Great Book", Author: "Jane", Spec: BookSpecs{Pages: 550, Rating: 2}, OnLoan: true},
+	Book{Title: "Other Great Book", Author: "Jane", Spec: BookSpecs{Pages: 250}, OnLoan: false},
+	Book{Title: "My Big Book", Author: "Joe", Spec: BookSpecs{Pages: 15, Rating: 5}, OnLoan: false},
 }

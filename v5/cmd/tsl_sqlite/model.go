@@ -30,7 +30,8 @@ create table if not exists books (
 	title text,
 	author text,
 	pages integer,
-	rating integer
+	rating integer,
+	onloan boolean
 );
 delete from books;
 `
@@ -52,7 +53,7 @@ func prepareCollection(ctx context.Context, tx *sql.Tx) (err error) {
 	check(err)
 
 	// Insert new books into the table.
-	stmt, err := tx.PrepareContext(ctx, "insert into books(title, author, pages, rating) values(?, ?, ?, ?)")
+	stmt, err := tx.PrepareContext(ctx, "insert into books(title, author, pages, rating, onloan) values(?, ?, ?, ?, ?)")
 	check(err)
 
 	defer stmt.Close()
@@ -62,7 +63,8 @@ func prepareCollection(ctx context.Context, tx *sql.Tx) (err error) {
 			b.(model.Book).Title,
 			b.(model.Book).Author,
 			b.(model.Book).Spec.Pages,
-			b.(model.Book).Spec.Rating)
+			b.(model.Book).Spec.Rating,
+			b.(model.Book).OnLoan)
 
 		check(err)
 	}
