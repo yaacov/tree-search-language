@@ -132,6 +132,11 @@ func runSemantics(n tsl.Node, eval EvalFunc) (bool, error) {
 		}
 
 		switch l.Func {
+		case tsl.ArrayOp:
+			// This is a case of "has-many-table.fld IN (...)"
+			if r.Func == tsl.ArrayOp {
+				return handleStringArraysOp(n, eval)
+			}
 		case tsl.StringOp:
 			if r.Func == tsl.StringOp {
 				return handleStringOp(n, eval)
@@ -209,6 +214,11 @@ func evalIdentNode(node tsl.Node, eval EvalFunc) (tsl.Node, error) {
 	n := tsl.Node{}
 
 	switch v := _v.(type) {
+	case []string:
+		n = tsl.Node{
+			Func: tsl.ArrayOp,
+			Left: v,
+		}
 	case string:
 		n = tsl.Node{
 			Func: tsl.StringOp,
@@ -485,6 +495,49 @@ func handleBooleanOp(n tsl.Node, eval EvalFunc) (bool, error) {
 		return left == right, nil
 	case tsl.NotEqOp:
 		return left != right, nil
+	}
+
+	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+}
+
+// contains tells whether a contains x performing linear search
+func contains(a []string, x string) bool {
+	for _, n := range a {
+		if x == n {
+			return true
+		}
+	}
+	return false
+}
+
+func handleStringArraysOp(n tsl.Node, eval EvalFunc) (bool, error) {
+	l := n.Left.(tsl.Node)
+	r := n.Right.(tsl.Node)
+
+	left := l.Left.([]string)
+	right := r.Right.([]tsl.Node)
+
+	switch n.Func {
+	case tsl.InOp:
+		b := false
+		for _, node := range right {
+			s, ok := node.Left.(string)
+			if !ok {
+				return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+			}
+			b = b || contains(left, s)
+		}
+		return b, nil
+	case tsl.NotInOp:
+		b := true
+		for _, node := range right {
+			s, ok := node.Left.(string)
+			if !ok {
+				return false, tsl.UnexpectedLiteralError{Literal: n.Func}
+			}
+			b = b && !contains(left, s)
+		}
+		return b, nil
 	}
 
 	return false, tsl.UnexpectedLiteralError{Literal: n.Func}
