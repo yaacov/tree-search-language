@@ -71,7 +71,7 @@ var _ = Describe("Walk", func() {
 		Entry("not ilike GOOD", "title not ilike '%GOOD%'", false),
 		Entry("not ilike BAD", "title not ilike '%BAD%'", true),
 
-		// Two identififers
+		// Two identifiers
 		Entry("more pages", "spec.pages <= spec.rating", false),
 		Entry("add pages to number", "spec.pages = (spec.rating + 9)", true),
 		Entry("multiply pages with number", "spec.pages < (spec.rating * 3)", true),
@@ -90,4 +90,59 @@ var _ = Describe("Walk", func() {
 		Entry("dates", "date > 2020-01-02", false),
 		Entry("dates", "date between 2019-12-30 and 2020-01-02", true),
 	)
+})
+
+func evalFactory(record map[string]interface{}) EvalFunc {
+	return func(name string) (value interface{}, ok bool) {
+		value, ok = record[name]
+		return
+	}
+}
+
+var _ = Describe("Walk has-many relationship", func() {
+	// Subscriptions has many ReservedResource
+	// ReservedResource has string field ResourceName
+	text := "subscription.managed = 'true' and subscription.status not in ('Deprovisioned','Deleted') and reserved_resource.resource_name in ('resourceA', 'resourceB')\n"
+
+	// Parse the text:
+	tree, err := tsl.ParseTSL(text)
+	Expect(err).ToNot(HaveOccurred())
+
+	subscriptionWithResourceAB := map[string]interface{}{
+		"subscription.managed": true,
+		"subscription.status":  "Active",
+		"reserved_resource.resource_name": []string{
+			"resourceA",
+			"resourceB",
+		},
+	}
+	subscriptionWithResourceB := map[string]interface{}{
+		"subscription.managed": true,
+		"subscription.status":  "Active",
+		"reserved_resource.resource_name": []string{
+			"resourceB",
+		},
+	}
+	subscriptionWithoutResourceAB := map[string]interface{}{
+		"subscription.managed": true,
+		"subscription.status":  "Active",
+		"reserved_resource.resource_name": []string{
+			"resourceC",
+		},
+	}
+
+	eval := evalFactory(subscriptionWithResourceAB)
+	actual, err := Walk(tree, eval)
+	Expect(err).ToNot(HaveOccurred())
+	Expect(actual).To(Equal(true))
+
+	eval = evalFactory(subscriptionWithResourceB)
+	actual, err = Walk(tree, eval)
+	Expect(err).ToNot(HaveOccurred())
+	Expect(actual).To(Equal(true))
+
+	eval = evalFactory(subscriptionWithoutResourceAB)
+	actual, err = Walk(tree, eval)
+	Expect(err).ToNot(HaveOccurred())
+	Expect(actual).To(Equal(false))
 })
