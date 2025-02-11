@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/yaacov/tsl/pkg/tsl"
+	"github.com/yaacov/tree-search-language/v6/pkg/tsl"
 )
 
 // ASTPrinter handles the formatted output of TSL abstract syntax trees
@@ -20,6 +20,10 @@ func NewASTPrinter() *ASTPrinter {
 
 // Print outputs a node and its children with proper indentation
 func (p *ASTPrinter) Print(node *tsl.TSLNode, level int) {
+	if node == nil {
+		return
+	}
+
 	t := node.Type()
 
 	switch t {
@@ -36,7 +40,7 @@ func (p *ASTPrinter) Print(node *tsl.TSLNode, level int) {
 }
 
 func (p *ASTPrinter) printBinaryOp(node *tsl.TSLNode, level int) {
-	v := node.Value().(tsl.ExpressionOp)
+	v := node.Value().(tsl.TSLExpressionOp)
 
 	p.printIndented(level, "[%s]\n", v.Operator.String())
 	p.Print(v.Left, level+1)
@@ -44,7 +48,7 @@ func (p *ASTPrinter) printBinaryOp(node *tsl.TSLNode, level int) {
 }
 
 func (p *ASTPrinter) printUnaryOp(node *tsl.TSLNode, level int) {
-	v := node.Value().(tsl.ExpressionOp)
+	v := node.Value().(tsl.TSLExpressionOp)
 
 	p.printIndented(level, "[%s]\n", v.Operator.String())
 	if v.Right != nil {
@@ -53,7 +57,7 @@ func (p *ASTPrinter) printUnaryOp(node *tsl.TSLNode, level int) {
 }
 
 func (p *ASTPrinter) printArray(node *tsl.TSLNode, level int) {
-	v := node.Value().(tsl.ArrayLiteral)
+	v := node.Value().(tsl.TSLArrayLiteral)
 
 	p.printIndented(level, "[%s]:\n", node.Type().String())
 	for _, elem := range v.Values {
