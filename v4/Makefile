@@ -14,44 +14,41 @@
 # limitations under the License.
 #
 
-# Major version directory
-major:=v5
-
 # Details of the version of 'antlr' that will be downloaded to process the
 # grammar and generate the parser:
 antlr_url:=https://www.antlr.org/download/antlr-4.7.1-complete.jar
 antlr_sum:=f41dce7441d523baf9769cb7756a00f27a4b67e55aacab44525541f62d7f6688
 
-tsl_parser_src := $(wildcard ./$(major)/cmd/tsl_parser/*.go)
-tsl_sqlite_src := $(wildcard ./$(major)/cmd/tsl_sqlite/*.go)
-tsl_gorm_src := $(wildcard ./$(major)/cmd/tsl_gorm/*.go)
-tsl_mongo_src := $(wildcard ./$(major)/cmd/tsl_mongo/*.go)
-tsl_graphql_src := $(wildcard ./$(major)/cmd/tsl_graphql/*.go)
-tsl_mem_src := $(wildcard ./$(major)/cmd/tsl_mem/*.go)
+tsl_parser_src := $(wildcard ./cmd/tsl_parser/*.go)
+tsl_sqlite_src := $(wildcard ./cmd/tsl_sqlite/*.go)
+tsl_gorm_src := $(wildcard ./cmd/tsl_gorm/*.go)
+tsl_mongo_src := $(wildcard ./cmd/tsl_mongo/*.go)
+tsl_graphql_src := $(wildcard ./cmd/tsl_graphql/*.go)
+tsl_mem_src := $(wildcard ./cmd/tsl_mem/*.go)
 
 all: fmt tsl_parser tsl_sqlite tsl_gorm tsl_mongo tsl_graphql tsl_mem
 
 tsl_parser: $(tsl_parser_src)
-	cd ./$(major) && go build -o ../ ./cmd/tsl_parser
+	go build ./cmd/tsl_parser
 
 tsl_sqlite: $(tsl_sqlite_src)
-	cd ./$(major) && go build -o ../ ./cmd/tsl_sqlite
+	go build ./cmd/tsl_sqlite
 
 tsl_gorm: $(tsl_gorm_src)
-	cd ./$(major) && go build -o ../ ./cmd/tsl_gorm
+	go build ./cmd/tsl_gorm
 
 tsl_mongo: $(tsl_mongo_src)
-	cd ./$(major) && go build -o ../ ./cmd/tsl_mongo
+	go build ./cmd/tsl_mongo
 
 tsl_graphql: $(tsl_graphql_src)
-	cd ./$(major) && go build -o ../ ./cmd/tsl_graphql
+	go build ./cmd/tsl_graphql
 
 tsl_mem: $(tsl_mem_src)
-	cd ./$(major) && go build -o ../ ./cmd/tsl_mem
+	go build ./cmd/tsl_mem
 
 .PHONY: lint
 lint:
-	cd ./$(major) && golangci-lint \
+	golangci-lint \
 		run \
 		--skip-dirs=/pkg/parser \
 		--no-config \
@@ -77,7 +74,7 @@ lint:
 
 .PHONY: fmt
 fmt:
-	cd ./$(major) && gofmt -s -l -w ./pkg/ ./cmd/
+	gofmt -s -l -w ./pkg/ ./cmd/
 
 .PHONY: clean
 clean:
@@ -91,11 +88,11 @@ clean:
 
 .PHONY: test
 test:
-	cd ./$(major) && ginkgo -r ./cmd ./pkg
+	ginkgo -r ./cmd ./pkg
 
 .PHONY: generate
 generate: antlr
-	cd ./$(major) && java -jar ../antlr -Dlanguage=Go -o ./pkg/parser ./TSL.g4
+	java -jar ./antlr -Dlanguage=Go -o ./pkg/parser ./TSL.g4
 
 antlr:
 	wget --progress=dot:giga --output-document="$@" "$(antlr_url)"

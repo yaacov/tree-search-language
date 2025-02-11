@@ -102,14 +102,14 @@ Awesome logo image by [gophers...](https://github.com/egonelbre/gophers).
 
 ``` bash
 $ go version
-go version go1.11.2 linux/amd64
+go version go1.23.4 linux/amd64
 ```
 
 Clone the TSL `git` repository, and run `make`:
 
 ``` bash
 git clone git@github.com:yaacov/tree-search-language.git
-cd tree-search-language
+cd tree-search-language/v5
 make
 ```
 
