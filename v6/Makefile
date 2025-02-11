@@ -14,11 +14,13 @@ GO_TEST_COVERAGE_FLAGS = -coverprofile=coverage.out
 # Directories
 #------------------------------------------------------------------------------
 GO_CMD = cmd/tsl
+GO_PARSER_CMD = cmd/tsl_parser
 
 #------------------------------------------------------------------------------
 # Output files
 #------------------------------------------------------------------------------
 GO_BIN = tsl
+GO_PARSER_BIN = tsl_parser
 
 #------------------------------------------------------------------------------
 # Phony targets
@@ -26,12 +28,13 @@ GO_BIN = tsl
 .PHONY: all clean help generate lint test test-coverage test-file install-tools
 
 # Default target
-all: generate tsl
+all: generate tsl tsl_parser
 
 help:
 	@echo "Available targets:"
 	@echo "  all           - Build everything (default)"
 	@echo "  tsl           - Build Go CLI tool"
+	@echo "  tsl_parser    - Build TSL parser tool"
 	@echo "  generate      - Run go generate"
 	@echo "  lint          - Run linter checks"
 	@echo "  test          - Run tests"
@@ -65,5 +68,8 @@ test-file:
 tsl: generate
 	$(GO) build -o $(GO_BIN) ./$(GO_CMD)
 
+tsl_parser: generate
+	$(GO) build -o $(GO_PARSER_BIN) ./$(GO_PARSER_CMD)
+
 clean:
-	rm -rf pkg/tsl/tsl_parser.tab.* pkg/tsl/lex.yy.c $(GO_BIN) coverage.out
+	rm -rf pkg/tsl/tsl_parser.tab.* pkg/tsl/lex.yy.c $(GO_BIN) $(GO_PARSER_BIN) coverage.out
