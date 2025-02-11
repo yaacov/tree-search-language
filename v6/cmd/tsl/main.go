@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/yaacov/tsl/pkg/tsl"
+	"github.com/yaacov/tree-search-language/v6/pkg/tsl"
 )
 
 func main() {
@@ -22,7 +22,7 @@ func main() {
 	}
 
 	expression := flag.Arg(0)
-	tree, err := tsl.Parse(expression)
+	tree, err := tsl.ParseTSL(expression)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)

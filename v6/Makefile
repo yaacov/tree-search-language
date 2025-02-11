@@ -4,6 +4,13 @@
 GO = go
 
 #------------------------------------------------------------------------------
+# Tools and flags
+#------------------------------------------------------------------------------
+GOLINT = golangci-lint
+GO_TEST_FLAGS = -v -race
+GO_TEST_COVERAGE_FLAGS = -coverprofile=coverage.out
+
+#------------------------------------------------------------------------------
 # Directories
 #------------------------------------------------------------------------------
 GO_CMD = cmd/tsl
@@ -16,24 +23,47 @@ GO_BIN = tsl
 #------------------------------------------------------------------------------
 # Phony targets
 #------------------------------------------------------------------------------
-.PHONY: all clean help generate
+.PHONY: all clean help generate lint test test-coverage test-file install-tools
 
 # Default target
 all: generate tsl
 
 help:
 	@echo "Available targets:"
-	@echo "  all      - Build everything (default)"
-	@echo "  tsl      - Build Go CLI tool"
-	@echo "  generate - Run go generate"
-	@echo "  clean    - Remove built files and directories"
-	@echo "  help     - Show this help message"
+	@echo "  all           - Build everything (default)"
+	@echo "  tsl           - Build Go CLI tool"
+	@echo "  generate      - Run go generate"
+	@echo "  lint          - Run linter checks"
+	@echo "  test          - Run tests"
+	@echo "  test-coverage - Run tests with coverage report"
+	@echo "  test-file     - Run tests for a specific file"
+	@echo "  clean         - Remove built files and directories"
+	@echo "  help          - Show this help message"
 
 generate:
 	$(GO) generate ./...
+
+lint:
+	$(GOLINT) run ./...
+
+test: tsl
+	$(GO) test $(GO_TEST_FLAGS) ./...
+
+test-coverage: tsl
+	$(GO) test $(GO_TEST_COVERAGE_FLAGS) ./...
+	$(GO) tool cover -html=coverage.out
+
+# Add new target for testing specific file
+test-file:
+	@if [ -z "$(FILE)" ]; then \
+		echo "Please specify a test file with FILE=<path>"; \
+		echo "Example: make test-file FILE=./pkg/walkers/sql/walk_test.go"; \
+		exit 1; \
+	fi
+	$(GO) test $(GO_TEST_FLAGS) $(FILE)
 
 tsl: generate
 	$(GO) build -o $(GO_BIN) ./$(GO_CMD)
 
 clean:
-	rm -rf pkg/tsl/tsl_parser.tab.* pkg/tsl/lex.yy.c $(GO_BIN)
+	rm -rf pkg/tsl/tsl_parser.tab.* pkg/tsl/lex.yy.c $(GO_BIN) coverage.out
