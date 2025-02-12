@@ -39,37 +39,37 @@ type EvalFunc = func(string) (interface{}, bool)
 // when applied to a tsl tree.
 //
 // Example:
-//  	record :=  map[string]string {
-//  		"title":       "A good book",
-//  		"author":      "Joe",
-//  		"spec.pages":  14,
-//  		"spec.rating": 5,
-//  	}
 //
-//  	// evalFactory creates an evaluation function for a data record.
-//  	func evalFactory(r map[string]string) semantics.EvalFunc {
-//  		// Returns:
-//  		// A function (semantics.EvalFunc) that gets a `key` for a record and returns
-//  		// the value of the document for that key.
-//  		// If no value can be found for this `key` in our record, it will return
-//  		// ok = false, if value is found it will return ok = true.
-//  		return func(k string) (interface{}, bool) {
-//  			v, ok := r[k]
-//  			return v, ok
-//  		}
-//  	}
+//	record :=  map[string]string {
+//		"title":       "A good book",
+//		"author":      "Joe",
+//		"spec.pages":  14,
+//		"spec.rating": 5,
+//	}
 //
-//  	// Check if our record complie with our tsl tree.
-//  	//
-//  	// For example:
-//  	//   if our tsl tree represents the tsl phrase "author = 'Joe'"
-//  	//   we will get the boolean value `true` for our record.
-//  	//
-//  	//   if our tsl tree represents the tsl phrase "spec.pages > 50"
-//  	//   we will get the boolean value `false` for our record.
-//  	eval :=  evalFactory(record)
-//  	compliance, err = semantics.Walk(tree, eval)
+//	// evalFactory creates an evaluation function for a data record.
+//	func evalFactory(r map[string]string) semantics.EvalFunc {
+//		// Returns:
+//		// A function (semantics.EvalFunc) that gets a `key` for a record and returns
+//		// the value of the document for that key.
+//		// If no value can be found for this `key` in our record, it will return
+//		// ok = false, if value is found it will return ok = true.
+//		return func(k string) (interface{}, bool) {
+//			v, ok := r[k]
+//			return v, ok
+//		}
+//	}
 //
+//	// Check if our record complie with our tsl tree.
+//	//
+//	// For example:
+//	//   if our tsl tree represents the tsl phrase "author = 'Joe'"
+//	//   we will get the boolean value `true` for our record.
+//	//
+//	//   if our tsl tree represents the tsl phrase "spec.pages > 50"
+//	//   we will get the boolean value `false` for our record.
+//	eval :=  evalFactory(record)
+//	compliance, err = semantics.Walk(tree, eval)
 func Walk(n tsl.Node, eval EvalFunc) (bool, error) {
 	l := n.Left.(tsl.Node)
 

@@ -23,7 +23,6 @@
 
 /data/
 /vendor/
-go.sum
 Gopkg.lock
 
 # Tools automatically downloaded:

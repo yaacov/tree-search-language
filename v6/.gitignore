@@ -6,3 +6,4 @@ pkg/tsl/tsl_parser.tab.h
 
 /tsl
 /tsl_parser
+/tsl_mem
