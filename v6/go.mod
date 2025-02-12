@@ -6,10 +6,12 @@ require (
 	github.com/Masterminds/squirrel v1.5.4
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.36.2
-	github.com/yaacov/tree-search-language/v5 v5.2.12
 )
 
-require github.com/antlr/antlr4 v0.0.0-20200712162734-eb1adaa8a7a6 // indirect
+require (
+	github.com/kr/pretty v0.1.0 // indirect
+	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
