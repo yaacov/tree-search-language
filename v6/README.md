@@ -503,6 +503,13 @@ root -> { XVlB, zgba }
 }
 ```
 
+Convert the .dot file into a PNG image using Graphviz's dot utility:
+
+``` bash
+# Convert .dot file to PNG
+$ dot -Tpng file.dot -o tree.png
+```
+
 ##### tsl_mem
 
 `tsl_mem` is an advanced example showing a custom walker, implementing in-memory sql server.
