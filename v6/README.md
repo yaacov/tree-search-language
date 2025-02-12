@@ -534,7 +534,7 @@ TSL parser is generated using [Flex](https://github.com/westes/flex) and [Bison]
 
 ##### Keywords
 ```
-and or not is null like between in
+and or not is null like ilike between in
 ```
 ##### Operators
 ```
@@ -542,9 +542,11 @@ and or not is null like between in
 ```
 
 ##### Special Literals
-- Date (YYYY-MM-DD)
-- RFC3339 datetime
-- Numbers with SI unit suffixes (Ki, Mi, Gi, Ti, Pi or K, M, G, T, P)
-- String literals (quoted with ', " or `)
-- Identifiers (including dots and escaped with backticks or square brackets)
-- Boolean literals (true/false)
+```
+Date (YYYY-MM-DD)
+RFC3339 datetime
+Numbers with SI unit suffixes (Ki, Mi, Gi, Ti, Pi or K, M, G, T, P)
+String literals (quoted with ', " or `)
+Identifiers (including dots and escaped with backticks or square brackets)
+Boolean literals (true/false)
+```
