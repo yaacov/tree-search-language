@@ -23,7 +23,7 @@ import (
 
 	sq "github.com/Masterminds/squirrel"
 	"github.com/hokaccha/go-prettyjson"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 
 	"github.com/yaacov/tree-search-language/v6/pkg/tsl"
 	"github.com/yaacov/tree-search-language/v6/pkg/walkers/graphviz"

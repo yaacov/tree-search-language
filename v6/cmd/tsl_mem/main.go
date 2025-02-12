@@ -29,7 +29,7 @@ import (
 	"github.com/yaacov/tree-search-language/v6/pkg/tsl"
 	"github.com/yaacov/tree-search-language/v6/pkg/walkers/ident"
 	"github.com/yaacov/tree-search-language/v6/pkg/walkers/semantics"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 func check(err error) {
