@@ -1,5 +1,3 @@
-
-
 <p align="center">
   <img src="https://raw.githubusercontent.com/yaacov/tree-search-language/master/img/search-162.png" alt="TSL Logo">
 </p>
@@ -114,18 +112,6 @@ make
 
 Other `make` options include `make lint` for linting check and `make test` for tests.
 
-Running `make lint` requires `golangci-lint`:
-
-``` bash
-go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
-```
-
-Running `make test` requires `ginkgo`:
-
-``` bash
-go get -u github.com/onsi/ginkgo/ginkgo
-```
-
 #### Installing the different packages using `go get`
 
 ``` bash
@@ -137,21 +123,17 @@ go get "github.com/yaacov/tree-search-language/v6/pkg/walkers/..."
 
 # Or pick the walker needed
 go get "github.com/yaacov/tree-search-language/v6/pkg/walkers/sql"
-go get "github.com/yaacov/tree-search-language/v6/pkg/walkers/mongo"
+go get "github.com/yaacov/tree-search-language/v6/pkg/walkers/semantics"
 go get "github.com/yaacov/tree-search-language/v6/pkg/walkers/ident"
 go get "github.com/yaacov/tree-search-language/v6/pkg/walkers/graphviz"
 ```
 
-#### Installing the command line examples using `go get`
+#### Installing the command line example using `go install`
 
 See CLI tools usage [here](https://github.com/yaacov/tree-search-language#cli-tools).
 
 ``` bash
-go get -v "github.com/yaacov/tree-search-language/v6/cmd/tsl_parser"
-go get -v "github.com/yaacov/tree-search-language/v6/cmd/tsl_mongo"
-go get -v "github.com/yaacov/tree-search-language/v6/cmd/tsl_sqlite"
-go get -v "github.com/yaacov/tree-search-language/v6/cmd/tsl_gorm"
-go get -v "github.com/yaacov/tree-search-language/v6/cmd/tsl_graphql"
+go install -v "github.com/yaacov/tree-search-language/v6/cmd/tsl_parser"
 ```
 
 ## Syntax examples
@@ -263,6 +245,10 @@ For complete working code examples, see the CLI tools [directory](/v6/cmd)
 The `tsl` package include the ParseTSL [code](/v6/pkg/tsl/tsl.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v6/pkg/tsl#ParseTSL) method for parsing TSL into a search tree:
 ``` go
 tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
+if err != nil {
+    log.Fatal(err)
+}
+defer tree.Free()
 ```
 
 After parsing the TSL tree will look like this (image created using the `tsl_parser` cli utility using `.dot` output option):
@@ -283,15 +269,25 @@ import (
 
 // Parse a TSL phrase into a TSL tree.
 tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
+if err != nil {
+    log.Fatal(err)
+}
+defer tree.Free()
 
 // Prepare squirrel filter.
 filter, err := sql.Walk(tree)
+if err != nil {
+    log.Fatal(err)
+}
 
 // Create an SQL query.
 sql, args, err := sq.Select("name", "city", "state").
     From("users").
     Where(filter).
     ToSql()
+if err != nil {
+    log.Fatal(err)
+}
 ```
 
 After SQL generation the `sql` and `args` vars will be:
@@ -302,27 +298,6 @@ SELECT name, city, state FROM users WHERE (name IN (?,?) AND grade NOT BETWEEN ?
 ``` json
 ["joe", "jane", 0, 50]
 
-```
-
-##### mongo.Walk
-
-The `walkers` `mongo`  package include a helper mongo.Walk ([code](/v6/pkg/walkers/mongo/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v6/pkg/walkers/mongo#Walk)) method that adds search bson filter to [mongo-go-driver](https://github.com/mongodb/mongo-go-driver):
-
-``` go
-import (
-    ...
-    "github.com/yaacov/tree-search-language/v6/pkg/walkers/mongo"
-    ...
-)
-
-// Parse a TSL phrase into a TSL tree.
-tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
-
-// Prepare a MongoDB BSON document as a filter.
-filter, err = mongo.Walk(tree)
-
-// Run query.
-cur, err := collection.Find(ctx, filter)
 ```
 
 ##### graphviz.Walk
@@ -338,9 +313,16 @@ import (
 
 // Parse a TSL phrase into a TSL tree.
 tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
+if err != nil {
+    log.Fatal(err)
+}
+defer tree.Free()
 
 // Prepare .dot file nodes as a string.
 s, err = graphviz.Walk("", tree, "")
+if err != nil {
+    log.Fatal(err)
+}
 
 // Wrap the nodes in a digraph wrapper.
 s = fmt.Sprintf("digraph {\n%s\n}\n", s)
@@ -381,9 +363,16 @@ func checkColumnName(s string) (string, error) {
 
 // Parse a TSL phrase into a TSL tree.
 tree, err := tsl.ParseTSL("name in ('joe', 'jane') and grade not between 0 and 50")
+if err != nil {
+    log.Fatal(err)
+}
+defer tree.Free()
 
 // Check and replace user identifiers with the SQL table column names.
 tree, err = ident.Walk(tree, checkColumnName)
+if err != nil {
+    log.Fatal(err)
+}
 ...
 ```
 
@@ -406,28 +395,27 @@ import (
 // If no value can be found for this `key` in our record, it will return
 // ok = false, if value is found it will return ok = true.
 func evalFactory(r map[string]string) semantics.EvalFunc {
-	return func(k string) (interface{}, bool) {
-		v, ok := r[k]
-		return v, ok
-	}
+    return func(k string) (interface{}, error) {
+        v, ok := r[k]
+        if !ok {
+            return nil, fmt.Errorf("key not found: %s", k)
+        }
+        return v, nil
+    }
 }
 
-// Check if a record complie with our tsl tree.
-//
-// For example:
-//   if our tsl tree represents the tsl phrase "author = 'Joe'"
-//   we will get the boolean value `true` for our record.
-//
-//   if our tsl tree represents the tsl phrase "spec.pages > 50"
-//   we will get the boolean value `false` for our record.
-record :=  map[string]string {
-	"title":       "A good book",
-	"author":      "Joe",
-	"spec.pages":  14,
-	"spec.rating": 5,
+// Check if a record complies with our tsl tree.
+record := map[string]string{
+    "title":       "A good book",
+    "author":      "Joe",
+    "spec.pages":  14,
+    "spec.rating": 5.0,
 }
-eval :=  evalFactory(record)
-compliance, err = semantics.Walk(tree, eval)
+eval := evalFactory(record)
+compliance, err := semantics.Walk(tree, eval)
+if err != nil {
+    log.Fatal(err)
+}
 ```
 
 ## CLI tools
@@ -515,127 +503,6 @@ root -> { XVlB, zgba }
 }
 ```
 
-##### tsl_mongo
-
-`tsl_mongo` is an example showing `tsl` use with a `mongodb`.
-
-
-``` bash
-$ ./tsl_mongo -h
-Usage of ./tsl_mongo:
-  -c string
-    	collection name to query on (default "books")
-  -d string
-    	db name to connect to (default "tsl")
-  -i string
-    	the tsl string to parse (e.g. "author = 'Jane'") (default "title is not null")
-  -p	prepare a book collection for queries
-  ...
-  -u string
-    	url for mongo server (default "mongodb://localhost:27017")
-```
-
-``` bash
-$ ./tsl_mongo -p -i "title is not null" | jq
-```
-``` json
-{
-  "title": "Book",
-  "author": "Joe",
-  "spec": {
-    "pages": 100,
-    "rating": 4
-  }
-}
-```
-``` bash
-$ ./tsl_mongo -i "title ~= 'Other' and spec.rating > 1" | jq
-```
-``` json
-{
-  "title": "Other Book",
-  "author": "Jane",
-  "spec": {
-    "pages": 200,
-    "rating": 3
-  }
-}
-```
-
-##### tsl_sqlite
-
-`tsl_sqlite` is an example showing `tsl` use with `sqlite`.
-
-``` bash
-$ ./tsl_sqlite -h
-Usage of ./tsl_sqlite:
-  -f string
-    	the sqlite database file name (default "./sqlite.db")
-  -i string
-    	the tsl string to parse (e.g. "Title = 'Book'")
-  -p	prepare a book collection for queries
-```
-
-``` bash
-$ SQL="title like '%Book%' and spec.pages > 100"
-$ ./tsl_sqlite -i "$SQL" -p | jq
-```
-``` json
-{
-  "title": "Other Book",
-  "author": "Jane",
-  "spec": {
-    "pages": 200,
-    "rating": 3
-  }
-}
-{
-  "title": "Good Book",
-  "author": "Joe",
-  "spec": {
-    "pages": 150,
-    "rating": 4
-  }
-}
-```
-
-##### tsl_gorm
-
-`tsl_gorm` is an example showing `tsl` use the `gorm` package.
-
-``` bash
-$ ./tsl_gorm -h
-Usage of ./tsl_gorm:
-  -f string
-    	the sqlite database file name (default "./sqlite.db")
-  -i string
-    	the tsl string to parse (e.g. "title = 'Book'") (default "title is not null")
-  -p	prepare a book collection for queries
-```
-
-``` bash
-$ SQL="title like '%Book%' and spec.pages > 100"
-$ ./tsl_gorm -i "$SQL" -p | jq
-```
-``` json
-{
-  "title": "Other Book",
-  "author": "Jane",
-  "spec": {
-    "pages": 200,
-    "rating": 3
-  }
-}
-{
-  "title": "Good Book",
-  "author": "Joe",
-  "spec": {
-    "pages": 150,
-    "rating": 4
-  }
-}
-```
-
 ##### tsl_mem
 
 `tsl_mem` is an advanced example showing a custom walker, implementing in-memory sql server.
@@ -650,58 +517,13 @@ $ ./tsl_gorm -i "$SQL" -p | jq
   title: My Big Book
 ```
 
-##### tsl_graphql
-
-`tsl_graphql` is an example showing a `graphql` serve using `tsl`.
-
-``` bash
-$ ./tsl_graphql -h
-Usage of ./tsl_graphql:
-  -f string
-    	the sqlite database file name (default "./sqlite.db")
-  -p	prepare a book collection for queries
-```
-
-``` bash
-$ ./tsl_graphql -p
-
-TSL GraphQL server listen on port: 8080
-
-Query example:
-  curl -sG "http://localhost:8080/graphql" --data-urlencode \
-	"query={books(filter:\"title like '%Other%' and spec.pages>100\"){title,author,spec{pages}}}"
-```
-
-``` bash
-$ curl -sG "http://localhost:8080/graphql" --data-urlencode \
-     "query={books(filter:\"title like '%Other%' and spec.pages>100\"){title,author,spec{pages}}}" | jq
-{
-  "data": {
-    "books": [
-      {
-        "author": "Jane",
-        "spec": {
-          "pages": 200
-        },
-        "title": "Other Book"
-      },
-      {
-        "author": "Jane",
-        "spec": {
-          "pages": 250
-        },
-        "title": "Other Great Book"
-      }
-    ]
-  }
-}
-```
-
 ## Grammar
 
-##### Antlr4 grammar
+##### Flex and Bison grammar
 
-TSL parser is generated using [Antlr4 tool](https://github.com/antlr/antlr4/), the antlr4 grammar file is [TSL.g4](/v6/TSL.g4).
+TSL parser is generated using [Flex](https://github.com/westes/flex) and [Bison](https://www.gnu.org/software/bison/), the grammar files are:
+- [tsl_lexer.l](/v6/pkg/parser/tsl_lexer.l) - Lexical analyzer (Flex)
+- [tsl_parser.y](/v6/pkg/parser/tsl_parser.y) - Grammar parser (Bison)
 
 ##### Keywords
 ```
@@ -710,3 +532,12 @@ and or not is null like between in
 ##### Operators
 ```
 = <= >= != ~= ~! <> + - * / %
+```
+
+##### Special Literals
+- Date (YYYY-MM-DD)
+- RFC3339 datetime
+- Numbers with SI unit suffixes (Ki, Mi, Gi, Ti, Pi or K, M, G, T, P)
+- String literals (quoted with ', " or `)
+- Identifiers (including dots and escaped with backticks or square brackets)
+- Boolean literals (true/false)
