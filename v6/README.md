@@ -438,41 +438,46 @@ $ ./tsl_parser -i "(name = 'joe' or name = 'jane') and city = 'rome'" | jq
 
 ``` json
 {
-  "func": "$and",
+  "type": "BINARY_EXP",
+  "operator": "AND",
   "left": {
-    "func": "$or",
+    "type": "BINARY_EXP",
+    "operator": "OR",
     "left": {
-      "func": "$eq",
+      "type": "BINARY_EXP",
+      "operator": "EQ",
       "left": {
-        "func": "$ident",
-        "left": "name"
+        "type": "IDENTIFIER",
+        "value": "name"
       },
       "right": {
-        "func": "$string",
-        "left": "joe"
+        "type": "STRING",
+        "value": "joe"
       }
     },
     "right": {
-      "func": "$eq",
+      "type": "BINARY_EXP",
+      "operator": "EQ",
       "left": {
-        "func": "$ident",
-        "left": "name"
+        "type": "IDENTIFIER",
+        "value": "name"
       },
       "right": {
-        "func": "$string",
-        "left": "jane"
+        "type": "STRING",
+        "value": "jane"
       }
     }
   },
   "right": {
-    "func": "$eq",
+    "type": "BINARY_EXP",
+    "operator": "EQ",
     "left": {
-      "func": "$ident",
-      "left": "city"
+      "type": "IDENTIFIER",
+      "value": "city"
     },
     "right": {
-      "func": "$string",
-      "left": "rome"
+      "type": "STRING",
+      "value": "rome"
     }
   }
 }
@@ -537,4 +542,5 @@ Numbers with SI unit suffixes (Ki, Mi, Gi, Ti, Pi or K, M, G, T, P)
 String literals (quoted with ', " or `)
 Identifiers (including dots)
 Boolean literals (true/false)
+Null
 ```
