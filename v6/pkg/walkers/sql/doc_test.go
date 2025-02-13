@@ -44,6 +44,47 @@ func Example() {
 	fmt.Printf("Args: %v\n", args)
 
 	// Output:
-	// SQL : SELECT name, city, state FROM users WHERE (name = ? AND city <> ?)
+	// SQL : SELECT name, city, state FROM users WHERE (name = ? AND city != ?)
 	// Args: [joe rome]
+}
+
+func Example_complex() {
+	// Complex query with multiple conditions
+	input := `
+		(salary * 12) > 50000 AND 
+		department IN ['IT', 'HR'] AND 
+		hire_date BETWEEN 2020-01-01T00:00:00Z and 2023-12-31T23:59:59Z AND
+		(manager IS NULL OR title LIKE '%Senior%')
+	`
+
+	// Parse input string into a TSL tree
+	tree, _ := tsl.ParseTSL(input)
+
+	// Convert to SQL
+	filter, _ := Walk(tree)
+	sql, args, _ := sq.Select("name, department, salary").
+		From("employees").
+		Where(filter).
+		ToSql()
+
+	fmt.Printf("SQL : %s\n", sql)
+	fmt.Printf("Args: %v\n", args)
+
+	// Output:
+	// SQL : SELECT name, department, salary FROM employees WHERE ((((salary * ?) > ? AND department IN (?,?)) AND hire_date BETWEEN ? AND ?) AND (manager IS NULL OR title LIKE ?))
+	// Args: [12 50000 IT HR 2020-01-01 00:00:00 2023-12-31 23:59:59 %Senior%]
+}
+
+func Example_arithmetic() {
+	input := "(base_salary + bonus) * tax_rate > 20000"
+	tree, _ := tsl.ParseTSL(input)
+	filter, _ := Walk(tree)
+	sql, args, _ := sq.Select("*").From("salaries").Where(filter).ToSql()
+
+	fmt.Printf("SQL : %s\n", sql)
+	fmt.Printf("Args: %v\n", args)
+
+	// Output:
+	// SQL : SELECT * FROM salaries WHERE ((base_salary + bonus) * tax_rate) > ?
+	// Args: [20000]
 }

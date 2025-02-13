@@ -50,6 +50,11 @@ var _ = Describe("Walk", func() {
 				ToSql()
 			Expect(err).ToNot(HaveOccurred())
 
+			// Ensure that the arguments are not nil:
+			if actualArgs == nil {
+				actualArgs = []interface{}{}
+			}
+
 			// Check that the generated SQL and the arguments are the expected ones:
 			Expect(actualSQL).To(Equal(expectedSQL))
 			Expect(actualArgs).To(Equal(expectedArgs))
@@ -58,7 +63,7 @@ var _ = Describe("Walk", func() {
 		Entry(
 			"Search by name and city",
 			"name = 'joe' and city != 'rome'",
-			"SELECT name, city, state FROM users WHERE (name = ? AND city <> ?)",
+			"SELECT name, city, state FROM users WHERE (name = ? AND city != ?)",
 			"joe", "rome",
 		),
 
@@ -73,7 +78,7 @@ var _ = Describe("Walk", func() {
 			"Date literal",
 			"name = 'joe' and date = 2020-01-01T00:00:01Z",
 			"SELECT name, city, state FROM users WHERE (name = ? AND date = ?)",
-			"joe", "2020-01-01T00:00:01Z",
+			"joe", "2020-01-01 00:00:01",
 		),
 
 		Entry(
@@ -93,8 +98,63 @@ var _ = Describe("Walk", func() {
 		Entry(
 			"Complex arithmetic",
 			"(salary + bonus) * 0.3 > 20000",
-			"SELECT name, city, state FROM users WHERE ((salary + bonus) * 0.3) > ?",
-			20000.0,
+			"SELECT name, city, state FROM users WHERE ((salary + bonus) * ?) > ?",
+			0.3, 20000.0,
+		),
+
+		Entry(
+			"IN operator",
+			"city IN ['rome', 'paris', 'london']",
+			"SELECT name, city, state FROM users WHERE city IN (?,?,?)",
+			"rome", "paris", "london",
+		),
+
+		Entry(
+			"BETWEEN operator",
+			"age BETWEEN 20 and 30",
+			"SELECT name, city, state FROM users WHERE age BETWEEN ? AND ?",
+			20.0, 30.0,
+		),
+
+		Entry(
+			"NULL check",
+			"email IS NULL",
+			"SELECT name, city, state FROM users WHERE email IS NULL",
+		),
+
+		Entry(
+			"LIKE operator",
+			"name LIKE '%smith%'",
+			"SELECT name, city, state FROM users WHERE name LIKE ?",
+			"%smith%",
+		),
+
+		Entry(
+			"ILIKE operator",
+			"name ILIKE '%smith%'",
+			"SELECT name, city, state FROM users WHERE name ILIKE ?",
+			"%smith%",
+		),
+
+		Entry(
+			"Regular expression",
+			"email ~= '.*@gmail.com'",
+			"SELECT name, city, state FROM users WHERE email REGEXP ?",
+			".*@gmail.com",
+		),
+
+		Entry(
+			"Regular expression negation",
+			"email ~! '.*@gmail.com'",
+			"SELECT name, city, state FROM users WHERE NOT (email REGEXP ?)",
+			".*@gmail.com",
+		),
+
+		Entry(
+			"Complex arithmetic",
+			"(salary * 12) + bonus BETWEEN 50000 and 100000",
+			"SELECT name, city, state FROM users WHERE ((salary * ?) + bonus) BETWEEN ? AND ?",
+			12.0, 50000.0, 100000.0,
 		),
 	)
 })

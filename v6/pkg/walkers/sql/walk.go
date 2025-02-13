@@ -17,8 +17,6 @@
 package sql
 
 import (
-	"fmt"
-	"strconv"
 	"time"
 
 	sq "github.com/Masterminds/squirrel"
@@ -26,99 +24,42 @@ import (
 	"github.com/yaacov/tree-search-language/v6/pkg/tsl"
 )
 
-// Update nodesToStrings to handle null values and edge cases
-func nodesToStrings(in interface{}) (s []interface{}) {
-	// Handle nil case
-	if in == nil {
-		return nil
-	}
-
-	// Handle array literals
-	if arr, ok := in.(tsl.TSLArrayLiteral); ok {
-		for _, node := range arr.Values {
-			switch node.Type() {
-			case tsl.KindBooleanLiteral:
-				v := 0
-				if node.Value().(bool) {
-					v = 1
-				}
-				s = append(s, v)
-			case tsl.KindDateLiteral, tsl.KindTimestampLiteral:
-				d := node.Value().(time.Time).Format(time.RFC3339)
-				s = append(s, d)
-			default:
-				s = append(s, node.Value())
-			}
-		}
-		return
-	}
-
-	// Handle single values
-	switch v := in.(type) {
-	case bool:
-		if v {
-			return []interface{}{1}
-		}
-		return []interface{}{0}
-	case time.Time:
-		return []interface{}{v.Format(time.RFC3339)}
-	default:
-		return []interface{}{v}
-	}
-}
-
 // Walk travel the TSL tree to create squirrel SQL select operators.
+//
+// Users can call the Walk method inside a squirrel Where to add the query.
+//
+//	filter, _ := sql.Walk(tree)
+//	sql, args, _ := sq.Select("name, city, state").
+//	  From("users").
+//	  Where(filter).
+//	  ToSql()
+//
+// Squirrel: https://github.com/Masterminds/squirrel
 func Walk(n *tsl.TSLNode) (s sq.Sqlizer, err error) {
 	switch n.Type() {
 	case tsl.KindIdentifier:
 		s = sq.Expr(n.Value().(string))
 	case tsl.KindNumericLiteral:
-		f := strconv.FormatFloat(n.Value().(float64), 'g', -1, 64)
-		s = sq.Expr(f)
+		s = sq.Expr("?", n.Value().(float64))
 	case tsl.KindDateLiteral, tsl.KindTimestampLiteral:
-		f := n.Value().(time.Time).Format(time.RFC3339)
-		s = sq.Expr(f)
+		// Format time value using SQL timestamp format
+		t := n.Value().(time.Time)
+		s = sq.Expr("?", t.Format("2006-01-02 15:04:05"))
 	case tsl.KindStringLiteral:
-		s = sq.Expr(n.Value().(string))
+		s = sq.Expr("?", n.Value().(string))
 	case tsl.KindBooleanLiteral:
-		value := "0"
 		if n.Value().(bool) {
-			value = "1"
+			s = sq.Expr("?", 1)
+		} else {
+			s = sq.Expr("?", 0)
 		}
-		s = sq.Expr(value)
 	case tsl.KindBinaryExpr:
-		op := n.Value().(tsl.TSLExpressionOp)
-		switch op.Operator {
-		case tsl.OpAnd:
-			return binaryStep(op.Left, op.Right, tsl.OpAnd)
-		case tsl.OpOr:
-			return binaryStep(op.Left, op.Right, tsl.OpOr)
-		case tsl.OpPlus, tsl.OpMinus, tsl.OpStar, tsl.OpSlash, tsl.OpPercent:
-			l, err := Walk(op.Left)
-			if err != nil {
-				return nil, err
-			}
-			r, err := Walk(op.Right)
-			if err != nil {
-				return nil, err
-			}
-			switch op.Operator {
-			case tsl.OpPlus:
-				return sq.Expr("(? + ?)", l, r), nil
-			case tsl.OpMinus:
-				return sq.Expr("(? - ?)", l, r), nil
-			case tsl.OpStar:
-				return sq.Expr("(? * ?)", l, r), nil
-			case tsl.OpSlash:
-				return sq.Expr("(? / ?)", l, r), nil
-			case tsl.OpPercent:
-				return sq.Expr("(? % ?)", l, r), nil
-			}
-		default:
-			return unaryStep(n)
-		}
+		return binaryStep(n)
 	case tsl.KindUnaryExpr:
 		return unaryStep(n)
+	case tsl.KindNullLiteral:
+		// NULL literal is handled as a special case of IS NULL operator
+		s = sq.Expr("")
 	default:
 		err = tsl.UnexpectedLiteralError{Literal: n.Type()}
 	}
@@ -126,108 +67,154 @@ func Walk(n *tsl.TSLNode) (s sq.Sqlizer, err error) {
 	return
 }
 
-// Update binaryStep to handle the new node types
-func binaryStep(left, right *tsl.TSLNode, op tsl.Operator) (s sq.Sqlizer, err error) {
-	var l, r sq.Sqlizer
-
-	l, err = Walk(left)
-	if err != nil {
-		return
+// Helper function to walk array nodes and return values
+func walkArrayValues(n *tsl.TSLNode) ([]sq.Sqlizer, error) {
+	if n.Type() != tsl.KindArrayLiteral {
+		return nil, tsl.UnexpectedTypeError{Type: n.Type()}
 	}
 
-	r, err = Walk(right)
-	if err != nil {
-		return
+	array := n.Value().(tsl.TSLArrayLiteral)
+	values := make([]sq.Sqlizer, len(array.Values))
+	var err error
+
+	for i, node := range array.Values {
+		values[i], err = Walk(node)
+		if err != nil {
+			return nil, err
+		}
 	}
 
-	switch op {
-	case tsl.OpAnd:
-		s = sq.And{l, r}
-	case tsl.OpOr:
-		s = sq.Or{l, r}
-	case tsl.OpPlus:
-		s = addExpr{l, r}
-	case tsl.OpMinus:
-		s = subExpr{l, r}
-	case tsl.OpStar:
-		s = mulExpr{l, r}
-	case tsl.OpSlash:
-		s = divExpr{l, r}
-	case tsl.OpPercent:
-		s = modExpr{l, r}
-	default:
-		err = tsl.UnexpectedLiteralError{Literal: op}
-	}
-
-	return
+	return values, nil
 }
 
-// Update unaryStep to properly handle right node values
-func unaryStep(n *tsl.TSLNode) (s sq.Sqlizer, err error) {
-	op := n.Value().(tsl.TSLExpressionOp)
-	var sql string
+func binaryStep(n *tsl.TSLNode) (s sq.Sqlizer, err error) {
 	var l sq.Sqlizer
+	op := n.Value().(tsl.TSLExpressionOp)
 
-	// Get the node's SQL representation
 	l, err = Walk(op.Left)
 	if err != nil {
 		return
 	}
 
-	sql, _, err = l.ToSql()
+	// Handle array operations specially
+	switch op.Operator {
+	case tsl.OpIn:
+		values, err := walkArrayValues(op.Right)
+		if err != nil {
+			return nil, err
+		}
+		return sq.Expr("? IN ("+placeholders(len(values))+")", append([]interface{}{l}, sqlizersToInterface(values)...)...), nil
+
+	case tsl.OpBetween:
+		values, err := walkArrayValues(op.Right)
+		if err != nil {
+			return nil, err
+		}
+		if len(values) != 2 {
+			return nil, tsl.BetweenOperatorError{Message: "BETWEEN requires exactly two values"}
+		}
+		return sq.Expr("? BETWEEN ? AND ?", l, values[0], values[1]), nil
+	}
+
+	// For non-array operations, handle normally
+	r, err := Walk(op.Right)
 	if err != nil {
 		return
 	}
 
-	// Handle the NOT operator separately as it doesn't need right values
-	if op.Operator == tsl.OpNot {
-		return notExpr{l}, nil
-	}
-
-	// Convert the right node value to strings
-	right := nodesToStrings(op.Right.Value())
-
-	// Handle IS NULL case specially
-	if op.Operator == tsl.OpIs {
-		if len(right) == 0 {
-			return sq.Eq{sql: nil}, nil
-		}
-		return sq.NotEq{sql: nil}, nil
-	}
-
-	// For operators that require values, ensure we have them
-	if len(right) == 0 {
-		return nil, tsl.UnexpectedLiteralError{Literal: "empty right operand"}
-	}
-
 	switch op.Operator {
+	// Arithmetic operators
+	case tsl.OpPlus:
+		return sq.Expr("(? + ?)", l, r), nil
+	case tsl.OpMinus:
+		return sq.Expr("(? - ?)", l, r), nil
+	case tsl.OpStar:
+		return sq.Expr("(? * ?)", l, r), nil
+	case tsl.OpSlash:
+		return sq.Expr("(? / ?)", l, r), nil
+	case tsl.OpPercent:
+		return sq.Expr("(? % ?)", l, r), nil
+
+	// Comparison operators
 	case tsl.OpEQ:
-		return sq.Eq{sql: right[0]}, nil
+		return sq.Expr("? = ?", l, r), nil
 	case tsl.OpNE:
-		return sq.NotEq{sql: right[0]}, nil
+		return sq.Expr("? != ?", l, r), nil
 	case tsl.OpLT:
-		return sq.Lt{sql: right[0]}, nil
+		return sq.Expr("? < ?", l, r), nil
 	case tsl.OpLE:
-		return sq.LtOrEq{sql: right[0]}, nil
+		return sq.Expr("? <= ?", l, r), nil
 	case tsl.OpGT:
-		return sq.Gt{sql: right[0]}, nil
+		return sq.Expr("? > ?", l, r), nil
 	case tsl.OpGE:
-		return sq.GtOrEq{sql: right[0]}, nil
-	case tsl.OpIn:
-		return sq.Eq{sql: right}, nil
+		return sq.Expr("? >= ?", l, r), nil
+	case tsl.OpREQ:
+		return sq.Expr("? REGEXP ?", l, r), nil
+	case tsl.OpRNE:
+		return sq.Expr("NOT (? REGEXP ?)", l, r), nil
+
+	// Logical operators
+	case tsl.OpAnd:
+		return sq.And{l, r}, nil
+	case tsl.OpOr:
+		return sq.Or{l, r}, nil
+
+	// String operators
 	case tsl.OpLike:
-		t := fmt.Sprintf("%s LIKE ?", sql)
-		return sq.Expr(t, right[0]), nil
+		return sq.Expr("? LIKE ?", l, r), nil
 	case tsl.OpILike:
-		t := fmt.Sprintf("%s ILIKE ?", sql)
-		return sq.Expr(t, right[0]), nil
-	case tsl.OpBetween:
-		if len(right) < 2 {
-			return nil, tsl.UnexpectedLiteralError{Literal: "BETWEEN requires two values"}
-		}
-		t := fmt.Sprintf("%s BETWEEN ? AND ?", sql)
-		return sq.Expr(t, right[0], right[1]), nil
+		return sq.Expr("? ILIKE ?", l, r), nil
+
+	// Null operator
+	case tsl.OpIs:
+		return sq.Expr("? IS NULL", l), nil
+
+	default:
+		return nil, tsl.UnexpectedOperatorError{Operator: op.Operator}
+	}
+}
+
+// unaryStep handles minus and not operators first
+func unaryStep(n *tsl.TSLNode) (s sq.Sqlizer, err error) {
+	op := n.Value().(tsl.TSLExpressionOp)
+
+	// Get the child node's SQL representation
+	right, err := Walk(op.Right)
+	if err != nil {
+		return nil, err
+	}
+
+	// Handle minus and not operators first
+	switch op.Operator {
+	case tsl.OpUMinus:
+		return sq.Expr("-(?)", right), nil
+	case tsl.OpNot:
+		return sq.Expr("NOT (?)", right), nil
 	default:
 		return nil, tsl.UnexpectedLiteralError{Literal: op.Operator}
 	}
+}
+
+// Helper to generate SQL placeholders
+func placeholders(n int) string {
+	if n <= 0 {
+		return ""
+	}
+	ph := make([]byte, 2*n-1)
+	for i := 0; i < len(ph); i += 2 {
+		ph[i] = '?'
+		if i+1 < len(ph) {
+			ph[i+1] = ','
+		}
+	}
+	return string(ph)
+}
+
+// Helper to convert []sq.Sqlizer to []interface{}
+func sqlizersToInterface(sqlizers []sq.Sqlizer) []interface{} {
+	result := make([]interface{}, len(sqlizers))
+	for i, s := range sqlizers {
+		result[i] = s
+	}
+	return result
 }

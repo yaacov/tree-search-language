@@ -13,8 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package walkers examples TSL tree walking, and helps to generate SQL and MongoDB
-// query filters. sql.Walk and mongo.Walk methods can be used to create such filters.
+// Package walkers examples TSL tree walking, and helps to generate SQL
+// query filters. sql.Walk method can be used to create such filters.
 //
 // Squirrel walk code:  https://github.com/yaacov/tree-search-language/blob/master/v6/pkg/walkers/sql/walk.go
 //

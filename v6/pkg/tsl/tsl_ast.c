@@ -231,3 +231,57 @@ ast_node* get_array_element(const ast_node *node, int index) {
 int get_boolean_value(const ast_node *node) {
     return node->data.boolean;
 }
+
+ast_node *ast_detach_binary_left(ast_node *node) {
+    if (!node || node->type != AST_BINARY_OP) return NULL;
+    
+    ast_node *left = node->data.binary.left;
+    node->data.binary.left = NULL;
+    return left;
+}
+
+ast_node *ast_detach_binary_right(ast_node *node) {
+    if (!node || node->type != AST_BINARY_OP) return NULL;
+    
+    ast_node *right = node->data.binary.right;
+    node->data.binary.right = NULL;
+    return right;
+}
+
+ast_node *ast_detach_unary_child(ast_node *node) {
+    if (!node || node->type != AST_UNARY_OP) return NULL;
+    
+    ast_node *child = node->data.unary.child;
+    node->data.unary.child = NULL;
+    return child;
+}
+
+int ast_attach_binary_left(ast_node *node, ast_node *child) {
+    if (!node || node->type != AST_BINARY_OP) return 0;
+    
+    if (node->data.binary.left) {
+        ast_free(node->data.binary.left);
+    }
+    node->data.binary.left = child;
+    return 1;
+}
+
+int ast_attach_binary_right(ast_node *node, ast_node *child) {
+    if (!node || node->type != AST_BINARY_OP) return 0;
+    
+    if (node->data.binary.right) {
+        ast_free(node->data.binary.right);
+    }
+    node->data.binary.right = child;
+    return 1;
+}
+
+int ast_attach_unary_child(ast_node *node, ast_node *child) {
+    if (!node || node->type != AST_UNARY_OP) return 0;
+    
+    if (node->data.unary.child) {
+        ast_free(node->data.unary.child);
+    }
+    node->data.unary.child = child;
+    return 1;
+}

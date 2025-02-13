@@ -79,39 +79,53 @@ func walkAndReplace(n *tsl.TSLNode, check func(s string) (string, error), identi
 	}
 
 	switch n.Type() {
-	case tsl.KindIdentifier:
-		ident := n.Value().(string)
-		// Add to the map of found identifiers
-		identifiers[ident] = true
-
-		// Check and possibly replace the identifier
-		newIdent, err := check(ident)
-		if err != nil {
-			return nil, err
-		}
-
-		// Parse the new identifier as a TSL expression
-		newNode, err := tsl.ParseTSL(newIdent)
-		if err != nil {
-			return nil, err
-		}
-		return newNode, nil
-
 	case tsl.KindBinaryExpr:
 		op := n.Value().(tsl.TSLExpressionOp)
 
 		// Process both sides of the binary expression
-		left, err := walkAndReplace(op.Left, check, identifiers)
-		if err != nil {
-			return nil, err
-		}
-		op.Left = left
+		left := op.Left
+		if left.Type() == tsl.KindIdentifier {
+			ident := left.Value().(string)
+			identifiers[ident] = true
 
-		right, err := walkAndReplace(op.Right, check, identifiers)
-		if err != nil {
-			return nil, err
+			newIdent, err := check(ident)
+			if err != nil {
+				return nil, err
+			}
+
+			newNode, err := tsl.ParseTSL(newIdent)
+			if err != nil {
+				return nil, err
+			}
+			n.AttachLeft(newNode)
+		} else {
+			_, err := walkAndReplace(left, check, identifiers)
+			if err != nil {
+				return nil, err
+			}
 		}
-		op.Right = right
+
+		right := op.Right
+		if right.Type() == tsl.KindIdentifier {
+			ident := right.Value().(string)
+			identifiers[ident] = true
+
+			newIdent, err := check(ident)
+			if err != nil {
+				return nil, err
+			}
+
+			newNode, err := tsl.ParseTSL(newIdent)
+			if err != nil {
+				return nil, err
+			}
+			n.AttachRight(newNode)
+		} else {
+			_, err := walkAndReplace(right, check, identifiers)
+			if err != nil {
+				return nil, err
+			}
+		}
 
 		return n, nil
 
@@ -119,13 +133,40 @@ func walkAndReplace(n *tsl.TSLNode, check func(s string) (string, error), identi
 		op := n.Value().(tsl.TSLExpressionOp)
 
 		// Process the operand
-		right, err := walkAndReplace(op.Right, check, identifiers)
+		right := op.Right
+		if right.Type() == tsl.KindIdentifier {
+			ident := right.Value().(string)
+			identifiers[ident] = true
+
+			newIdent, err := check(ident)
+			if err != nil {
+				return nil, err
+			}
+
+			newNode, err := tsl.ParseTSL(newIdent)
+			if err != nil {
+				return nil, err
+			}
+			n.AttachChild(newNode)
+		} else {
+			_, err := walkAndReplace(right, check, identifiers)
+			if err != nil {
+				return nil, err
+			}
+		}
+
+		return n, nil
+
+	case tsl.KindIdentifier:
+		ident := n.Value().(string)
+		identifiers[ident] = true
+
+		newIdent, err := check(ident)
 		if err != nil {
 			return nil, err
 		}
-		op.Right = right
 
-		return n, nil
+		return tsl.ParseTSL(newIdent)
 
 	default:
 		return n, nil

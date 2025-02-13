@@ -89,6 +89,22 @@ func handleChildren(in string, children []*tsl.TSLNode) (string, []string, error
 }
 
 // Walk travel the TSL tree to create Graphviz dot nodes.
+//
+// Users can call the Walk method to get the dot file graph string.
+//
+//	s, err = graphviz.Walk("", tree, "")
+//
+// The return string will be a node list for a .dot file:
+//
+//	tcuA [shape=box color=black label="$eq"]
+//	xhxK [shape=record color=red label="$ident | 'city'" ]
+//	QFDa [shape=record color=blue label="$string | 'rome'" ]
+//	tcuA -> { xhxK, QFDa }
+//
+// For valid Graphviz dot file, the nodes must be wrapped in a `digraph` object:
+//
+//	s, err = graphviz.Walk("", tree, "")
+//	s = fmt.Sprintf("digraph {\n%s\n}\n", s)
 func Walk(in string, n *tsl.TSLNode, nodeID string) (out string, err error) {
 	if nodeID == "" {
 		nodeID = randStr(4)
