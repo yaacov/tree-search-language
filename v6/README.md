@@ -35,7 +35,7 @@ You can use the TSL package to add uniform and powerful filtering to your RESTfu
 Here is our `tsl_mem`CLI tool ([code](/v6/cmd/tsl_mem)), it's an in-memory search engine, it is using the TSL package to filter through an in-memory array of books using "SQL like" `tsl phrases`:
 
 ``` bash
-$  ./tsl_mem -i "spec.rating is not null and author ~= 'Joe'" -o prettyjson
+$  ./tsl_mem -i "rating is not null and author ~= 'Joe'" | jq
 ```
 ``` json
 [
@@ -61,7 +61,7 @@ $  ./tsl_mem -i "spec.rating is not null and author ~= 'Joe'" -o prettyjson
 ```
 
 ``` bash
- $  ./tsl_mem -i "spec.rating is null and spec.pages < 250" -o prettyjson
+ $  ./tsl_mem -i "rating is null and pages < 250" | jq
  ```
  ``` json
 [
@@ -87,7 +87,7 @@ name like '%joe%' and (city = 'paris' or city = 'milan')
 ```
 
 Will be parsed into this `tsl tree`:
-![TSL](/img/example_a.png?raw=true "example tree")
+![TSL](/v6/img/example_a.png?raw=true "example tree")
 
 ## Cool logo
 
@@ -147,7 +147,7 @@ name like '%joe%' and (city = 'paris' or city = 'milan')
 ```
 
 Will be parsed into this TSL tree:
-![TSL](/img/example_a.png?raw=true "example tree")
+![TSL](/v6/img/example_a.png?raw=true "example tree")
 
 #### Operators with multiple arguments
 
@@ -158,7 +158,7 @@ name in ('joe', 'jane') and grade not between 0 and 50
 ```
 
 Will be parsed into this TSL tree:
-![TSL](/img/example_b.png?raw=true "example tree")
+![TSL](/v6/img/example_b.png?raw=true "example tree")
 
 #### Math operators
 
@@ -169,7 +169,7 @@ memory.total - memory.cache > 2000 and cpu.usage > 50
 ```
 
 Will be parsed into this TSL tree:
-![TSL](/img/example_c.png?raw=true "example tree")
+![TSL](/v6/img/example_c.png?raw=true "example tree")
 
 #### More math operators
 
@@ -181,7 +181,7 @@ This TSL phrase:
 
 Will be parsed into this TSL tree:
 
-![TSL](/img/example_d.png?raw=true "example tree")
+![TSL](/v6/img/example_d.png?raw=true "example tree")
 
 #### SI units
 
@@ -193,19 +193,7 @@ This TSL phrase:
 
 Will be parsed into this TSL tree:
 
-![TSL](/img/example_e.png?raw=true "example tree")
-
-#### Identifier escaping
-
-This TSL phrase:
-
-``` sql
-([net.rx] + `net.tx`) < 1024
-```
-
-Will be parsed into this TSL tree:
-
-![TSL](/img/example_f.png?raw=true "example tree")
+![TSL](/v6/img/example_e.png?raw=true "example tree")
 
 Images created using the `tsl_parser` CLI example and Graphviz's `dot` utility:
 ``` bash
@@ -223,7 +211,7 @@ supported = true
 
 Will be parsed into this TSL tree:
 
-![TSL](/img/example_g.png?raw=true "example tree")
+![TSL](/v6/img/example_g.png?raw=true "example tree")
 
 #### Dates (RFC3339)
 
@@ -233,7 +221,7 @@ date = 2020-01-01T20:00:00Z
 
 Will be parsed into this TSL tree:
 
-![TSL](/img/example_h.png?raw=true "example tree")
+![TSL](/v6/img/example_h.png?raw=true "example tree")
 
 ## Code examples
 
@@ -253,7 +241,7 @@ defer tree.Free()
 
 After parsing the TSL tree will look like this (image created using the `tsl_parser` cli utility using `.dot` output option):
 
-![TSL](/img/example01.png?raw=true "example tree")
+![TSL](/v6/img/example01.png?raw=true "example tree")
 
 ##### sql.Walk
 
@@ -432,7 +420,7 @@ Usage of ./tsl_parser:
   -i string
     	the tsl string to parse (e.g. "animal = 'kitty'")
   -o string
-    	output format [json/yaml/prettyjson/sql/dot] (default "json")
+    	output format [json/yaml/sql/dot] (default "json")
 ```
 
 
@@ -445,7 +433,7 @@ args: [joe jane rome]
 ```
 
 ``` bash
-$ ./tsl_parser -i "(name = 'joe' or name = 'jane') and city = 'rome'" -o prettyjson
+$ ./tsl_parser -i "(name = 'joe' or name = 'jane') and city = 'rome'" | jq
 ```
 
 ``` json
@@ -515,7 +503,7 @@ $ dot -Tpng file.dot -o tree.png
 `tsl_mem` is an advanced example showing a custom walker, implementing in-memory sql server.
 
 ``` bash
- $ ./tsl_mem -i "spec.rating > 4 and title ~= 'Big'" -o yaml
+ $ ./tsl_mem -i "rating > 4 and title ~= 'Big'" -o yaml
  ```
  ``` yaml
 - author: Joe
@@ -547,6 +535,6 @@ Date (YYYY-MM-DD)
 RFC3339 datetime
 Numbers with SI unit suffixes (Ki, Mi, Gi, Ti, Pi or K, M, G, T, P)
 String literals (quoted with ', " or `)
-Identifiers (including dots and escaped with backticks or square brackets)
+Identifiers (including dots)
 Boolean literals (true/false)
 ```

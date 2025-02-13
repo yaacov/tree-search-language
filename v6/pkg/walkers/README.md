@@ -10,10 +10,6 @@
 
 The `sql` package include a helper `sql.Walk` ([code](/pkg/walkers/sql/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v5/pkg/walkers/sql#Walk)) method that adds search to [squirrel](https://github.com/Masterminds/squirrel)'s `SelectBuilder` object.
 
-##### mongo
-
-The `mongo` package include a helper `mongo.Walk` ([code](/pkg/walkers/mongo/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v5/pkg/walkers/mongo#Walk)) method that adds search `bson` filter to [mongo-go-driver](https://go.mongodb.org/mongo-driver).
-
 ##### graphviz
 
 The `graphviz` package include a helper `graphviz.Walk` ([code](/pkg/walkers/graphviz/walk.go), [doc](https://pkg.go.dev/github.com/yaacov/tree-search-language/v5/pkg/walkers/graphviz#Walk)) method that exports `.dot` file nodes.

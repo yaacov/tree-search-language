@@ -33,11 +33,11 @@ var Books = []Book{}
 
 // columnNamesMap mapps between user namespace and the document field names.
 var columnNamesMap = map[string]string{
-	"title":       "title",
-	"author":      "author",
-	"spec.pages":  "spec.pages",
-	"spec.rating": "spec.rating",
-	"on_loan":     "onloan",
+	"title":   "title",
+	"author":  "author",
+	"pages":   "spec.pages",
+	"rating":  "spec.rating",
+	"on_loan": "onloan",
 }
 
 // checkColumnName checks if a coulumn name is valid in user space replace it

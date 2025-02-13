@@ -24,18 +24,23 @@ import (
 	"github.com/yaacov/tree-search-language/v6/pkg/tsl"
 )
 
-// Character poll for random string genrator.
-const pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+// Base styles for shared properties
+const baseRecordStyle = "shape=record"
+const baseBoxStyle = "shape=box"
 
-// Default styles for .dot file output.
-const identStyle = "shape=record color=red"
-const numberStyle = "shape=record color=blue"
-const stringStyle = "shape=record color=blue"
-const dateStyle = "shape=record color=orange"
-const opStyle = "shape=box color=black"
+// Node specific styles combining base styles with colors
+const identStyle = baseRecordStyle + " color=red"
+const numberStyle = baseRecordStyle + " color=blue"
+const stringStyle = baseRecordStyle + " color=blue"
+const booleanStyle = baseRecordStyle + " color=purple"
+const dateStyle = baseRecordStyle + " color=orange"
+const timestampStyle = baseRecordStyle + " color=orange"
+const opStyle = baseBoxStyle + " color=black"
+const arrayStyle = baseBoxStyle + " color=green"
 
-// Generate a random string.
+// Generate a random string of specified length using only lowercase letters
 func randStr(l int) string {
+	const pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	bytes := make([]byte, l)
 	for i := 0; i < l; i++ {
 		bytes[i] = pool[rand.Intn(len(pool))]
@@ -43,136 +48,99 @@ func randStr(l int) string {
 	return string(bytes)
 }
 
+// formatLeafNodeWithInput creates a graphviz node string for leaf nodes including input string
+func formatLeafNodeWithInput(in string, nodeID string, style string, nodeType tsl.Kind, value interface{}) string {
+	if in != "" {
+		in = fmt.Sprintf("%s\n", in)
+	}
+	nodeStr := fmt.Sprintf("%s [%s label=\"%s | %v\" ]",
+		nodeID,
+		style,
+		nodeType.String(),
+		value)
+	return fmt.Sprintf("%s%s", in, nodeStr)
+}
+
+// formatOperatorNode creates a graphviz node string for operator nodes
+func formatOperatorNode(nodeID string, operator string) string {
+	return fmt.Sprintf("%s [%s label=\"%s\"]",
+		nodeID,
+		opStyle,
+		operator)
+}
+
+// handleChildren processes child nodes and returns their formatted string and IDs
+func handleChildren(in string, children []*tsl.TSLNode) (string, []string, error) {
+	childrenIDs := []string{}
+	result := ""
+
+	for _, child := range children {
+		childID := randStr(4)
+		childrenIDs = append(childrenIDs, childID)
+
+		r, err := Walk(in, child, childID)
+		if err != nil {
+			return "", nil, err
+		}
+		result = fmt.Sprintf("%s\n%s", result, r)
+	}
+
+	return result, childrenIDs, nil
+}
+
 // Walk travel the TSL tree to create Graphviz dot nodes.
-//
-// Users can call the Walk method to get the dot file graph string.
-//
-//	s, err = graphviz.Walk("", tree, "")
-//
-// The return string will be a node list for a .dot file:
-//
-//	tcuA [shape=box color=black label="$eq"]
-//	xhxK [shape=record color=red label="$ident | 'city'" ]
-//	QFDa [shape=record color=blue label="$string | 'rome'" ]
-//	tcuA -> { xhxK, QFDa }
-//
-// For valid Graphviz dot file, the nodes must be wrapped in a `digraph` object:
-//
-//	s, err = graphviz.Walk("", tree, "")
-//	s = fmt.Sprintf("digraph {\n%s\n}\n", s)
 func Walk(in string, n *tsl.TSLNode, nodeID string) (out string, err error) {
-	// If node ID is missing, create one.
 	if nodeID == "" {
 		nodeID = randStr(4)
 	}
 
-	// If we have in string, add a new line break.
-	if in != "" {
-		in = fmt.Sprintf("%s\n", in)
-	}
-
 	switch n.Type() {
 	case tsl.KindIdentifier:
-		// Add leaf label and value.
-		nodeLabel := fmt.Sprintf("%s [%s label=\"%s | '%s'\" ]",
-			nodeID,
-			identStyle,
-			n.Type().String(),
-			n.Value())
-		out = fmt.Sprintf("%s%s", in, nodeLabel)
+		out = formatLeafNodeWithInput(in, nodeID, identStyle, n.Type(), fmt.Sprintf("'%s'", n.Value()))
 	case tsl.KindStringLiteral:
-		// Add leaf label and value.
-		nodeLabel := fmt.Sprintf("%s [%s label=\"%s | '%s'\" ]",
-			nodeID,
-			stringStyle,
-			n.Type().String(),
-			n.Value())
-		out = fmt.Sprintf("%s%s", in, nodeLabel)
+		out = formatLeafNodeWithInput(in, nodeID, stringStyle, n.Type(), fmt.Sprintf("'%s'", n.Value()))
 	case tsl.KindNumericLiteral:
-		// Add leaf label and value.
-		nodeLabel := fmt.Sprintf("%s [%s label=\"%s | %g\" ]",
-			nodeID,
-			numberStyle,
-			n.Type().String(),
-			n.Value())
-		out = fmt.Sprintf("%s%s", in, nodeLabel)
-	case tsl.KindBooleanLiteral, tsl.KindDateLiteral, tsl.KindTimestampLiteral:
-		// Add leaf label and value.
-		nodeLabel := fmt.Sprintf("%s [%s label=\"%s | %v\" ]",
-			nodeID,
-			dateStyle,
-			n.Type().String(),
-			n.Value())
-		out = fmt.Sprintf("%s%s", in, nodeLabel)
-	case tsl.KindBinaryExpr, tsl.KindUnaryExpr:
+		out = formatLeafNodeWithInput(in, nodeID, numberStyle, n.Type(), n.Value())
+	case tsl.KindBooleanLiteral:
+		out = formatLeafNodeWithInput(in, nodeID, booleanStyle, n.Type(), n.Value())
+	case tsl.KindDateLiteral:
+		out = formatLeafNodeWithInput(in, nodeID, dateStyle, n.Type(), n.Value())
+	case tsl.KindTimestampLiteral:
+		out = formatLeafNodeWithInput(in, nodeID, timestampStyle, n.Type(), n.Value())
+	case tsl.KindBinaryExpr:
 		expr := n.Value().(tsl.TSLExpressionOp)
-		// Add node label.
-		st := fmt.Sprintf("%s [%s label=\"%s\"]",
-			nodeID,
-			opStyle,
-			expr.Operator.String())
-		childrens := []string{}
+		st := formatOperatorNode(nodeID, expr.Operator.String())
 
-		// Add left child for binary expressions
-		if expr.Left != nil {
-			leftID := randStr(4)
-			childrens = append(childrens, leftID)
-
-			l, err := Walk(in, expr.Left, leftID)
-			if err != nil {
-				return "", err
-			}
-			st = fmt.Sprintf("%s\n%s", st, l)
+		childrenStr, childrenIDs, err := handleChildren(in, []*tsl.TSLNode{expr.Left, expr.Right})
+		if err != nil {
+			return "", err
 		}
 
-		// Add right child
-		if expr.Right != nil {
-			rightID := randStr(4)
-			childrens = append(childrens, rightID)
+		return fmt.Sprintf("%s%s%s\n%s -> { %s }", in, st, childrenStr, nodeID, strings.Join(childrenIDs, ", ")), nil
 
-			r, err := Walk(in, expr.Right, rightID)
-			if err != nil {
-				return "", err
-			}
-			st = fmt.Sprintf("%s\n%s", st, r)
+	case tsl.KindUnaryExpr:
+		expr := n.Value().(tsl.TSLExpressionOp)
+		st := formatOperatorNode(nodeID, expr.Operator.String())
+
+		childrenStr, childrenIDs, err := handleChildren(in, []*tsl.TSLNode{expr.Right})
+		if err != nil {
+			return "", err
 		}
 
-		// Add parent node
-		in = fmt.Sprintf("%s%s\n%s -> { %s }",
-			in,
-			st,
-			nodeID,
-			strings.Join(childrens, ", "))
+		return fmt.Sprintf("%s%s%s\n%s -> { %s }", in, st, childrenStr, nodeID, strings.Join(childrenIDs, ", ")), nil
 
-		return in, nil
 	case tsl.KindArrayLiteral:
 		array := n.Value().(tsl.TSLArrayLiteral)
-		// Add node label
-		st := fmt.Sprintf("%s [%s label=\"ARRAY\"]",
-			nodeID,
-			opStyle)
-		childrens := []string{}
+		st := formatOperatorNode(nodeID, n.Type().String())
+		// Use arrayStyle instead of opStyle for arrays
+		st = strings.Replace(st, opStyle, arrayStyle, 1)
 
-		// Add all array elements
-		for _, elem := range array.Values {
-			elemID := randStr(4)
-			childrens = append(childrens, elemID)
-
-			e, err := Walk(in, elem, elemID)
-			if err != nil {
-				return "", err
-			}
-			st = fmt.Sprintf("%s\n%s", st, e)
+		childrenStr, childrenIDs, err := handleChildren(in, array.Values)
+		if err != nil {
+			return "", err
 		}
 
-		// Add parent node
-		in = fmt.Sprintf("%s%s\n%s -> { %s }",
-			in,
-			st,
-			nodeID,
-			strings.Join(childrens, ", "))
-
-		return in, nil
+		return fmt.Sprintf("%s%s%s\n%s -> { %s }", in, st, childrenStr, nodeID, strings.Join(childrenIDs, ", ")), nil
 	}
 
 	return

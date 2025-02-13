@@ -20,49 +20,114 @@ import (
 	"github.com/yaacov/tree-search-language/v6/pkg/tsl"
 )
 
-// Walk traverses a TSL tree and returns a slice of unique identifiers found in the tree.
-func Walk(n *tsl.TSLNode) ([]string, error) {
+// Walk traverses the TSL tree and replaces identifiers using the check function.
+//
+// Users can call the Walk method to check and replace identifiers.
+// The function returns the modified tree, a list of all identifiers found in the tree,
+// and any error encountered.
+//
+// Example:
+//
+//	columnNamesMap :=  map[string]string{
+//		"title":       "title",
+//		"author":      "author",
+//		"spec.pages":  "pages",
+//		"spec.rating": "rating",
+//	}
+//
+//	func check(s string) (string, error) {
+//		// Check for column name in map.
+//		if v, ok := columnNamesMap[s]; ok {
+//			return v, nil
+//		}
+//
+//		// If not found return string as is, and an error.
+//		return s, fmt.Errorf("column not found")
+//	}
+//
+//	// Check and replace user identifiers with the SQL table column names,
+//	// and get a list of all identifiers used in the tree.
+//	//
+//	// If the input tree contains: `spec.pages > 100 AND author = "Joe"`,
+//	// the identifiers list will contain: ["spec.pages", "author"]
+//	//
+//	newTree, identifiers, err = ident.Walk(tree, check)
+func Walk(n *tsl.TSLNode, check func(s string) (string, error)) (*tsl.TSLNode, []string, error) {
+	if n == nil {
+		return nil, nil, nil
+	}
+
 	identifiers := make(map[string]bool)
-	err := walk(n, identifiers)
+	newTree, err := walkAndReplace(n, check, identifiers)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
-	// Convert map keys to slice
-	result := make([]string, 0, len(identifiers))
+	// Convert map to slice
+	identList := make([]string, 0, len(identifiers))
 	for ident := range identifiers {
-		result = append(result, ident)
+		identList = append(identList, ident)
 	}
 
-	return result, nil
+	return newTree, identList, nil
 }
 
-// walk is a helper function that recursively traverses the tree
-func walk(n *tsl.TSLNode, identifiers map[string]bool) error {
+// walkAndReplace recursively traverses the tree, replacing identifiers
+func walkAndReplace(n *tsl.TSLNode, check func(s string) (string, error), identifiers map[string]bool) (*tsl.TSLNode, error) {
 	if n == nil {
-		return nil
+		return nil, nil
 	}
 
 	switch n.Type() {
 	case tsl.KindIdentifier:
-		// Add identifier to the map
-		identifiers[n.Value().(string)] = true
-	case tsl.KindBinaryExpr:
-		// Process binary expression
-		op := n.Value().(tsl.TSLExpressionOp)
-		if err := walk(op.Left, identifiers); err != nil {
-			return err
-		}
-		if err := walk(op.Right, identifiers); err != nil {
-			return err
-		}
-	case tsl.KindUnaryExpr:
-		// Process unary expression
-		op := n.Value().(tsl.TSLExpressionOp)
-		if err := walk(op.Left, identifiers); err != nil {
-			return err
-		}
-	}
+		ident := n.Value().(string)
+		// Add to the map of found identifiers
+		identifiers[ident] = true
 
-	return nil
+		// Check and possibly replace the identifier
+		newIdent, err := check(ident)
+		if err != nil {
+			return nil, err
+		}
+
+		// Parse the new identifier as a TSL expression
+		newNode, err := tsl.ParseTSL(newIdent)
+		if err != nil {
+			return nil, err
+		}
+		return newNode, nil
+
+	case tsl.KindBinaryExpr:
+		op := n.Value().(tsl.TSLExpressionOp)
+
+		// Process both sides of the binary expression
+		left, err := walkAndReplace(op.Left, check, identifiers)
+		if err != nil {
+			return nil, err
+		}
+		op.Left = left
+
+		right, err := walkAndReplace(op.Right, check, identifiers)
+		if err != nil {
+			return nil, err
+		}
+		op.Right = right
+
+		return n, nil
+
+	case tsl.KindUnaryExpr:
+		op := n.Value().(tsl.TSLExpressionOp)
+
+		// Process the operand
+		right, err := walkAndReplace(op.Right, check, identifiers)
+		if err != nil {
+			return nil, err
+		}
+		op.Right = right
+
+		return n, nil
+
+	default:
+		return n, nil
+	}
 }

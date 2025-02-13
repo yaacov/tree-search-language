@@ -81,8 +81,8 @@ func (n *TSLNode) Free() {
 }
 
 // Type returns the type of the node
-func (n *TSLNode) Type() NodeKind {
-	return NodeKind(n.cNode._type)
+func (n *TSLNode) Type() Kind {
+	return Kind(n.cNode._type)
 }
 
 // Value returns the node's value based on its type

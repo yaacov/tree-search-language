@@ -56,23 +56,18 @@ func main() {
 	check(err)
 	defer tree.Free()
 
-	// Get identifiers from the tree and validate them
-	identifiers, err := ident.Walk(tree)
+	// Walk the TSL tree and replace identifiers.
+	newTree, _, err := ident.Walk(tree, checkColumnName)
 	check(err)
-
-	for _, id := range identifiers {
-		_, err := checkColumnName(id)
-		check(err)
-	}
 
 	// Prepare the books in memory collection.
 	err = prepareCollection()
 	check(err)
 
-	// Filter the books collection using our TSL tree.
+	// Filter the books collection using our transformed TSL tree.
 	for _, book := range Books {
 		eval := evalFactory(book)
-		matchingFilter, err := semantics.Walk(tree, eval)
+		matchingFilter, err := semantics.Walk(newTree, eval)
 		check(err)
 
 		// Convert interface{} to bool
