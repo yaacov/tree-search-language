@@ -25,7 +25,6 @@ import (
 	"fmt"
 	"log"
 
-	prettyjson "github.com/hokaccha/go-prettyjson"
 	"github.com/yaacov/tree-search-language/v6/pkg/tsl"
 	"github.com/yaacov/tree-search-language/v6/pkg/walkers/ident"
 	"github.com/yaacov/tree-search-language/v6/pkg/walkers/semantics"
@@ -44,7 +43,7 @@ func main() {
 
 	// Setup the input.
 	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"author = 'Joe'\")")
-	outputPtr := flag.String("o", "json", "output format [json/yaml/prettyjson]")
+	outputPtr := flag.String("o", "json", "output format [json/yaml]")
 	flag.Parse()
 
 	// Sanity check.
@@ -88,8 +87,6 @@ func main() {
 		s, err = json.Marshal(books)
 	case "yaml":
 		s, err = yaml.Marshal(books)
-	case "prettyjson":
-		s, err = prettyjson.Marshal(books)
 	default:
 		err = fmt.Errorf("unsuported output format: %s", *outputPtr)
 	}

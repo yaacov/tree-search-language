@@ -22,6 +22,8 @@ func main() {
 	}
 
 	expression := flag.Arg(0)
+
+	fmt.Printf("Parsing: %s\n", expression)
 	tree, err := tsl.ParseTSL(expression)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -29,7 +31,6 @@ func main() {
 	}
 	defer tree.Free()
 
-	fmt.Printf("Parsing: %s\n", expression)
 	printer := NewASTPrinter()
 	printer.Print(tree, 0)
 }

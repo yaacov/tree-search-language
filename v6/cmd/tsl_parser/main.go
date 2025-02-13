@@ -22,7 +22,6 @@ import (
 	"log"
 
 	sq "github.com/Masterminds/squirrel"
-	"github.com/hokaccha/go-prettyjson"
 	"gopkg.in/yaml.v3"
 
 	"github.com/yaacov/tree-search-language/v6/pkg/tsl"
@@ -61,8 +60,6 @@ func main() {
 		s, err = json.Marshal(tree)
 	case "yaml":
 		s, err = yaml.Marshal(tree)
-	case "prettyjson":
-		s, err = prettyjson.Marshal(tree)
 	case "dot":
 		st, err = graphviz.Walk("", tree, "root")
 		s = []byte(fmt.Sprintf("digraph {\n%s\n}\n", st))
