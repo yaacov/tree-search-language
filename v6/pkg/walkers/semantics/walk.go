@@ -138,12 +138,12 @@ func evalBinaryExpr(expr tsl.TSLExpressionOp, eval EvalFunc) (interface{}, error
 		return evalIsOp(leftVal, rightVal, expr.Operator)
 	}
 
-	return nil, UnexpectedOperatorError{Operator: expr.Operator}
+	return nil, tsl.UnexpectedOperatorError{Operator: expr.Operator}
 }
 
 func evalUnaryExpr(expr tsl.TSLExpressionOp, eval EvalFunc) (interface{}, error) {
 	if expr.Operator != tsl.OpNot {
-		return nil, UnexpectedOperatorError{Operator: expr.Operator}
+		return nil, tsl.UnexpectedOperatorError{Operator: expr.Operator}
 	}
 
 	rightVal, err := Walk(expr.Right, eval)
@@ -153,7 +153,7 @@ func evalUnaryExpr(expr tsl.TSLExpressionOp, eval EvalFunc) (interface{}, error)
 
 	rightBool, ok := rightVal.(bool)
 	if !ok {
-		return nil, TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", rightVal)}
+		return nil, tsl.TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", rightVal)}
 	}
 
 	return !rightBool, nil
@@ -164,7 +164,7 @@ func evalComparisonOp(left, right interface{}, op tsl.Operator) (interface{}, er
 	case string:
 		r, ok := right.(string)
 		if !ok {
-			return nil, TypeMismatchError{Expected: "string", Got: fmt.Sprintf("%T", right)}
+			return nil, tsl.TypeMismatchError{Expected: "string", Got: fmt.Sprintf("%T", right)}
 		}
 		result, err := compareStrings(l, r, op)
 		return result, err
@@ -172,7 +172,7 @@ func evalComparisonOp(left, right interface{}, op tsl.Operator) (interface{}, er
 	case float64:
 		r, ok := right.(float64)
 		if !ok {
-			return nil, TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", right)}
+			return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", right)}
 		}
 		result, err := compareNumbers(l, r, op)
 		return result, err
@@ -180,7 +180,7 @@ func evalComparisonOp(left, right interface{}, op tsl.Operator) (interface{}, er
 	case time.Time:
 		r, ok := right.(time.Time)
 		if !ok {
-			return nil, TypeMismatchError{Expected: "time", Got: fmt.Sprintf("%T", right)}
+			return nil, tsl.TypeMismatchError{Expected: "time", Got: fmt.Sprintf("%T", right)}
 		}
 		result, err := compareDates(l, r, op)
 		return result, err
@@ -188,23 +188,23 @@ func evalComparisonOp(left, right interface{}, op tsl.Operator) (interface{}, er
 	case bool:
 		r, ok := right.(bool)
 		if !ok {
-			return nil, TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", right)}
+			return nil, tsl.TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", right)}
 		}
 		result, err := compareBooleans(l, r, op)
 		return result, err
 	}
 
-	return nil, TypeMismatchError{Expected: "comparable type", Got: fmt.Sprintf("%T", left)}
+	return nil, tsl.TypeMismatchError{Expected: "comparable type", Got: fmt.Sprintf("%T", left)}
 }
 
 func evalLogicalOp(left, right interface{}, op tsl.Operator) (interface{}, error) {
 	leftBool, ok := left.(bool)
 	if !ok {
-		return nil, TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", left)}
+		return nil, tsl.TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", left)}
 	}
 	rightBool, ok := right.(bool)
 	if !ok {
-		return nil, TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", right)}
+		return nil, tsl.TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", right)}
 	}
 
 	switch op {
@@ -214,14 +214,14 @@ func evalLogicalOp(left, right interface{}, op tsl.Operator) (interface{}, error
 		return leftBool || rightBool, nil
 	}
 
-	return nil, UnexpectedOperatorError{Operator: op}
+	return nil, tsl.UnexpectedOperatorError{Operator: op}
 }
 
 func evalArrayOp(leftVal, rightVal interface{}, op tsl.Operator, eval EvalFunc) (interface{}, error) {
 	if op == tsl.OpBetween {
 		array, ok := rightVal.(tsl.TSLArrayLiteral)
 		if !ok || len(array.Values) != 2 {
-			return nil, fmt.Errorf("between operator requires exactly 2 values")
+			return nil, tsl.BetweenOperatorError{Message: "requires exactly 2 values"}
 		}
 
 		begin, err := Walk(array.Values[0], eval)
@@ -242,13 +242,13 @@ func evalArrayOp(leftVal, rightVal interface{}, op tsl.Operator, eval EvalFunc) 
 			leftTime := leftVal.(time.Time)
 			return !leftTime.Before(begin.(time.Time)) && leftTime.Before(end.(time.Time)), nil
 		}
-		return nil, TypeMismatchError{Expected: "comparable type", Got: fmt.Sprintf("%T", leftVal)}
+		return nil, tsl.TypeMismatchError{Expected: "comparable type", Got: fmt.Sprintf("%T", leftVal)}
 	}
 
 	// Handle IN operator
 	array, ok := rightVal.(tsl.TSLArrayLiteral)
 	if !ok {
-		return nil, TypeMismatchError{Expected: "array", Got: fmt.Sprintf("%T", rightVal)}
+		return nil, tsl.TypeMismatchError{Expected: "array", Got: fmt.Sprintf("%T", rightVal)}
 	}
 
 	for _, elem := range array.Values {
@@ -284,7 +284,7 @@ func evalIdentNode(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 
 func evalIsOp(leftVal, rightVal interface{}, op tsl.Operator) (interface{}, error) {
 	if op != tsl.OpIs {
-		return nil, UnexpectedOperatorError{Operator: op}
+		return nil, tsl.UnexpectedOperatorError{Operator: op}
 	}
 
 	// Handle IS NULL check
@@ -312,7 +312,7 @@ func compareStrings(left, right string, op tsl.Operator) (bool, error) {
 	case tsl.OpGE:
 		return left >= right, nil
 	}
-	return false, UnexpectedOperatorError{Operator: op}
+	return false, tsl.UnexpectedOperatorError{Operator: op}
 }
 
 func compareNumbers(left, right float64, op tsl.Operator) (bool, error) {
@@ -330,7 +330,7 @@ func compareNumbers(left, right float64, op tsl.Operator) (bool, error) {
 	case tsl.OpGE:
 		return left >= right, nil
 	}
-	return false, UnexpectedOperatorError{Operator: op}
+	return false, tsl.UnexpectedOperatorError{Operator: op}
 }
 
 func evaluateArithmetic(left, right float64, op tsl.Operator) (float64, error) {
@@ -343,16 +343,16 @@ func evaluateArithmetic(left, right float64, op tsl.Operator) (float64, error) {
 		return left * right, nil
 	case tsl.OpSlash:
 		if right == 0 {
-			return 0, fmt.Errorf("division by zero")
+			return 0, tsl.DivisionByZeroError{Operation: "division"}
 		}
 		return left / right, nil
 	case tsl.OpPercent:
 		if right == 0 {
-			return 0, fmt.Errorf("modulo by zero")
+			return 0, tsl.DivisionByZeroError{Operation: "modulo"}
 		}
 		return float64(int64(left) % int64(right)), nil
 	}
-	return 0, UnexpectedOperatorError{Operator: op}
+	return 0, tsl.UnexpectedOperatorError{Operator: op}
 }
 
 func compareDates(left, right time.Time, op tsl.Operator) (bool, error) {
@@ -370,7 +370,7 @@ func compareDates(left, right time.Time, op tsl.Operator) (bool, error) {
 	case tsl.OpGE:
 		return right.Before(left) || left.Equal(right), nil
 	}
-	return false, UnexpectedOperatorError{Operator: op}
+	return false, tsl.UnexpectedOperatorError{Operator: op}
 }
 
 func compareBooleans(left, right bool, op tsl.Operator) (bool, error) {
@@ -380,14 +380,14 @@ func compareBooleans(left, right bool, op tsl.Operator) (bool, error) {
 	case tsl.OpNE:
 		return left != right, nil
 	}
-	return false, UnexpectedOperatorError{Operator: op}
+	return false, tsl.UnexpectedOperatorError{Operator: op}
 }
 
 func evalStringMatchOp(leftVal, rightVal interface{}, op tsl.Operator) (interface{}, error) {
 	leftStr, ok1 := leftVal.(string)
 	rightStr, ok2 := rightVal.(string)
 	if !ok1 || !ok2 {
-		return nil, TypeMismatchError{Expected: "string", Got: fmt.Sprintf("%T,%T", leftVal, rightVal)}
+		return nil, tsl.TypeMismatchError{Expected: "string", Got: fmt.Sprintf("%T,%T", leftVal, rightVal)}
 	}
 
 	// Case-insensitive comparison for ILIKE
@@ -424,7 +424,7 @@ func evalStringMatchOp(leftVal, rightVal interface{}, op tsl.Operator) (interfac
 		return !matched, nil
 	}
 
-	return nil, UnexpectedOperatorError{Operator: op}
+	return nil, tsl.UnexpectedOperatorError{Operator: op}
 }
 
 // Walk performs semantic validation on the TSL tree and returns a bool indicating validity
@@ -439,7 +439,7 @@ func validateTree(n *tsl.TSLNode) error {
 		tsl.KindArrayLiteral, tsl.KindNullLiteral:
 		return nil
 	default:
-		return UnexpectedTypeError{Type: n.Type()}
+		return tsl.UnexpectedTypeError{Type: n.Type()}
 	}
 }
 
@@ -482,7 +482,7 @@ func validateBinaryExpr(n *tsl.TSLNode) error {
 	case tsl.OpIs:
 		return validateNullOperands(op.Left, op.Right)
 	default:
-		return UnexpectedOperatorError{Operator: op.Operator}
+		return tsl.UnexpectedOperatorError{Operator: op.Operator}
 	}
 }
 
@@ -495,7 +495,7 @@ func validateUnaryExpr(n *tsl.TSLNode) error {
 	}
 
 	if op.Operator != tsl.OpNot {
-		return UnexpectedOperatorError{Operator: op.Operator}
+		return tsl.UnexpectedOperatorError{Operator: op.Operator}
 	}
 
 	return nil
@@ -514,37 +514,37 @@ func validateArithmeticOperands(_, _ *tsl.TSLNode) error {
 func validateComparisonOperands(left, _ *tsl.TSLNode) error {
 	// Allow comparison between identifiers and literals
 	if left.Type() != tsl.KindIdentifier {
-		return TypeMismatchError{Expected: "identifier", Got: left.Type()}
+		return tsl.TypeMismatchError{Expected: "identifier", Got: left.Type()}
 	}
 	return nil
 }
 
 func validateStringOperands(left, right *tsl.TSLNode) error {
 	if left.Type() != tsl.KindIdentifier {
-		return TypeMismatchError{Expected: "identifier", Got: left.Type()}
+		return tsl.TypeMismatchError{Expected: "identifier", Got: left.Type()}
 	}
 	if right.Type() != tsl.KindStringLiteral {
-		return TypeMismatchError{Expected: "string", Got: right.Type()}
+		return tsl.TypeMismatchError{Expected: "string", Got: right.Type()}
 	}
 	return nil
 }
 
 func validateArrayOperands(left, right *tsl.TSLNode) error {
 	if left.Type() != tsl.KindIdentifier {
-		return TypeMismatchError{Expected: "identifier", Got: left.Type()}
+		return tsl.TypeMismatchError{Expected: "identifier", Got: left.Type()}
 	}
 	if right.Type() != tsl.KindArrayLiteral {
-		return TypeMismatchError{Expected: "array", Got: right.Type()}
+		return tsl.TypeMismatchError{Expected: "array", Got: right.Type()}
 	}
 	return nil
 }
 
 func validateNullOperands(left, right *tsl.TSLNode) error {
 	if left.Type() != tsl.KindIdentifier {
-		return TypeMismatchError{Expected: "identifier", Got: left.Type()}
+		return tsl.TypeMismatchError{Expected: "identifier", Got: left.Type()}
 	}
 	if right.Type() != tsl.KindNullLiteral {
-		return TypeMismatchError{Expected: "NULL", Got: right.Type()}
+		return tsl.TypeMismatchError{Expected: "NULL", Got: right.Type()}
 	}
 	return nil
 }

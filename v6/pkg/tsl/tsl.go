@@ -25,7 +25,6 @@ package tsl
 */
 import "C"
 import (
-	"fmt"
 	"time"
 	"unsafe"
 )
@@ -60,7 +59,12 @@ func ParseTSL(input string) (*TSLNode, error) {
 		// Cleanup parser memory after getting error information
 		C.cleanup_parser_memory()
 
-		return nil, fmt.Errorf("%s at position %d:\n%s\n%s", errStr, errPos, input, errCtx)
+		return nil, &SyntaxError{
+			Message:  errStr,
+			Position: errPos,
+			Context:  errCtx,
+			Input:    input,
+		}
 	}
 
 	// Cleanup parser memory after successful parse

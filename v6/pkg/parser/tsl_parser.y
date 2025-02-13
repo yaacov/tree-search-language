@@ -1,8 +1,8 @@
 %{
-#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "tsl.h"
 #include "tsl_ast.h"
 #include "tsl_lexer.h"
@@ -42,6 +42,15 @@ char *error_string = NULL;
 %token LBRACKET RBRACKET
 %token <str> NUMERIC_LITERAL STRING_LITERAL IDENTIFIER
 
+/* Operator precedence and associativity */
+%left K_OR                         /* lowest precedence */
+%left K_AND
+%left EQ NE LT LE GT GE REQ RNE
+%left K_LIKE K_ILIKE K_IS K_BETWEEN K_IN
+%left PLUS MINUS                   /* + - */
+%left STAR SLASH PERCENT           /* * / % */
+%right K_NOT                       /* unary NOT */
+
 /* Bison semantic value type */
 %union {
     ast_node *node;
@@ -49,19 +58,10 @@ char *error_string = NULL;
     char *str;
 }
 
-/* Operator precedence and associativity */
-%left K_OR
-%left K_AND
-%right K_NOT
-%left EQ NE LT LE GT GE REQ RNE
-%left K_IN K_BETWEEN K_LIKE K_ILIKE
-%left K_IS
-%right UMINUS
-%left STAR SLASH PERCENT    
-%left PLUS MINUS         
-
 /* Nonterminal types */
-%type <node> input expr primary array_elements array
+%type <node> input expr or_expr and_expr comparison_expr
+%type <node> additive_expr multiplicative_expr not_expr unary_expr
+%type <node> primary array_elements array
 
 %start input
 
@@ -72,63 +72,92 @@ input:
     ;
 
 expr:
-      expr PLUS expr          { $$ = ast_create_binary(PLUS, $1, $3); }
-    | expr MINUS expr         { $$ = ast_create_binary(MINUS, $1, $3); }
-    | expr STAR expr          { $$ = ast_create_binary(STAR, $1, $3); }
-    | expr SLASH expr         { $$ = ast_create_binary(SLASH, $1, $3); }
-    | expr PERCENT expr       { $$ = ast_create_binary(PERCENT, $1, $3); }
-    | expr K_BETWEEN expr K_AND expr  { 
-                                      ast_node **elements = malloc(2 * sizeof(ast_node*));
-                                      elements[0] = $3;
-                                      elements[1] = $5;
-                                      ast_node *range = ast_create_array(2, elements);
-                                      $$ = ast_create_binary(K_BETWEEN, $1, range);
-                                      free(elements);
-                                    }
-    | expr K_NOT K_BETWEEN expr K_AND expr  {
-                                      ast_node **elements = malloc(2 * sizeof(ast_node*));
-                                      elements[0] = $4;
-                                      elements[1] = $6;
-                                      ast_node *range = ast_create_array(2, elements);
-                                      ast_node *between = ast_create_binary(K_BETWEEN, $1, range);
-                                      $$ = ast_create_unary(K_NOT, between);
-                                      free(elements);
-                                    }
-    | expr K_AND expr         { $$ = ast_create_binary(K_AND, $1, $3); }
-    | expr K_OR expr          { $$ = ast_create_binary(K_OR, $1, $3); }
-    | K_NOT expr              { $$ = ast_create_unary(K_NOT, $2); }
-    | MINUS expr %prec UMINUS { $$ = ast_create_unary(MINUS, $2); }
-    | expr K_IN array         { $$ = ast_create_binary(K_IN, $1, $3); }
-    | expr K_NOT K_IN array   { 
-        ast_node *in_node = ast_create_binary(K_IN, $1, $4);
-        $$ = ast_create_unary(K_NOT, in_node);
+    or_expr
+    ;
+
+or_expr:
+      and_expr
+    | or_expr K_OR and_expr        { $$ = ast_create_binary(K_OR, $1, $3); }
+    ;
+
+and_expr:
+      comparison_expr
+    | and_expr K_AND comparison_expr      { $$ = ast_create_binary(K_AND, $1, $3); }
+    ;
+
+comparison_expr:
+      additive_expr
+    | comparison_expr EQ additive_expr      { $$ = ast_create_binary(EQ, $1, $3); }
+    | comparison_expr NE additive_expr      { $$ = ast_create_binary(NE, $1, $3); }
+    | comparison_expr LT additive_expr      { $$ = ast_create_binary(LT, $1, $3); }
+    | comparison_expr LE additive_expr      { $$ = ast_create_binary(LE, $1, $3); }
+    | comparison_expr GT additive_expr      { $$ = ast_create_binary(GT, $1, $3); }
+    | comparison_expr GE additive_expr      { $$ = ast_create_binary(GE, $1, $3); }
+    | comparison_expr REQ additive_expr     { $$ = ast_create_binary(REQ, $1, $3); }
+    | comparison_expr RNE additive_expr     { $$ = ast_create_binary(RNE, $1, $3); }
+    | comparison_expr K_LIKE additive_expr  { $$ = ast_create_binary(K_LIKE, $1, $3); }
+    | comparison_expr K_ILIKE additive_expr { $$ = ast_create_binary(K_ILIKE, $1, $3); }
+    | comparison_expr K_NOT K_LIKE additive_expr  { 
+        ast_node *like_expr = ast_create_binary(K_LIKE, $1, $4);
+        $$ = ast_create_unary(K_NOT, like_expr);
     }
-    | expr K_IS K_NULL        { $$ = ast_create_binary(K_IS, $1, ast_create_null()); }
-    | expr K_IS K_NOT K_NULL  { 
-        ast_node *is_node = ast_create_binary(K_IS, $1, ast_create_null());
-        $$ = ast_create_unary(K_NOT, is_node);
+    | comparison_expr K_NOT K_ILIKE additive_expr { 
+        ast_node *ilike_expr = ast_create_binary(K_ILIKE, $1, $4);
+        $$ = ast_create_unary(K_NOT, ilike_expr);
     }
-    | expr K_LIKE expr          { $$ = ast_create_binary(K_LIKE, $1, $3); }
-    | expr K_ILIKE expr         { $$ = ast_create_binary(K_ILIKE, $1, $3); }
-    | expr K_NOT K_LIKE expr    { 
-                                 ast_node *like_node = ast_create_binary(K_LIKE, $1, $4);
-                                 $$ = ast_create_unary(K_NOT, like_node);
-                               }
-    | expr K_NOT K_ILIKE expr   { 
-                                 ast_node *ilike_node = ast_create_binary(K_ILIKE, $1, $4);
-                                 $$ = ast_create_unary(K_NOT, ilike_node);
-                               }
-    | expr EQ expr           { $$ = ast_create_binary(EQ, $1, $3); }
-    | expr NE expr           { $$ = ast_create_binary(NE, $1, $3); }
-    | expr LT expr           { $$ = ast_create_binary(LT, $1, $3); }
-    | expr LE expr           { $$ = ast_create_binary(LE, $1, $3); }
-    | expr GT expr           { $$ = ast_create_binary(GT, $1, $3); }
-    | expr GE expr           { $$ = ast_create_binary(GE, $1, $3); }
-    | expr REQ expr          { $$ = ast_create_binary(REQ, $1, $3); }
-    | expr RNE expr          { $$ = ast_create_binary(RNE, $1, $3); }
-    | LPAREN expr RPAREN     { $$ = $2; }
-    | primary                { $$ = $1; }
-    | array                  { $$ = $1; }
+    | comparison_expr K_IS K_NULL           { $$ = ast_create_binary(K_IS, $1, ast_create_null()); }
+    | comparison_expr K_IS K_NOT K_NULL     { 
+        ast_node *is_null = ast_create_binary(K_IS, $1, ast_create_null());
+        $$ = ast_create_unary(K_NOT, is_null);
+    }
+    | comparison_expr K_BETWEEN additive_expr K_AND additive_expr {
+        ast_node **elements = malloc(2 * sizeof(ast_node*));
+        elements[0] = $3;
+        elements[1] = $5;
+        ast_node *range = ast_create_array(2, elements);
+        $$ = ast_create_binary(K_BETWEEN, $1, range);
+        free(elements);
+    }
+    | comparison_expr K_NOT K_BETWEEN additive_expr K_AND additive_expr {
+        ast_node **elements = malloc(2 * sizeof(ast_node*));
+        elements[0] = $4;
+        elements[1] = $6;
+        ast_node *range = ast_create_array(2, elements);
+        ast_node *between = ast_create_binary(K_BETWEEN, $1, range);
+        $$ = ast_create_unary(K_NOT, between);
+        free(elements);
+    }
+    | comparison_expr K_IN array           { $$ = ast_create_binary(K_IN, $1, $3); }
+    | comparison_expr K_NOT K_IN array     {
+        ast_node *in_expr = ast_create_binary(K_IN, $1, $4);
+        $$ = ast_create_unary(K_NOT, in_expr);
+    }
+    | K_NOT comparison_expr               { $$ = ast_create_unary(K_NOT, $2); }
+    ;
+
+additive_expr:
+      multiplicative_expr
+    | additive_expr PLUS multiplicative_expr   { $$ = ast_create_binary(PLUS, $1, $3); }
+    | additive_expr MINUS multiplicative_expr  { $$ = ast_create_binary(MINUS, $1, $3); }
+    ;
+
+multiplicative_expr:
+      not_expr
+    | multiplicative_expr STAR not_expr    { $$ = ast_create_binary(STAR, $1, $3); }
+    | multiplicative_expr SLASH not_expr   { $$ = ast_create_binary(SLASH, $1, $3); }
+    | multiplicative_expr PERCENT not_expr { $$ = ast_create_binary(PERCENT, $1, $3); }
+    ;
+
+not_expr:
+      unary_expr
+    | K_NOT not_expr               { $$ = ast_create_unary(K_NOT, $2); }
+    ;
+
+unary_expr:
+      primary
+    | MINUS primary                { $$ = ast_create_unary(MINUS, $2); }
+    | LPAREN expr RPAREN           { $$ = $2; }
+    | array                        { $$ = $1; }
     ;
 
 array:
@@ -157,31 +186,13 @@ array_elements:
     ;
 
 primary:
-      NUMERIC_LITERAL       { 
-                              char *endptr;
-                              double value = strtod($1, &endptr);
-                              if (*endptr != '\0') {  // Has suffix
-                                  double multiplier = 1024.0;  // Default to binary (Ki)
-                                  if (*(endptr + 1) != 'i') {  // If not Ki/Mi/Gi, use decimal K/M/G
-                                      multiplier = 1000.0;
-                                  }
-                                  switch(tolower(*endptr)) {
-                                      case 'k': value *= multiplier; break;
-                                      case 'm': value *= multiplier * multiplier; break;
-                                      case 'g': value *= multiplier * multiplier * multiplier; break;
-                                      case 't': value *= multiplier * multiplier * multiplier * multiplier; break;
-                                      case 'p': value *= multiplier * multiplier * multiplier * multiplier * multiplier; break;
-                                  }
-                              }
-                              $$ = ast_create_number(value); 
-                              free($1); 
-                            }
-    | STRING_LITERAL          { $$ = ast_create_string($1); free($1); }
-    | IDENTIFIER              { $$ = ast_create_identifier($1); free($1); }
-    | RFC3339                 { $$ = ast_create_rfc3339($1); free($1); }
-    | DATE                    { $$ = ast_create_date($1); free($1); }
-    | K_TRUE                  { $$ = ast_create_boolean(1); }
-    | K_FALSE                 { $$ = ast_create_boolean(0); }
+      NUMERIC_LITERAL       { $$ = ast_create_number($1); free($1); }
+    | STRING_LITERAL        { $$ = ast_create_string($1); free($1); }
+    | IDENTIFIER            { $$ = ast_create_identifier($1); free($1); }
+    | RFC3339               { $$ = ast_create_rfc3339($1); free($1); }
+    | DATE                  { $$ = ast_create_date($1); free($1); }
+    | K_TRUE                { $$ = ast_create_boolean(1); }
+    | K_FALSE               { $$ = ast_create_boolean(0); }
     ;
 
 %%

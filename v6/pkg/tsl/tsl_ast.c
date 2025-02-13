@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>  /* Added for tolower() */
 #include "tsl_ast.h"
 
 /* Error position tracking */
@@ -14,9 +15,27 @@ int get_error_position(void) {
     return current_error_position;
 }
 
-ast_node *ast_create_number(double value) {
+ast_node *ast_create_number(const char *value_str) {
     ast_node *node = malloc(sizeof(ast_node));
     node->type = AST_NUMBER;
+
+    char *endptr;
+    double value = strtod(value_str, &endptr);
+    
+    if (*endptr != '\0') {  // Has suffix
+        double multiplier = 1024.0;  // Default to binary (Ki)
+        if (*(endptr + 1) != 'i') {  // If not Ki/Mi/Gi, use decimal K/M/G
+            multiplier = 1000.0;
+        }
+        switch(tolower(*endptr)) {
+            case 'k': value *= multiplier; break;
+            case 'm': value *= multiplier * multiplier; break;
+            case 'g': value *= multiplier * multiplier * multiplier; break;
+            case 't': value *= multiplier * multiplier * multiplier * multiplier; break;
+            case 'p': value *= multiplier * multiplier * multiplier * multiplier * multiplier; break;
+        }
+    }
+    
     node->data.number = value;
     return node;
 }
