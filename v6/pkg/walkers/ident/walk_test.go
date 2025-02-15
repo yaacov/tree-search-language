@@ -57,9 +57,11 @@ var _ = Describe("Walk", func() {
 	It("Should extract and replace identifiers in simple expression", func() {
 		tree, err := tsl.ParseTSL("name = 'john'")
 		Expect(err).ToNot(HaveOccurred())
+		defer tree.Free()
 
 		newTree, idents, err := Walk(tree, check)
 		Expect(err).ToNot(HaveOccurred())
+		defer newTree.Free()
 		Expect(idents).To(HaveLen(1))
 		Expect(idents).To(ContainElement("name"))
 
@@ -72,9 +74,11 @@ var _ = Describe("Walk", func() {
 	It("Should extract and replace multiple identifiers", func() {
 		tree, err := tsl.ParseTSL("age > 20 and city = 'London'")
 		Expect(err).ToNot(HaveOccurred())
+		defer tree.Free()
 
 		newTree, idents, err := Walk(tree, check)
 		Expect(err).ToNot(HaveOccurred())
+		defer newTree.Free()
 		sort.Strings(idents)
 		Expect(idents).To(Equal([]string{"age", "city"}))
 
@@ -89,9 +93,11 @@ var _ = Describe("Walk", func() {
 	It("Should handle complex nested expressions", func() {
 		tree, err := tsl.ParseTSL("(name = 'john' or age > 20) and (city = 'London' or country = 'UK')")
 		Expect(err).ToNot(HaveOccurred())
+		defer tree.Free()
 
 		newTree, idents, err := Walk(tree, check)
 		Expect(err).ToNot(HaveOccurred())
+		defer newTree.Free()
 		sort.Strings(idents)
 		Expect(idents).To(Equal([]string{"age", "city", "country", "name"}))
 
@@ -102,8 +108,12 @@ var _ = Describe("Walk", func() {
 	It("Should return error for unknown identifiers", func() {
 		tree, err := tsl.ParseTSL("unknown_column > 100")
 		Expect(err).ToNot(HaveOccurred())
+		defer tree.Free()
 
-		_, _, err = Walk(tree, check)
+		newTree, _, err := Walk(tree, check)
+		if err == nil {
+			defer newTree.Free()
+		}
 		Expect(err).To(HaveOccurred())
 		Expect(err.Error()).To(ContainSubstring("column not found: unknown_column"))
 	})
@@ -111,9 +121,11 @@ var _ = Describe("Walk", func() {
 	It("Should handle nested field names", func() {
 		tree, err := tsl.ParseTSL("spec.pages > 100 and spec.rating = 5")
 		Expect(err).ToNot(HaveOccurred())
+		defer tree.Free()
 
 		newTree, idents, err := Walk(tree, check)
 		Expect(err).ToNot(HaveOccurred())
+		defer newTree.Free()
 		sort.Strings(idents)
 		Expect(idents).To(Equal([]string{"spec.pages", "spec.rating"}))
 
