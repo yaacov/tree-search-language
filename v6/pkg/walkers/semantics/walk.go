@@ -185,7 +185,7 @@ func Walk(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 				return nil, tsl.TypeMismatchError{Expected: "array", Got: fmt.Sprintf("%T", rightVal)}
 			}
 			if len(rightArray) != 2 {
-				return nil, tsl.TypeMismatchError{Expected: "2 values", Got: fmt.Sprintf("%d values", len(rightArray))}
+				return nil, tsl.TypeMismatchError{Expected: "min and max values", Got: fmt.Sprintf("%d values", len(rightArray))}
 			}
 
 			return EvalBetween(leftVal, rightArray[0], rightArray[1])

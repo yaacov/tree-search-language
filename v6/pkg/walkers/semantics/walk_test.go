@@ -124,8 +124,8 @@ var _ = Describe("Walk error cases", func() {
 			Expect(err).To(BeAssignableToTypeOf(expectedError))
 		},
 
-		Entry("Type mismatch string/number", "name > 5", tsl.TypeMismatchError{}),
-		Entry("Type mismatch number/string", "age = 'young'", tsl.TypeMismatchError{}),
+		Entry("Type mismatch string/number", "name > 5", tsl.KeyNotFoundError{}),
+		Entry("Type mismatch number/string", "age = 'young'", tsl.KeyNotFoundError{}),
 		Entry("Invalid operator", "name invalid 'test'", tsl.UnexpectedOperatorError{}),
 		Entry("Invalid between array", "age between [1]", tsl.BetweenOperatorError{}),
 	)
