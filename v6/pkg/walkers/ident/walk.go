@@ -55,6 +55,7 @@ import (
 //	//
 //	// the new tree will contain: `pages > 100 AND author = "Joe"`
 //	newTree, identifiers, err = ident.Walk(tree, check)
+//	defer newTree.Free()
 func Walk(n *tsl.TSLNode, check func(s string) (string, error)) (*tsl.TSLNode, []string, error) {
 	if n == nil {
 		return nil, nil, nil
@@ -82,7 +83,19 @@ func Walk(n *tsl.TSLNode, check func(s string) (string, error)) (*tsl.TSLNode, [
 	return newTree, identList, nil
 }
 
-// walkAndReplace recursively traverses the tree, replacing identifiers
+// processIdentifier handles the common logic for processing identifier nodes
+func processIdentifier(n *tsl.TSLNode, identifiers map[string]bool, check func(s string) (string, error)) (*tsl.TSLNode, error) {
+	ident := n.Value().(string)
+	identifiers[ident] = true
+
+	newIdent, err := check(ident)
+	if err != nil {
+		return nil, err
+	}
+
+	return tsl.ParseTSL(newIdent)
+}
+
 func walkAndReplace(n *tsl.TSLNode, check func(s string) (string, error), identifiers map[string]bool) (*tsl.TSLNode, error) {
 	if n == nil {
 		return nil, nil
@@ -95,15 +108,7 @@ func walkAndReplace(n *tsl.TSLNode, check func(s string) (string, error), identi
 		// Process both sides of the binary expression
 		left := op.Left
 		if left.Type() == tsl.KindIdentifier {
-			ident := left.Value().(string)
-			identifiers[ident] = true
-
-			newIdent, err := check(ident)
-			if err != nil {
-				return nil, err
-			}
-
-			newNode, err := tsl.ParseTSL(newIdent)
+			newNode, err := processIdentifier(left, identifiers, check)
 			if err != nil {
 				return nil, err
 			}
@@ -117,15 +122,7 @@ func walkAndReplace(n *tsl.TSLNode, check func(s string) (string, error), identi
 
 		right := op.Right
 		if right.Type() == tsl.KindIdentifier {
-			ident := right.Value().(string)
-			identifiers[ident] = true
-
-			newIdent, err := check(ident)
-			if err != nil {
-				return nil, err
-			}
-
-			newNode, err := tsl.ParseTSL(newIdent)
+			newNode, err := processIdentifier(right, identifiers, check)
 			if err != nil {
 				return nil, err
 			}
@@ -145,15 +142,7 @@ func walkAndReplace(n *tsl.TSLNode, check func(s string) (string, error), identi
 		// Process the operand
 		right := op.Right
 		if right.Type() == tsl.KindIdentifier {
-			ident := right.Value().(string)
-			identifiers[ident] = true
-
-			newIdent, err := check(ident)
-			if err != nil {
-				return nil, err
-			}
-
-			newNode, err := tsl.ParseTSL(newIdent)
+			newNode, err := processIdentifier(right, identifiers, check)
 			if err != nil {
 				return nil, err
 			}
@@ -168,15 +157,7 @@ func walkAndReplace(n *tsl.TSLNode, check func(s string) (string, error), identi
 		return n, nil
 
 	case tsl.KindIdentifier:
-		ident := n.Value().(string)
-		identifiers[ident] = true
-
-		newIdent, err := check(ident)
-		if err != nil {
-			return nil, err
-		}
-
-		return tsl.ParseTSL(newIdent)
+		return processIdentifier(n, identifiers, check)
 
 	default:
 		return n, nil

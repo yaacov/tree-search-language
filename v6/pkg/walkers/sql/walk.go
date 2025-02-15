@@ -149,9 +149,9 @@ func binaryStep(n *tsl.TSLNode) (s sq.Sqlizer, err error) {
 	case tsl.OpGE:
 		return sq.Expr("? >= ?", l, r), nil
 	case tsl.OpREQ:
-		return sq.Expr("? REGEXP ?", l, r), nil
+		return sq.Expr("? REGEXP ?", l, r), nil // MySQL specific
 	case tsl.OpRNE:
-		return sq.Expr("NOT (? REGEXP ?)", l, r), nil
+		return sq.Expr("NOT (? REGEXP ?)", l, r), nil // MySQL specific
 
 	// Logical operators
 	case tsl.OpAnd:
@@ -163,7 +163,7 @@ func binaryStep(n *tsl.TSLNode) (s sq.Sqlizer, err error) {
 	case tsl.OpLike:
 		return sq.Expr("? LIKE ?", l, r), nil
 	case tsl.OpILike:
-		return sq.Expr("? ILIKE ?", l, r), nil
+		return sq.Expr("? ILIKE ?", l, r), nil // PostgreSQL specific
 
 	// Null operator
 	case tsl.OpIs:
