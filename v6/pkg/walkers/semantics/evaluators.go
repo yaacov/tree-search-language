@@ -32,6 +32,13 @@ func EvalIdent(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 		return nil, tsl.KeyNotFoundError{Key: identName}
 	}
 
+	// Check if value is a string and matches ISO date and time format
+	if strValue, ok := value.(string); ok {
+		if t, err := time.Parse(time.RFC3339, strValue); err == nil {
+			return t, nil
+		}
+	}
+
 	return value, nil
 }
 

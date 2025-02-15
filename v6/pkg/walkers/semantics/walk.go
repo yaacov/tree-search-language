@@ -21,6 +21,7 @@ package semantics
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/yaacov/tree-search-language/v6/pkg/tsl"
 )
@@ -98,46 +99,37 @@ func Walk(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 			return leftVal == rightVal, nil
 		case tsl.OpNE:
 			return leftVal != rightVal, nil
-		case tsl.OpLT:
-			leftNum, ok := toFloat64(leftVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", leftVal)}
+		case tsl.OpLT, tsl.OpLE, tsl.OpGT, tsl.OpGE:
+			leftNum, leftIsNum := toFloat64(leftVal)
+			rightNum, rightIsNum := toFloat64(rightVal)
+			leftDate, leftIsDate := toDate(leftVal)
+			rightDate, rightIsDate := toDate(rightVal)
+
+			if leftIsNum && rightIsNum {
+				switch exprOp.Operator {
+				case tsl.OpLT:
+					return leftNum < rightNum, nil
+				case tsl.OpLE:
+					return leftNum <= rightNum, nil
+				case tsl.OpGT:
+					return leftNum > rightNum, nil
+				case tsl.OpGE:
+					return leftNum >= rightNum, nil
+				}
+			} else if leftIsDate && rightIsDate {
+				switch exprOp.Operator {
+				case tsl.OpLT:
+					return leftDate.Before(rightDate), nil
+				case tsl.OpLE:
+					return leftDate.Before(rightDate) || leftDate.Equal(rightDate), nil
+				case tsl.OpGT:
+					return leftDate.After(rightDate), nil
+				case tsl.OpGE:
+					return leftDate.After(rightDate) || leftDate.Equal(rightDate), nil
+				}
+			} else {
+				return nil, tsl.TypeMismatchError{Expected: "number or date", Got: fmt.Sprintf("%T and %T", leftVal, rightVal)}
 			}
-			rightNum, ok := toFloat64(rightVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", rightVal)}
-			}
-			return leftNum < rightNum, nil
-		case tsl.OpLE:
-			leftNum, ok := toFloat64(leftVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", leftVal)}
-			}
-			rightNum, ok := toFloat64(rightVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", rightVal)}
-			}
-			return leftNum <= rightNum, nil
-		case tsl.OpGT:
-			leftNum, ok := toFloat64(leftVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", leftVal)}
-			}
-			rightNum, ok := toFloat64(rightVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", rightVal)}
-			}
-			return leftNum > rightNum, nil
-		case tsl.OpGE:
-			leftNum, ok := toFloat64(leftVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", leftVal)}
-			}
-			rightNum, ok := toFloat64(rightVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", rightVal)}
-			}
-			return leftNum >= rightNum, nil
 		case tsl.OpREQ:
 			return EvalRegexp(leftVal, rightVal)
 		case tsl.OpRNE:
@@ -283,8 +275,16 @@ func Walk(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 		}
 
 	case tsl.KindArrayLiteral:
-		// array literals should be handled by the binary expression
-		return nil, nil
+		exprOp := n.Value().(tsl.TSLArrayLiteral)
+		values := make([]interface{}, len(exprOp.Values))
+		for i, v := range exprOp.Values {
+			val, err := Walk(v, eval)
+			if err != nil {
+				return nil, err
+			}
+			values[i] = val
+		}
+		return values, nil
 
 	case tsl.KindNullLiteral:
 		// null literal should be handled by the is expression
@@ -293,4 +293,19 @@ func Walk(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 	default:
 		return n.Value(), nil
 	}
+
+	return nil, nil
+}
+
+func toDate(value interface{}) (time.Time, bool) {
+	switch v := value.(type) {
+	case time.Time:
+		return v, true
+	case string:
+		date, err := time.Parse(time.RFC3339, v)
+		if err == nil {
+			return date, true
+		}
+	}
+	return time.Time{}, false
 }

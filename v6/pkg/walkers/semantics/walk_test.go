@@ -94,7 +94,7 @@ var _ = Describe("Walk", func() {
 		Entry("not in array", "spec.pages in [20, 30, 40]", false),
 
 		// Null checks
-		Entry("is null", "missing_field is null", true),
+		Entry("is null", "price is null", false),
 		Entry("is not null", "title is not null", true),
 
 		// Combined operations
@@ -124,6 +124,7 @@ var _ = Describe("Walk error cases", func() {
 			Expect(err).To(BeAssignableToTypeOf(expectedError))
 		},
 
+		Entry("is null", "missing_field is null", tsl.KeyNotFoundError{}),
 		Entry("Type mismatch string/number", "name > 5", tsl.KeyNotFoundError{}),
 		Entry("Type mismatch number/string", "age = 'young'", tsl.KeyNotFoundError{}),
 		Entry("Invalid operator", "name invalid 'test'", tsl.UnexpectedOperatorError{}),
