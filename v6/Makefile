@@ -44,6 +44,7 @@ help:
 	@echo "  test-coverage - Run tests with coverage report"
 	@echo "  test-file     - Run tests for a specific file"
 	@echo "  clean         - Remove built files and directories"
+	@echo "  clean         - Remove built files and directories and generated files"
 	@echo "  help          - Show this help message"
 
 generate:
@@ -78,4 +79,7 @@ tsl_mem: generate
 	$(GO) build -o $(GO_MEM_BIN) ./$(GO_MEM_CMD)
 
 clean:
+	rm -rf $(GO_BIN) $(GO_PARSER_BIN) $(GO_MEM_BIN) coverage.out
+
+clean-all:
 	rm -rf pkg/tsl/tsl_parser.tab.* pkg/tsl/lex.yy.c $(GO_BIN) $(GO_PARSER_BIN) $(GO_MEM_BIN) coverage.out
