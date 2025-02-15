@@ -1,7 +1,7 @@
 
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/yaacov/tree-search-language/master/img/v5/search-162.png" alt="TSL Logo">
+  <img src="https://raw.githubusercontent.com/yaacov/tree-search-language/master/v5/img/search-162.png" alt="TSL Logo">
 </p>
 
 # Tree Search Language (TSL)
