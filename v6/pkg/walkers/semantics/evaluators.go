@@ -9,8 +9,8 @@ import (
 	"github.com/yaacov/tree-search-language/v6/pkg/tsl"
 )
 
-// EvaluateIdentifier evaluates an identifier node using the provided eval function
-func EvaluateIdentifier(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
+// handleIdentifier evaluates an identifier node using the provided eval function
+func handleIdentifier(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 	if n == nil {
 		return nil, nil
 	}
@@ -42,9 +42,9 @@ func EvaluateIdentifier(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 	return value, nil
 }
 
-// IsValueInArray checks if a value is in a list of values
+// isValueInArray checks if a value is in a list of values
 // Supports string, float64, time.Time, and bool values
-func IsValueInArray(value interface{}, arr []interface{}) (bool, error) {
+func isValueInArray(value interface{}, arr []interface{}) (bool, error) {
 	if value == nil || arr == nil {
 		return false, nil
 	}
@@ -94,9 +94,9 @@ func IsValueInArray(value interface{}, arr []interface{}) (bool, error) {
 	}
 }
 
-// IsValueInRange checks if a value is within a range (inclusive)
+// isValueInRange checks if a value is within a range (inclusive)
 // Supports both numeric values and time.Time comparisons
-func IsValueInRange(value, min, max interface{}) (bool, error) {
+func isValueInRange(value, min, max interface{}) (bool, error) {
 	switch v := value.(type) {
 	case float64:
 		minVal, okMin := toFloat64(min)
@@ -141,9 +141,9 @@ func IsValueInRange(value, min, max interface{}) (bool, error) {
 	}
 }
 
-// EvaluateLikePattern performs pattern matching with SQL LIKE semantics
+// evaluateLikePattern performs pattern matching with SQL LIKE semantics
 // Supports % for any sequence of characters and _ for single character
-func EvaluateLikePattern(value interface{}, pattern interface{}) (bool, error) {
+func evaluateLikePattern(value interface{}, pattern interface{}) (bool, error) {
 	valueStr, okValue := value.(string)
 	patternStr, okPattern := pattern.(string)
 
@@ -167,8 +167,8 @@ func EvaluateLikePattern(value interface{}, pattern interface{}) (bool, error) {
 	return matched, nil
 }
 
-// EvaluateCaseInsensitiveLike performs case-insensitive pattern matching with SQL LIKE semantics
-func EvaluateCaseInsensitiveLike(value interface{}, pattern interface{}) (bool, error) {
+// evaluateIlikePattern performs case-insensitive pattern matching with SQL LIKE semantics
+func evaluateIlikePattern(value interface{}, pattern interface{}) (bool, error) {
 	valueStr, okValue := value.(string)
 	patternStr, okPattern := pattern.(string)
 
@@ -185,11 +185,11 @@ func EvaluateCaseInsensitiveLike(value interface{}, pattern interface{}) (bool, 
 		}
 	}
 
-	return EvaluateLikePattern(strings.ToLower(valueStr), strings.ToLower(patternStr))
+	return evaluateLikePattern(strings.ToLower(valueStr), strings.ToLower(patternStr))
 }
 
-// EvaluateRegexMatch evaluates if a string matches a regular expression pattern
-func EvaluateRegexMatch(value interface{}, pattern interface{}) (bool, error) {
+// evaluateRegexMatch evaluates if a string matches a regular expression pattern
+func evaluateRegexMatch(value interface{}, pattern interface{}) (bool, error) {
 	valueStr, okValue := value.(string)
 	patternStr, okPattern := pattern.(string)
 

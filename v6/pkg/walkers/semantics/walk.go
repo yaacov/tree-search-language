@@ -76,13 +76,13 @@ func Walk(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 
 	switch n.Type() {
 	case tsl.KindIdentifier:
-		return EvaluateIdentifier(n, eval)
+		return handleIdentifier(n, eval)
 	case tsl.KindBinaryExpr:
-		return evaluateBinaryExpression(n, eval)
+		return handleBinaryExpression(n, eval)
 	case tsl.KindUnaryExpr:
-		return evaluateUnaryExpression(n, eval)
+		return handleUnaryExpression(n, eval)
 	case tsl.KindArrayLiteral:
-		return processArrayLiteral(n, eval)
+		return handleArrayLiteral(n, eval)
 	case tsl.KindNullLiteral:
 		// null literal should be handled by the is expression
 		return nil, nil
@@ -91,7 +91,7 @@ func Walk(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 	}
 }
 
-func evaluateBinaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
+func handleBinaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 	exprOp, ok := n.Value().(tsl.TSLExpressionOp)
 	if !ok {
 		return nil, tsl.TypeMismatchError{Expected: "TSLExpressionOp", Got: fmt.Sprintf("%T", n.Value())}
@@ -116,11 +116,11 @@ func evaluateBinaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error
 	case tsl.OpNE:
 		return leftVal != rightVal, nil
 	case tsl.OpLT, tsl.OpLE, tsl.OpGT, tsl.OpGE:
-		return compareExpressions(exprOp.Operator, leftVal, rightVal)
+		return evaluateCompareExpressions(exprOp.Operator, leftVal, rightVal)
 	case tsl.OpREQ:
-		return EvaluateRegexMatch(leftVal, rightVal)
+		return evaluateRegexMatch(leftVal, rightVal)
 	case tsl.OpRNE:
-		matched, err := EvaluateRegexMatch(leftVal, rightVal)
+		matched, err := evaluateRegexMatch(leftVal, rightVal)
 		if err != nil {
 			return nil, err
 		}
@@ -128,9 +128,9 @@ func evaluateBinaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error
 	case tsl.OpAnd, tsl.OpOr:
 		return evaluateLogicalExpression(exprOp.Operator, leftVal, rightVal)
 	case tsl.OpLike:
-		return EvaluateLikePattern(leftVal, rightVal)
+		return evaluateLikePattern(leftVal, rightVal)
 	case tsl.OpILike:
-		return EvaluateCaseInsensitiveLike(leftVal, rightVal)
+		return evaluateIlikePattern(leftVal, rightVal)
 	case tsl.OpIn:
 		// Try to extract the array values from the right side of the expression
 		rightArray, ok := rightVal.([]interface{})
@@ -138,7 +138,7 @@ func evaluateBinaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error
 			return nil, tsl.TypeMismatchError{Expected: "array", Got: fmt.Sprintf("%T", rightVal)}
 		}
 
-		return IsValueInArray(leftVal, rightArray)
+		return isValueInArray(leftVal, rightArray)
 	case tsl.OpBetween:
 		// Try to extract the array values from the right side of the expression
 		rightArray, ok := rightVal.([]interface{})
@@ -149,7 +149,7 @@ func evaluateBinaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error
 			return nil, tsl.TypeMismatchError{Expected: "min and max values", Got: fmt.Sprintf("%d values", len(rightArray))}
 		}
 
-		return IsValueInRange(leftVal, rightArray[0], rightArray[1])
+		return isValueInRange(leftVal, rightArray[0], rightArray[1])
 	case tsl.OpIs: // is null
 		if rightVal == nil {
 			return leftVal == nil, nil
@@ -214,7 +214,7 @@ func evaluateLogicalExpression(operator tsl.Operator, leftVal, rightVal interfac
 	}
 }
 
-func compareExpressions(operator tsl.Operator, leftVal, rightVal interface{}) (interface{}, error) {
+func evaluateCompareExpressions(operator tsl.Operator, leftVal, rightVal interface{}) (interface{}, error) {
 	leftNum, leftIsNum := toFloat64(leftVal)
 	rightNum, rightIsNum := toFloat64(rightVal)
 	leftDate, leftIsDate := toDate(leftVal)
@@ -248,7 +248,7 @@ func compareExpressions(operator tsl.Operator, leftVal, rightVal interface{}) (i
 	return nil, nil
 }
 
-func evaluateUnaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
+func handleUnaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 	exprOp, ok := n.Value().(tsl.TSLExpressionOp)
 	if !ok {
 		return nil, tsl.TypeMismatchError{Expected: "TSLExpressionOp", Got: fmt.Sprintf("%T", n.Value())}
@@ -278,7 +278,7 @@ func evaluateUnaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error)
 	}
 }
 
-func processArrayLiteral(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
+func handleArrayLiteral(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 	exprOp, ok := n.Value().(tsl.TSLArrayLiteral)
 	if !ok {
 		return nil, tsl.TypeMismatchError{Expected: "TSLArrayLiteral", Got: fmt.Sprintf("%T", n.Value())}
