@@ -180,7 +180,7 @@ func Walk(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 			}
 
 			return EvalBetween(leftVal, rightArray[0], rightArray[1])
-		case tsl.OpIs:
+		case tsl.OpIs: // is null
 			if rightVal == nil {
 				return leftVal == nil, nil
 			}
