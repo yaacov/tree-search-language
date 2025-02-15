@@ -22,9 +22,9 @@
 /vendor/
 
 # For TSL grammer
-pkg/tsl/lex.yy.c
-pkg/tsl/tsl_parser.tab.c
-pkg/tsl/tsl_parser.tab.h
+#pkg/tsl/lex.yy.c
+#pkg/tsl/tsl_parser.tab.c
+#pkg/tsl/tsl_parser.tab.h
 
 # Excutables
 /tsl

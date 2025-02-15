@@ -357,10 +357,11 @@ if err != nil {
 defer tree.Free()
 
 // Check and replace user identifiers with the SQL table column names.
-tree, err = ident.Walk(tree, checkColumnName)
+newTree, err = ident.Walk(tree, checkColumnName)
 if err != nil {
     log.Fatal(err)
 }
+defer newTree.Free() // mewTree is a clone that needs freeing.
 ...
 ```
 
