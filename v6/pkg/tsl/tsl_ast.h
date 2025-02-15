@@ -45,7 +45,7 @@ typedef struct ast_node {
 /* AST node creation functions */
 ast_node *ast_create_null(void);
 ast_node *ast_create_boolean(int value);
-ast_node *ast_create_number(const char *value_str);  /* Changed from double to const char* */
+ast_node *ast_create_number(const char *value_str);
 ast_node *ast_create_string(const char *value);
 ast_node *ast_create_identifier(const char *value);
 ast_node *ast_create_binary(int op, ast_node *left, ast_node *right);

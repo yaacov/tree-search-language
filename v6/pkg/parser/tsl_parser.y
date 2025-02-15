@@ -155,7 +155,8 @@ not_expr:
 
 unary_expr:
       primary
-    | MINUS primary                { $$ = ast_create_unary(MINUS, $2); }
+    | MINUS unary_expr             { $$ = ast_create_unary(MINUS, $2); }
+    | PLUS unary_expr              { $$ = $2; }  /* unary plus is a no-op */
     | LPAREN expr RPAREN           { $$ = $2; }
     | array                        { $$ = $1; }
     ;

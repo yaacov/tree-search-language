@@ -114,7 +114,7 @@ NUMBER_WITH_SUFFIX ({INTEGER}|{DECIMAL}){SIZE_SUFFIX}
                             if (token) return token;
                             yylval.str = s;
                             return STRING_LITERAL;
-                          }
+                           }
 
 \"[^"]*\"                  {
                             char *s = strip_quotes(yytext, 1);
@@ -122,7 +122,7 @@ NUMBER_WITH_SUFFIX ({INTEGER}|{DECIMAL}){SIZE_SUFFIX}
                             if (token) return token;
                             yylval.str = s;
                             return STRING_LITERAL;
-                          }
+                           }
 
 `[^`]*`                    {
                             char *s = strip_quotes(yytext, 1);
@@ -130,7 +130,7 @@ NUMBER_WITH_SUFFIX ({INTEGER}|{DECIMAL}){SIZE_SUFFIX}
                             if (token) return token;
                             yylval.str = s;
                             return STRING_LITERAL;
-                          }
+                           }
 
 {IDENTIFIER}               { yylval.str = strdup(yytext); return IDENTIFIER; }
 
@@ -147,7 +147,6 @@ NUMBER_WITH_SUFFIX ({INTEGER}|{DECIMAL}){SIZE_SUFFIX}
 "]"                        { return RBRACKET; }
 
     /* Whitespace handling */
-[ \u000B\t]               { /* Track column for whitespace */ }
 \r?\n                     { yycolumn = 1; /* Reset column on newline */ }
 [ \t\r\n\f\v]+            { /* Track column for whitespace */ }
 

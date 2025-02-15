@@ -5,13 +5,13 @@ package tsl
 type Operator int
 
 const (
-	OpLike    Operator = 258 // K_LIKE
-	OpILike   Operator = 259 // K_ILIKE
+	OpLike    Operator = 258 // K_LIKE (SQL LIKE)
+	OpILike   Operator = 259 // K_ILIKE (SQL ILIKE)
 	OpAnd     Operator = 260 // K_AND
 	OpOr      Operator = 261 // K_OR
 	OpBetween Operator = 262 // K_BETWEEN
 	OpIn      Operator = 263 // K_IN
-	OpIs      Operator = 264 // K_IS
+	OpIs      Operator = 264 // K_IS (Only for NULL and NOT NULL)
 	OpNot     Operator = 266 // K_NOT
 	OpLE      Operator = 269 // LE
 	OpLT      Operator = 270 // LT
@@ -23,9 +23,9 @@ const (
 	OpRNE     Operator = 276 // RNE (Regular expression not equals)
 	OpPlus    Operator = 282 // PLUS
 	OpMinus   Operator = 283 // MINUS
-	OpStar    Operator = 284 // STAR
-	OpSlash   Operator = 285 // SLASH
-	OpPercent Operator = 286 // PERCENT
+	OpStar    Operator = 284 // STAR (MULTIPLY)
+	OpSlash   Operator = 285 // SLASH (DIVIDE)
+	OpPercent Operator = 286 // PERCENT (MODULUS)
 	OpUMinus  Operator = 292 // UMINUS
 )
 

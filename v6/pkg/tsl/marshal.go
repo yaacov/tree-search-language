@@ -42,6 +42,7 @@ func (n *TSLNode) MarshalJSON() ([]byte, error) {
 		})
 	}
 
+	// For all other node types, use the default alias
 	return json.Marshal(nodeAlias{
 		Type:  n.Type().String(),
 		Value: n.Value(),
@@ -88,6 +89,7 @@ func (n *TSLNode) MarshalYAML() (interface{}, error) {
 		}, nil
 	}
 
+	// For all other node types, use the default alias
 	return nodeAlias{
 		Type:  n.Type().String(),
 		Value: n.Value(),

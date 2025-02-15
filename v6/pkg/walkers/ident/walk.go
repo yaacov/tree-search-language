@@ -17,6 +17,8 @@
 package ident
 
 import (
+	"fmt"
+
 	"github.com/yaacov/tree-search-language/v6/pkg/tsl"
 )
 
@@ -51,15 +53,23 @@ import (
 //	// If the input tree contains: `spec.pages > 100 AND author = "Joe"`,
 //	// the identifiers list will contain: ["spec.pages", "author"]
 //	//
+//	// the new tree will contain: `pages > 100 AND author = "Joe"`
 //	newTree, identifiers, err = ident.Walk(tree, check)
 func Walk(n *tsl.TSLNode, check func(s string) (string, error)) (*tsl.TSLNode, []string, error) {
 	if n == nil {
 		return nil, nil, nil
 	}
 
+	// Create a deep copy of the input tree to avoid mutations
+	treeCopy := n.Clone()
+	if treeCopy == nil {
+		return nil, nil, fmt.Errorf("failed to clone input tree")
+	}
+
 	identifiers := make(map[string]bool)
-	newTree, err := walkAndReplace(n, check, identifiers)
+	newTree, err := walkAndReplace(treeCopy, check, identifiers)
 	if err != nil {
+		treeCopy.Free() // Clean up the copy if there's an error
 		return nil, nil, err
 	}
 

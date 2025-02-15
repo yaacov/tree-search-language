@@ -38,7 +38,7 @@ const timestampStyle = baseRecordStyle + " color=orange"
 const opStyle = baseBoxStyle + " color=black"
 const arrayStyle = baseBoxStyle + " color=green"
 
-// Generate a random string of specified length using only lowercase letters
+// Generate a random string of specified length using only letters
 func randStr(l int) string {
 	const pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	bytes := make([]byte, l)

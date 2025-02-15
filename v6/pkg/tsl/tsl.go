@@ -18,8 +18,6 @@
 package tsl
 
 /*
-#cgo CFLAGS: -I../parser
-
 #include <stdlib.h>
 #include "tsl.h"
 */
@@ -78,6 +76,14 @@ func (n *TSLNode) Free() {
 		C.ast_free(n.cNode)
 		n.cNode = nil
 	}
+}
+
+// Clone creates a deep copy of the TSLNode and its children
+func (n *TSLNode) Clone() *TSLNode {
+	if n == nil || n.cNode == nil {
+		return nil
+	}
+	return &TSLNode{cNode: C.ast_clone(n.cNode)}
 }
 
 // Type returns the type of the node

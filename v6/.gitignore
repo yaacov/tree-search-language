@@ -1,9 +1,32 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Vscode
 .vscode
 
+# Test binary, build with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Sqlite database files
+/data/
+*.db
+
+# Vendor files
+/vendor/
+
+# For TSL grammer
 pkg/tsl/lex.yy.c
 pkg/tsl/tsl_parser.tab.c
 pkg/tsl/tsl_parser.tab.h
 
+# Excutables
 /tsl
 /tsl_parser
 /tsl_mem

@@ -31,6 +31,21 @@ run_test "Less than or equal" "quantity <= 50"
 run_test "Regular expression equal" "name ~= 'John.*'"
 run_test "Regular expression not equal" "name ~! 'Smith.*'"
 
+# Arithmetic operations
+run_test "Addition" "total = price + tax"
+run_test "Subtraction" "balance = credit - debit"
+run_test "Multiplication" "total_price = quantity * price"
+run_test "Division" "price_per_unit = total / count"
+run_test "Modulo" "remainder = items % 3"
+run_test "Complex arithmetic" "(price * quantity) + (tax * 0.1) > 1000"
+
+# Unary operators
+run_test "Unary minus" "temperature = -5"
+run_test "Unary minus with expression" "balance = -(debt + interest)"
+run_test "Unary NOT" "not is_deleted"
+run_test "Unary NOT with comparison" "not (price > 100)"
+run_test "Unary NOT with complex condition" "not (status = 'inactive' or price < 0)"
+
 # Logical operators
 run_test "AND operation" "age > 20 and age < 30"
 run_test "OR operation" "status = 'active' or status = 'pending'"

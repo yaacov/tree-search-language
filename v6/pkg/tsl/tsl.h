@@ -32,7 +32,7 @@ void yyerror(const char *s);
 /* Helper functions to access ast_node data */
 double get_number_value(const ast_node *node);
 const char* get_string_value(const ast_node *node);
-int get_boolean_value(const ast_node *node);  // Add boolean getter
+int get_boolean_value(const ast_node *node);
 int get_binary_op(const ast_node *node);
 ast_node* get_binary_left(const ast_node *node);
 ast_node* get_binary_right(const ast_node *node);

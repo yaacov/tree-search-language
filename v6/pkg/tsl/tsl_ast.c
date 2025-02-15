@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>  /* Added for tolower() */
+#include <ctype.h>
 #include "tsl_ast.h"
 
 /* Error position tracking */

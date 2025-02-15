@@ -364,22 +364,22 @@ import (
 
 // columnNamesMap mapps between user namespace and the SQL column names.
 var columnNamesMap = map[string]string{
-  "title":       "title",
-  "author":      "author",
-  "spec.pages":  "pages",
-  "spec.rating": "rating",
+	"title":       "title",
+	"author":      "author",
+	"spec.pages":  "pages",
+	"spec.rating": "rating",
 }
 
 // checkColumnName checks if a column name is valid in user space replace it
 // with the mapped column name and returns and error if not a valid name.
 func checkColumnName(s string) (string, error) {
-  // Check for column name in map.
-  if v, ok := columnNamesMap[s]; ok {
-    return v, nil
-  }
+	// Check for column name in map.
+	if v, ok := columnNamesMap[s]; ok {
+		return v, nil
+	}
 
-  // If not found return string as is, and an error.
-  return s, fmt.Errorf("column \"%s\" not found", s)
+	// If not found return string as is, and an error.
+	return s, fmt.Errorf("column \"%s\" not found", s)
 }
 ...
 
@@ -410,10 +410,10 @@ import (
 // If no value can be found for this `key` in our record, it will return
 // ok = false, if value is found it will return ok = true.
 func evalFactory(r map[string]string) semantics.EvalFunc {
-  return func(k string) (interface{}, bool) {
-    v, ok := r[k]
-    return v, ok
-  }
+	return func(k string) (interface{}, bool) {
+		v, ok := r[k]
+		return v, ok
+	}
 }
 
 // Check if a record complie with our tsl tree.
@@ -425,10 +425,10 @@ func evalFactory(r map[string]string) semantics.EvalFunc {
 //   if our tsl tree represents the tsl phrase "spec.pages > 50"
 //   we will get the boolean value `false` for our record.
 record :=  map[string]string {
-  "title":       "A good book",
-  "author":      "Joe",
-  "spec.pages":  14,
-  "spec.rating": 5,
+	"title":       "A good book",
+	"author":      "Joe",
+	"spec.pages":  14,
+	"spec.rating": 5,
 }
 eval :=  evalFactory(record)
 compliance, err = semantics.Walk(tree, eval)
@@ -446,9 +446,9 @@ The example CLI tools showcase the TSL language and `tsl` golang package, see th
 $ ./tsl_parser -h
 Usage of ./tsl_parser:
   -i string
-      the tsl string to parse (e.g. "animal = 'kitty'")
+    	the tsl string to parse (e.g. "animal = 'kitty'")
   -o string
-      output format [json/yaml/prettyjson/sql/dot] (default "json")
+    	output format [json/yaml/prettyjson/sql/dot] (default "json")
 ```
 
 
@@ -528,15 +528,15 @@ root -> { XVlB, zgba }
 $ ./tsl_mongo -h
 Usage of ./tsl_mongo:
   -c string
-      collection name to query on (default "books")
+    	collection name to query on (default "books")
   -d string
-      db name to connect to (default "tsl")
+    	db name to connect to (default "tsl")
   -i string
-      the tsl string to parse (e.g. "author = 'Jane'") (default "title is not null")
+    	the tsl string to parse (e.g. "author = 'Jane'") (default "title is not null")
   -p	prepare a book collection for queries
   ...
   -u string
-      url for mongo server (default "mongodb://localhost:27017")
+    	url for mongo server (default "mongodb://localhost:27017")
 ```
 
 ``` bash
@@ -574,9 +574,9 @@ $ ./tsl_mongo -i "title ~= 'Other' and spec.rating > 1" | jq
 $ ./tsl_sqlite -h
 Usage of ./tsl_sqlite:
   -f string
-      the sqlite database file name (default "./sqlite.db")
+    	the sqlite database file name (default "./sqlite.db")
   -i string
-      the tsl string to parse (e.g. "Title = 'Book'")
+    	the tsl string to parse (e.g. "Title = 'Book'")
   -p	prepare a book collection for queries
 ```
 
@@ -611,9 +611,9 @@ $ ./tsl_sqlite -i "$SQL" -p | jq
 $ ./tsl_gorm -h
 Usage of ./tsl_gorm:
   -f string
-      the sqlite database file name (default "./sqlite.db")
+    	the sqlite database file name (default "./sqlite.db")
   -i string
-      the tsl string to parse (e.g. "title = 'Book'") (default "title is not null")
+    	the tsl string to parse (e.g. "title = 'Book'") (default "title is not null")
   -p	prepare a book collection for queries
 ```
 
@@ -662,7 +662,7 @@ $ ./tsl_gorm -i "$SQL" -p | jq
 $ ./tsl_graphql -h
 Usage of ./tsl_graphql:
   -f string
-      the sqlite database file name (default "./sqlite.db")
+    	the sqlite database file name (default "./sqlite.db")
   -p	prepare a book collection for queries
 ```
 
@@ -673,7 +673,7 @@ TSL GraphQL server listen on port: 8080
 
 Query example:
   curl -sG "http://localhost:8080/graphql" --data-urlencode \
-  "query={books(filter:\"title like '%Other%' and spec.pages>100\"){title,author,spec{pages}}}"
+	"query={books(filter:\"title like '%Other%' and spec.pages>100\"){title,author,spec{pages}}}"
 ```
 
 ``` bash
