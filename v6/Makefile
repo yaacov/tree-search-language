@@ -27,7 +27,7 @@ GO_MEM_BIN = tsl_mem
 #------------------------------------------------------------------------------
 # Phony targets
 #------------------------------------------------------------------------------
-.PHONY: all clean help generate lint test test-coverage test-file install-tools
+.PHONY: all clean help generate lint test test-coverage test-file install-tools format
 
 # Default target
 all: generate tsl tsl_parser tsl_mem
@@ -46,6 +46,7 @@ help:
 	@echo "  clean         - Remove built files and directories"
 	@echo "  clean         - Remove built files and directories and generated files"
 	@echo "  help          - Show this help message"
+	@echo "  format        - Format the code using go fmt"
 
 generate:
 	$(GO) generate ./...
@@ -68,6 +69,9 @@ test-file:
 		exit 1; \
 	fi
 	$(GO) test $(GO_TEST_FLAGS) $(FILE)
+
+format:
+	$(GO) fmt ./...
 
 tsl: generate
 	$(GO) build -o $(GO_BIN) ./$(GO_CMD)
