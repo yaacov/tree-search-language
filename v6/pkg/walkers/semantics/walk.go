@@ -21,7 +21,6 @@ package semantics
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/yaacov/tree-search-language/v6/pkg/tsl"
 )
@@ -295,17 +294,4 @@ func Walk(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 	}
 
 	return nil, nil
-}
-
-func toDate(value interface{}) (time.Time, bool) {
-	switch v := value.(type) {
-	case time.Time:
-		return v, true
-	case string:
-		date, err := time.Parse(time.RFC3339, v)
-		if err == nil {
-			return date, true
-		}
-	}
-	return time.Time{}, false
 }
