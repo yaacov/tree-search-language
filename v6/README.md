@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/yaacov/tree-search-language/master/img/search-162.png" alt="TSL Logo">
+  <img src="https://raw.githubusercontent.com/yaacov/tree-search-language/master/v6/img/search-162.png" alt="TSL Logo">
 </p>
 
 # Tree Search Language (TSL)
