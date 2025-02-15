@@ -383,14 +383,13 @@ import (
 // A function that gets a `key` for a record and returns the value.
 // If no value can be found for this `key` in our record, it will return
 // ok = false, if value is found it will return ok = true.
-func evalFactory(r map[string]string) semantics.EvalFunc {
-    return func(k string) (interface{}, error) {
-        v, ok := r[k]
-        if !ok {
-            return nil, fmt.Errorf("key not found: %s", k)
-        }
-        return v, nil
-    }
+func evalFactory(book Book) semantics.EvalFunc {
+	return func(k string) (interface{}, bool) {
+		if v, ok := book[k]; ok {
+			return v, true
+		}
+		return nil, false
+	}
 }
 
 // Check if a record complies with our tsl tree.
