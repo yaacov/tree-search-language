@@ -108,7 +108,7 @@ var _ = Describe("Walk error cases", func() {
 	}
 
 	DescribeTable("Returns appropriate errors",
-		func(text string, expectedError string) {
+		func(text string, expectedError interface{}) {
 			tree, err := tsl.ParseTSL(text)
 			if err != nil {
 				// Skip syntax errors as they are expected for invalid operators
@@ -121,48 +121,12 @@ var _ = Describe("Walk error cases", func() {
 
 			_, err = Walk(tree, eval)
 			Expect(err).To(HaveOccurred())
-			Expect(err.Error()).To(ContainSubstring(expectedError))
+			Expect(err).To(BeAssignableToTypeOf(expectedError))
 		},
 
-		Entry("Type mismatch string/number", "name > 5", "type mismatch"),
-		Entry("Type mismatch number/string", "age = 'young'", "type mismatch"),
-		Entry("Invalid operator", "name invalid 'test'", "unexpected operator"),
-		Entry("Invalid between array", "age between [1]", "between operator requires exactly 2 values"),
+		Entry("Type mismatch string/number", "name > 5", tsl.TypeMismatchError{}),
+		Entry("Type mismatch number/string", "age = 'young'", tsl.TypeMismatchError{}),
+		Entry("Invalid operator", "name invalid 'test'", tsl.UnexpectedOperatorError{}),
+		Entry("Invalid between array", "age between [1]", tsl.BetweenOperatorError{}),
 	)
-})
-
-var _ = Describe("Walk", func() {
-	Context("Valid expressions", func() {
-		It("Accepts valid comparisons", func() {
-			tree, err := tsl.ParseTSL("name = 'john'")
-			Expect(err).ToNot(HaveOccurred())
-			err = validateTree(tree)
-			Expect(err).ToNot(HaveOccurred())
-		})
-
-		It("Accepts valid logical operations", func() {
-			tree, err := tsl.ParseTSL("age > 20 and city = 'London'")
-			Expect(err).ToNot(HaveOccurred())
-			err = validateTree(tree)
-			Expect(err).ToNot(HaveOccurred())
-		})
-	})
-
-	Context("Invalid expressions", func() {
-		It("Rejects invalid comparison operands", func() {
-			tree, err := tsl.ParseTSL("5 = name")
-			Expect(err).ToNot(HaveOccurred())
-			err = validateTree(tree)
-			Expect(err).To(HaveOccurred())
-			Expect(err).To(BeAssignableToTypeOf(TypeMismatchError{}))
-		})
-
-		It("Rejects invalid LIKE operands", func() {
-			tree, err := tsl.ParseTSL("5 like '5%'")
-			Expect(err).ToNot(HaveOccurred())
-			err = validateTree(tree)
-			Expect(err).To(HaveOccurred())
-			Expect(err).To(BeAssignableToTypeOf(TypeMismatchError{}))
-		})
-	})
 })

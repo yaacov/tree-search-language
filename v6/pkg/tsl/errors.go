@@ -76,3 +76,12 @@ type BetweenOperatorError struct {
 func (e BetweenOperatorError) Error() string {
 	return fmt.Sprintf("between operator error: %s", e.Message)
 }
+
+// KeyNotFoundError is returned when a requested key is not found in the data
+type KeyNotFoundError struct {
+	Key string
+}
+
+func (e KeyNotFoundError) Error() string {
+	return fmt.Sprintf("key not found: %s", e.Key)
+}

@@ -54,13 +54,18 @@ func checkColumnName(s string) (string, error) {
 
 func evalFactory(book Book) semantics.EvalFunc {
 	return func(k string) (interface{}, bool) {
-		// First try to get mapped column name
-		mappedKey, err := checkColumnName(k)
-		if err == nil {
-			if v, ok := book[mappedKey]; ok {
-				return v, true
-			}
+		if v, ok := book[k]; ok {
+			return v, true
 		}
+
+		// we optional fields, we should return defatult value for them.
+		switch k {
+		case "spec.pages":
+			return nil, true
+		case "spec.rating":
+			return nil, true
+		}
+
 		return nil, false
 	}
 }

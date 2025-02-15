@@ -68,6 +68,7 @@ func main() {
 	// Filter the books collection using our transformed TSL tree.
 	for _, book := range Books {
 		eval := evalFactory(book)
+
 		matchingFilter, err := semantics.Walk(newTree, eval)
 		check(err)
 
