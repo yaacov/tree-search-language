@@ -78,16 +78,25 @@ var _ = Describe("Walk", func() {
 		Entry("greater than", "spec.rating > 4", true),
 		Entry("less than or equal", "spec.pages <= 14", true),
 		Entry("between numbers", "price between 20 and 30", true),
+		Entry("addition", "spec.pages + 1 = 15", true),
+		Entry("subtraction", "spec.pages - 4 = 10", true),
+		Entry("multiplication", "spec.rating * 2 = 10", true),
+		Entry("division", "price / 2 = 14.995", true),
+		Entry("modulus", "spec.pages % 5 = 4", true),
 
 		// Boolean operations
 		Entry("equals boolean", "loaned = true", true),
 		Entry("not equals boolean", "loaned != false", true),
 		Entry("complex boolean", "(spec.pages > 10 and loaned = true) or spec.rating >= 5", true),
+		Entry("boolean and", "loaned and spec.rating > 4", true),
+		Entry("boolean or", "loaned or spec.rating < 4", true),
 
 		// Date operations
 		Entry("equals date", "date = '2020-01-01T00:00:00Z'", true),
 		Entry("greater than date", "date > '2019-12-31T00:00:00Z'", true),
 		Entry("between dates", "date between '2019-12-31T00:00:00Z' and '2020-01-02T00:00:00Z'", true),
+		Entry("date before", "date < '2021-01-01T00:00:00Z'", true),
+		Entry("date after", "date > '2019-01-01T00:00:00Z'", true),
 
 		// Array operations
 		Entry("in array literal", "spec.rating in [3, 4, 5]", true),
@@ -99,6 +108,7 @@ var _ = Describe("Walk", func() {
 
 		// Combined operations
 		Entry("complex query", "(spec.pages <= spec.rating * 3) and (title like '%book%' or author = 'Joe')", true),
+		Entry("nested query", "(spec.pages > 10 and (loaned = true or spec.rating >= 5))", true),
 	)
 })
 

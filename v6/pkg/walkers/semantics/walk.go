@@ -76,222 +76,220 @@ func Walk(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 
 	switch n.Type() {
 	case tsl.KindIdentifier:
-		return EvalIdent(n, eval)
+		return EvaluateIdentifier(n, eval)
 	case tsl.KindBinaryExpr:
-		exprOp := n.Value().(tsl.TSLExpressionOp)
-
-		// lets walk the right side of the expression
-		rightVal, err := Walk(exprOp.Right, eval)
-		if err != nil {
-			return nil, err
-		}
-
-		// lets walk the left side of the expression
-		leftVal, err := Walk(exprOp.Left, eval)
-		if err != nil {
-			return nil, err
-		}
-
-		// handle the operator
-		switch exprOp.Operator {
-		case tsl.OpEQ:
-			return leftVal == rightVal, nil
-		case tsl.OpNE:
-			return leftVal != rightVal, nil
-		case tsl.OpLT, tsl.OpLE, tsl.OpGT, tsl.OpGE:
-			leftNum, leftIsNum := toFloat64(leftVal)
-			rightNum, rightIsNum := toFloat64(rightVal)
-			leftDate, leftIsDate := toDate(leftVal)
-			rightDate, rightIsDate := toDate(rightVal)
-
-			if leftIsNum && rightIsNum {
-				switch exprOp.Operator {
-				case tsl.OpLT:
-					return leftNum < rightNum, nil
-				case tsl.OpLE:
-					return leftNum <= rightNum, nil
-				case tsl.OpGT:
-					return leftNum > rightNum, nil
-				case tsl.OpGE:
-					return leftNum >= rightNum, nil
-				}
-			} else if leftIsDate && rightIsDate {
-				switch exprOp.Operator {
-				case tsl.OpLT:
-					return leftDate.Before(rightDate), nil
-				case tsl.OpLE:
-					return leftDate.Before(rightDate) || leftDate.Equal(rightDate), nil
-				case tsl.OpGT:
-					return leftDate.After(rightDate), nil
-				case tsl.OpGE:
-					return leftDate.After(rightDate) || leftDate.Equal(rightDate), nil
-				}
-			} else {
-				return nil, tsl.TypeMismatchError{Expected: "number or date", Got: fmt.Sprintf("%T and %T", leftVal, rightVal)}
-			}
-		case tsl.OpREQ:
-			return EvalRegexp(leftVal, rightVal)
-		case tsl.OpRNE:
-			matched, err := EvalRegexp(leftVal, rightVal)
-			if err != nil {
-				return nil, err
-			}
-			return !matched, nil
-		case tsl.OpAnd:
-			leftBool, ok := leftVal.(bool)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", leftVal)}
-			}
-			rightBool, ok := rightVal.(bool)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", rightVal)}
-			}
-			return leftBool && rightBool, nil
-		case tsl.OpOr:
-			leftBool, ok := leftVal.(bool)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", leftVal)}
-			}
-			rightBool, ok := rightVal.(bool)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", rightVal)}
-			}
-			return leftBool || rightBool, nil
-		case tsl.OpLike:
-			return EvalLike(leftVal, rightVal)
-		case tsl.OpILike:
-			return EvalILike(leftVal, rightVal)
-		case tsl.OpIn:
-			// Try to extract the array values from the right side of the expression
-			rightArray, ok := rightVal.([]interface{})
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "array", Got: fmt.Sprintf("%T", rightVal)}
-			}
-
-			return EvalIn(leftVal, rightArray)
-		case tsl.OpBetween:
-			// Try to extract the array values from the right side of the expression
-			rightArray, ok := rightVal.([]interface{})
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "array", Got: fmt.Sprintf("%T", rightVal)}
-			}
-			if len(rightArray) != 2 {
-				return nil, tsl.TypeMismatchError{Expected: "min and max values", Got: fmt.Sprintf("%d values", len(rightArray))}
-			}
-
-			return EvalBetween(leftVal, rightArray[0], rightArray[1])
-		case tsl.OpIs: // is null
-			if rightVal == nil {
-				return leftVal == nil, nil
-			}
-			return false, nil
-		case tsl.OpPlus:
-			leftNum, ok := toFloat64(leftVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", leftVal)}
-			}
-			rightNum, ok := toFloat64(rightVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", rightVal)}
-			}
-			return leftNum + rightNum, nil
-		case tsl.OpMinus:
-			leftNum, ok := toFloat64(leftVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", leftVal)}
-
-			}
-			rightNum, ok := toFloat64(rightVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", rightVal)}
-			}
-			return leftNum - rightNum, nil
-		case tsl.OpStar:
-			leftNum, ok := toFloat64(leftVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", leftVal)}
-			}
-			rightNum, ok := toFloat64(rightVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", rightVal)}
-			}
-			return leftNum * rightNum, nil
-		case tsl.OpSlash:
-			leftNum, ok := toFloat64(leftVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", leftVal)}
-			}
-			rightNum, ok := toFloat64(rightVal)
-			if !ok {
-
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", rightVal)}
-			}
-			if rightNum == 0 {
-				return nil, tsl.DivisionByZeroError{Operation: "division"}
-			}
-			return leftNum / rightNum, nil
-		case tsl.OpPercent:
-			leftNum, ok := toFloat64(leftVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", leftVal)}
-			}
-			rightNum, ok := toFloat64(rightVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", rightVal)}
-			}
-			if rightNum == 0 {
-				return nil, tsl.DivisionByZeroError{Operation: "modulus"}
-			}
-			return float64(int64(leftNum) % int64(rightNum)), nil
-		default:
-			return nil, tsl.UnexpectedOperatorError{Operator: exprOp.Operator}
-		}
-
+		return evaluateBinaryExpression(n, eval)
 	case tsl.KindUnaryExpr:
-		exprOp := n.Value().(tsl.TSLExpressionOp)
-
-		// lets walk the right side of the expression
-		rightVal, err := Walk(exprOp.Right, eval)
-		if err != nil {
-			return nil, err
-		}
-
-		switch exprOp.Operator {
-		case tsl.OpNot:
-			rightBool, ok := rightVal.(bool)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", rightVal)}
-			}
-			return !rightBool, nil
-		case tsl.OpMinus:
-			rightNum, ok := toFloat64(rightVal)
-			if !ok {
-				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", rightVal)}
-			}
-			return -rightNum, nil
-		default:
-			return nil, tsl.UnexpectedOperatorError{Operator: exprOp.Operator}
-		}
-
+		return evaluateUnaryExpression(n, eval)
 	case tsl.KindArrayLiteral:
-		exprOp := n.Value().(tsl.TSLArrayLiteral)
-		values := make([]interface{}, len(exprOp.Values))
-		for i, v := range exprOp.Values {
-			val, err := Walk(v, eval)
-			if err != nil {
-				return nil, err
-			}
-			values[i] = val
-		}
-		return values, nil
-
+		return processArrayLiteral(n, eval)
 	case tsl.KindNullLiteral:
 		// null literal should be handled by the is expression
 		return nil, nil
-
 	default:
 		return n.Value(), nil
 	}
+}
 
+func evaluateBinaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
+	exprOp, ok := n.Value().(tsl.TSLExpressionOp)
+	if !ok {
+		return nil, tsl.TypeMismatchError{Expected: "TSLExpressionOp", Got: fmt.Sprintf("%T", n.Value())}
+	}
+
+	// lets walk the right side of the expression
+	rightVal, err := Walk(exprOp.Right, eval)
+	if err != nil {
+		return nil, err
+	}
+
+	// lets walk the left side of the expression
+	leftVal, err := Walk(exprOp.Left, eval)
+	if err != nil {
+		return nil, err
+	}
+
+	// handle the operator
+	switch exprOp.Operator {
+	case tsl.OpEQ:
+		return leftVal == rightVal, nil
+	case tsl.OpNE:
+		return leftVal != rightVal, nil
+	case tsl.OpLT, tsl.OpLE, tsl.OpGT, tsl.OpGE:
+		return compareExpressions(exprOp.Operator, leftVal, rightVal)
+	case tsl.OpREQ:
+		return EvaluateRegexMatch(leftVal, rightVal)
+	case tsl.OpRNE:
+		matched, err := EvaluateRegexMatch(leftVal, rightVal)
+		if err != nil {
+			return nil, err
+		}
+		return !matched, nil
+	case tsl.OpAnd, tsl.OpOr:
+		return evaluateLogicalExpression(exprOp.Operator, leftVal, rightVal)
+	case tsl.OpLike:
+		return EvaluateLikePattern(leftVal, rightVal)
+	case tsl.OpILike:
+		return EvaluateCaseInsensitiveLike(leftVal, rightVal)
+	case tsl.OpIn:
+		// Try to extract the array values from the right side of the expression
+		rightArray, ok := rightVal.([]interface{})
+		if !ok {
+			return nil, tsl.TypeMismatchError{Expected: "array", Got: fmt.Sprintf("%T", rightVal)}
+		}
+
+		return IsValueInArray(leftVal, rightArray)
+	case tsl.OpBetween:
+		// Try to extract the array values from the right side of the expression
+		rightArray, ok := rightVal.([]interface{})
+		if !ok {
+			return nil, tsl.TypeMismatchError{Expected: "array", Got: fmt.Sprintf("%T", rightVal)}
+		}
+		if len(rightArray) != 2 {
+			return nil, tsl.TypeMismatchError{Expected: "min and max values", Got: fmt.Sprintf("%d values", len(rightArray))}
+		}
+
+		return IsValueInRange(leftVal, rightArray[0], rightArray[1])
+	case tsl.OpIs: // is null
+		if rightVal == nil {
+			return leftVal == nil, nil
+		}
+		return false, nil
+	case tsl.OpPlus, tsl.OpMinus, tsl.OpStar, tsl.OpSlash, tsl.OpPercent:
+		return evaluateMathExpression(exprOp.Operator, leftVal, rightVal)
+	default:
+		return nil, tsl.UnexpectedOperatorError{Operator: exprOp.Operator}
+	}
+}
+
+func evaluateMathExpression(operator tsl.Operator, leftVal, rightVal interface{}) (interface{}, error) {
+	leftNum, ok := toFloat64(leftVal)
+	if !ok {
+		return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", leftVal)}
+	}
+	rightNum, ok := toFloat64(rightVal)
+	if !ok {
+		return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", rightVal)}
+	}
+
+	switch operator {
+	case tsl.OpPlus:
+		return leftNum + rightNum, nil
+	case tsl.OpMinus:
+		return leftNum - rightNum, nil
+	case tsl.OpStar:
+		return leftNum * rightNum, nil
+	case tsl.OpSlash:
+		if rightNum == 0 {
+			return nil, tsl.DivisionByZeroError{Operation: "division"}
+		}
+		return leftNum / rightNum, nil
+	case tsl.OpPercent:
+		if rightNum == 0 {
+			return nil, tsl.DivisionByZeroError{Operation: "modulus"}
+		}
+		return float64(int64(leftNum) % int64(rightNum)), nil
+	default:
+		return nil, tsl.UnexpectedOperatorError{Operator: operator}
+	}
+}
+
+func evaluateLogicalExpression(operator tsl.Operator, leftVal, rightVal interface{}) (interface{}, error) {
+	leftBool, ok := leftVal.(bool)
+	if !ok {
+		return nil, tsl.TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", leftVal)}
+	}
+	rightBool, ok := rightVal.(bool)
+	if !ok {
+		return nil, tsl.TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", rightVal)}
+	}
+
+	switch operator {
+	case tsl.OpAnd:
+		return leftBool && rightBool, nil
+	case tsl.OpOr:
+		return leftBool || rightBool, nil
+	default:
+		return nil, tsl.UnexpectedOperatorError{Operator: operator}
+	}
+}
+
+func compareExpressions(operator tsl.Operator, leftVal, rightVal interface{}) (interface{}, error) {
+	leftNum, leftIsNum := toFloat64(leftVal)
+	rightNum, rightIsNum := toFloat64(rightVal)
+	leftDate, leftIsDate := toDate(leftVal)
+	rightDate, rightIsDate := toDate(rightVal)
+
+	if leftIsNum && rightIsNum {
+		switch operator {
+		case tsl.OpLT:
+			return leftNum < rightNum, nil
+		case tsl.OpLE:
+			return leftNum <= rightNum, nil
+		case tsl.OpGT:
+			return leftNum > rightNum, nil
+		case tsl.OpGE:
+			return leftNum >= rightNum, nil
+		}
+	} else if leftIsDate && rightIsDate {
+		switch operator {
+		case tsl.OpLT:
+			return leftDate.Before(rightDate), nil
+		case tsl.OpLE:
+			return leftDate.Before(rightDate) || leftDate.Equal(rightDate), nil
+		case tsl.OpGT:
+			return leftDate.After(rightDate), nil
+		case tsl.OpGE:
+			return leftDate.After(rightDate) || leftDate.Equal(rightDate), nil
+		}
+	} else {
+		return nil, tsl.TypeMismatchError{Expected: "number or date", Got: fmt.Sprintf("%T and %T", leftVal, rightVal)}
+	}
 	return nil, nil
+}
+
+func evaluateUnaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
+	exprOp, ok := n.Value().(tsl.TSLExpressionOp)
+	if !ok {
+		return nil, tsl.TypeMismatchError{Expected: "TSLExpressionOp", Got: fmt.Sprintf("%T", n.Value())}
+	}
+
+	// lets walk the right side of the expression
+	rightVal, err := Walk(exprOp.Right, eval)
+	if err != nil {
+		return nil, err
+	}
+
+	switch exprOp.Operator {
+	case tsl.OpNot:
+		rightBool, ok := rightVal.(bool)
+		if !ok {
+			return nil, tsl.TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", rightVal)}
+		}
+		return !rightBool, nil
+	case tsl.OpMinus:
+		rightNum, ok := toFloat64(rightVal)
+		if !ok {
+			return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", rightVal)}
+		}
+		return -rightNum, nil
+	default:
+		return nil, tsl.UnexpectedOperatorError{Operator: exprOp.Operator}
+	}
+}
+
+func processArrayLiteral(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
+	exprOp, ok := n.Value().(tsl.TSLArrayLiteral)
+	if !ok {
+		return nil, tsl.TypeMismatchError{Expected: "TSLArrayLiteral", Got: fmt.Sprintf("%T", n.Value())}
+	}
+	values := make([]interface{}, len(exprOp.Values))
+	for i, v := range exprOp.Values {
+		val, err := Walk(v, eval)
+		if err != nil {
+			return nil, err
+		}
+		values[i] = val
+	}
+	return values, nil
 }
