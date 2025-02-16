@@ -27,7 +27,7 @@ GO_MEM_BIN = tsl_mem
 #------------------------------------------------------------------------------
 # Phony targets
 #------------------------------------------------------------------------------
-.PHONY: all clean help generate lint test test-coverage test-file install-tools format
+.PHONY: all clean help generate lint test test-coverage test-file install-tools format parser-gen
 
 # Default target
 all: generate tsl tsl_parser tsl_mem
@@ -48,8 +48,8 @@ help:
 	@echo "  help          - Show this help message"
 	@echo "  format        - Format the code using go fmt"
 
-generate:
-	$(GO) generate ./...
+parser-gen:
+	cd pkg/parser && ./build.sh
 
 lint:
 	$(GOLINT) run ./...
