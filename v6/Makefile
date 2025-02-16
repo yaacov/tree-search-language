@@ -39,14 +39,14 @@ help:
 	@echo "  tsl_parser    - Build TSL parser tool"
 	@echo "  tsl_mem       - Build TSL memory demo tool"
 	@echo "  generate      - Run go generate"
+	@echo "  parser-gen    - Generate parser files"
 	@echo "  lint          - Run linter checks"
 	@echo "  test          - Run tests"
 	@echo "  test-coverage - Run tests with coverage report"
-	@echo "  test-file     - Run tests for a specific file"
-	@echo "  clean         - Remove built files and directories"
-	@echo "  clean         - Remove built files and directories and generated files"
-	@echo "  help          - Show this help message"
+	@echo "  test-file     - Run tests for a specific file (use FILE=<path>)"
 	@echo "  format        - Format the code using go fmt"
+	@echo "  clean         - Remove built binary files and coverage output"
+	@echo "  clean-all     - Remove all built and generated files including parser files"
 
 parser-gen:
 	cd pkg/parser && ./build.sh
