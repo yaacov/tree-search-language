@@ -57,7 +57,7 @@ func main() {
 	defer tree.Free()
 
 	// Walk the TSL tree and replace identifiers.
-	newTree, _, err := ident.Walk(tree, checkColumnName)
+	newTree, err := ident.Walk(tree, checkColumnName)
 	check(err)
 	defer newTree.Free()
 

@@ -17,7 +17,6 @@ package ident
 
 import (
 	"fmt"
-	"sort"
 	"testing"
 
 	. "github.com/onsi/ginkgo"
@@ -59,11 +58,9 @@ var _ = Describe("Walk", func() {
 		Expect(err).ToNot(HaveOccurred())
 		defer tree.Free()
 
-		newTree, idents, err := Walk(tree, check)
+		newTree, err := Walk(tree, check)
 		Expect(err).ToNot(HaveOccurred())
 		defer newTree.Free()
-		Expect(idents).To(HaveLen(1))
-		Expect(idents).To(ContainElement("name"))
 
 		// Verify the replacement
 		Expect(newTree.Type()).To(Equal(tsl.KindBinaryExpr))
@@ -76,11 +73,9 @@ var _ = Describe("Walk", func() {
 		Expect(err).ToNot(HaveOccurred())
 		defer tree.Free()
 
-		newTree, idents, err := Walk(tree, check)
+		newTree, err := Walk(tree, check)
 		Expect(err).ToNot(HaveOccurred())
 		defer newTree.Free()
-		sort.Strings(idents)
-		Expect(idents).To(Equal([]string{"age", "city"}))
 
 		// Verify the replacement in the new tree
 		op := newTree.Value().(tsl.TSLExpressionOp)
@@ -95,12 +90,9 @@ var _ = Describe("Walk", func() {
 		Expect(err).ToNot(HaveOccurred())
 		defer tree.Free()
 
-		newTree, idents, err := Walk(tree, check)
+		newTree, err := Walk(tree, check)
 		Expect(err).ToNot(HaveOccurred())
 		defer newTree.Free()
-		sort.Strings(idents)
-		Expect(idents).To(Equal([]string{"age", "city", "country", "name"}))
-
 		// Tree structure should be preserved, just identifiers replaced
 		Expect(newTree.Type()).To(Equal(tsl.KindBinaryExpr))
 	})
@@ -110,7 +102,7 @@ var _ = Describe("Walk", func() {
 		Expect(err).ToNot(HaveOccurred())
 		defer tree.Free()
 
-		newTree, _, err := Walk(tree, check)
+		newTree, err := Walk(tree, check)
 		if err == nil {
 			defer newTree.Free()
 		}
@@ -123,11 +115,9 @@ var _ = Describe("Walk", func() {
 		Expect(err).ToNot(HaveOccurred())
 		defer tree.Free()
 
-		newTree, idents, err := Walk(tree, check)
+		newTree, err := Walk(tree, check)
 		Expect(err).ToNot(HaveOccurred())
 		defer newTree.Free()
-		sort.Strings(idents)
-		Expect(idents).To(Equal([]string{"spec.pages", "spec.rating"}))
 
 		// Verify the replacements
 		op := newTree.Value().(tsl.TSLExpressionOp)

@@ -2,11 +2,11 @@
 # Compiler and tools
 #------------------------------------------------------------------------------
 GO = go
+GOLINT = $(shell which golangci-lint 2>/dev/null || echo $(HOME)/go/bin/golangci-lint)
 
 #------------------------------------------------------------------------------
 # Tools and flags
 #------------------------------------------------------------------------------
-GOLINT = golangci-lint
 GO_TEST_FLAGS = -v -race
 GO_TEST_COVERAGE_FLAGS = -coverprofile=coverage.out
 
@@ -47,6 +47,7 @@ help:
 	@echo "  format        - Format the code using go fmt"
 	@echo "  clean         - Remove built binary files and coverage output"
 	@echo "  clean-all     - Remove all built and generated files including parser files"
+	@echo "  install-tools - Install development tools (golangci-lint)"
 
 parser-gen:
 	cd pkg/parser && ./build.sh
@@ -87,3 +88,6 @@ clean:
 
 clean-all:
 	rm -rf pkg/tsl/tsl_parser.tab.* pkg/tsl/lex.yy.c $(GO_BIN) $(GO_PARSER_BIN) $(GO_MEM_BIN) coverage.out
+
+install-tools:
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest

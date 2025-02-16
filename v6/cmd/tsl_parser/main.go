@@ -41,7 +41,7 @@ func main() {
 
 	// Setup the input.
 	inputPtr := flag.String("i", "", "the tsl string to parse (e.g. \"title = 'kitty'\")")
-	outputPtr := flag.String("o", "json", "output format [json/yaml/prettyjson/sql/dot]")
+	outputPtr := flag.String("o", "json", "output format [json/yaml/sql/dot]")
 	tablePtr := flag.String("t", "table_name", "table name for SQL output")
 	flag.Parse()
 

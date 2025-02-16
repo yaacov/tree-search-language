@@ -18,6 +18,10 @@ The parser code is automatically generated using the `go generate` command. The 
 
 To stop autogeneration, remove or comment this line from `pkg/tsl/tsl.go`.
 
+```go
+// //go:generate bash ../parser/build.sh
+```
+
 ## Requirements
 
 To generate the parser code, you need:
