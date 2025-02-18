@@ -89,4 +89,13 @@ run_test "Complex query 1" "status in ['active', 'pending'] and (price between 1
 run_test "Complex query 2" "(name like 'Tech%' or category = 'electronics') and price > 1000 and stock > 0"
 run_test "Complex query 3" "created_at > '2023-01-01' and (status = 'active' or priority in ['high', 'critical']) and size < 5Gi"
 
+# Array notation in identifiers
+run_test "Array index in identifier" "pods[0].status = 'running'"
+run_test "Multiple array indices" "containers[2].ports[80].protocol = 'TCP'"
+run_test "Wildcard array notation" "nodes[*].status = 'ready'"
+run_test "Mixed array and dot notation" "cluster.nodes[3].pods[*].status = 'running'"
+run_test "Complex array path" "deployments[0].spec.containers[*].image ~= 'nginx.*'"
+run_test "Nested arrays with conditions" "pods[0].containers[*].resources.limits.memory < 1Gi"
+run_test "Multiple wildcards" "nodes[*].pods[*].status != 'failed'"
+
 echo -e "\n${GREEN}All tests completed!${NC}"

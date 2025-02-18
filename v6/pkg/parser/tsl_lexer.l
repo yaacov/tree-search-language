@@ -58,8 +58,10 @@ RFC3339         {DATE}T{TIME}(Z|{TIME_OFFSET})
 
 /* Identifier patterns */
 ID_START        {LETTER}|{UNDERSCORE}
+ARRAY_SUFFIX    (\[[0-9]+\]|\[\*\])
 ID_CONT         {LETTER}|{DIGIT}|{UNDERSCORE}|[./]
-IDENTIFIER      {ID_START}{ID_CONT}*
+ID_PART         ({ID_CONT}|{ARRAY_SUFFIX})*
+IDENTIFIER      {ID_START}{ID_PART}
 
 /* Numeric patterns */
 INTEGER         [+-]?{DIGIT}+
