@@ -98,4 +98,19 @@ run_test "Complex array path" "deployments[0].spec.containers[*].image ~= 'nginx
 run_test "Nested arrays with conditions" "pods[0].containers[*].resources.limits.memory < 1Gi"
 run_test "Multiple wildcards" "nodes[*].pods[*].status != 'failed'"
 
+# New tests for ARRAY_SUFFIX
+run_test "Array suffix with index" "services[0].status = 'active'"
+run_test "Array suffix with wildcard" "nodes[*].status = 'ready'"
+run_test "Array suffix with identifier" "pods[my-pod].status = 'running'"
+run_test "Array suffix with complex identifier" "deployments[my-deployment.spec.containers/nginx].image ~= 'nginx.*'"
+run_test "Array suffix with dot" "services[my.service].status = 'active'"
+run_test "Array suffix with slash" "nodes[my/node].status = 'ready'"
+run_test "Array suffix with hyphen" "pods[my-pod] = 'running'"
+
+# Identifiers ending with ()
+run_test "Function call identifier" "func() = true"
+run_test "Nested function call identifier" "obj.func() = 'value'"
+run_test "Function call with array index" "arr[0].func() = 123"
+run_test "Function call with complex path" "obj.arr[0].func() != 'value'"
+
 echo -e "\n${GREEN}All tests completed!${NC}"
