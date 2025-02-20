@@ -544,3 +544,22 @@ Identifiers (including dots)
 Boolean literals (true/false)
 Null
 ```
+
+##### Identifiers
+
+Identifiers in TSL can include letters, digits, underscores, dots, slashes, hyphens, and parentheses. They can also include array suffixes with indices, wildcards, or complex identifiers.
+
+Examples:
+- `name`
+- `pods[0].status`
+- `containers[2].ports[80].protocol`
+- `nodes[*].status`
+- `deployments[my-deployment.spec.containers/nginx].image`
+- `services[my.service].status`
+- `nodes[my/node].status`
+- `pods[my-pod]`
+- `func()`
+- `obj.func()`
+- `arr[0].func()`
+- `obj.arr[0].func()`
+
