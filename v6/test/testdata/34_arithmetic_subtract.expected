@@ -1,0 +1,6 @@
+Parsing: balance = credit - debit
+[EQ]
+  [IDENTIFIER]: balance
+  [SUB]
+    [IDENTIFIER]: credit
+    [IDENTIFIER]: debit

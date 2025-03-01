@@ -1,0 +1,4 @@
+Parsing: notes = ""
+[EQ]
+  [IDENTIFIER]: notes
+  [STRING]: 

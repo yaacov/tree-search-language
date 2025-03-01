@@ -1,0 +1,10 @@
+Parsing: (price * quantity) + (tax * 0.1) > 1000
+[GT]
+  [ADD]
+    [MUL]
+      [IDENTIFIER]: price
+      [IDENTIFIER]: quantity
+    [MUL]
+      [IDENTIFIER]: tax
+      [NUMBER]: 0.1
+  [NUMBER]: 1000

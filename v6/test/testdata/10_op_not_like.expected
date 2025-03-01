@@ -1,0 +1,5 @@
+Parsing: email not like "%.gov"
+[NOT]
+  [LIKE]
+    [IDENTIFIER]: email
+    [STRING]: %.gov

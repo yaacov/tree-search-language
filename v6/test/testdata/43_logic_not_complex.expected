@@ -1,0 +1,13 @@
+Parsing: not ((status = "inactive" and price < 0) or category = "forbidden")
+[NOT]
+  [OR]
+    [AND]
+      [EQ]
+        [IDENTIFIER]: status
+        [STRING]: inactive
+      [LT]
+        [IDENTIFIER]: price
+        [NUMBER]: 0
+    [EQ]
+      [IDENTIFIER]: category
+      [STRING]: forbidden

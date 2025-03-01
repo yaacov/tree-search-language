@@ -1,0 +1,4 @@
+Parsing: name like "%smith%"
+[LIKE]
+  [IDENTIFIER]: name
+  [STRING]: %smith%

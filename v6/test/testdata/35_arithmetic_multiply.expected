@@ -1,0 +1,6 @@
+Parsing: total_price = quantity * price
+[EQ]
+  [IDENTIFIER]: total_price
+  [MUL]
+    [IDENTIFIER]: quantity
+    [IDENTIFIER]: price

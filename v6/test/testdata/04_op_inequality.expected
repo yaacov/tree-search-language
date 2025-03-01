@@ -1,0 +1,4 @@
+Parsing: name != "alice"
+[NE]
+  [IDENTIFIER]: name
+  [STRING]: alice

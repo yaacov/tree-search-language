@@ -1,0 +1,16 @@
+Parsing: (age > 18 and verified = true) or (guardian_approved = true and age > 13)
+[OR]
+  [AND]
+    [GT]
+      [IDENTIFIER]: age
+      [NUMBER]: 18
+    [EQ]
+      [IDENTIFIER]: verified
+      [BOOLEAN]: true
+  [AND]
+    [EQ]
+      [IDENTIFIER]: guardian_approved
+      [BOOLEAN]: true
+    [GT]
+      [IDENTIFIER]: age
+      [NUMBER]: 13

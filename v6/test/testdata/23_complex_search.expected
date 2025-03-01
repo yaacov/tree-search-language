@@ -1,0 +1,27 @@
+Parsing: (name like "%john%" or email like "%john%") and age >= 18 and (status = "active" or status = "pending") and country not in ["restricted", "blocked"]
+[AND]
+  [AND]
+    [AND]
+      [OR]
+        [LIKE]
+          [IDENTIFIER]: name
+          [STRING]: %john%
+        [LIKE]
+          [IDENTIFIER]: email
+          [STRING]: %john%
+      [GE]
+        [IDENTIFIER]: age
+        [NUMBER]: 18
+    [OR]
+      [EQ]
+        [IDENTIFIER]: status
+        [STRING]: active
+      [EQ]
+        [IDENTIFIER]: status
+        [STRING]: pending
+  [NOT]
+    [IN]
+      [IDENTIFIER]: country
+      [ARRAY]:
+        [STRING]: restricted
+        [STRING]: blocked

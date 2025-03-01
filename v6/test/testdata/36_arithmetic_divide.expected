@@ -1,0 +1,6 @@
+Parsing: price_per_unit = total / count
+[EQ]
+  [IDENTIFIER]: price_per_unit
+  [DIV]
+    [IDENTIFIER]: total
+    [IDENTIFIER]: count

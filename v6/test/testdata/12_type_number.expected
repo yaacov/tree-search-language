@@ -1,0 +1,4 @@
+Parsing: count = 42
+[EQ]
+  [IDENTIFIER]: count
+  [NUMBER]: 42

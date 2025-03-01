@@ -27,52 +27,36 @@ GO_MEM_BIN = tsl_mem
 #------------------------------------------------------------------------------
 # Phony targets
 #------------------------------------------------------------------------------
-.PHONY: all clean help generate lint test test-coverage test-file install-tools format parser-gen
+.PHONY: all clean help generate lint test test-coverage install-tools format generate-parser test-stability
 
 # Default target
 all: generate tsl tsl_parser tsl_mem
 
 help:
-	@echo "Available targets:"
-	@echo "  all           - Build everything (default)"
-	@echo "  tsl           - Build Go CLI tool"
-	@echo "  tsl_parser    - Build TSL parser tool"
-	@echo "  tsl_mem       - Build TSL memory demo tool"
-	@echo "  generate      - Run go generate"
-	@echo "  parser-gen    - Generate parser files"
-	@echo "  lint          - Run linter checks"
-	@echo "  test          - Run tests"
-	@echo "  test-coverage - Run tests with coverage report"
-	@echo "  test-file     - Run tests for a specific file (use FILE=<path>)"
-	@echo "  format        - Format the code using go fmt"
-	@echo "  clean         - Remove built binary files and coverage output"
-	@echo "  clean-all     - Remove all built and generated files including parser files"
-	@echo "  install-tools - Install development tools (golangci-lint)"
-
-parser-gen:
-	cd pkg/parser && ./build.sh
-
-lint:
-	$(GOLINT) run ./...
-
-test: tsl
-	$(GO) test $(GO_TEST_FLAGS) ./...
-
-test-coverage: tsl
-	$(GO) test $(GO_TEST_COVERAGE_FLAGS) ./...
-	$(GO) tool cover -html=coverage.out
-
-# Add new target for testing specific file
-test-file:
-	@if [ -z "$(FILE)" ]; then \
-		echo "Please specify a test file with FILE=<path>"; \
-		echo "Example: make test-file FILE=./pkg/walkers/sql/walk_test.go"; \
-		exit 1; \
-	fi
-	$(GO) test $(GO_TEST_FLAGS) $(FILE)
-
-format:
-	$(GO) fmt ./...
+	@echo "Tree Search Language (TSL) Makefile Help"
+	@echo "========================================"
+	@echo ""
+	@echo "Build targets:"
+	@echo "  all               : Generate parser code and build all binaries (default)"
+	@echo "  tsl               : Build the main TSL binary"
+	@echo "  tsl_parser        : Build the TSL parser binary"
+	@echo "  tsl_mem           : Build the TSL memory binary"
+	@echo ""
+	@echo "Development targets:"
+	@echo "  generate          : Generate code using go generate"
+	@echo "  generate-parser   : Generate parser code only"
+	@echo "  format            : Format code using go fmt"
+	@echo "  lint              : Run linter on code"
+	@echo "  install-tools     : Install required development tools"
+	@echo ""
+	@echo "Testing targets:"
+	@echo "  test              : Run all tests including stability tests"
+	@echo "  test-stability    : Run stability tests only"
+	@echo "  test-coverage     : Run tests with coverage report"
+	@echo ""
+	@echo "Cleanup targets:"
+	@echo "  clean             : Remove build artifacts"
+	@echo "  clean-all         : Remove all generated and build artifacts"
 
 tsl: generate
 	$(GO) build -o $(GO_BIN) ./$(GO_CMD)
@@ -83,6 +67,29 @@ tsl_parser: generate
 tsl_mem: generate
 	$(GO) build -o $(GO_MEM_BIN) ./$(GO_MEM_CMD)
 
+generate:
+	$(GO) generate ./...
+
+format:
+	$(GO) fmt ./...
+
+lint:
+	$(GOLINT) run ./...
+
+test: tsl test-stability
+	$(GO) test $(GO_TEST_FLAGS) ./...
+
+test-stability: tsl
+	@echo "Running stability tests..."
+	@bash test/stability_test.sh
+
+test-coverage: tsl
+	$(GO) test $(GO_TEST_COVERAGE_FLAGS) ./...
+	$(GO) tool cover -html=coverage.out
+
+generate-parser:
+	cd pkg/parser && ./build.sh
+
 clean:
 	rm -rf $(GO_BIN) $(GO_PARSER_BIN) $(GO_MEM_BIN) coverage.out
 
@@ -91,3 +98,4 @@ clean-all:
 
 install-tools:
 	go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+

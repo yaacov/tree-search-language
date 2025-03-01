@@ -1,0 +1,4 @@
+Parsing: name = "alice"
+[EQ]
+  [IDENTIFIER]: name
+  [STRING]: alice

@@ -1,0 +1,6 @@
+Parsing: total = price + tax
+[EQ]
+  [IDENTIFIER]: total
+  [ADD]
+    [IDENTIFIER]: price
+    [IDENTIFIER]: tax

@@ -1,0 +1,12 @@
+Parsing: age > 20 and age < 30 and status = "active"
+[AND]
+  [AND]
+    [GT]
+      [IDENTIFIER]: age
+      [NUMBER]: 20
+    [LT]
+      [IDENTIFIER]: age
+      [NUMBER]: 30
+  [EQ]
+    [IDENTIFIER]: status
+    [STRING]: active

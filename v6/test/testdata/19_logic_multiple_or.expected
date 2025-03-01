@@ -1,0 +1,12 @@
+Parsing: category = "A" or category = "B" or category = "C"
+[OR]
+  [OR]
+    [EQ]
+      [IDENTIFIER]: category
+      [STRING]: A
+    [EQ]
+      [IDENTIFIER]: category
+      [STRING]: B
+  [EQ]
+    [IDENTIFIER]: category
+    [STRING]: C

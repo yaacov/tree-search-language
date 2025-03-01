@@ -1,0 +1,6 @@
+Parsing: updated_at between "2023-01-01" and "2023-12-31"
+[BETWEEN]
+  [IDENTIFIER]: updated_at
+  [ARRAY]:
+    [DATE]: 2023-01-01
+    [DATE]: 2023-12-31

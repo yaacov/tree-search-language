@@ -1,0 +1,4 @@
+Parsing: nodes[*].status = "ready"
+[EQ]
+  [IDENTIFIER]: nodes[*].status
+  [STRING]: ready

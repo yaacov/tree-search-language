@@ -1,0 +1,4 @@
+Parsing: deployments[0].spec.containers[*].image ~= "nginx.*"
+[REQ]
+  [IDENTIFIER]: deployments[0].spec.containers[*].image
+  [STRING]: nginx.*

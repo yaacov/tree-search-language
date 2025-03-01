@@ -1,0 +1,6 @@
+Parsing: status in ["active", "pending"]
+[IN]
+  [IDENTIFIER]: status
+  [ARRAY]:
+    [STRING]: active
+    [STRING]: pending

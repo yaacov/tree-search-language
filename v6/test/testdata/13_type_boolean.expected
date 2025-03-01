@@ -1,0 +1,4 @@
+Parsing: is_active = true
+[EQ]
+  [IDENTIFIER]: is_active
+  [BOOLEAN]: true

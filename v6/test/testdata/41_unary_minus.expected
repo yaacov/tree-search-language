@@ -1,0 +1,4 @@
+Parsing: temperature = -5
+[EQ]
+  [IDENTIFIER]: temperature
+  [NUMBER]: -5

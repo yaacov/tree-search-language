@@ -1,0 +1,4 @@
+Parsing: name ~= "John.*"
+[REQ]
+  [IDENTIFIER]: name
+  [STRING]: John.*

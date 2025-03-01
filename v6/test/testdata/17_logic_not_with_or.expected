@@ -1,0 +1,13 @@
+Parsing: not (country = "US" or country = "UK") and status = "active"
+[AND]
+  [NOT]
+    [OR]
+      [EQ]
+        [IDENTIFIER]: country
+        [STRING]: US
+      [EQ]
+        [IDENTIFIER]: country
+        [STRING]: UK
+  [EQ]
+    [IDENTIFIER]: status
+    [STRING]: active

@@ -1,0 +1,7 @@
+Parsing: country not in ["US", "UK"]
+[NOT]
+  [IN]
+    [IDENTIFIER]: country
+    [ARRAY]:
+      [STRING]: US
+      [STRING]: UK
