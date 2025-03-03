@@ -1,0 +1,6 @@
+Parsing: not (not (status = "active"))
+[NOT]
+  [NOT]
+    [EQ]
+      [IDENTIFIER]: status
+      [STRING]: active

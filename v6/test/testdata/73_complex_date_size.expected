@@ -1,0 +1,16 @@
+Parsing: (created_at > "2023-01-01" and size < 5Gi) or (updated_at < "2023-12-31" and memory >= 2Mi)
+[OR]
+  [AND]
+    [GT]
+      [IDENTIFIER]: created_at
+      [DATE]: 2023-01-01
+    [LT]
+      [IDENTIFIER]: size
+      [NUMBER]: 5.36870912e+09
+  [AND]
+    [LT]
+      [IDENTIFIER]: updated_at
+      [DATE]: 2023-12-31
+    [GE]
+      [IDENTIFIER]: memory
+      [NUMBER]: 2.097152e+06

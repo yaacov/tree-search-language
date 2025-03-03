@@ -1,0 +1,4 @@
+Parsing: title = "Senior Software Engineer"
+[EQ]
+  [IDENTIFIER]: title
+  [STRING]: Senior Software Engineer

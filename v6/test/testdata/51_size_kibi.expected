@@ -1,0 +1,4 @@
+Parsing: size = 1Ki
+[EQ]
+  [IDENTIFIER]: size
+  [NUMBER]: 1024

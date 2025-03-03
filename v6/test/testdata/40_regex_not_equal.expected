@@ -1,4 +1,0 @@
-Parsing: name ~! "Smith.*"
-[RNE]
-  [IDENTIFIER]: name
-  [STRING]: Smith.*

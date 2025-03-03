@@ -1,0 +1,4 @@
+Parsing: path = "C:\\Program Files\\App"
+[EQ]
+  [IDENTIFIER]: path
+  [STRING]: C:\\Program Files\\App

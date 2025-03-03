@@ -1,0 +1,4 @@
+Parsing: timestamp = "2023-12-31T23:59:59Z"
+[EQ]
+  [IDENTIFIER]: timestamp
+  [TIMESTAMP]: 2023-12-31 23:59:59 +0000 UTC

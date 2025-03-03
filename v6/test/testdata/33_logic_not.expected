@@ -1,0 +1,5 @@
+Parsing: not (status = "deleted")
+[NOT]
+  [EQ]
+    [IDENTIFIER]: status
+    [STRING]: deleted

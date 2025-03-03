@@ -1,0 +1,25 @@
+Parsing: not (a > 10 and (b < 20 or c = 30)) or (d in [1,2,3] and not e like "test%")
+[OR]
+  [NOT]
+    [AND]
+      [GT]
+        [IDENTIFIER]: a
+        [NUMBER]: 10
+      [OR]
+        [LT]
+          [IDENTIFIER]: b
+          [NUMBER]: 20
+        [EQ]
+          [IDENTIFIER]: c
+          [NUMBER]: 30
+  [AND]
+    [IN]
+      [IDENTIFIER]: d
+      [ARRAY]:
+        [NUMBER]: 1
+        [NUMBER]: 2
+        [NUMBER]: 3
+    [LIKE]
+      [NOT]
+        [IDENTIFIER]: e
+      [STRING]: test%

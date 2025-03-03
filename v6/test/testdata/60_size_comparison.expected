@@ -1,0 +1,8 @@
+Parsing: size > 1.5Gi and size < 4Gi
+[AND]
+  [GT]
+    [IDENTIFIER]: size
+    [NUMBER]: 1.610612736e+09
+  [LT]
+    [IDENTIFIER]: size
+    [NUMBER]: 4.294967296e+09

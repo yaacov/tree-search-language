@@ -1,0 +1,13 @@
+Parsing: not description is null and status = "pending" or priority > 3
+[OR]
+  [AND]
+    [IS]
+      [NOT]
+        [IDENTIFIER]: description
+      [NULL]: NULL
+    [EQ]
+      [IDENTIFIER]: status
+      [STRING]: pending
+  [GT]
+    [IDENTIFIER]: priority
+    [NUMBER]: 3

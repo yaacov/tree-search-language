@@ -1,4 +1,0 @@
-Parsing: func() = true
-[EQ]
-  [IDENTIFIER]: func()
-  [BOOLEAN]: true

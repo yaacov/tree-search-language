@@ -1,0 +1,4 @@
+Parsing: format = "column1\tcolumn2"
+[EQ]
+  [IDENTIFIER]: format
+  [STRING]: column1\tcolumn2

@@ -1,0 +1,18 @@
+Parsing: not (not (a > 10) and not (b < 20)) or not (c between 0 and 100)
+[OR]
+  [NOT]
+    [AND]
+      [NOT]
+        [GT]
+          [IDENTIFIER]: a
+          [NUMBER]: 10
+      [NOT]
+        [LT]
+          [IDENTIFIER]: b
+          [NUMBER]: 20
+  [NOT]
+    [BETWEEN]
+      [IDENTIFIER]: c
+      [ARRAY]:
+        [NUMBER]: 0
+        [NUMBER]: 100

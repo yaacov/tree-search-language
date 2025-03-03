@@ -1,0 +1,7 @@
+Parsing: priority in [1, 2, 3]
+[IN]
+  [IDENTIFIER]: priority
+  [ARRAY]:
+    [NUMBER]: 1
+    [NUMBER]: 2
+    [NUMBER]: 3

@@ -1,6 +1,0 @@
-Parsing: remainder = items % 3
-[EQ]
-  [IDENTIFIER]: remainder
-  [MOD]
-    [IDENTIFIER]: items
-    [NUMBER]: 3

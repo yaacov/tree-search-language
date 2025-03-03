@@ -1,0 +1,16 @@
+Parsing: a > b and b > c or c > d and d > e
+[OR]
+  [AND]
+    [GT]
+      [IDENTIFIER]: a
+      [IDENTIFIER]: b
+    [GT]
+      [IDENTIFIER]: b
+      [IDENTIFIER]: c
+  [AND]
+    [GT]
+      [IDENTIFIER]: c
+      [IDENTIFIER]: d
+    [GT]
+      [IDENTIFIER]: d
+      [IDENTIFIER]: e

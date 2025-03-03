@@ -1,0 +1,4 @@
+Parsing: text = "line1\nline2"
+[EQ]
+  [IDENTIFIER]: text
+  [STRING]: line1\nline2

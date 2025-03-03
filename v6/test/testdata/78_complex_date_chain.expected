@@ -1,0 +1,14 @@
+Parsing: created_at between "2023-01-01" and "2023-06-30" and (updated_at > "2023-07-01" or expired_at < "2023-12-31")
+[AND]
+  [BETWEEN]
+    [IDENTIFIER]: created_at
+    [ARRAY]:
+      [DATE]: 2023-01-01
+      [DATE]: 2023-06-30
+  [OR]
+    [GT]
+      [IDENTIFIER]: updated_at
+      [DATE]: 2023-07-01
+    [LT]
+      [IDENTIFIER]: expired_at
+      [DATE]: 2023-12-31

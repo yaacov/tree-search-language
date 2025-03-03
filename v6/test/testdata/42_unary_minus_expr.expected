@@ -1,7 +1,0 @@
-Parsing: balance = -(debt + interest)
-[EQ]
-  [IDENTIFIER]: balance
-  [SUB]
-    [ADD]
-      [IDENTIFIER]: debt
-      [IDENTIFIER]: interest

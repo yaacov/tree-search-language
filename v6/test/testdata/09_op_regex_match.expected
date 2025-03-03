@@ -1,0 +1,4 @@
+Parsing: name ~= "^[A-Z].*"
+[REQ]
+  [IDENTIFIER]: name
+  [STRING]: ^[A-Z].*

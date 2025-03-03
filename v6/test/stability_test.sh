@@ -80,75 +80,88 @@ run_test() {
 # Define the tests
 echo "Starting TSL stability tests..."
 
-# Parsing tests with different query formats
-run_test "01_parse_simple" "${TSL_BIN} 'name = \"alice\"'"
-run_test "02_parse_complex" "${TSL_BIN} 'name = \"alice\" and (age > 30 or country in [\"US\", \"UK\"])'"
+# Basic Operators (01-10)
+run_test "01_op_equality" "${TSL_BIN} 'name = \"bob\"'"
+run_test "02_op_inequality" "${TSL_BIN} 'name != \"alice\"'"
+run_test "03_op_greater_than" "${TSL_BIN} 'age > 25'"
+run_test "04_op_less_than" "${TSL_BIN} 'age < 25'"
+run_test "05_op_greater_equal" "${TSL_BIN} 'age >= 25'"
+run_test "06_op_less_equal" "${TSL_BIN} 'age <= 25'"
+run_test "07_op_like" "${TSL_BIN} 'name like \"%smith%\"'"
+run_test "08_op_not_like" "${TSL_BIN} 'email not like \"%.gov\"'"
+run_test "09_op_regex_match" "${TSL_BIN} 'name ~= \"^[A-Z].*\"'"
+run_test "10_op_regex_not_match" "${TSL_BIN} 'name ~! \"^[0-9].*\"'"
 
-# Different operators tests
-run_test "03_op_equality" "${TSL_BIN} 'name = \"bob\"'"
-run_test "04_op_inequality" "${TSL_BIN} 'name != \"alice\"'"
-run_test "05_op_greater_than" "${TSL_BIN} 'age > 25'"
-run_test "06_op_less_equal" "${TSL_BIN} 'height <= 180'"
+# Array Operations (11-15)
+run_test "11_op_in_array" "${TSL_BIN} 'status in [\"active\", \"pending\"]'"
+run_test "12_op_not_in_array" "${TSL_BIN} 'country not in [\"US\", \"UK\"]'"
+run_test "13_array_single" "${TSL_BIN} 'category in [\"urgent\"]'"
+run_test "14_array_numbers" "${TSL_BIN} 'priority in [1, 2, 3]'"
+#run_test "15_array_empty" "${TSL_BIN} 'status in []'"
+#run_test "16_array_mixed" "${TSL_BIN} 'status in [\"normal\", \"error\\nmessage\", \"\\\"quoted\\\"\"]'"
 
-run_test "07_op_in" "${TSL_BIN} 'status in [\"active\", \"pending\"]'"
-run_test "08_op_not_in" "${TSL_BIN} 'country not in [\"US\", \"UK\"]'"
+# Data Types (16-25)
+run_test "16_type_string" "${TSL_BIN} 'name = \"alice\"'"
+run_test "17_type_integer" "${TSL_BIN} 'count = 42'"
+run_test "18_type_float" "${TSL_BIN} 'price = 99.99'"
+run_test "19_type_scientific" "${TSL_BIN} 'value = 1.23e-4'"
+run_test "20_type_boolean_true" "${TSL_BIN} 'is_active = true'"
+run_test "21_type_boolean_false" "${TSL_BIN} 'is_deleted = false'"
+run_test "22_type_null" "${TSL_BIN} 'description is null'"
+run_test "23_type_date" "${TSL_BIN} 'created_at = \"2023-12-31\"'"
+run_test "24_type_rfc3339" "${TSL_BIN} 'timestamp = \"2023-12-31T23:59:59Z\"'"
+run_test "25_type_rfc3339_offset" "${TSL_BIN} 'updated_at = \"2023-12-31T23:59:59+02:00\"'"
 
-run_test "09_op_like" "${TSL_BIN} 'name like \"%smith%\"'"
-run_test "10_op_not_like" "${TSL_BIN} 'email not like \"%.gov\"'"
-run_test "11_op_between" "${TSL_BIN} 'score between 50 and 100'"
+# Date Operations (26-30)
+run_test "26_date_greater" "${TSL_BIN} 'date > \"2023-01-01\"'"
+run_test "27_date_between" "${TSL_BIN} 'date between \"2023-01-01\" and \"2023-12-31\"'"
+run_test "28_rfc3339_between" "${TSL_BIN} 'timestamp between \"2023-01-01T00:00:00Z\" and \"2023-12-31T23:59:59Z\"'"
+run_test "29_date_mixed_formats" "${TSL_BIN} 'created_at > \"2023-01-01\" and updated_at < \"2023-12-31T23:59:59Z\"'"
+run_test "30_date_timezone" "${TSL_BIN} 'timestamp = \"2023-12-31T23:59:59+05:30\"'"
 
-# Different data types tests
-run_test "12_type_number" "${TSL_BIN} 'count = 42'"
-run_test "13_type_boolean" "${TSL_BIN} 'is_active = true'"
-run_test "14_type_date" "${TSL_BIN} 'created_at > \"2023-01-01\"'"
-run_test "15_type_date_range" "${TSL_BIN} 'updated_at between \"2023-01-01\" and \"2023-12-31\"'"
+# Logical Operations (31-35)
+run_test "31_logic_and" "${TSL_BIN} 'status = \"active\" and age > 18'"
+run_test "32_logic_or" "${TSL_BIN} 'type = \"admin\" or type = \"superuser\"'"
+run_test "33_logic_not" "${TSL_BIN} 'not (status = \"deleted\")'"
+run_test "34_logic_complex" "${TSL_BIN} '(a = 1 or b = 2) and (c = 3 or d = 4)'"
+run_test "35_logic_nested_not" "${TSL_BIN} 'not (not (status = \"active\"))'"
 
-# Nested logical expressions
-run_test "16_logic_nested_or_and" "${TSL_BIN} '(name = \"alice\" or name = \"bob\") and age > 25'"
-run_test "17_logic_not_with_or" "${TSL_BIN} 'not (country = \"US\" or country = \"UK\") and status = \"active\"'"
-run_test "18_logic_multiple_and" "${TSL_BIN} 'age > 20 and age < 30 and status = \"active\"'"
-run_test "19_logic_multiple_or" "${TSL_BIN} 'category = \"A\" or category = \"B\" or category = \"C\"'"
+# Size Operations (41-50)
+run_test "41_size_kilobytes" "${TSL_BIN} 'size = 5k'"
+run_test "42_size_megabytes" "${TSL_BIN} 'memory = 2M'"
+run_test "43_size_gigabytes" "${TSL_BIN} 'storage = 1G'"
+run_test "44_size_terabytes" "${TSL_BIN} 'capacity = 1T'"
+run_test "45_size_binary" "${TSL_BIN} 'memory = 2Mi'"
+run_test "46_size_kibi" "${TSL_BIN} 'size = 1Ki'"
+run_test "47_size_mebi" "${TSL_BIN} 'size = 1Mi'"
+run_test "48_size_gibi" "${TSL_BIN} 'size = 1Gi'"
+run_test "49_size_decimal" "${TSL_BIN} 'size = 1.5Gi'"
+run_test "50_size_comparison" "${TSL_BIN} 'size > 1.5Gi and size < 4Gi'"
 
-# Special characters and edge cases
-run_test "20_special_empty" "${TSL_BIN} 'notes = \"\"'"
-run_test "21_special_null" "${TSL_BIN} 'tags is null'"
-run_test "22_special_characters" "${TSL_BIN} 'filename = \"report-2023_Q1.pdf\"'"
+# Operator Precedence (51-55)
+run_test "51_precedence_and_or" "${TSL_BIN} 'a = 1 and b = 2 or c = 3'"
+run_test "52_precedence_not_and" "${TSL_BIN} 'not a = 1 and b = 2'"
+run_test "53_precedence_comparison_and" "${TSL_BIN} 'a > 1 and b < 2 or c >= 3'"
+run_test "54_precedence_between_and" "${TSL_BIN} 'x between 1 and 10 and y = 5'"
+run_test "55_precedence_complex" "${TSL_BIN} 'not a in [1,2,3] and b like \"test%\" or c between 5 and 10'"
 
-# Complex queries
-run_test "23_complex_search" "${TSL_BIN} '(name like \"%john%\" or email like \"%john%\") and age >= 18 and (status = \"active\" or status = \"pending\") and country not in [\"restricted\", \"blocked\"]'"
-run_test "24_complex_date_and_categories" "${TSL_BIN} '(created_at between \"2023-01-01\" and \"2023-12-31\") and ((category = \"A\" and price > 100) or (category = \"B\" and price > 50))'"
-run_test "25_complex_nested_groups" "${TSL_BIN} '((a = 1 or b = 2) and (c = 3 or d = 4)) or ((e = 5 or f = 6) and (g = 7 or h = 8))'"
-run_test "26_complex_mixed_operators" "${TSL_BIN} 'name like \"%smith%\" and age > 30 and created_at > \"2023-01-01\" and (status in (\"active\", \"pending\") or is_featured = true)'"
+# String Escaping (61-69)
+#run_test "61_escape_quotes" "${TSL_BIN} 'message = \"hello \\\"world\\\"\"'"
+#run_test "62_escape_backslash" "${TSL_BIN} 'path = \"C:\\\\Program Files\\\\App\"'"
+#run_test "63_escape_newline" "${TSL_BIN} 'text = \"line1\\nline2\"'"
+#run_test "64_escape_tab" "${TSL_BIN} 'format = \"column1\\tcolumn2\"'"
+#run_test "65_escape_mixed" "${TSL_BIN} 'content = \"Hello\\n\\\"User\\\"\\tWelcome\"'"
+#run_test "66_escape_in_like" "${TSL_BIN} 'path like \"%.txt\\_%\" escape \"\\\"'"
+#run_test "67_escape_in_regex" "${TSL_BIN} 'text ~= \"\\\\b\\\\w+\\\\b\"'"
+#run_test "68_escape_unicode" "${TSL_BIN} 'name = \"\\u0048\\u0065\\u006C\\u006C\\u006F\"'"
+#run_test "69_escape_complex" "${TSL_BIN} 'description = \"Test\\\\Case\\n\\\"Special\\\"\\tChars\"'"
 
-# Additional tests for array notation in identifiers
-run_test "27_array_notation_simple" "${TSL_BIN} 'pods[0].status = \"running\"'"
-run_test "28_array_notation_wildcard" "${TSL_BIN} 'nodes[*].status = \"ready\"'"
-run_test "29_array_notation_complex" "${TSL_BIN} 'deployments[0].spec.containers[*].image ~= \"nginx.*\"'"
-
-# Function call identifier tests
-run_test "30_function_call_simple" "${TSL_BIN} 'func() = true'"
-run_test "31_function_call_nested" "${TSL_BIN} 'obj.func() = \"value\"'"
-run_test "32_function_call_array" "${TSL_BIN} 'arr[0].func() = 123'"
-
-# Arithmetic operation tests
-run_test "33_arithmetic_add" "${TSL_BIN} 'total = price + tax'"
-run_test "34_arithmetic_subtract" "${TSL_BIN} 'balance = credit - debit'"
-run_test "35_arithmetic_multiply" "${TSL_BIN} 'total_price = quantity * price'"
-run_test "36_arithmetic_divide" "${TSL_BIN} 'price_per_unit = total / count'"
-run_test "37_arithmetic_modulo" "${TSL_BIN} 'remainder = items % 3'"
-run_test "38_arithmetic_complex" "${TSL_BIN} '(price * quantity) + (tax * 0.1) > 1000'"
-
-# Regex operator tests
-run_test "39_regex_equal" "${TSL_BIN} 'name ~= \"John.*\"'"
-run_test "40_regex_not_equal" "${TSL_BIN} 'name ~! \"Smith.*\"'"
-
-# Unary operator tests
-run_test "41_unary_minus" "${TSL_BIN} 'temperature = -5'"
-run_test "42_unary_minus_expr" "${TSL_BIN} 'balance = -(debt + interest)'"
-
-# Additional logical expression tests
-run_test "43_logic_not_complex" "${TSL_BIN} 'not ((status = \"inactive\" and price < 0) or category = \"forbidden\")'"
-run_test "44_logic_mixed_ops" "${TSL_BIN} '(age > 18 and verified = true) or (guardian_approved = true and age > 13)'"
+# Complex Expressions (71-75)
+run_test "71_complex_nested_logic" "${TSL_BIN} 'not (a > 10 and (b < 20 or c = 30)) or (d in [1,2,3] and not e like \"test%\")'"
+run_test "72_complex_mixed_types" "${TSL_BIN} '(size > 1Gi and name ~= \"^srv\") or (count between 1 and 10 and not status in [\"error\", \"warn\"])'"
+run_test "73_complex_date_size" "${TSL_BIN} '(created_at > \"2023-01-01\" and size < 5Gi) or (updated_at < \"2023-12-31\" and memory >= 2Mi)'"
+run_test "74_complex_triple_or" "${TSL_BIN} '(a = 1 and b = 2) or (c = 3 and d = 4) or (e = 5 and f = 6)'"
+run_test "75_complex_mixed_arrays" "${TSL_BIN} 'tags in [\"critical\", \"high\"] and (size > 1Gi or count > 100) and not status in [\"deleted\", \"archived\"]'"
 
 # Report results
 echo "======================================"

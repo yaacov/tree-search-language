@@ -1,0 +1,10 @@
+Parsing: x between 1 and 10 and y = 5
+[AND]
+  [BETWEEN]
+    [IDENTIFIER]: x
+    [ARRAY]:
+      [NUMBER]: 1
+      [NUMBER]: 10
+  [EQ]
+    [IDENTIFIER]: y
+    [NUMBER]: 5

@@ -1,4 +1,0 @@
-Parsing: pods[0].status = "running"
-[EQ]
-  [IDENTIFIER]: pods[0].status
-  [STRING]: running

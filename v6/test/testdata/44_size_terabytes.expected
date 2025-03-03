@@ -1,0 +1,4 @@
+Parsing: capacity = 1T
+[EQ]
+  [IDENTIFIER]: capacity
+  [NUMBER]: 1e+12

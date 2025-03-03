@@ -1,0 +1,4 @@
+Parsing: storage = 1G
+[EQ]
+  [IDENTIFIER]: storage
+  [NUMBER]: 1e+09

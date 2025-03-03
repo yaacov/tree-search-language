@@ -1,0 +1,4 @@
+Parsing: name ~! "^[0-9].*"
+[RNE]
+  [IDENTIFIER]: name
+  [STRING]: ^[0-9].*

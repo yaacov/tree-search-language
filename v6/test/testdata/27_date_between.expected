@@ -1,0 +1,6 @@
+Parsing: date between "2023-01-01" and "2023-12-31"
+[BETWEEN]
+  [IDENTIFIER]: date
+  [ARRAY]:
+    [DATE]: 2023-01-01
+    [DATE]: 2023-12-31

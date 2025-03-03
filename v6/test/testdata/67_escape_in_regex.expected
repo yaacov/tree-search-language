@@ -1,0 +1,4 @@
+Parsing: text ~= "\\b\\w+\\b"
+[REQ]
+  [IDENTIFIER]: text
+  [STRING]: \\b\\w+\\b

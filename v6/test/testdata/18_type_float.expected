@@ -1,0 +1,4 @@
+Parsing: price = 99.99
+[EQ]
+  [IDENTIFIER]: price
+  [NUMBER]: 99.99

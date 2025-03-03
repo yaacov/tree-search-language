@@ -1,0 +1,4 @@
+Parsing: memory = 2Mi
+[EQ]
+  [IDENTIFIER]: memory
+  [NUMBER]: 2.097152e+06

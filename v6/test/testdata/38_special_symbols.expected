@@ -1,0 +1,4 @@
+Parsing: filename = "report#1_.pdf"
+[EQ]
+  [IDENTIFIER]: filename
+  [STRING]: report#1_.pdf

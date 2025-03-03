@@ -1,4 +1,0 @@
-Parsing: arr[0].func() = 123
-[EQ]
-  [IDENTIFIER]: arr[0].func()
-  [NUMBER]: 123

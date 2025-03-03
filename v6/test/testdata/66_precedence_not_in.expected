@@ -1,0 +1,11 @@
+Parsing: not status in ["error", "failed"] and priority > 1
+[AND]
+  [IN]
+    [NOT]
+      [IDENTIFIER]: status
+    [ARRAY]:
+      [STRING]: error
+      [STRING]: failed
+  [GT]
+    [IDENTIFIER]: priority
+    [NUMBER]: 1

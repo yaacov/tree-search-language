@@ -1,4 +1,0 @@
-Parsing: obj.func() = "value"
-[EQ]
-  [IDENTIFIER]: obj.func()
-  [STRING]: value

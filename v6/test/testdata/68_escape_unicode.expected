@@ -1,0 +1,4 @@
+Parsing: name = "\u0048\u0065\u006C\u006C\u006F"
+[EQ]
+  [IDENTIFIER]: name
+  [STRING]: \u0048\u0065\u006C\u006C\u006F

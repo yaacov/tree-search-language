@@ -1,0 +1,4 @@
+Parsing: value = 1.23e-4
+[EQ]
+  [IDENTIFIER]: value
+  [NUMBER]: 0.000123

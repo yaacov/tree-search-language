@@ -1,0 +1,24 @@
+Parsing: (a = 1 and b = 2) or (c = 3 and d = 4) or (e = 5 and f = 6)
+[OR]
+  [OR]
+    [AND]
+      [EQ]
+        [IDENTIFIER]: a
+        [NUMBER]: 1
+      [EQ]
+        [IDENTIFIER]: b
+        [NUMBER]: 2
+    [AND]
+      [EQ]
+        [IDENTIFIER]: c
+        [NUMBER]: 3
+      [EQ]
+        [IDENTIFIER]: d
+        [NUMBER]: 4
+  [AND]
+    [EQ]
+      [IDENTIFIER]: e
+      [NUMBER]: 5
+    [EQ]
+      [IDENTIFIER]: f
+      [NUMBER]: 6

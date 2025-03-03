@@ -1,0 +1,21 @@
+Parsing: (size > 1Gi and name ~= "^srv") or (count between 1 and 10 and not status in ["error", "warn"])
+[OR]
+  [AND]
+    [GT]
+      [IDENTIFIER]: size
+      [NUMBER]: 1.073741824e+09
+    [REQ]
+      [IDENTIFIER]: name
+      [STRING]: ^srv
+  [AND]
+    [BETWEEN]
+      [IDENTIFIER]: count
+      [ARRAY]:
+        [NUMBER]: 1
+        [NUMBER]: 10
+    [IN]
+      [NOT]
+        [IDENTIFIER]: status
+      [ARRAY]:
+        [STRING]: error
+        [STRING]: warn

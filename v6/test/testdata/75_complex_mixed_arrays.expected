@@ -1,0 +1,21 @@
+Parsing: tags in ["critical", "high"] and (size > 1Gi or count > 100) and not status in ["deleted", "archived"]
+[AND]
+  [AND]
+    [IN]
+      [IDENTIFIER]: tags
+      [ARRAY]:
+        [STRING]: critical
+        [STRING]: high
+    [OR]
+      [GT]
+        [IDENTIFIER]: size
+        [NUMBER]: 1.073741824e+09
+      [GT]
+        [IDENTIFIER]: count
+        [NUMBER]: 100
+  [IN]
+    [NOT]
+      [IDENTIFIER]: status
+    [ARRAY]:
+      [STRING]: deleted
+      [STRING]: archived

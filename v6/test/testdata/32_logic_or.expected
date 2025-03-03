@@ -1,0 +1,8 @@
+Parsing: type = "admin" or type = "superuser"
+[OR]
+  [EQ]
+    [IDENTIFIER]: type
+    [STRING]: admin
+  [EQ]
+    [IDENTIFIER]: type
+    [STRING]: superuser

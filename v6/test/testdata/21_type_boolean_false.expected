@@ -1,0 +1,4 @@
+Parsing: is_deleted = false
+[EQ]
+  [IDENTIFIER]: is_deleted
+  [BOOLEAN]: false

@@ -1,6 +1,0 @@
-Parsing: score between 50 and 100
-[BETWEEN]
-  [IDENTIFIER]: score
-  [ARRAY]:
-    [NUMBER]: 50
-    [NUMBER]: 100
