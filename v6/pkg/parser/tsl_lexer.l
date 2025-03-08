@@ -60,7 +60,7 @@ RFC3339         {DATE}T{TIME}(Z|{TIME_OFFSET})
 ID_START        {LETTER}|{UNDERSCORE}
 ARRAY_SUFFIX    (\[[0-9]+\]|\[\*\]|\[[a-zA-Z0-9_./-]+\])
 ID_CONT         {LETTER}|{DIGIT}|{UNDERSCORE}|[./]
-ID_PART         ({ID_CONT}|{ARRAY_SUFFIX})*(\(\))?
+ID_PART         ({ID_CONT}|{ARRAY_SUFFIX})*
 IDENTIFIER      {ID_START}{ID_PART}
 
 /* Numeric patterns */

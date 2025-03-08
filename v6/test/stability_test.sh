@@ -110,7 +110,7 @@ run_test "21_type_boolean_false" "${TSL_BIN} 'is_deleted = false'"
 run_test "22_type_null" "${TSL_BIN} 'description is null'"
 run_test "23_type_date" "${TSL_BIN} 'created_at = \"2023-12-31\"'"
 run_test "24_type_rfc3339" "${TSL_BIN} 'timestamp = \"2023-12-31T23:59:59Z\"'"
-# run_test "25_type_rfc3339_offset" "${TSL_BIN} 'updated_at = \"2023-12-31T23:59:59+02:00\"'"
+run_test "25_type_rfc3339_offset" "${TSL_BIN} 'updated_at = \"2023-12-31T23:59:59+02:00\"'"
 
 # Date Operations (26-30)
 run_test "26_date_greater" "${TSL_BIN} 'date > \"2023-01-01\"'"
