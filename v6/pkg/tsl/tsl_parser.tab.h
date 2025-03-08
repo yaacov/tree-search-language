@@ -96,7 +96,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 55 "tsl_parser.y"
+#line 36 "tsl_parser.y"
 
     ast_node *node;
     double num;

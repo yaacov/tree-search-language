@@ -32,6 +32,13 @@ char *error_string = NULL;
 
 %}
 
+/* Bison semantic value type */
+%union {
+    ast_node *node;
+    double num;
+    char *str;
+}
+
 /* Token definitions */
 %token K_LIKE K_ILIKE K_AND K_OR K_BETWEEN K_IN K_IS K_NULL
 %token K_NOT K_TRUE K_FALSE
@@ -50,13 +57,6 @@ char *error_string = NULL;
 %left PLUS MINUS                   /* + - */
 %left STAR SLASH PERCENT           /* * / % */
 %right K_NOT                       /* unary NOT */
-
-/* Bison semantic value type */
-%union {
-    ast_node *node;
-    double num;
-    char *str;
-}
 
 /* Nonterminal types */
 %type <node> input expr or_expr and_expr comparison_expr
