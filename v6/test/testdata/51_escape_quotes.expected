@@ -1,0 +1,4 @@
+Parsing: message = "hello \"world\""
+[EQ]
+  [IDENTIFIER]: message
+  [STRING]: hello \"world\"

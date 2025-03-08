@@ -28,13 +28,44 @@ int check_date_formats(char *s) {
     return 0;
 }
 
+/* Process escaped characters in a string */
+char* process_escapes(char* text, int len) {
+    char* result = malloc(len + 1);
+    int i, j = 0;
+    
+    for (i = 0; i < len; i++) {
+        if (text[i] == '\\' && i + 1 < len) {
+            i++; // Skip backslash
+            switch (text[i]) {
+                case 'n': result[j++] = '\n'; break;
+                case 't': result[j++] = '\t'; break;
+                case 'r': result[j++] = '\r'; break;
+                case 'b': result[j++] = '\b'; break;
+                case 'f': result[j++] = '\f'; break;
+                case '\\': result[j++] = '\\'; break;
+                case '\'': result[j++] = '\''; break;
+                case '\"': result[j++] = '\"'; break;
+                case '`': result[j++] = '`'; break;
+                default: result[j++] = text[i]; break;
+            }
+        } else {
+            result[j++] = text[i];
+        }
+    }
+    result[j] = '\0';
+    return result;
+}
+
 /* Strip quotes and process string */
 char* strip_quotes(char* text, int offset) {
-    int len = strlen(text);
-    char *s = malloc(len - 1);
-    strncpy(s, text + offset, len - (offset * 2));
-    s[len - (offset * 2)] = '\0';
-    return s;
+    int len = strlen(text) - (offset * 2);
+    char *raw = malloc(len + 1);
+    strncpy(raw, text + offset, len);
+    raw[len] = '\0';
+    
+    char *processed = process_escapes(raw, len);
+    free(raw);
+    return processed;
 }
 %}
 
@@ -110,7 +141,7 @@ NUMBER_WITH_SUFFIX ({INTEGER}|{DECIMAL}){SIZE_SUFFIX}
 {NUMBER_WITH_SUFFIX}        { yylval.str = strdup(yytext); return NUMERIC_LITERAL; }
 
     /* String literals and identifiers */
-'[^']*'                    {
+'([^'\\]|\\.)*'           {
                             char *s = strip_quotes(yytext, 1);
                             int token = check_date_formats(s);
                             if (token) return token;
@@ -118,7 +149,7 @@ NUMBER_WITH_SUFFIX ({INTEGER}|{DECIMAL}){SIZE_SUFFIX}
                             return STRING_LITERAL;
                            }
 
-\"[^"]*\"                  {
+\"([^"\\]|\\.)*\"         {
                             char *s = strip_quotes(yytext, 1);
                             int token = check_date_formats(s);
                             if (token) return token;
@@ -126,7 +157,7 @@ NUMBER_WITH_SUFFIX ({INTEGER}|{DECIMAL}){SIZE_SUFFIX}
                             return STRING_LITERAL;
                            }
 
-`[^`]*`                    {
+`([^`\\]|\\.)*`           {
                             char *s = strip_quotes(yytext, 1);
                             int token = check_date_formats(s);
                             if (token) return token;

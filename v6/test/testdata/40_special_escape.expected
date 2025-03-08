@@ -1,4 +1,0 @@
-Parsing: path = "/usr/local/bin"
-[EQ]
-  [IDENTIFIER]: path
-  [STRING]: /usr/local/bin

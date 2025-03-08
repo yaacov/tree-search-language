@@ -98,7 +98,7 @@ run_test "12_op_not_in_array" "${TSL_BIN} 'country not in [\"US\", \"UK\"]'"
 run_test "13_array_single" "${TSL_BIN} 'category in [\"urgent\"]'"
 run_test "14_array_numbers" "${TSL_BIN} 'priority in [1, 2, 3]'"
 #run_test "15_array_empty" "${TSL_BIN} 'status in []'"
-#run_test "16_array_mixed" "${TSL_BIN} 'status in [\"normal\", \"error\\nmessage\", \"\\\"quoted\\\"\"]'"
+run_test "16_array_mixed" "${TSL_BIN} 'status in [\"normal\", \"error\\nmessage\", \"\\\"quoted\\\"\"]'"
 
 # Data Types (16-25)
 run_test "16_type_string" "${TSL_BIN} 'name = \"alice\"'"
@@ -126,42 +126,40 @@ run_test "33_logic_not" "${TSL_BIN} 'not (status = \"deleted\")'"
 run_test "34_logic_complex" "${TSL_BIN} '(a = 1 or b = 2) and (c = 3 or d = 4)'"
 run_test "35_logic_nested_not" "${TSL_BIN} 'not (not (status = \"active\"))'"
 
-# Size Operations (41-50)
-run_test "41_size_kilobytes" "${TSL_BIN} 'size = 5k'"
-run_test "42_size_megabytes" "${TSL_BIN} 'memory = 2M'"
-run_test "43_size_gigabytes" "${TSL_BIN} 'storage = 1G'"
-run_test "44_size_terabytes" "${TSL_BIN} 'capacity = 1T'"
-run_test "45_size_binary" "${TSL_BIN} 'memory = 2Mi'"
-run_test "46_size_kibi" "${TSL_BIN} 'size = 1Ki'"
-run_test "47_size_mebi" "${TSL_BIN} 'size = 1Mi'"
-run_test "48_size_gibi" "${TSL_BIN} 'size = 1Gi'"
-run_test "49_size_decimal" "${TSL_BIN} 'size = 1.5Gi'"
-run_test "50_size_comparison" "${TSL_BIN} 'size > 1.5Gi and size < 4Gi'"
+# Size Operations (36-45)
+run_test "36_size_kilobytes" "${TSL_BIN} 'size = 5k'"
+run_test "37_size_megabytes" "${TSL_BIN} 'memory = 2M'"
+run_test "38_size_gigabytes" "${TSL_BIN} 'storage = 1G'"
+run_test "39_size_terabytes" "${TSL_BIN} 'capacity = 1T'"
+run_test "40_size_binary" "${TSL_BIN} 'memory = 2Mi'"
+run_test "41_size_kibi" "${TSL_BIN} 'size = 1Ki'"
+run_test "42_size_mebi" "${TSL_BIN} 'size = 1Mi'"
+run_test "43_size_gibi" "${TSL_BIN} 'size = 1Gi'"
+run_test "44_size_decimal" "${TSL_BIN} 'size = 1.5Gi'"
+run_test "45_size_comparison" "${TSL_BIN} 'size > 1.5Gi and size < 4Gi'"
 
-# Operator Precedence (51-55)
-run_test "51_precedence_and_or" "${TSL_BIN} 'a = 1 and b = 2 or c = 3'"
-run_test "52_precedence_not_and" "${TSL_BIN} 'not a = 1 and b = 2'"
-run_test "53_precedence_comparison_and" "${TSL_BIN} 'a > 1 and b < 2 or c >= 3'"
-run_test "54_precedence_between_and" "${TSL_BIN} 'x between 1 and 10 and y = 5'"
-run_test "55_precedence_complex" "${TSL_BIN} 'not a in [1,2,3] and b like \"test%\" or c between 5 and 10'"
+# Operator Precedence (46-50)
+run_test "46_precedence_and_or" "${TSL_BIN} 'a = 1 and b = 2 or c = 3'"
+run_test "47_precedence_not_and" "${TSL_BIN} 'not a = 1 and b = 2'"
+run_test "48_precedence_comparison_and" "${TSL_BIN} 'a > 1 and b < 2 or c >= 3'"
+run_test "49_precedence_between_and" "${TSL_BIN} 'x between 1 and 10 and y = 5'"
+run_test "50_precedence_complex" "${TSL_BIN} 'not a in [1,2,3] and b like \"test%\" or c between 5 and 10'"
 
-# String Escaping (61-69)
-#run_test "61_escape_quotes" "${TSL_BIN} 'message = \"hello \\\"world\\\"\"'"
-#run_test "62_escape_backslash" "${TSL_BIN} 'path = \"C:\\\\Program Files\\\\App\"'"
-#run_test "63_escape_newline" "${TSL_BIN} 'text = \"line1\\nline2\"'"
-#run_test "64_escape_tab" "${TSL_BIN} 'format = \"column1\\tcolumn2\"'"
-#run_test "65_escape_mixed" "${TSL_BIN} 'content = \"Hello\\n\\\"User\\\"\\tWelcome\"'"
-#run_test "66_escape_in_like" "${TSL_BIN} 'path like \"%.txt\\_%\" escape \"\\\"'"
-#run_test "67_escape_in_regex" "${TSL_BIN} 'text ~= \"\\\\b\\\\w+\\\\b\"'"
-#run_test "68_escape_unicode" "${TSL_BIN} 'name = \"\\u0048\\u0065\\u006C\\u006C\\u006F\"'"
-#run_test "69_escape_complex" "${TSL_BIN} 'description = \"Test\\\\Case\\n\\\"Special\\\"\\tChars\"'"
+# String Escaping (51-57)
+run_test "51_escape_quotes" "${TSL_BIN} 'message = \"hello \\\"world\\\"\"'"
+run_test "52_escape_backslash" "${TSL_BIN} 'path = \"C:\\\\Program Files\\\\App\"'"
+run_test "53_escape_newline" "${TSL_BIN} 'text = \"line1\\nline2\"'"
+run_test "54_escape_tab" "${TSL_BIN} 'format = \"column1\\tcolumn2\"'"
+run_test "55_escape_mixed" "${TSL_BIN} 'content = \"Hello\\n\\\"User\\\"\\tWelcome\"'"
+run_test "56_escape_in_regex" "${TSL_BIN} 'text ~= \"\\\\b\\\\w+\\\\b\"'"
+run_test "57_escape_complex" "${TSL_BIN} 'description = \"Test\\\\Case\\n\\\"Special\\\"\\tChars\"'"
 
-# Complex Expressions (71-75)
-run_test "71_complex_nested_logic" "${TSL_BIN} 'not (a > 10 and (b < 20 or c = 30)) or (d in [1,2,3] and not e like \"test%\")'"
-run_test "72_complex_mixed_types" "${TSL_BIN} '(size > 1Gi and name ~= \"^srv\") or (count between 1 and 10 and not status in [\"error\", \"warn\"])'"
-run_test "73_complex_date_size" "${TSL_BIN} '(created_at > \"2023-01-01\" and size < 5Gi) or (updated_at < \"2023-12-31\" and memory >= 2Mi)'"
-run_test "74_complex_triple_or" "${TSL_BIN} '(a = 1 and b = 2) or (c = 3 and d = 4) or (e = 5 and f = 6)'"
-run_test "75_complex_mixed_arrays" "${TSL_BIN} 'tags in [\"critical\", \"high\"] and (size > 1Gi or count > 100) and not status in [\"deleted\", \"archived\"]'"
+# Complex Expressions (58-62)
+run_test "58_complex_nested_logic" "${TSL_BIN} 'not (a > 10 and (b < 20 or c = 30)) or (d in [1,2,3] and not e like \"test%\")'"
+run_test "59_complex_mixed_types" "${TSL_BIN} '(size > 1Gi and name ~= \"^srv\") or (count between 1 and 10 and not status in [\"error\", \"warn\"])'"
+run_test "60_complex_date_size" "${TSL_BIN} '(created_at > \"2023-01-01\" and size < 5Gi) or (updated_at < \"2023-12-31\" and memory >= 2Mi)'"
+run_test "61_complex_triple_or" "${TSL_BIN} '(a = 1 and b = 2) or (c = 3 and d = 4) or (e = 5 and f = 6)'"
+run_test "62_complex_mixed_arrays" "${TSL_BIN} 'tags in [\"critical\", \"high\"] and (size > 1Gi or count > 100) and not status in [\"deleted\", \"archived\"]'"
 
 # Report results
 echo "======================================"

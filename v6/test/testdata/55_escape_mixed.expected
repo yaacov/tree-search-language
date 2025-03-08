@@ -1,0 +1,4 @@
+Parsing: content = "Hello\n\"User\"\tWelcome"
+[EQ]
+  [IDENTIFIER]: content
+  [STRING]: Hello\n\"User\"\tWelcome

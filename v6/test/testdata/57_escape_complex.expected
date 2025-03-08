@@ -1,0 +1,4 @@
+Parsing: description = "Test\\Case\n\"Special\"\tChars"
+[EQ]
+  [IDENTIFIER]: description
+  [STRING]: Test\\Case\n\"Special\"\tChars

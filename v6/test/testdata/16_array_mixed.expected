@@ -1,0 +1,7 @@
+Parsing: status in ["normal", "error\nmessage", "\"quoted\""]
+[IN]
+  [IDENTIFIER]: status
+  [ARRAY]:
+    [STRING]: normal
+    [STRING]: error\nmessage
+    [STRING]: \"quoted\"
