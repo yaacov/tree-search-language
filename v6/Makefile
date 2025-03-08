@@ -74,6 +74,10 @@ format:
 	$(GO) fmt ./...
 
 lint:
+	@if ! command -v $(GOLINT) >/dev/null 2>&1; then \
+		echo "golangci-lint is not installed. Please run 'make install-tools' first."; \
+		exit 1; \
+	fi
 	$(GOLINT) run ./...
 
 test: tsl test-stability
