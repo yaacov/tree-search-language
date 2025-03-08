@@ -1,0 +1,4 @@
+Parsing: updated_at = "2023-12-31T23:59:59+02:00"
+[EQ]
+  [IDENTIFIER]: updated_at
+  [TIMESTAMP]: 2023-12-31T23:59:59+02:00
