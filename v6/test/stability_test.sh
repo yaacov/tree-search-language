@@ -97,7 +97,7 @@ run_test "11_op_in_array" "${TSL_BIN} 'status in [\"active\", \"pending\"]'"
 run_test "12_op_not_in_array" "${TSL_BIN} 'country not in [\"US\", \"UK\"]'"
 run_test "13_array_single" "${TSL_BIN} 'category in [\"urgent\"]'"
 run_test "14_array_numbers" "${TSL_BIN} 'priority in [1, 2, 3]'"
-#run_test "15_array_empty" "${TSL_BIN} 'status in []'"
+run_test "15_array_empty" "${TSL_BIN} 'status in []'"
 run_test "16_array_mixed" "${TSL_BIN} 'status in [\"normal\", \"error\\nmessage\", \"\\\"quoted\\\"\"]'"
 
 # Data Types (16-25)

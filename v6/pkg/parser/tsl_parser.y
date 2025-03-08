@@ -61,7 +61,7 @@ char *error_string = NULL;
 /* Nonterminal types */
 %type <node> input expr or_expr and_expr comparison_expr
 %type <node> additive_expr multiplicative_expr not_expr unary_expr
-%type <node> primary array_elements array
+%type <node> primary array_elements array opt_array_elements
 
 %start input
 
@@ -161,8 +161,13 @@ unary_expr:
     ;
 
 array:
-      LPAREN array_elements RPAREN     { $$ = $2; }
-    | LBRACKET array_elements RBRACKET { $$ = $2; }
+      LPAREN opt_array_elements RPAREN     { $$ = $2; }
+    | LBRACKET opt_array_elements RBRACKET { $$ = $2; }
+    ;
+
+opt_array_elements:
+      /* empty */                 { $$ = ast_create_array(0, NULL); } /* Empty array */
+    | array_elements              { $$ = $1; }
     ;
 
 array_elements:
@@ -183,6 +188,7 @@ array_elements:
                                       free(elements);
                                       ast_free($1);
                                     }
+    | array_elements COMMA         { $$ = $1; } /* Trailing comma */
     ;
 
 primary:
