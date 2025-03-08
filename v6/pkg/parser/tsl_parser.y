@@ -132,7 +132,6 @@ comparison_expr:
         ast_node *in_expr = ast_create_binary(K_IN, $1, $4);
         $$ = ast_create_unary(K_NOT, in_expr);
     }
-    | K_NOT comparison_expr               { $$ = ast_create_unary(K_NOT, $2); }
     ;
 
 additive_expr:
