@@ -12,7 +12,7 @@ require (
 	github.com/onsi/ginkgo v1.14.0
 	github.com/onsi/gomega v1.10.1
 	go.mongodb.org/mongo-driver v1.5.1
-	golang.org/x/net v0.7.0 // indirect
+	golang.org/x/net v0.36.0 // indirect
 	gopkg.in/yaml.v2 v2.3.0
 )
 
