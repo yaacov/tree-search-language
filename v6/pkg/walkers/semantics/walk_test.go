@@ -167,7 +167,7 @@ var _ = Describe("Walk", func() {
 		Entry("all with boolean array", "all booleans", false),
 		Entry("len in comparison", "len numbers = 3", true),
 		Entry("any with complex expression", "any (numbers * 2 > 5)", true),
-		//Entry("all with complex expression", "all ((numbers + 10) > 10)", true),
+		Entry("all with complex expression", "all ((numbers + 10) > 10)", true),
 	)
 })
 
