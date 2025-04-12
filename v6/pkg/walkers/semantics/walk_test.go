@@ -155,6 +155,19 @@ var _ = Describe("Walk", func() {
 
 		// Nested arrays and complex operations
 		Entry("nested array operations", "([1, 2, 3] + 1) * 2", []interface{}{4.0, 6.0, 8.0}),
+
+		// Array operators ANY, ALL, LEN
+		Entry("any with array identifier", "any (numbers > 1)", true),
+		Entry("any with array identifier (false case)", "any (numbers > 5)", false),
+		Entry("all with array identifier (true case)", "all (numbers > 0)", true),
+		Entry("all with array identifier (false case)", "all (numbers > 1)", false),
+		Entry("len with array identifier", "len numbers", 3.0),
+		Entry("len with literal array", "len [1, 2, 3, 4, 5]", 5.0),
+		Entry("any with boolean array", "any booleans", true),
+		Entry("all with boolean array", "all booleans", false),
+		Entry("len in comparison", "len numbers = 3", true),
+		Entry("any with complex expression", "any (numbers * 2 > 5)", true),
+		//Entry("all with complex expression", "all ((numbers + 10) > 10)", true),
 	)
 })
 

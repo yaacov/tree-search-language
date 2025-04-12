@@ -290,20 +290,58 @@ func handleUnaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 func evaluateUnaryExpression(operator tsl.Operator, rightVal interface{}) (interface{}, error) {
 	// Handle array values
 	if arr, ok := rightVal.([]interface{}); ok {
-		result := make([]interface{}, len(arr))
-
-		for i, val := range arr {
-			opResult, err := evaluateUnaryExpression(operator, val)
-			if err != nil {
-				return nil, err
-			}
-			result[i] = opResult
-		}
-
-		return result, nil
+		return evaluateArrayUnaryExpression(operator, arr)
 	}
 
 	// Handle regular values
+	return evaluateSingularUnaryExpression(operator, rightVal)
+}
+
+// evaluateArrayUnaryExpression applies a unary operator to an array value
+func evaluateArrayUnaryExpression(operator tsl.Operator, arr []interface{}) (interface{}, error) {
+	// Special handling for array operators
+	switch operator {
+	case tsl.OpAny:
+		// Return true if any element is true
+		for _, val := range arr {
+			if boolVal, ok := val.(bool); ok && boolVal {
+				return true, nil
+			}
+		}
+		return false, nil
+
+	case tsl.OpAll:
+		// Return true only if all elements are true
+		for _, val := range arr {
+			if boolVal, ok := val.(bool); ok {
+				if !boolVal {
+					return false, nil
+				}
+			} else {
+				return false, nil // Non-boolean value found
+			}
+		}
+		return true, nil
+
+	case tsl.OpLen:
+		// Return the length of the array
+		return float64(len(arr)), nil
+	}
+
+	// For other operators, apply to each element individually
+	result := make([]interface{}, len(arr))
+	for i, val := range arr {
+		opResult, err := evaluateSingularUnaryExpression(operator, val)
+		if err != nil {
+			return nil, err
+		}
+		result[i] = opResult
+	}
+	return result, nil
+}
+
+// evaluateSingularUnaryExpression applies a unary operator to a single value
+func evaluateSingularUnaryExpression(operator tsl.Operator, rightVal interface{}) (interface{}, error) {
 	switch operator {
 	case tsl.OpNot:
 		rightBool, ok := rightVal.(bool)
