@@ -119,6 +119,9 @@ NUMBER_WITH_SUFFIX ({INTEGER}|{DECIMAL}){SIZE_SUFFIX}
 (?i:not)                     { return K_NOT; }
 (?i:true)                    { return K_TRUE; }
 (?i:false)                   { return K_FALSE; }
+(?i:len)                     { return K_LEN; }
+(?i:any)                     { return K_ANY; }
+(?i:all)                     { return K_ALL; }
 
     /* Comparison operators */
 "<="                        { return LE; }

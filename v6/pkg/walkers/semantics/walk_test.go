@@ -111,6 +111,10 @@ var _ = Describe("Walk", func() {
 		// Array operations
 		Entry("in array literal", "spec.rating in [3, 4, 5]", true),
 		Entry("not in array", "spec.pages in [20, 30, 40]", false),
+		Entry("in array identifier", "2 in numbers", true),
+		Entry("not in array identifier", "5 in numbers", false),
+		Entry("in array expression", "5 in (numbers + 2)", true),
+		Entry("complex in array", "spec.rating in (numbers + 2)", true),
 
 		// Null checks
 		Entry("is null", "price is null", false),

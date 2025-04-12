@@ -65,30 +65,33 @@ extern int yydebug;
     K_NOT = 266,                   /* K_NOT  */
     K_TRUE = 267,                  /* K_TRUE  */
     K_FALSE = 268,                 /* K_FALSE  */
-    LE = 269,                      /* LE  */
-    LT = 270,                      /* LT  */
-    GE = 271,                      /* GE  */
-    GT = 272,                      /* GT  */
-    NE = 273,                      /* NE  */
-    EQ = 274,                      /* EQ  */
-    REQ = 275,                     /* REQ  */
-    RNE = 276,                     /* RNE  */
-    RFC3339 = 277,                 /* RFC3339  */
-    DATE = 278,                    /* DATE  */
-    LPAREN = 279,                  /* LPAREN  */
-    RPAREN = 280,                  /* RPAREN  */
-    COMMA = 281,                   /* COMMA  */
-    PLUS = 282,                    /* PLUS  */
-    MINUS = 283,                   /* MINUS  */
-    STAR = 284,                    /* STAR  */
-    SLASH = 285,                   /* SLASH  */
-    PERCENT = 286,                 /* PERCENT  */
-    LBRACKET = 287,                /* LBRACKET  */
-    RBRACKET = 288,                /* RBRACKET  */
-    NUMERIC_LITERAL = 289,         /* NUMERIC_LITERAL  */
-    STRING_LITERAL = 290,          /* STRING_LITERAL  */
-    IDENTIFIER = 291,              /* IDENTIFIER  */
-    UMINUS = 292                   /* UMINUS  */
+    K_LEN = 269,                   /* K_LEN  */
+    K_ANY = 270,                   /* K_ANY  */
+    K_ALL = 271,                   /* K_ALL  */
+    RFC3339 = 272,                 /* RFC3339  */
+    DATE = 273,                    /* DATE  */
+    LPAREN = 274,                  /* LPAREN  */
+    RPAREN = 275,                  /* RPAREN  */
+    COMMA = 276,                   /* COMMA  */
+    PLUS = 277,                    /* PLUS  */
+    MINUS = 278,                   /* MINUS  */
+    STAR = 279,                    /* STAR  */
+    SLASH = 280,                   /* SLASH  */
+    PERCENT = 281,                 /* PERCENT  */
+    LBRACKET = 282,                /* LBRACKET  */
+    RBRACKET = 283,                /* RBRACKET  */
+    NUMERIC_LITERAL = 284,         /* NUMERIC_LITERAL  */
+    STRING_LITERAL = 285,          /* STRING_LITERAL  */
+    IDENTIFIER = 286,              /* IDENTIFIER  */
+    EQ = 287,                      /* EQ  */
+    NE = 288,                      /* NE  */
+    LT = 289,                      /* LT  */
+    LE = 290,                      /* LE  */
+    GT = 291,                      /* GT  */
+    GE = 292,                      /* GE  */
+    REQ = 293,                     /* REQ  */
+    RNE = 294,                     /* RNE  */
+    UMINUS = 295                   /* UMINUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -103,7 +106,7 @@ union YYSTYPE
     double num;
     char *str;
 
-#line 107 "../tsl/tsl_parser.tab.h"
+#line 110 "../tsl/tsl_parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

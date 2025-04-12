@@ -13,20 +13,23 @@ const (
 	OpIn      Operator = 263 // K_IN
 	OpIs      Operator = 264 // K_IS (Only for NULL and NOT NULL)
 	OpNot     Operator = 266 // K_NOT
-	OpLE      Operator = 269 // LE
-	OpLT      Operator = 270 // LT
-	OpGE      Operator = 271 // GE
-	OpGT      Operator = 272 // GT
-	OpNE      Operator = 273 // NE
-	OpEQ      Operator = 274 // EQ
-	OpREQ     Operator = 275 // REQ (Regular expression equals)
-	OpRNE     Operator = 276 // RNE (Regular expression not equals)
-	OpPlus    Operator = 282 // PLUS
-	OpMinus   Operator = 283 // MINUS
-	OpStar    Operator = 284 // STAR (MULTIPLY)
-	OpSlash   Operator = 285 // SLASH (DIVIDE)
-	OpPercent Operator = 286 // PERCENT (MODULUS)
-	OpUMinus  Operator = 292 // UMINUS
+	OpLen     Operator = 269 // K_LEN
+	OpAny     Operator = 270 // K_ANY
+	OpAll     Operator = 271 // K_ALL
+	OpLE      Operator = 290 // LE
+	OpLT      Operator = 289 // LT
+	OpGE      Operator = 292 // GE
+	OpGT      Operator = 291 // GT
+	OpNE      Operator = 288 // NE
+	OpEQ      Operator = 287 // EQ
+	OpREQ     Operator = 293 // REQ (Regular expression equals)
+	OpRNE     Operator = 294 // RNE (Regular expression not equals)
+	OpPlus    Operator = 277 // PLUS
+	OpMinus   Operator = 278 // MINUS
+	OpStar    Operator = 279 // STAR (MULTIPLY)
+	OpSlash   Operator = 280 // SLASH (DIVIDE)
+	OpPercent Operator = 281 // PERCENT (MODULUS)
+	OpUMinus  Operator = 295 // UMINUS
 )
 
 // String returns the string representation of an OperatorType
@@ -85,8 +88,16 @@ func (op Operator) String() string {
 		return "DIV"
 	case OpPercent:
 		return "MOD"
+
+	// Unary Operators
 	case OpUMinus:
 		return "NEG"
+	case OpLen:
+		return "LEN"
+	case OpAny:
+		return "ANY"
+	case OpAll:
+		return "ALL"
 
 	default:
 		return "UNKNOWN"

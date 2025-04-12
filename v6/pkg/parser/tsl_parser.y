@@ -41,8 +41,7 @@ char *error_string = NULL;
 
 /* Token definitions */
 %token K_LIKE K_ILIKE K_AND K_OR K_BETWEEN K_IN K_IS K_NULL
-%token K_NOT K_TRUE K_FALSE
-%token LE LT GE GT NE EQ REQ RNE
+%token K_NOT K_TRUE K_FALSE K_LEN K_ANY K_ALL
 %token <str> RFC3339 DATE 
 %token LPAREN RPAREN COMMA
 %token PLUS MINUS STAR SLASH PERCENT
@@ -56,7 +55,7 @@ char *error_string = NULL;
 %left K_LIKE K_ILIKE K_IS K_BETWEEN K_IN
 %left PLUS MINUS                   /* + - */
 %left STAR SLASH PERCENT           /* * / % */
-%right K_NOT                       /* unary NOT */
+%right K_NOT K_LEN K_ANY K_ALL     /* unary NOT, LEN, ANY, ALL */
 %right UMINUS                      /* unary minus */
 
 /* Nonterminal types */
@@ -128,8 +127,8 @@ comparison_expr:
         $$ = ast_create_unary(K_NOT, between);
         free(elements);
     }
-    | comparison_expr K_IN array           { $$ = ast_create_binary(K_IN, $1, $3); }
-    | comparison_expr K_NOT K_IN array     {
+    | comparison_expr K_IN additive_expr     { $$ = ast_create_binary(K_IN, $1, $3); }
+    | comparison_expr K_NOT K_IN additive_expr {
         ast_node *in_expr = ast_create_binary(K_IN, $1, $4);
         $$ = ast_create_unary(K_NOT, in_expr);
     }
@@ -151,6 +150,9 @@ multiplicative_expr:
 not_expr:
       unary_expr
     | K_NOT not_expr               { $$ = ast_create_unary(K_NOT, $2); }
+    | K_LEN not_expr               { $$ = ast_create_unary(K_LEN, $2); }
+    | K_ANY not_expr               { $$ = ast_create_unary(K_ANY, $2); }
+    | K_ALL not_expr               { $$ = ast_create_unary(K_ALL, $2); }
     ;
 
 unary_expr:
@@ -162,13 +164,13 @@ unary_expr:
     ;
 
 array:
-      LPAREN opt_array_elements RPAREN     { $$ = $2; }
-    | LBRACKET opt_array_elements RBRACKET { $$ = $2; }
+      LBRACKET opt_array_elements RBRACKET { $$ = $2; }  /* only square brackets for arrays */
     ;
 
 opt_array_elements:
       /* empty */                 { $$ = ast_create_array(0, NULL); } /* Empty array */
     | array_elements              { $$ = $1; }
+    | array_elements COMMA        { $$ = $1; } /* Trailing comma */
     ;
 
 array_elements:
@@ -189,7 +191,6 @@ array_elements:
                                       free(elements);
                                       ast_free($1);
                                     }
-    | array_elements COMMA         { $$ = $1; } /* Trailing comma */
     ;
 
 primary:
