@@ -42,7 +42,7 @@ var _ = Describe("Walk", func() {
 		"spec.rating": 5.0,
 		"loaned":      true,
 		"date":        date,
-		"tags":        []string{"fiction", "bestseller"},
+		"tags":        []interface{}{"fiction", "bestseller"},
 		"price":       29.99,
 		"numbers":     []interface{}{1.0, 2.0, 3.0},
 		"booleans":    []interface{}{true, false, true},
@@ -66,6 +66,16 @@ var _ = Describe("Walk", func() {
 			Expect(err).ToNot(HaveOccurred())
 			Expect(actual).To(Equal(expected))
 		},
+
+		// Direct identifier evaluation
+		Entry("string identifier", "title", "A good book"),
+		Entry("numeric identifier", "spec.pages", 14.0),
+		Entry("boolean identifier", "loaned", true),
+		Entry("date identifier", "date", date),
+		Entry("price identifier", "price", 29.99),
+		Entry("numeric array identifier", "numbers", []interface{}{1.0, 2.0, 3.0}),
+		Entry("string array identifier", "tags", []interface{}{"fiction", "bestseller"}),
+		Entry("boolean array identifier", "booleans", []interface{}{true, false, true}),
 
 		// String operations
 		Entry("equals string", "title = 'A good book'", true),
@@ -143,6 +153,18 @@ var _ = Describe("Walk", func() {
 		Entry("boolean array and boolean", "booleans and true", []interface{}{true, false, true}),
 		Entry("boolean array or boolean", "booleans or false", []interface{}{true, false, true}),
 
+		// String array operations
+		Entry("string array equality", "tags = 'fiction'", []interface{}{true, false}),
+		Entry("string array inequality", "tags != 'fiction'", []interface{}{false, true}),
+		Entry("string array like", "tags like 'fic%'", []interface{}{true, false}),
+		Entry("string array ilike", "tags ilike 'FIC%'", []interface{}{true, false}),
+		Entry("string array regex equals", "tags ~= '^f.*'", []interface{}{true, false}),
+		Entry("string array regex not equals", "tags ~! '^b.*'", []interface{}{true, false}),
+		Entry("any with string array like", "any (tags like '%sell%')", true),
+		Entry("all with string array like", "all (tags like '%i%')", false),
+		Entry("literal string array operations", "['fiction', 'nonfiction', 'bestseller'] = 'bestseller'", []interface{}{false, false, true}),
+		Entry("literal string array like", "['abc', 'def', 'ghi'] like '%e%'", []interface{}{false, true, false}),
+
 		// Literal array operations
 		Entry("literal array addition", "[1, 2, 3] + 4", []interface{}{5.0, 6.0, 7.0}),
 		Entry("literal array subtraction", "[5, 6, 7] - 2", []interface{}{3.0, 4.0, 5.0}),
@@ -168,6 +190,7 @@ var _ = Describe("Walk", func() {
 		Entry("len in comparison", "len numbers = 3", true),
 		Entry("any with complex expression", "any (numbers * 2 > 5)", true),
 		Entry("all with complex expression", "all ((numbers + 10) > 10)", true),
+		Entry("any with string array identifier", "any (tags = 'fiction')", true),
 	)
 })
 
