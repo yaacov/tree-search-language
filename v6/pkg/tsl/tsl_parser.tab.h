@@ -87,7 +87,8 @@ extern int yydebug;
     RBRACKET = 288,                /* RBRACKET  */
     NUMERIC_LITERAL = 289,         /* NUMERIC_LITERAL  */
     STRING_LITERAL = 290,          /* STRING_LITERAL  */
-    IDENTIFIER = 291               /* IDENTIFIER  */
+    IDENTIFIER = 291,              /* IDENTIFIER  */
+    UMINUS = 292                   /* UMINUS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -102,7 +103,7 @@ union YYSTYPE
     double num;
     char *str;
 
-#line 106 "../tsl/tsl_parser.tab.h"
+#line 107 "../tsl/tsl_parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

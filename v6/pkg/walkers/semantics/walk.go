@@ -91,6 +91,7 @@ func Walk(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 	}
 }
 
+// handleBinaryExpression handles binary expressions
 func handleBinaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 	exprOp, ok := n.Value().(tsl.TSLExpressionOp)
 	if !ok {
@@ -109,14 +110,34 @@ func handleBinaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) 
 		return nil, err
 	}
 
-	// handle the operator
-	switch exprOp.Operator {
+	// Evaluate the binary operation
+	return evaluateBinaryExpression(exprOp.Operator, leftVal, rightVal)
+}
+
+// evaluateBinaryExpression applies a binary operator to the left and right values
+func evaluateBinaryExpression(operator tsl.Operator, leftVal, rightVal interface{}) (interface{}, error) {
+	// Check if left value is an array and handle it by applying the operation to each element
+	if arr, ok := leftVal.([]interface{}); ok {
+		result := make([]interface{}, len(arr))
+
+		for i, val := range arr {
+			opResult, err := evaluateBinaryExpression(operator, val, rightVal)
+			if err != nil {
+				return nil, err
+			}
+			result[i] = opResult
+		}
+
+		return result, nil
+	}
+
+	switch operator {
 	case tsl.OpEQ:
 		return leftVal == rightVal, nil
 	case tsl.OpNE:
 		return leftVal != rightVal, nil
 	case tsl.OpLT, tsl.OpLE, tsl.OpGT, tsl.OpGE:
-		return evaluateCompareExpressions(exprOp.Operator, leftVal, rightVal)
+		return evaluateCompareExpressions(operator, leftVal, rightVal)
 	case tsl.OpREQ:
 		return evaluateRegexMatch(leftVal, rightVal)
 	case tsl.OpRNE:
@@ -126,7 +147,7 @@ func handleBinaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) 
 		}
 		return !matched, nil
 	case tsl.OpAnd, tsl.OpOr:
-		return evaluateLogicalExpression(exprOp.Operator, leftVal, rightVal)
+		return evaluateLogicalExpression(operator, leftVal, rightVal)
 	case tsl.OpLike:
 		return evaluateLikePattern(leftVal, rightVal)
 	case tsl.OpILike:
@@ -156,9 +177,9 @@ func handleBinaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) 
 		}
 		return false, nil
 	case tsl.OpPlus, tsl.OpMinus, tsl.OpStar, tsl.OpSlash, tsl.OpPercent:
-		return evaluateMathExpression(exprOp.Operator, leftVal, rightVal)
+		return evaluateMathExpression(operator, leftVal, rightVal)
 	default:
-		return nil, tsl.UnexpectedOperatorError{Operator: exprOp.Operator}
+		return nil, tsl.UnexpectedOperatorError{Operator: operator}
 	}
 }
 
@@ -248,6 +269,7 @@ func evaluateCompareExpressions(operator tsl.Operator, leftVal, rightVal interfa
 	return nil, nil
 }
 
+// handleUnaryExpression handles unary expressions
 func handleUnaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 	exprOp, ok := n.Value().(tsl.TSLExpressionOp)
 	if !ok {
@@ -260,21 +282,43 @@ func handleUnaryExpression(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 		return nil, err
 	}
 
-	switch exprOp.Operator {
+	// Evaluate the unary operation
+	return evaluateUnaryExpression(exprOp.Operator, rightVal)
+}
+
+// evaluateUnaryExpression applies a unary operator to a value
+func evaluateUnaryExpression(operator tsl.Operator, rightVal interface{}) (interface{}, error) {
+	// Handle array values
+	if arr, ok := rightVal.([]interface{}); ok {
+		result := make([]interface{}, len(arr))
+
+		for i, val := range arr {
+			opResult, err := evaluateUnaryExpression(operator, val)
+			if err != nil {
+				return nil, err
+			}
+			result[i] = opResult
+		}
+
+		return result, nil
+	}
+
+	// Handle regular values
+	switch operator {
 	case tsl.OpNot:
 		rightBool, ok := rightVal.(bool)
 		if !ok {
 			return nil, tsl.TypeMismatchError{Expected: "boolean", Got: fmt.Sprintf("%T", rightVal)}
 		}
 		return !rightBool, nil
-	case tsl.OpMinus:
+	case tsl.OpUMinus:
 		rightNum, ok := toFloat64(rightVal)
 		if !ok {
 			return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", rightVal)}
 		}
 		return -rightNum, nil
 	default:
-		return nil, tsl.UnexpectedOperatorError{Operator: exprOp.Operator}
+		return nil, tsl.UnexpectedOperatorError{Operator: operator}
 	}
 }
 

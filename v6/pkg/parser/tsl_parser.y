@@ -57,6 +57,7 @@ char *error_string = NULL;
 %left PLUS MINUS                   /* + - */
 %left STAR SLASH PERCENT           /* * / % */
 %right K_NOT                       /* unary NOT */
+%right UMINUS                      /* unary minus */
 
 /* Nonterminal types */
 %type <node> input expr or_expr and_expr comparison_expr
@@ -154,7 +155,7 @@ not_expr:
 
 unary_expr:
       primary
-    | MINUS unary_expr             { $$ = ast_create_unary(MINUS, $2); }
+    | MINUS unary_expr             { $$ = ast_create_unary(UMINUS, $2); }
     | PLUS unary_expr              { $$ = $2; }  /* unary plus is a no-op */
     | LPAREN expr RPAREN           { $$ = $2; }
     | array                        { $$ = $1; }
