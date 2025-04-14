@@ -311,6 +311,11 @@ func evaluateArrayUnaryExpression(operator tsl.Operator, arr []interface{}) (int
 		return false, nil
 
 	case tsl.OpAll:
+		// Return true if array is empty
+		if len(arr) == 0 {
+			return false, nil
+		}
+
 		// Return true only if all elements are true
 		for _, val := range arr {
 			if boolVal, ok := val.(bool); ok {
