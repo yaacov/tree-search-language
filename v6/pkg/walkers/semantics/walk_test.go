@@ -191,6 +191,12 @@ var _ = Describe("Walk", func() {
 		Entry("any with complex expression", "any (numbers * 2 > 5)", true),
 		Entry("all with complex expression", "all ((numbers + 10) > 10)", true),
 		Entry("any with string array identifier", "any (tags = 'fiction')", true),
+
+		// Sum operator tests
+		Entry("sum literal array", "sum [1, 2, 3]", 6.0),
+		Entry("sum identifier array", "sum numbers", 6.0),
+		Entry("sum on computed array", "sum (numbers * 2)", 12.0),
+		Entry("sum in expression", "sum numbers + 4", 10.0),
 	)
 })
 

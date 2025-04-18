@@ -331,6 +331,18 @@ func evaluateArrayUnaryExpression(operator tsl.Operator, arr []interface{}) (int
 	case tsl.OpLen:
 		// Return the length of the array
 		return float64(len(arr)), nil
+
+	case tsl.OpSum:
+		// sum all numeric elements
+		var sum float64
+		for _, val := range arr {
+			num, ok := toFloat64(val)
+			if !ok {
+				return nil, tsl.TypeMismatchError{Expected: "number", Got: fmt.Sprintf("%T", val)}
+			}
+			sum += num
+		}
+		return sum, nil
 	}
 
 	// For other operators, apply to each element individually

@@ -122,6 +122,7 @@ NUMBER_WITH_SUFFIX ({INTEGER}|{DECIMAL}){SIZE_SUFFIX}
 (?i:len)                     { return K_LEN; }
 (?i:any)                     { return K_ANY; }
 (?i:all)                     { return K_ALL; }
+(?i:sum)                     { return K_SUM; }
 
     /* Comparison operators */
 "<="                        { return LE; }

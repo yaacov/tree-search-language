@@ -42,6 +42,7 @@ char *error_string = NULL;
 /* Token definitions */
 %token K_LIKE K_ILIKE K_AND K_OR K_BETWEEN K_IN K_IS K_NULL
 %token K_NOT K_TRUE K_FALSE K_LEN K_ANY K_ALL
+%token K_SUM                            /* new sum token */
 %token <str> RFC3339 DATE 
 %token LPAREN RPAREN COMMA
 %token PLUS MINUS STAR SLASH PERCENT
@@ -55,7 +56,7 @@ char *error_string = NULL;
 %left K_LIKE K_ILIKE K_IS K_BETWEEN K_IN
 %left PLUS MINUS                   /* + - */
 %left STAR SLASH PERCENT           /* * / % */
-%right K_NOT K_LEN K_ANY K_ALL     /* unary NOT, LEN, ANY, ALL */
+%right K_NOT K_LEN K_ANY K_ALL K_SUM   /* give sum same unary precedence */
 %right UMINUS                      /* unary minus */
 
 /* Nonterminal types */
@@ -153,6 +154,7 @@ not_expr:
     | K_LEN not_expr               { $$ = ast_create_unary(K_LEN, $2); }
     | K_ANY not_expr               { $$ = ast_create_unary(K_ANY, $2); }
     | K_ALL not_expr               { $$ = ast_create_unary(K_ALL, $2); }
+    | K_SUM not_expr               { $$ = ast_create_unary(K_SUM, $2); }  /* handle sum */
     ;
 
 unary_expr:
