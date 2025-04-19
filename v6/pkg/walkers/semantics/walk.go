@@ -133,9 +133,13 @@ func evaluateBinaryExpression(operator tsl.Operator, leftVal, rightVal interface
 
 	switch operator {
 	case tsl.OpEQ:
-		return leftVal == rightVal, nil
+		return evaluateEquality(leftVal, rightVal)
 	case tsl.OpNE:
-		return leftVal != rightVal, nil
+		matched, err := evaluateEquality(leftVal, rightVal)
+		if err != nil {
+			return nil, err
+		}
+		return !matched, nil
 	case tsl.OpLT, tsl.OpLE, tsl.OpGT, tsl.OpGE:
 		return evaluateCompareExpressions(operator, leftVal, rightVal)
 	case tsl.OpREQ:
@@ -181,6 +185,30 @@ func evaluateBinaryExpression(operator tsl.Operator, leftVal, rightVal interface
 	default:
 		return nil, tsl.UnexpectedOperatorError{Operator: operator}
 	}
+}
+
+// evaluateEquality performs a type‑aware equality check.
+func evaluateEquality(leftVal, rightVal interface{}) (bool, error) {
+	// Numeric comparison
+	if leftNumber, leftIsNumber := toFloat64(leftVal); leftIsNumber {
+		if rightNumber, rightIsNumber := toFloat64(rightVal); rightIsNumber {
+			return leftNumber == rightNumber, nil
+		}
+	}
+	// Date/time comparison
+	if leftDateValue, leftIsDate := toDate(leftVal); leftIsDate {
+		if rightDateValue, rightIsDate := toDate(rightVal); rightIsDate {
+			return leftDateValue.Equal(rightDateValue), nil
+		}
+	}
+	// String comparison
+	if leftStringValue, leftIsString := leftVal.(string); leftIsString {
+		if rightStringValue, rightIsString := rightVal.(string); rightIsString {
+			return leftStringValue == rightStringValue, nil
+		}
+	}
+	// Fallback to Go’s built‑in equality for identical types
+	return leftVal == rightVal, nil
 }
 
 func evaluateMathExpression(operator tsl.Operator, leftVal, rightVal interface{}) (interface{}, error) {

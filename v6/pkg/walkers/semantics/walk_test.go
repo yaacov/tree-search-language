@@ -36,16 +36,18 @@ var _ = Describe("Walk", func() {
 	// This is the record that we will use for all the tests:
 	date, _ := time.Parse(time.RFC3339, "2020-01-01T00:00:00Z")
 	record := map[string]interface{}{
-		"title":       "A good book",
-		"author":      "Joe",
-		"spec.pages":  14.0,
-		"spec.rating": 5.0,
-		"loaned":      true,
-		"date":        date,
-		"tags":        []interface{}{"fiction", "bestseller"},
-		"price":       29.99,
-		"numbers":     []interface{}{1.0, 2.0, 3.0},
-		"booleans":    []interface{}{true, false, true},
+		"title":        "A good book",
+		"author":       "Joe",
+		"spec.pages":   14.0,
+		"spec.rating":  5.0,
+		"loaned":       true,
+		"date":         date,
+		"tags":         []interface{}{"fiction", "bestseller"},
+		"price":        29.99,
+		"numbers":      []interface{}{1.0, 2.0, 3.0},
+		"booleans":     []interface{}{true, false, true},
+		"dateStr":      "2020-01-01T00:00:00Z", // full ISO string
+		"shortDateStr": "2020-01-01",           // short date
 	}
 
 	// This is the evaluation function that we will use:
@@ -197,6 +199,21 @@ var _ = Describe("Walk", func() {
 		Entry("sum identifier array", "sum numbers", 6.0),
 		Entry("sum on computed array", "sum (numbers * 2)", 12.0),
 		Entry("sum in expression", "sum numbers + 4", 10.0),
+
+		// Numeric literal on left
+		Entry("literal equals number (int/float mix)", "14 = spec.pages", true),
+		Entry("literal equals number (float literal)", "14.0 = spec.pages", true),
+
+		// Date‐string identifiers
+		Entry("full‐string date identifier", "dateStr", date),
+		Entry("short‐string date identifier", "shortDateStr", date),
+
+		// Date comparisons with string‐based fields
+		Entry("string date equals full literal", "dateStr = '2020-01-01T00:00:00Z'", true),
+		Entry("string date equals short literal", "shortDateStr = '2020-01-01'", true),
+		Entry("literal full date = identifier", "'2020-01-01T00:00:00Z' = dateStr", true),
+		Entry("literal short date = identifier", "'2020-01-01' = shortDateStr", true),
+		Entry("string date > earlier literal", "dateStr > '2019-12-31T00:00:00Z'", true),
 	)
 })
 

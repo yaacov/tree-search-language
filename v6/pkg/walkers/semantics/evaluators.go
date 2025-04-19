@@ -9,6 +9,29 @@ import (
 	"github.com/yaacov/tree-search-language/v6/pkg/tsl"
 )
 
+// processArray applies processItem over all elements
+func processArray(arr []interface{}) []interface{} {
+	out := make([]interface{}, len(arr))
+	for i, it := range arr {
+		out[i], _ = processValue(it)
+	}
+	return out
+}
+
+// processValue dispatches on value type: array, string/date, number, or other
+func processValue(value interface{}) (interface{}, error) {
+	if arr, ok := value.([]interface{}); ok {
+		return processArray(arr), nil
+	}
+	if date, ok := toDate(value); ok {
+		return date, nil
+	}
+	if num, ok := toFloat64(value); ok {
+		return num, nil
+	}
+	return value, nil
+}
+
 // handleIdentifier evaluates an identifier node using the provided eval function
 func handleIdentifier(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 	if n == nil {
@@ -32,14 +55,7 @@ func handleIdentifier(n *tsl.TSLNode, eval EvalFunc) (interface{}, error) {
 		return nil, tsl.KeyNotFoundError{Key: identName}
 	}
 
-	// Check if value is a string and matches ISO date and time format
-	if strValue, ok := value.(string); ok {
-		if t, err := time.Parse(time.RFC3339, strValue); err == nil {
-			return t, nil
-		}
-	}
-
-	return value, nil
+	return processValue(value)
 }
 
 // isValueInArray checks if a value is in a list of values
