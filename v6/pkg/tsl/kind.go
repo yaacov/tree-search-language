@@ -5,6 +5,10 @@ package tsl
 type Kind int
 
 const (
+	KindInvalid Kind = -1
+)
+
+const (
 	KindNumericLiteral Kind = iota
 	KindStringLiteral
 	KindIdentifier
@@ -40,6 +44,8 @@ func (kind Kind) String() string {
 		return "BINARY_EXP"
 	case KindUnaryExpr:
 		return "UNARY_EXP"
+	case KindInvalid:
+		return "INVALID"
 	default:
 		return "UNKNOWN"
 	}

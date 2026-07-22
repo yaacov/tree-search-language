@@ -1,0 +1,10 @@
+Parsing: len(items) > 0 and sum(scores) > 100
+[AND]
+  [GT]
+    [LEN]
+      [IDENTIFIER]: items
+    [NUMBER]: 0
+  [GT]
+    [SUM]
+      [IDENTIFIER]: scores
+    [NUMBER]: 100

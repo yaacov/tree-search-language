@@ -212,6 +212,24 @@ var _ = Describe("Walk", func() {
 		Entry("literal full date = identifier", "'2020-01-01T00:00:00Z' = dateStr", true),
 		Entry("literal short date = identifier", "'2020-01-01' = shortDateStr", true),
 		Entry("string date > earlier literal", "dateStr > '2019-12-31T00:00:00Z'", true),
+
+		// String comparison operators (lexicographic)
+		Entry("string less than", "author < 'Zoe'", true),
+		Entry("string greater than", "author > 'Adam'", true),
+		Entry("string less than or equal (equal)", "author <= 'Joe'", true),
+		Entry("string less than or equal (less)", "author <= 'Zoe'", true),
+		Entry("string greater than or equal (equal)", "author >= 'Joe'", true),
+		Entry("string greater than or equal (greater)", "author >= 'Adam'", true),
+		Entry("string less than false", "author < 'Adam'", false),
+		Entry("string greater than false", "author > 'Zoe'", false),
+
+		// Function-call syntax for unary operators
+		Entry("len function syntax", "len(numbers)", 3.0),
+		Entry("sum function syntax", "sum(numbers)", 6.0),
+		Entry("any function syntax", "any(numbers > 1)", true),
+		Entry("all function syntax", "all(numbers > 0)", true),
+		Entry("len function with literal array", "len([1, 2, 3, 4])", 4.0),
+		Entry("sum function with expression", "sum(numbers * 2)", 12.0),
 	)
 })
 
@@ -241,6 +259,35 @@ var _ = Describe("Walk error cases", func() {
 		Entry("Type mismatch number/string", "age = 'young'", tsl.KeyNotFoundError{}),
 		Entry("Invalid operator", "name invalid 'test'", tsl.UnexpectedOperatorError{}),
 		Entry("Invalid between array", "age between [1]", tsl.BetweenOperatorError{}),
+	)
+})
+
+var _ = Describe("Walk error messages", func() {
+	record := map[string]interface{}{
+		"name":  "alice",
+		"count": 10.0,
+	}
+	eval := func(key string) (interface{}, bool) {
+		v, ok := record[key]
+		return v, ok
+	}
+
+	DescribeTable("Returns errors with expected messages",
+		func(text string, expectedSubstring string) {
+			tree, err := tsl.ParseTSL(text)
+			Expect(err).ToNot(HaveOccurred())
+
+			_, err = Walk(tree, eval)
+			Expect(err).To(HaveOccurred())
+			Expect(err.Error()).To(ContainSubstring(expectedSubstring))
+		},
+
+		Entry("key not found", "missing > 5", "key not found: missing"),
+		Entry("division by zero", "count / 0", "division by zero"),
+		Entry("modulus by zero", "count % 0", "modulus by zero"),
+		Entry("invalid regex", "name ~= '[invalid'", "error parsing regexp"),
+		Entry("boolean type mismatch", "count and true", "type mismatch: expected boolean"),
+		Entry("number type mismatch", "name + 1", "type mismatch: expected number"),
 	)
 })
 

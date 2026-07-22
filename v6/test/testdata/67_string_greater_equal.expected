@@ -1,0 +1,4 @@
+Parsing: name >= "alice"
+[GE]
+  [IDENTIFIER]: name
+  [STRING]: alice

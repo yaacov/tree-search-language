@@ -1,0 +1,10 @@
+Parsing: any(tags = "critical") or all(scores > 50)
+[OR]
+  [ANY]
+    [EQ]
+      [IDENTIFIER]: tags
+      [STRING]: critical
+  [ALL]
+    [GT]
+      [IDENTIFIER]: scores
+      [NUMBER]: 50

@@ -199,7 +199,7 @@ func unaryStep(n *tsl.TSLNode) (s sq.Sqlizer, err error) {
 	case tsl.OpNot:
 		return sq.Expr("NOT (?)", right), nil
 	default:
-		return nil, tsl.UnexpectedLiteralError{Literal: op.Operator}
+		return nil, tsl.UnexpectedOperatorError{Operator: op.Operator}
 	}
 }
 

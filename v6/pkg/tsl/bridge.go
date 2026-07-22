@@ -42,7 +42,9 @@ func wrapParserNode(parserNode *parser.Node) *Node {
 
 // Node represents a TSL AST node with semantic type information
 type Node struct {
-	Kind     Kind
+	Kind Kind
+	// Value must be an immutable type (string, float64, bool, time.Time, or nil).
+	// Clone performs a shallow copy of this field.
 	Value    interface{}
 	Operator Operator
 	Left     *Node
