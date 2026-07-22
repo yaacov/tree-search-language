@@ -19,10 +19,12 @@ import (
 	"github.com/yaacov/tree-search-language/v6/pkg/parser"
 )
 
-// TSLNode represents a tree search language AST (Abstract Syntax Tree) node
-// This provides the public interface for TSL parsing results
+// TSLNode represents a tree search language AST (Abstract Syntax Tree) node.
+// This provides the public interface for TSL parsing results.
+// Use the accessor methods (Type, Value, Clone) to inspect the tree,
+// and SetLeft/SetRight to modify expression children.
 type TSLNode struct {
-	Node *Node
+	node *Node
 }
 
 // TSLExpressionOp represents both unary and binary operations
@@ -54,62 +56,62 @@ func ParseTSL(input string) (*TSLNode, error) {
 
 	// Create TSL node from parsed input
 	tslNode := wrapParserNode(parserNode)
-	return &TSLNode{Node: tslNode}, nil
+	return &TSLNode{node: tslNode}, nil
 }
 
 // Clone creates a deep copy of the TSLNode and its children
 func (n *TSLNode) Clone() *TSLNode {
-	if n == nil || n.Node == nil {
+	if n == nil || n.node == nil {
 		return nil
 	}
-	return &TSLNode{Node: n.Node.Clone()}
+	return &TSLNode{node: n.node.Clone()}
 }
 
 // Type returns the type of the node
 func (n *TSLNode) Type() Kind {
-	if n == nil || n.Node == nil {
+	if n == nil || n.node == nil {
 		return Kind(-1)
 	}
-	return n.Node.Kind
+	return n.node.Kind
 }
 
 // Value returns the node's value based on its type
 func (n *TSLNode) Value() interface{} {
-	if n == nil || n.Node == nil {
+	if n == nil || n.node == nil {
 		return nil
 	}
 
-	switch n.Node.Kind {
+	switch n.node.Kind {
 	case KindBooleanLiteral, KindNumericLiteral, KindStringLiteral,
 		KindIdentifier, KindDateLiteral, KindTimestampLiteral:
-		return n.Node.Value
+		return n.node.Value
 	case KindBinaryExpr:
 		var left, right *TSLNode
-		if n.Node.Left != nil {
-			left = &TSLNode{Node: n.Node.Left}
+		if n.node.Left != nil {
+			left = &TSLNode{node: n.node.Left}
 		}
-		if n.Node.Right != nil {
-			right = &TSLNode{Node: n.Node.Right}
+		if n.node.Right != nil {
+			right = &TSLNode{node: n.node.Right}
 		}
 		return TSLExpressionOp{
-			Operator: n.Node.Operator,
+			Operator: n.node.Operator,
 			Left:     left,
 			Right:    right,
 		}
 	case KindUnaryExpr:
 		var right *TSLNode
-		if n.Node.Right != nil {
-			right = &TSLNode{Node: n.Node.Right}
+		if n.node.Right != nil {
+			right = &TSLNode{node: n.node.Right}
 		}
 		return TSLExpressionOp{
-			Operator: n.Node.Operator,
+			Operator: n.node.Operator,
 			Left:     nil,
 			Right:    right,
 		}
 	case KindArrayLiteral:
-		values := make([]*TSLNode, len(n.Node.Children))
-		for i, child := range n.Node.Children {
-			values[i] = &TSLNode{Node: child}
+		values := make([]*TSLNode, len(n.node.Children))
+		for i, child := range n.node.Children {
+			values[i] = &TSLNode{node: child}
 		}
 		return TSLArrayLiteral{Values: values}
 	case KindNullLiteral:
@@ -117,4 +119,20 @@ func (n *TSLNode) Value() interface{} {
 	default:
 		return nil
 	}
+}
+
+// SetLeft replaces the left child of a binary expression node
+func (n *TSLNode) SetLeft(child *TSLNode) {
+	if n == nil || n.node == nil || child == nil {
+		return
+	}
+	n.node.Left = child.node
+}
+
+// SetRight replaces the right child of a binary or unary expression node
+func (n *TSLNode) SetRight(child *TSLNode) {
+	if n == nil || n.node == nil || child == nil {
+		return
+	}
+	n.node.Right = child.node
 }
