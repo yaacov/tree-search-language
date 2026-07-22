@@ -83,7 +83,7 @@ func main() {
 	case "yaml":
 		s, err = yaml.Marshal(books)
 	default:
-		err = fmt.Errorf("unsuported output format: %s", *outputPtr)
+		err = fmt.Errorf("unsupported output format: %s", *outputPtr)
 	}
 
 	check(err)
