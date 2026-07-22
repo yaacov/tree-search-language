@@ -114,4 +114,46 @@ var _ = Describe("Walk", func() {
 		Expect(leftOp.Left.Value()).To(Equal("pages"))
 		Expect(rightOp.Left.Value()).To(Equal("rating"))
 	})
+
+	It("Should handle unary expressions", func() {
+		tree, err := tsl.ParseTSL("not (name = 'john')")
+		Expect(err).ToNot(HaveOccurred())
+
+		newTree, err := Walk(tree, check)
+		Expect(err).ToNot(HaveOccurred())
+		Expect(newTree.Type()).To(Equal(tsl.KindUnaryExpr))
+
+		op := newTree.Value().(tsl.TSLExpressionOp)
+		innerOp := op.Right.Value().(tsl.TSLExpressionOp)
+		Expect(innerOp.Left.Value()).To(Equal("user_name"))
+	})
+
+	It("Should remap identifiers inside array literals", func() {
+		tree, err := tsl.ParseTSL("name in [age, salary]")
+		Expect(err).ToNot(HaveOccurred())
+
+		newTree, err := Walk(tree, check)
+		Expect(err).ToNot(HaveOccurred())
+
+		op := newTree.Value().(tsl.TSLExpressionOp)
+		Expect(op.Left.Value()).To(Equal("user_name"))
+
+		arr := op.Right.Value().(tsl.TSLArrayLiteral)
+		Expect(arr.Values).To(HaveLen(2))
+		Expect(arr.Values[0].Value()).To(Equal("user_age"))
+		Expect(arr.Values[1].Value()).To(Equal("emp_salary"))
+	})
+
+	It("Should preserve original tree when walking", func() {
+		tree, err := tsl.ParseTSL("name = 'john'")
+		Expect(err).ToNot(HaveOccurred())
+
+		// Walk should not modify the original tree
+		_, err = Walk(tree, check)
+		Expect(err).ToNot(HaveOccurred())
+
+		// Original tree should still have "name"
+		op := tree.Value().(tsl.TSLExpressionOp)
+		Expect(op.Left.Value()).To(Equal("name"))
+	})
 })

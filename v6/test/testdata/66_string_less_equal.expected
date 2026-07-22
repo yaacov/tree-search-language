@@ -1,0 +1,4 @@
+Parsing: name <= "alice"
+[LE]
+  [IDENTIFIER]: name
+  [STRING]: alice

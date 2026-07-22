@@ -1,0 +1,5 @@
+Parsing: all(scores > 0)
+[ALL]
+  [GT]
+    [IDENTIFIER]: scores
+    [NUMBER]: 0

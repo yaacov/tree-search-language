@@ -1,0 +1,5 @@
+Parsing: any(tags = "critical")
+[ANY]
+  [EQ]
+    [IDENTIFIER]: tags
+    [STRING]: critical

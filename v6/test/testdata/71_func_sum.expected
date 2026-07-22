@@ -1,0 +1,5 @@
+Parsing: sum(scores) > 100
+[GT]
+  [SUM]
+    [IDENTIFIER]: scores
+  [NUMBER]: 100

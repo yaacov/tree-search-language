@@ -162,6 +162,22 @@ run_test "60_complex_date_size" "${TSL_BIN} '(created_at > \"2023-01-01\" and si
 run_test "61_complex_triple_or" "${TSL_BIN} '(a = 1 and b = 2) or (c = 3 and d = 4) or (e = 5 and f = 6)'"
 run_test "62_complex_mixed_arrays" "${TSL_BIN} 'tags in [\"critical\", \"high\"] and (size > 1Gi or count > 100) and not status in [\"deleted\", \"archived\"]'"
 
+# String Comparison Operators (64-69)
+run_test "64_string_less_than" "${TSL_BIN} 'name < \"M\"'"
+run_test "65_string_greater_than" "${TSL_BIN} 'name > \"M\"'"
+run_test "66_string_less_equal" "${TSL_BIN} 'name <= \"alice\"'"
+run_test "67_string_greater_equal" "${TSL_BIN} 'name >= \"alice\"'"
+run_test "68_string_compare_and" "${TSL_BIN} 'name >= \"A\" and name < \"N\"'"
+run_test "69_string_compare_complex" "${TSL_BIN} '(name > \"A\" and name < \"Z\") or status = \"active\"'"
+
+# Function-Call Syntax (70-75)
+run_test "70_func_len" "${TSL_BIN} 'len(items) > 0'"
+run_test "71_func_sum" "${TSL_BIN} 'sum(scores) > 100'"
+run_test "72_func_any" "${TSL_BIN} 'any(tags = \"critical\")'"
+run_test "73_func_all" "${TSL_BIN} 'all(scores > 0)'"
+run_test "74_func_nested" "${TSL_BIN} 'len(items) > 0 and sum(scores) > 100'"
+run_test "75_func_complex" "${TSL_BIN} 'any(tags = \"critical\") or all(scores > 50)'"
+
 # Report results
 echo "======================================"
 echo -e "Tests completed: ${TOTAL}"

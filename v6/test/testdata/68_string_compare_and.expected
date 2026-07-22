@@ -1,0 +1,8 @@
+Parsing: name >= "A" and name < "N"
+[AND]
+  [GE]
+    [IDENTIFIER]: name
+    [STRING]: A
+  [LT]
+    [IDENTIFIER]: name
+    [STRING]: N

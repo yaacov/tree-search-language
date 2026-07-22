@@ -155,5 +155,46 @@ var _ = Describe("Walk", func() {
 			"SELECT name, city, state FROM users WHERE ((salary * ?) + bonus) BETWEEN ? AND ?",
 			12.0, 50000.0, 100000.0,
 		),
+
+		Entry(
+			"NOT LIKE operator",
+			"name NOT LIKE '%smith%'",
+			"SELECT name, city, state FROM users WHERE NOT (name LIKE ?)",
+			"%smith%",
+		),
+
+		Entry(
+			"NOT IN operator",
+			"city NOT IN ['rome', 'paris']",
+			"SELECT name, city, state FROM users WHERE NOT (city IN (?,?))",
+			"rome", "paris",
+		),
+
+		Entry(
+			"NOT BETWEEN operator",
+			"age NOT BETWEEN 20 and 30",
+			"SELECT name, city, state FROM users WHERE NOT (age BETWEEN ? AND ?)",
+			20.0, 30.0,
+		),
+
+		Entry(
+			"IS NOT NULL",
+			"email IS NOT NULL",
+			"SELECT name, city, state FROM users WHERE NOT (email IS NULL)",
+		),
+
+		Entry(
+			"NOT ILIKE operator",
+			"name NOT ILIKE '%smith%'",
+			"SELECT name, city, state FROM users WHERE NOT (name ILIKE ?)",
+			"%smith%",
+		),
+
+		Entry(
+			"Unary minus",
+			"-salary > -50000",
+			"SELECT name, city, state FROM users WHERE -(salary) > -(?)",
+			50000.0,
+		),
 	)
 })

@@ -1,0 +1,4 @@
+Parsing: name < "M"
+[LT]
+  [IDENTIFIER]: name
+  [STRING]: M

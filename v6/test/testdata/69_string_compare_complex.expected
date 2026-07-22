@@ -1,0 +1,12 @@
+Parsing: (name > "A" and name < "Z") or status = "active"
+[OR]
+  [AND]
+    [GT]
+      [IDENTIFIER]: name
+      [STRING]: A
+    [LT]
+      [IDENTIFIER]: name
+      [STRING]: Z
+  [EQ]
+    [IDENTIFIER]: status
+    [STRING]: active

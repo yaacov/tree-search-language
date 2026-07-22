@@ -70,7 +70,7 @@ func (n *TSLNode) Clone() *TSLNode {
 // Type returns the type of the node
 func (n *TSLNode) Type() Kind {
 	if n == nil || n.node == nil {
-		return Kind(-1)
+		return KindInvalid
 	}
 	return n.node.Kind
 }
@@ -121,6 +121,55 @@ func (n *TSLNode) Value() interface{} {
 	}
 }
 
+// AsString returns the node's value as a string, if applicable
+func (n *TSLNode) AsString() (string, bool) {
+	if n == nil || n.node == nil {
+		return "", false
+	}
+	s, ok := n.node.Value.(string)
+	return s, ok
+}
+
+// AsFloat64 returns the node's value as a float64, if applicable
+func (n *TSLNode) AsFloat64() (float64, bool) {
+	if n == nil || n.node == nil {
+		return 0, false
+	}
+	f, ok := n.node.Value.(float64)
+	return f, ok
+}
+
+// AsBool returns the node's value as a bool, if applicable
+func (n *TSLNode) AsBool() (bool, bool) {
+	if n == nil || n.node == nil {
+		return false, false
+	}
+	b, ok := n.node.Value.(bool)
+	return b, ok
+}
+
+// AsExprOp returns the node's value as a TSLExpressionOp, if applicable
+func (n *TSLNode) AsExprOp() (TSLExpressionOp, bool) {
+	if n == nil || n.node == nil {
+		return TSLExpressionOp{}, false
+	}
+	if n.node.Kind != KindBinaryExpr && n.node.Kind != KindUnaryExpr {
+		return TSLExpressionOp{}, false
+	}
+	return n.Value().(TSLExpressionOp), true
+}
+
+// AsArray returns the node's value as a TSLArrayLiteral, if applicable
+func (n *TSLNode) AsArray() (TSLArrayLiteral, bool) {
+	if n == nil || n.node == nil {
+		return TSLArrayLiteral{}, false
+	}
+	if n.node.Kind != KindArrayLiteral {
+		return TSLArrayLiteral{}, false
+	}
+	return n.Value().(TSLArrayLiteral), true
+}
+
 // SetLeft replaces the left child of a binary expression node
 func (n *TSLNode) SetLeft(child *TSLNode) {
 	if n == nil || n.node == nil || child == nil {
@@ -135,4 +184,18 @@ func (n *TSLNode) SetRight(child *TSLNode) {
 		return
 	}
 	n.node.Right = child.node
+}
+
+// SetArrayValues replaces the children of an array literal node
+func (n *TSLNode) SetArrayValues(children []*TSLNode) {
+	if n == nil || n.node == nil {
+		return
+	}
+	nodes := make([]*Node, len(children))
+	for i, child := range children {
+		if child != nil {
+			nodes[i] = child.node
+		}
+	}
+	n.node.Children = nodes
 }

@@ -15,6 +15,8 @@ func (l *tslLexer) Lex(lval *yySymType) int {
 	token := l.lexer.NextToken()
 	l.pos = token.Position
 
+	lval.pos = token.Position
+
 	// Set the semantic value for string tokens
 	switch token.Type {
 	default:

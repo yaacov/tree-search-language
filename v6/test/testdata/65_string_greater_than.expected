@@ -1,0 +1,4 @@
+Parsing: name > "M"
+[GT]
+  [IDENTIFIER]: name
+  [STRING]: M
