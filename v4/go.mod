@@ -8,7 +8,7 @@ require (
 	github.com/fatih/color v1.7.0 // indirect
 	github.com/go-sql-driver/mysql v1.5.0 // indirect
 	github.com/golang/protobuf v1.3.2 // indirect
-	github.com/graphql-go/graphql v0.7.8
+	github.com/graphql-go/graphql v0.8.1
 	github.com/hokaccha/go-prettyjson v0.0.0-20180920040306-f579f869bbfe
 	github.com/jinzhu/gorm v1.9.8
 	github.com/kr/pretty v0.1.0 // indirect
