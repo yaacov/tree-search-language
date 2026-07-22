@@ -18,8 +18,8 @@ package graphviz
 
 import (
 	"fmt"
-	"math/rand"
 	"strings"
+	"sync/atomic"
 
 	"github.com/yaacov/tree-search-language/v6/pkg/tsl"
 )
@@ -38,14 +38,11 @@ const timestampStyle = baseRecordStyle + " color=orange"
 const opStyle = baseBoxStyle + " color=black"
 const arrayStyle = baseBoxStyle + " color=green"
 
-// Generate a random string of specified length using only letters
-func randStr(l int) string {
-	const pool = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	bytes := make([]byte, l)
-	for i := 0; i < l; i++ {
-		bytes[i] = pool[rand.Intn(len(pool))]
-	}
-	return string(bytes)
+var nodeCounter atomic.Uint64
+
+func nextNodeID() string {
+	n := nodeCounter.Add(1)
+	return fmt.Sprintf("n%d", n)
 }
 
 // formatLeafNodeWithInput creates a graphviz node string for leaf nodes including input string
@@ -75,7 +72,7 @@ func handleChildren(in string, children []*tsl.TSLNode) (string, []string, error
 	result := ""
 
 	for _, child := range children {
-		childID := randStr(4)
+		childID := nextNodeID()
 		childrenIDs = append(childrenIDs, childID)
 
 		r, err := Walk(in, child, childID)
@@ -96,10 +93,10 @@ func handleChildren(in string, children []*tsl.TSLNode) (string, []string, error
 //
 // The return string will be a node list for a .dot file:
 //
-//	tcuA [shape=box color=black label="$eq"]
-//	xhxK [shape=record color=red label="$ident | 'city'" ]
-//	QFDa [shape=record color=blue label="$string | 'rome'" ]
-//	tcuA -> { xhxK, QFDa }
+//	n1 [shape=box color=black label="EQ"]
+//	n2 [shape=record color=red label="IDENTIFIER | 'city'" ]
+//	n3 [shape=record color=blue label="STRING | 'rome'" ]
+//	n1 -> { n2, n3 }
 //
 // For valid Graphviz dot file, the nodes must be wrapped in a `digraph` object:
 //
@@ -107,7 +104,7 @@ func handleChildren(in string, children []*tsl.TSLNode) (string, []string, error
 //	s = fmt.Sprintf("digraph {\n%s\n}\n", s)
 func Walk(in string, n *tsl.TSLNode, nodeID string) (out string, err error) {
 	if nodeID == "" {
-		nodeID = randStr(4)
+		nodeID = nextNodeID()
 	}
 
 	switch n.Type() {
