@@ -75,17 +75,17 @@ func prepareCollection() (err error) {
 	for _, b := range model.Books {
 		// Create a new book.
 		newBook := Book{
-			"title":  b.(model.Book).Title,
-			"author": b.(model.Book).Author,
-			"onloan": b.(model.Book).OnLoan,
+			"title":  b.Title,
+			"author": b.Author,
+			"onloan": b.OnLoan,
 		}
 
 		// Add optional parameters.
-		if b.(model.Book).Spec.Pages > 0 {
-			newBook["spec.pages"] = b.(model.Book).Spec.Pages
+		if b.Spec.Pages > 0 {
+			newBook["spec.pages"] = b.Spec.Pages
 		}
-		if b.(model.Book).Spec.Rating > 0 {
-			newBook["spec.rating"] = b.(model.Book).Spec.Rating
+		if b.Spec.Rating > 0 {
+			newBook["spec.rating"] = b.Spec.Rating
 		}
 
 		// Insert new book to the books array.

@@ -31,7 +31,7 @@ type Book struct {
 }
 
 // Books are the demo list of books.
-var Books = []interface{}{
+var Books = []Book{
 	Book{Title: "Book", Author: "Joe", Spec: BookSpecs{Pages: 100, Rating: 4}, OnLoan: true},
 	Book{Title: "Other Book", Author: "Jane", Spec: BookSpecs{Pages: 200, Rating: 3}, OnLoan: true},
 	Book{Title: "Some Book", Author: "Jane", Spec: BookSpecs{Pages: 50, Rating: 5}, OnLoan: true},
