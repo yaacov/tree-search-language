@@ -1,7 +1,6 @@
 package tsl
 
 // Operator represents the type definitions.
-// These values must match the yytokentype enum tsl_parser.tab.h
 type Operator int
 
 const (
